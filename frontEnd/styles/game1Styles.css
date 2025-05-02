@@ -1,0 +1,54 @@
+
+
+.game1{
+	position: relative;
+	/* background-color: blueviolet; Debbug */
+	height: 100vh;
+	font-size: 50px;
+}
+
+.game1Place{
+	position: absolute;
+	right: 50%;
+	left: 50%;
+	top: 40%;
+	/* bottom: 50%; */
+	width: 900px;
+	height: 500px;
+	translate: -50% -50%;
+	background-color: black;
+}
+
+.board{
+	position: absolute;
+	height: 100%;
+	width: 100%;
+	background-color: black;
+}
+
+.ball{
+	position:absolute;
+	height: 30px;
+	width: 30px;
+	background-color: azure;
+	border-radius: 50%;
+	top: calc(50% - 15px);
+	left: calc(50% - 15px);
+}
+
+.paddle{
+	position: absolute;
+	height: 50px;
+	width: 10px;
+	border-radius: 10%;
+	background-color: white;
+
+}
+
+.paddle1{
+	left: 0;
+}
+
+.paddle2{
+	right: 0;
+}

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<title>ft_trans</title>
+		<meta name="description" content="">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<!-- <link rel="stylesheet" type="text/css" href="styles.css" /> -->
+		<script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+		<link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;700&display=swap" rel="stylesheet">
+		<!-- <style type="text/tailwindcss">
+			@theme {
+				--text-shadow-manual: 0 1px 5px ;
+		}
+		</style> -->
+	</head>
+	<body>
+
+		<div class="mainBackground ">
+			<div class="topHead h-15 bg-gradient-to-r from-purple-500 to-pink-500 flex items-center justify-center">
+				<p class="font-ubuntu font-bold inline-block underline uppercase
+					hover:text-[20px] hover:text-shadow-manual text-shadow-blue-500
+					duration-200 ease-in">
+					ft_trans
+				</p>
+
+				<div id="menuLanguage" class="absolute right-10">
+					<div class="relative group">
+						<button class="px-4 py-2 bg-violet-700 text-white rounded-md shadow hover:bg-purple-500 ">
+							Language
+						</button>
+						<div class="absolute hidden group-hover:block bg-white shadow-md rounded-md mt-7.5 w-full scale-150">
+							<div class="flex flex-col ">
+								<div class="relative block px-4 py-2 hover:shadow rounded-md text-center  hover:text-white">
+									<div class="absolute inset-0 opacity-20 hover:opacity-95 bg-center bg-size-[auto_100px]
+												bg-[url('https://i.etsystatic.com/37174756/r/il/2b9e8e/4485775673/il_fullxfull.4485775673_mi9i.jpg')]"></div>
+										<span class="relative pointer-events-none font-ubuntu">Tuga</span>
+									</div>
+									<div class="relative block px-4 py-2 hover:shadow rounded-md text-center hover:text-white">
+										<div class="absolute inset-0 opacity-20 hover:opacity-95 bg-top bg-size-[auto_100px]
+												bg-[url('https://www.sportingpedia.com/wp-content/uploads/2024/06/R_onaldinho.jpg')]"></div>
+										<span class="relative pointer-events-none font-ubuntu">Zuca</span>
+									</div>
+									<div class="relative block px-4 py-2 hover:shadow rounded-md text-center  hover:text-white">
+										<div class="absolute inset-0 opacity-20 hover:opacity-95 bg-top bg-size-[auto_50px]
+												bg-[url('https://hips.hearstapps.com/hmg-prod/images/hlh030125feacover-002-ext-67b617eaca858.jpg?crop=0.9539200000000001xw:1xh;center,top&resize=2048:*')]"></div>
+										<span class="relative pointer-events-none font-ubuntu">Enge</span>
+									</div>
+								</div>
+							</div>
+						</div>
+				</div>
+			</div>
+			<div class="bgBox bg-gray-700 w-full h-full items-center justify-center mx-auto my-auto mask-x-from-90% mask-x-to-100%">
+				<p class="bg-gradient-to-tl from-pink-500 to-violet-500 bg-clip-text text-5xl font-extrabold text-transparent ...">
+					Hello world
+				</p>
+				<div class="mx-auto flex max-w-sm items-center gap-x-4 rounded-xl bg-white p-6 shadow-lg outline outline-black/5 dark:bg-slate-800 dark:shadow-none dark:-outline-offset-1 dark:outline-white/10">
+					<img class="size-12 shrink-0" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSBgCPQmyPHrOWxnUvbmQIRwOipjW8woZUreA&s" alt="ChitChat Logo" />
+					<div>
+						<div class="text-xl font-medium text-black dark:text-white">ChitChat</div>
+						<p class="text-gray-500 dark:text-gray-400">You have a new message!</p>
+					</div>
+				</div>
+				<div class="box text-amber-950">
+					<p>fodase</p>
+				</div>
+			</div>
+		</div>
+		<!-- <script src="script.ts"></script> -->
+		<!-- <script src="" async defer></script> -->
+	</body>
+	<script type="module" src="scripttest.js"></script>
+</html>

@@ -1,0 +1,40 @@
+.profileBox{
+	position: relative;
+	width: 500px;
+	height: 300px;
+	right: 50%;
+	left: 50%;
+	translate: -50%;
+	border-radius: 10px;
+	background-color: black;
+}
+
+
+.profileIcon
+{
+	position: absolute;
+	width: 100px;
+	height: 100px;
+	left:10px;
+	top: 10px;
+	border-radius: 100%;
+	border: solid 1px #ffffff;
+	background-color: #fff;
+}
+.profileImg{
+
+}
+
+
+.profileName{
+	position: relative;
+	color: aquamarine;
+	padding-top: 30px;
+	padding-left: 20px;
+	text-align: center;
+}
+
+.profileStatusBox{
+	position: relative;
+	color: bisque;
+}
