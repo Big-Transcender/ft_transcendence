@@ -25,16 +25,75 @@
 
 }
 
+.profileBackground{
+}
+
 
 .profileName{
 	position: relative;
 	color: aquamarine;
 	padding-top: 30px;
 	padding-left: 20px;
+	padding-bottom: 100px;
 	text-align: center;
 }
 
+
+
 .profileStatusBox{
 	position: relative;
+	display: flex;
+	justify-content: center;
+	/* flex-direction: row; */
+	gap: 50px;
+	/* height: 150px; */
+	/* background-color: aqua; */
+
 	color: bisque;
 }
+
+.statusBox{
+	position: relative;
+	/* background-color: black; */
+	height: 100px;
+	width: 100px;
+	transition: 0.8s ease
+}
+
+.statusBoxBg{
+	/* z-index: 1; */
+	position: absolute;
+	height: 100%;
+	width: 100%;
+	background: rgba(70, 70, 70, 0.548);
+	border-radius: 16px;
+	box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+	backdrop-filter: blur(6.9px);
+	-webkit-backdrop-filter: blur(6.9px);
+	border: 1px solid rgba(255, 255, 255, 1);
+	animation-duration: 5s;
+	transition: 1s ease
+	/* opacity: 50%; */
+}
+
+.statusBox:hover .statusBoxBg{
+	background-color: rgba(32, 32, 32, 0.644);
+}
+
+.statusBox:hover{
+	transform: scale(1.10);
+}
+
+
+.statusBoxText{
+	/* position: absolute; */
+	padding-top: 5px;
+	padding-bottom: 20px;
+
+}
+
+.statusBox > p {
+	position: relative;
+	z-index: 1;
+}
+

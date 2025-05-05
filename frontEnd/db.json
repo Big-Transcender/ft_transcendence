@@ -1,0 +1,11 @@
+{
+  "usuarios": [
+    { "id": 1, "nome": "Ana", "idade": 25, "wins": 5, "loses": 1, "plays": 6},
+    { "id": 2, "nome": "Bruno", "idade": 30 },
+    { "id": 3, "nome": "Carla", "idade": 22 }
+  ],
+  "produtos": [
+    { "id": 1, "nome": "Camiseta", "preco": 49.90 },
+    { "id": 2, "nome": "Calça", "preco": 89.90 }
+  ]
+}

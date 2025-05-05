@@ -45,20 +45,30 @@
 				<div id="profile" class="profile page">
 
 					<div class="profileBox ">
-
-						<div class="profileBackground absolute opacity-30 -inset-0 bg-gradient-to-r from-pink-600 to-purple-600 rounded-2xl blur hover:opacity-50 transition duration-1000 hover:duration-200 animate-tilt"></div>
+						<div class="profileBackground absolute opacity-50 -inset-0 bg-gradient-to-r from-pink-600 to-purple-600 rounded-2xl blur"></div>
 						<div class="profileName ">
-							<p>Cristiano Ronaldo</p>
+							<p id="profileName">Cristiano Ronaldo</p>
 						</div>
 						<div class="profileIcon">
 							<img src="images/profileDefault.png" alt="" class="profileImg">
 						</div>
 						<div class="profileStatusBox">
-							<p>Wins</p>
-							<p>Loses</p>
-							<p>Plays</p>
+							<div class="statusBox">
+								<div class="statusBoxBg"></div>
+								<p class="statusBoxText">Wins</p>
+								<p id="winNumberId" class="winNumber">NULL</p>
+							</div>
+							<div class="statusBox">
+								<div class="statusBoxBg"></div>
+								<p class="statusBoxText">Loses</p>
+								<p id="loseNumberId" class="loseNumber">NULL</p>
+							</div>
+							<div class="statusBox">
+								<div class="statusBoxBg"></div>
+								<p class="statusBoxText">Plays</p>
+								<p id="playNumberId" class="playNumber">NULL</p>
+							</div>
 						</div>
-
 					</div>
 				</div>
 
