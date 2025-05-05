@@ -6,7 +6,7 @@ const reset = '\\x1b[0m';
 
 async function routes(fastify, options)
 {
-	// Your existing routes go here...
+
 	fastify.post('/register', async (request, reply) => {
 		const {username, password} = request.body;
 
@@ -22,13 +22,13 @@ async function routes(fastify, options)
 		return reply.status(201).send({ message: 'User registered successfully' });
 	})
 
-	// Add this to your routes.js
+
 
 	fastify.get('/users', async (request, reply) => {
 	try {
 		const users = await fastify.sqlite.all('SELECT * FROM users');
-		console.log("USERS:			" + users)
-		return reply.status(200).send({ users });
+		console.log("USERS:			", users)
+		return reply.status(200).send({users});
 	} catch (err) {
 		console.error(err);
 		return reply.status(500).send({ error: 'Failed to retrieve users' });
