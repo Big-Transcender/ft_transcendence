@@ -1,9 +1,0 @@
-npm install fastify@^4 #instal fastify
-
-npm install bcryptjs #password hashing
-
-curl -X POST http://localhost:3000/register \
-   -H "Content-Type: application/json" \
-   -d '{"username": "testuser", "password": "password123"}'
-
-node src/index.js

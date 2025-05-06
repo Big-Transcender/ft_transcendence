@@ -1,21 +1,17 @@
-const SQLite = require('fastify-sqlite')
+const Database = require('better-sqlite3');
 
-async function setupDatabase(fastify)
-{
-	fastify.register(SQLite, {url: 'sqlite:./db.sqlite'});
+const db = new Database('./db/mydatabase.db');
 
-	await fastify.after();
-	
+db.prepare('DROP TABLE IF EXISTS users').run();
 
-	await fastify.sqlite.exec(`
-		CREATE TABLE IF NOT EXISTS users (
-			id INTEGER PRIMARY KEY AUTOINCREMENT,
-			username TEXT UNIQUE NOT NULL,
-			password TEXT NOT NULL
-		)
-	`);
+db.prepare(`
+	CREATE TABLE IF NOT EXISTS users (
+		id INTEGER PRIMARY KEY AUTOINCREMENT,
+		name TEXT NOT NULL UNIQUE,
+		password TEXT NOT NULL,
+		email TEXT NOT NULL UNIQUE,
+		nickname TEXT NOT NULL UNIQUE
+  )
+`).run();
 
-	console.log("database created");
-}
-
-module.exports = setupDatabase;
+module.exports = db;

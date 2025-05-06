@@ -1,19 +1,15 @@
-const fastify = require('fastify')({logger: true});
-const setupDatabase = require('./database');
+const Fastify = require('fastify');
 const routes = require('./routes');
+
+const fastify = Fastify({ logger: true });
 
 
 async function start()
 {
 	try {
-		await setupDatabase(fastify);
 		fastify.register(routes);
-		
-		fastify.get('/', async (request, reply) => {
-			return { message: 'Hello Bitches! 🎉 Fastify is alive.' };
-		});
 
-		await fastify.listen({port: 3000});
+		await fastify.listen({port: 3000, host: '0.0.0.0'});
 		console.log('Server Started at localhost:3000');
 	}
 	catch (error) {

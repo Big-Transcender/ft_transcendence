@@ -1,42 +1,63 @@
+const db = require('./database');
 const bcrypt = require('bcryptjs');
 
-const red = '\\x1b[31m';
-const green = '\\x1b[32m';
-const reset = '\\x1b[0m';
+async function routes(fastify) {
 
-async function routes(fastify, options)
-{
+	// Get /home
+	fastify.get('/', async (request, reply) => {
+		return { message: 'Hello Bitches!!!' };
+	  });
 
+	// POST /register
 	fastify.post('/register', async (request, reply) => {
-		const {username, password} = request.body;
+		const { name, password, email, nickname } = request.body;
 
-		if (!username || !password)
-			return reply.status(400).send({ error: 'Username and password are required' });
+		if (!name || !password || !email || !nickname)
+			return reply.code(400).send({ error: 'All fields are required' });
 
-
-		const hashedPassword = await bcrypt.hash(password, 10);
-	
-		await fastify.sqlite.run('INSERT INTO users (username, password) VALUES (?, ?)', [username, hashedPassword]);
-		console.log("USER:			" + username);
-		console.log("PASS:			"+ password);	
-		return reply.status(201).send({ message: 'User registered successfully' });
-	})
-
-
-
-	fastify.get('/users', async (request, reply) => {
-	try {
-		const users = await fastify.sqlite.all('SELECT * FROM users');
-		console.log("USERS:			", users)
-		return reply.status(200).send({users});
-	} catch (err) {
-		console.error(err);
-		return reply.status(500).send({ error: 'Failed to retrieve users' });
-	}
+		try
+		{
+			const hashedPassword = await bcrypt.hash(password, 10); 
+			const stmt = db.prepare('INSERT INTO users (name, password, email, nickname) VALUES (?, ?, ?, ?)');
+			const info = stmt.run(name, hashedPassword, email, nickname);
+			reply.code(201).send({ id: info.lastInsertRowid });
+		}
+		catch (err)
+		{
+			reply.code(400).send({ error: 'Could not register user', details: err.message });
+		}
 	});
-  
 
-		
+	// POST /login
+	fastify.post('/login', async (request, reply) => {
+		const { name, password } = request.body;
+	
+		if (!name || !password) {
+		  return reply.code(400).send({ error: 'Name and password are required' });
+		}
+	
+		const user = db.prepare('SELECT * FROM users WHERE name = ?').get(name);
+	
+		if (!user) {
+		  return reply.code(401).send({ error: 'Invalid credentials' });
+		}
+	
+		const isValid = await bcrypt.compare(password, user.password);
+	
+		if (!isValid) {
+		  return reply.code(401).send({ error: 'Invalid credentials' });
+		}
+	
+		reply.send({ message: 'Login successful', user: { id: user.id, name: user.name } });
+	  });
+
+
+	// GET /users
+	fastify.get('/users', async (request, reply) => {
+		const users = db.prepare('SELECT id, nickname FROM users').all(); 
+		reply.send(users);
+	});
 }
 
 module.exports = routes;
+
