@@ -44,11 +44,7 @@
 	position: relative;
 	display: flex;
 	justify-content: center;
-	/* flex-direction: row; */
 	gap: 50px;
-	/* height: 150px; */
-	/* background-color: aqua; */
-
 	color: bisque;
 }
 
@@ -65,15 +61,15 @@
 	position: absolute;
 	height: 100%;
 	width: 100%;
-	background: rgba(70, 70, 70, 0.548);
+	background: rgba(0, 0, 0, 0.521);
 	border-radius: 16px;
 	box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
 	backdrop-filter: blur(6.9px);
 	-webkit-backdrop-filter: blur(6.9px);
 	border: 1px solid rgba(255, 255, 255, 1);
 	animation-duration: 5s;
-	transition: 1s ease
-	/* opacity: 50%; */
+	transition: 1s ease;
+	opacity: 100%;
 }
 
 .statusBox:hover .statusBoxBg{
@@ -87,8 +83,9 @@
 
 .statusBoxText{
 	/* position: absolute; */
-	padding-top: 5px;
-	padding-bottom: 20px;
+	/* padding-top: 5px;
+	padding-bottom: 20px; */
+	/* justify-items: center; */
 
 }
 

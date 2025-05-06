@@ -3,9 +3,9 @@
 @import "tailwindcss";
 
 
-
-.font-ubuntu {
-	font-family: 'Ubuntu', sans-serif;
+@font-face {
+    font-family: animalCrossing;
+    src: url("../fonts/FinkHeavy_Regular.ttf");
 }
 
 body {
@@ -14,29 +14,69 @@ body {
 }
 
 
+.mainBody{
+	background-image: url("../images/mainBg.jpeg");
+	background-position: bottom;
+	background-repeat: no-repeat;
+	overflow: hidden;
+	background-size: cover;
+}
+
+.header{
+	position: absolute;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	left: 50%;
+	translate: -50%;
+	z-index: 1;
+	top: 10px;
+	filter: drop-shadow(0px 10px 10px #00000063);
+}
 
 .mainBodyHeader{
+	width: 60vw;
+	height: 60px;
+	z-index: 2;
 	overflow: hidden;
-	width: 100vw;
-	height: 70px;
-	padding-top: 10px;
-	background-color: pink;
+	background-color: #F1E26F;
+	background-size: 150px;
+	--shadow-specs: 0px 12px 22px;
+
+}
+
+.leftRibbon{
+	position: relative;
+	width: 75px;
+	top: 14px;
+	left: 35px;
+	/* z-index: 2; */
+
+}
+
+.rightRibbon{
+	position: relative;
+	transform: scale(-1, 1);
+	width: 75px;
+	top: 14px;
+	left: -35px;
+	/* z-index: 2; */
 }
 
 .headerTitle{
 	font-size: 50px;
 	text-align: center;
+	font-family: animalCrossing;
+	color: #eed059;
+	text-shadow: 0px 1px 5px rgb(0, 0, 0);
 }
 
 .mainBodyBackground{
 	position: relative;
-	z-index: 0;
-	/* background-color: rgb(0, 0, 0); */
+
 	width: 100vw;
 	height: 100vh;
-	background: linear-gradient(-45deg, #bb5e3e, #b03063, #1a7fa5, 	#1aa387);
-	background-size: 400% 400%;
-	animation: gradient 20s ease infinite;
+
 }
 
 @keyframes gradient {
@@ -60,12 +100,33 @@ body {
 	right: 50%;
 	left: 50%;
 	translate: -50%;
-	background-color: rgba(0, 0, 0, 0.507);
-	backdrop-filter: blur(6.9px);
-	-webkit-backdrop-filter: blur(6.9px);
+	/* background-color: rgba(0, 0, 0, 0.507); */
+	/* backdrop-filter: blur(6.9px); */
+	/* -webkit-backdrop-filter: blur(6.9px); */
 	/* border: 20px solid rgba(255, 255, 255, 1); */
 
 }
+
+.backgroudCenterBg{
+	position: absolute;
+
+	z-index: 0;
+	width: 80vw;
+	height: 100vh;
+	right: 50%;
+	left: 50%;
+	translate: -50%;
+	background: rgba(0, 0, 0, 0.247);
+	border-radius: 16px;
+	box-shadow: 0 4px 30px rgba(0, 0, 0, 0.753);
+	backdrop-filter: blur(10.9px);
+	-webkit-backdrop-filter: blur(10.9px);
+	/* border: 3px solid rgba(255, 255, 255, 0.85); */
+	outline: 5px solid rgba(255, 255, 255, 0.85);
+	outline-offset: -5px;
+
+}
+
 
 .menu{
 	position: absolute;
@@ -80,7 +141,7 @@ body {
 
 .menuOptions{
 	padding-bottom: 50px;
-	padding-top: 10px;
+	padding-top: 40px;
 }
 
 .home{
@@ -104,3 +165,6 @@ nav a {
 .active {
 	display: block;
 	}
+
+
+
