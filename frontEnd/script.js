@@ -19,3 +19,60 @@ window.addEventListener('load', function () {
     var page = location.hash.replace('#', '') || 'home';
     navigate(page);
 });
+var buttons = document.querySelectorAll('.buttonHitBox');
+var div = document.querySelector('.buttonBG');
+var mouseIn = false;
+var bgMusic = new Audio('audios/1-12Noon.mp3');
+bgMusic.title = "1-12Noon";
+var buttonSoundIn = new Audio('audios/in.wav');
+var buttonSoundOut = new Audio('audios/out.wav');
+var musicMenuIn = new Audio('audios/musicMenuIn.wav');
+var musicMenuOut = new Audio('audios/musicMenuOut.wav');
+var musicMenu = document.querySelector('.musicPlayerHitBox');
+var musicIn = false;
+// bgMusic.play()
+// console.log(botao);
+buttons.forEach(function (button) {
+    button.addEventListener('mouseenter', function () {
+        if (!mouseIn) {
+            buttonSoundIn.play();
+            mouseIn = true;
+            // console.log("teste1");
+        }
+    });
+    button.addEventListener('mouseleave', function () {
+        if (mouseIn) {
+            buttonSoundOut.play();
+            // console.log("teste2");
+            mouseIn = false;
+        }
+    });
+});
+musicMenu.addEventListener('mouseenter', function () {
+    if (!musicIn) {
+        musicMenuIn.play();
+        musicIn = true;
+    }
+});
+musicMenu.addEventListener('mouseleave', function () {
+    if (musicIn) {
+        musicMenuOut.play();
+        musicIn = false;
+    }
+});
+var musicTitle = document.getElementById('musicTitle');
+musicTitle.textContent = bgMusic.title;
+// console.log(bgMusic.title);
+// botao.addEventListener('mouseenter', () => {
+// 	jaPassou = true;
+// });
+// botao.addEventListener('mouseleave', () => {
+// 	if (jaPassou) {
+// 		div.classList.add('animar');
+// 		console.log("entrou");
+// 		// Se quiser remover depois de um tempo:
+// 		// setTimeout(() => {
+// 		//   div.classList.remove('animar');
+// 		// }, 1000);
+// 	}
+// });

@@ -4,9 +4,20 @@
 
 
 @font-face {
-    font-family: animalCrossing;
-    src: url("../fonts/FinkHeavy_Regular.ttf");
+	font-family: animalCrossing;
+	src: url("../fonts/FinkHeavy_Regular.ttf");
 }
+
+@font-face {
+	font-family: animalCrossingQuotes;
+	src: url("../fonts/acQuotes.otf");
+}
+
+@font-face {
+	font-family: animalCrossingSystem;
+	src: url("../fonts/acSystem.otf");
+}
+
 
 body {
 	/* overflow: hidden; */
@@ -14,7 +25,7 @@ body {
 }
 
 
-.mainBody{
+.mainBody {
 	background-image: url("../images/mainBg.jpeg");
 	background-position: bottom;
 	background-repeat: no-repeat;
@@ -22,56 +33,9 @@ body {
 	background-size: cover;
 }
 
-.header{
-	position: absolute;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	left: 50%;
-	translate: -50%;
-	z-index: 1;
-	top: 10px;
-	filter: drop-shadow(0px 10px 10px #00000063);
-}
 
-.mainBodyHeader{
-	width: 60vw;
-	height: 60px;
-	z-index: 2;
-	overflow: hidden;
-	background-color: #F1E26F;
-	background-size: 150px;
-	--shadow-specs: 0px 12px 22px;
 
-}
-
-.leftRibbon{
-	position: relative;
-	width: 75px;
-	top: 14px;
-	left: 35px;
-	/* z-index: 2; */
-
-}
-
-.rightRibbon{
-	position: relative;
-	transform: scale(-1, 1);
-	width: 75px;
-	top: 14px;
-	left: -35px;
-	/* z-index: 2; */
-}
-
-.headerTitle{
-	font-size: 50px;
-	text-align: center;
-	font-family: animalCrossing;
-	color: #eed059;
-	text-shadow: 0px 1px 5px rgb(0, 0, 0);
-}
-
-.mainBodyBackground{
+.mainBodyBackground {
 	position: relative;
 
 	width: 100vw;
@@ -93,7 +57,7 @@ body {
 	}
 }
 
-.backgroundCenter{
+.backgroundCenter {
 	position: absolute;
 	width: 80vw;
 	height: 100vh;
@@ -107,7 +71,7 @@ body {
 
 }
 
-.backgroudCenterBg{
+.backgroudCenterBg {
 	position: absolute;
 
 	z-index: 0;
@@ -128,10 +92,10 @@ body {
 }
 
 
-.menu{
+.menu {
 	position: absolute;
 	text-align: center;
-	width: 80%;
+	width: 95%;
 	/* height: 1000px; */
 	right: 50%;
 	left: 50%;
@@ -139,14 +103,11 @@ body {
 	translate: -50%;
 }
 
-.menuOptions{
+.menuOptions {
 	padding-bottom: 50px;
 	padding-top: 40px;
 }
 
-.home{
-	background-color: rgb(185, 104, 104);
-}
 
 
 
@@ -158,13 +119,12 @@ nav a {
 	text-decoration: underline;
 	/* z-index: 0; */
 	/* padding-top: 500px; */
-	}
+}
+
 .page {
 	display: none;
-	}
+}
+
 .active {
 	display: block;
-	}
-
-
-
+}

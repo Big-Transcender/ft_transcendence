@@ -1,6 +1,7 @@
 console.log("teste");
 const page = document.getElementById('home');
 
+
 function navigate(page) {
 	if (document.getElementById(page).classList.contains('active'))
 		return;
@@ -26,3 +27,73 @@ window.addEventListener('load', () => {
 
 
 
+const buttons = document.querySelectorAll('.buttonHitBox');
+const div = document.querySelector('.buttonBG');
+let mouseIn = false;
+const bgMusic = new Audio('audios/1-12Noon.mp3');
+bgMusic.title = "1-12Noon";
+
+const buttonSoundIn = new Audio('audios/in.wav');
+const buttonSoundOut = new Audio('audios/out.wav');
+const musicMenuIn = new Audio('audios/musicMenuIn.wav');
+const musicMenuOut = new Audio('audios/musicMenuOut.wav');
+const musicMenu = document.querySelector('.musicPlayerHitBox');
+let musicIn = false;
+
+// bgMusic.play()
+// console.log(botao);
+
+buttons.forEach(button => {
+	button.addEventListener('mouseenter', () => {
+		if (!mouseIn) {
+			buttonSoundIn.play();
+			mouseIn = true;
+			// console.log("teste1");
+		}
+	});
+
+	button.addEventListener('mouseleave', () => {
+		if (mouseIn) {
+			buttonSoundOut.play();
+			// console.log("teste2");
+			mouseIn = false;
+		}
+	});
+});
+
+musicMenu.addEventListener('mouseenter', () => {
+	if (!musicIn) {
+		musicMenuIn.play();
+		musicIn = true;
+	}
+});
+
+musicMenu.addEventListener('mouseleave', () => {
+	if (musicIn) {
+		musicMenuOut.play();
+		musicIn = false;
+	}
+});
+
+
+const musicTitle = document.getElementById('musicTitle');
+
+musicTitle.textContent = bgMusic.title;
+
+// console.log(bgMusic.title);
+
+// botao.addEventListener('mouseenter', () => {
+// 	jaPassou = true;
+// });
+
+// botao.addEventListener('mouseleave', () => {
+// 	if (jaPassou) {
+// 		div.classList.add('animar');
+// 		console.log("entrou");
+
+// 		// Se quiser remover depois de um tempo:
+// 		// setTimeout(() => {
+// 		//   div.classList.remove('animar');
+// 		// }, 1000);
+// 	}
+// });

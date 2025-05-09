@@ -1,0 +1,18 @@
+.home {
+	position: relative;
+	padding-top: px;
+	height: 90vh;
+	/* background-color: rgb(185, 104, 104); */
+}
+
+.loadingGif {
+	position: absolute;
+	/* background-color: rebeccapurple; */
+	height: 250px;
+	/* left: 50%; */
+	/* right: 50%; */
+	bottom: 0px;
+	right: 0px;
+	/* translate: -50%; */
+
+}
