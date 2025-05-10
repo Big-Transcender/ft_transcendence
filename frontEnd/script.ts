@@ -30,18 +30,17 @@ window.addEventListener('load', () => {
 const buttons = document.querySelectorAll('.buttonHitBox');
 const div = document.querySelector('.buttonBG');
 let mouseIn = false;
-const bgMusic = new Audio('audios/1-12Noon.mp3');
-bgMusic.title = "1-12Noon";
+
 
 const buttonSoundIn = new Audio('audios/in.wav');
 const buttonSoundOut = new Audio('audios/out.wav');
 const musicMenuIn = new Audio('audios/musicMenuIn.wav');
 const musicMenuOut = new Audio('audios/musicMenuOut.wav');
 const musicMenu = document.querySelector('.musicPlayerHitBox');
+
 let musicIn = false;
 
 // bgMusic.play()
-// console.log(botao);
 
 buttons.forEach(button => {
 	button.addEventListener('mouseenter', () => {
@@ -76,9 +75,9 @@ musicMenu.addEventListener('mouseleave', () => {
 });
 
 
-const musicTitle = document.getElementById('musicTitle');
 
-musicTitle.textContent = bgMusic.title;
+
+console.log(today.getHours());
 
 // console.log(bgMusic.title);
 

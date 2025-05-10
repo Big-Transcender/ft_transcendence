@@ -210,7 +210,7 @@
 	top: 5vw;
 	animation: kkDance 2s steps(2) infinite;
 	opacity: 0%;
-	filter: drop-shadow(0px 10px 3px #00000063);
+	filter: drop-shadow(0px 7px 1px #00000063);
 
 }
 
@@ -221,22 +221,20 @@
 	top: 5vw;
 	animation: kkDance 2s steps(2) infinite;
 	opacity: 0%;
-	filter: drop-shadow(0px 10px 3px #00000063);
-
-
+	filter: drop-shadow(0px 7px 1px #00000063);
 }
 
 @keyframes kkDance {
 	from {
-		transform: rotate(50deg);
+		transform: rotate(0);
 	}
 
-	50% {
+	/* 50% {
 		transform: rotate(-50deg);
-	}
+	} */
 
 	to {
-		transform: rotate(50deg);
+		transform: rotate(25deg);
 	}
 }
 

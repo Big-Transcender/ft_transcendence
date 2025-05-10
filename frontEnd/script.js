@@ -22,8 +22,6 @@ window.addEventListener('load', function () {
 var buttons = document.querySelectorAll('.buttonHitBox');
 var div = document.querySelector('.buttonBG');
 var mouseIn = false;
-var bgMusic = new Audio('audios/1-12Noon.mp3');
-bgMusic.title = "1-12Noon";
 var buttonSoundIn = new Audio('audios/in.wav');
 var buttonSoundOut = new Audio('audios/out.wav');
 var musicMenuIn = new Audio('audios/musicMenuIn.wav');
@@ -31,7 +29,6 @@ var musicMenuOut = new Audio('audios/musicMenuOut.wav');
 var musicMenu = document.querySelector('.musicPlayerHitBox');
 var musicIn = false;
 // bgMusic.play()
-// console.log(botao);
 buttons.forEach(function (button) {
     button.addEventListener('mouseenter', function () {
         if (!mouseIn) {
@@ -60,8 +57,7 @@ musicMenu.addEventListener('mouseleave', function () {
         musicIn = false;
     }
 });
-var musicTitle = document.getElementById('musicTitle');
-musicTitle.textContent = bgMusic.title;
+console.log(today.getHours());
 // console.log(bgMusic.title);
 // botao.addEventListener('mouseenter', () => {
 // 	jaPassou = true;
