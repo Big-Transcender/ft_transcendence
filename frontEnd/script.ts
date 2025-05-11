@@ -36,7 +36,7 @@ const buttonSoundIn = new Audio('audios/in.wav');
 const buttonSoundOut = new Audio('audios/out.wav');
 const musicMenuIn = new Audio('audios/musicMenuIn.wav');
 const musicMenuOut = new Audio('audios/musicMenuOut.wav');
-const musicMenu = document.querySelector('.musicPlayerHitBox');
+const musicMenu = document.querySelector('.musicPlayerBg');
 
 let musicIn = false;
 

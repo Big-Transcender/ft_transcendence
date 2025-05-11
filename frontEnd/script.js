@@ -26,7 +26,7 @@ var buttonSoundIn = new Audio('audios/in.wav');
 var buttonSoundOut = new Audio('audios/out.wav');
 var musicMenuIn = new Audio('audios/musicMenuIn.wav');
 var musicMenuOut = new Audio('audios/musicMenuOut.wav');
-var musicMenu = document.querySelector('.musicPlayerHitBox');
+var musicMenu = document.querySelector('.musicPlayerBg');
 var musicIn = false;
 // bgMusic.play()
 buttons.forEach(function (button) {

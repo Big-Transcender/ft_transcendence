@@ -10,12 +10,48 @@
 	<link rel="stylesheet" href="styles/game1Styles.css">
 	<link rel="stylesheet" href="styles/homePage.css">
 	<link rel="stylesheet" href="styles/header.css">
+	<link rel="stylesheet" href="styles/musicPlayer.css">
 	<script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 </head>
 
 <body>
 	<div class="mainBody">
 		<div class="header">
+			<div class="musicPlayer">
+				<!-- <div class="musicPlayerHitBox"> </div> -->
+				<div class="musicPlayerBg">
+					<div class="musicPlayerTextBox">
+						<img src="images/kkSliderQuote.png" alt="" class="kkSliderQuote">
+						<img src="images/kkIcon.png" alt="" class="kkSlider">
+						<img src="images/kkGuitarIcon.png" alt="" class="kkGuitar">
+						<p>Now Playing:</p>
+						<p id="musicTitle">Music Title</p>
+						<p id="musicDate">Music Date</p>
+						<div class="playButtons">
+							<button class="buttonPlay musicButtons">
+								<div class="musicButtonBG">
+									<img src="images/icons/playIcon.png" alt="" class="playIcon">
+								</div>play
+							</button>
+							<button class="buttonPrev musicButtons ">
+								<div class="musicButtonBG">
+									<img src="images/icons/nextIcon.png" alt="" class="prevIcon">
+								</div>prev
+							</button>
+							<button class="buttonNext musicButtons ">
+								<div class="musicButtonBG">
+									<img src="images/icons/nextIcon.png" alt="" class="nextIcon">
+								</div>next
+							</button>
+							<button class="buttonStop musicButtons ">
+								<div class="musicButtonBG">
+									<img src="images/icons/stopIcon.png" alt="" class="stopIcon">
+								</div>stop
+							</button>
+						</div>
+					</div>
+				</div>
+			</div>
 			<div class="ribbonLeft">
 				<img src="../frontEnd/images/ribbon.svg" class="leftRibbon"></img>
 			</div>
@@ -44,21 +80,7 @@
 						</a>
 					</div>
 				</div>
-				<div class="musicPlayer">
-					<div class="musicPlayerHitBox"> </div>
-					<div class="musicPlayerBg">
-						<div class="musicPlayerTextBox">
-							<p>Now Playing:</p>
-							<p id="musicTitle">Music Title</p>
-							<p id="musicDate">Music Date</p>
-							<img src="images/kkIcon.png" alt="" class="kkSlider">
-							<img src="images/kkGuitarIcon.png" alt="" class="kkGuitar">
-							<img src="images/kkSliderQuote.png" alt="" class="kkSliderQuote">
-							<button class="buttonPlay">play</button>
-						</div>
 
-					</div>
-				</div>
 			</div>
 			<div class="ribbonRight">
 				<img src="../frontEnd/images/ribbon.svg" class="rightRibbon"></img>
