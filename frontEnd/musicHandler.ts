@@ -29,13 +29,11 @@ const dayMusic = {
 	"11PM": new Audio('audios/DayMusic/11PM.wav'),
 };
 
-// Obtém o horário atual
 const currentHour = today.getHours();
 const period = currentHour < 12 ? "AM" : "PM";
 
 const formattedHour = (currentHour % 12 || 12) + period;
 
-// Seleciona a música correspondente ao horário
 const bgMusic = dayMusic[formattedHour];
 bgMusic.loop = true;
 bgMusic.title = (currentHour % 12 || 12) + " " + period
@@ -44,7 +42,6 @@ console.log(bgMusic.title);
 console.log(today.getHours());
 
 
-// Atualiza o título e a data na interface
 const musicTitle = document.getElementById('musicTitle');
 const musicDate = document.getElementById('musicDate');
 

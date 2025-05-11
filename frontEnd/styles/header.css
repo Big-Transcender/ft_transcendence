@@ -193,9 +193,17 @@
 	opacity: 0%;
 	transition: 150ms ease-in-out;
 	filter: drop-shadow(0px 10px 3px #00000063);
-
+	pointer-events: none;
 }
 
+.buttonPlay {
+	position: relative;
+	background-color: red;
+	width: 40px;
+	height: 40px;
+	cursor: pointer;
+	/* z-index: ; */
+}
 
 .musicPlayerTextBox p {
 	font-family: animalCrossingSystem;
@@ -211,7 +219,7 @@
 	animation: kkDance 2s steps(2) infinite;
 	opacity: 0%;
 	filter: drop-shadow(0px 7px 1px #00000063);
-
+	pointer-events: none;
 }
 
 .kkGuitar {
@@ -222,6 +230,7 @@
 	animation: kkDance 2s steps(2) infinite;
 	opacity: 0%;
 	filter: drop-shadow(0px 7px 1px #00000063);
+	pointer-events: none;
 }
 
 @keyframes kkDance {

@@ -27,18 +27,15 @@ var dayMusic = {
     "10PM": new Audio('audios/DayMusic/10PM.wav'),
     "11PM": new Audio('audios/DayMusic/11PM.wav'),
 };
-// Obtém o horário atual
 var currentHour = today.getHours();
 var period = currentHour < 12 ? "AM" : "PM";
 var formattedHour = (currentHour % 12 || 12) + period;
-// Seleciona a música correspondente ao horário
 var bgMusic = dayMusic[formattedHour];
 bgMusic.loop = true;
 bgMusic.title = (currentHour % 12 || 12) + " " + period;
 bgMusic.play();
 console.log(bgMusic.title);
 console.log(today.getHours());
-// Atualiza o título e a data na interface
 var musicTitle = document.getElementById('musicTitle');
 var musicDate = document.getElementById('musicDate');
 musicTitle.textContent = bgMusic.title;
