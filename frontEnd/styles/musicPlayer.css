@@ -9,7 +9,7 @@
 	bottom: -10px;
 	border-radius: 20px;
 	transition: 150ms ease-in-out;
-	background-image: url('../images/green-waves-3_orig.png');
+	background-image: url("../images/green-waves-3_orig.png");
 	background-position: bottom;
 	background-repeat: no-repeat;
 	overflow: hidden;
@@ -40,7 +40,6 @@
 	height: 290px;
 } */
 
-
 .musicPlayerTextBox {
 	opacity: 0%;
 	position: relative;
@@ -50,7 +49,6 @@
 	/* z-index: 1; */
 	transition: 150ms ease-in-out;
 	pointer-events: none;
-
 }
 
 .musicPlayerTextBox p {
@@ -71,7 +69,6 @@
 	bottom: 0;
 	translate: -50%;
 	gap: 15px;
-
 }
 
 .musicButtons {
@@ -83,7 +80,7 @@
 .musicButtonBG {
 	position: absolute;
 	cursor: pointer;
-	background-color: #F7AFB2;
+	background-color: #f7afb2;
 	border-radius: 10px;
 	width: 40px;
 	height: 40px;
@@ -94,7 +91,6 @@
 	animation: musicButtonHoverAnimation 0.3s forwards;
 	/* transform: scale(2, 2); */
 }
-
 
 .playIcon {
 	position: absolute;
@@ -107,7 +103,7 @@
 
 .musicButtons:hover .playIcon {
 	animation: playIconAnimation 0.5s infinite;
-	transform: scale(1.20, 1.20);
+	transform: scale(1.2, 1.2);
 }
 
 .stopIcon {
@@ -120,8 +116,8 @@
 }
 
 .musicButtons:hover .stopIcon {
-	animation: stopIconAnimation 1.0s infinite;
-	transform: scale(1.20, 1.20);
+	animation: stopIconAnimation 1s infinite;
+	transform: scale(1.2, 1.2);
 }
 
 .prevIcon {
@@ -132,14 +128,12 @@
 	translate: -50% -50%;
 	transition: 10ms ease-in-out;
 	transform: rotate(180deg);
-
 }
 
 .musicButtons:hover .prevIcon {
 	animation: prevIconAnimation 0.5s infinite;
-	transform: scale(1.20, 1.20) rotate(180deg);
+	transform: scale(1.2, 1.2) rotate(180deg);
 }
-
 
 .nextIcon {
 	position: absolute;
@@ -149,17 +143,13 @@
 	translate: -50% -50%;
 	transition: 10ms ease-in-out;
 	/* transform: rotate(180deg); */
-
 }
 
 .musicButtons:hover .nextIcon {
 	animation: nextIconAnimation 0.5s infinite;
-	transform: scale(1.20, 1.20);
+	transform: scale(1.2, 1.2);
 	/* transform: rotate(180deg); */
 }
-
-
-
 
 @keyframes musicButtonClickAnimation {
 	from {
@@ -177,11 +167,11 @@
 
 @keyframes musicButtonHoverAnimation {
 	from {
-		filter: drop-shadow(0px 0px 1px #ff0000)
+		filter: drop-shadow(0px 0px 1px #f972aa) drop-shadow(0px 0px 1px #000000);
 	}
 
 	to {
-		filter: drop-shadow(0px 0px 5px #ff0000)
+		filter: drop-shadow(0px 0px 5px #f972aa) drop-shadow(0px 0px 1px #000000);
 	}
 }
 
@@ -197,38 +187,36 @@
 
 @keyframes stopIconAnimation {
 	25% {
-		transform: rotate(10deg) scale(1.20, 1.20);
+		transform: rotate(10deg) scale(1.2, 1.2);
 	}
 
 	50% {
-		transform: rotate(0deg) scale(1.20, 1.20);
+		transform: rotate(0deg) scale(1.2, 1.2);
 	}
 
 	75% {
-		transform: rotate(-10deg) scale(1.20, 1.20);
+		transform: rotate(-10deg) scale(1.2, 1.2);
 	}
 
 	100% {
-		transform: rotate(0deg) scale(1.20, 1.20);
+		transform: rotate(0deg) scale(1.2, 1.2);
 	}
 }
 
 @keyframes prevIconAnimation {
 	0% {
 		left: 48%;
-		transform: rotate(180deg) scale(1.20, 1.20);
+		transform: rotate(180deg) scale(1.2, 1.2);
 	}
 
 	25% {
 		left: 38%;
-		transform: rotate(180deg) scale(1.20, 1.20);
-
+		transform: rotate(180deg) scale(1.2, 1.2);
 	}
 
 	100% {
 		left: 48%;
-		transform: rotate(180deg) scale(1.20, 1.20);
-
+		transform: rotate(180deg) scale(1.2, 1.2);
 	}
 }
 
@@ -241,7 +229,6 @@
 	25% {
 		left: 62%;
 		/* transform: rotate(180deg); */
-
 	}
 
 	100% {
@@ -250,6 +237,17 @@
 	}
 }
 
+.footer {
+	position: absolute;
+	height: 5px;
+	width: 15vh;
+	bottom: 1vw;
+	left: 50%;
+	translate: -50%;
+	background-color: #ffffff;
+	filter: drop-shadow(0px 2px 1px #00000063);
+	border-radius: 5px;
+}
 
 .kkSliderQuote {
 	position: absolute;
@@ -260,11 +258,10 @@
 	translate: -50%;
 	opacity: 0%;
 	transition: 150ms ease-in-out;
-	filter: drop-shadow(0px 10px 3px #00000063);
+	filter: drop-shadow(0px 10px 2px #00000063)
+		drop-shadow(0px 0px 2px rgba(0, 0, 0, 0.493));
 	pointer-events: none;
 }
-
-
 
 .musicPlayerTextBox p {
 	font-family: animalCrossingSystem;
@@ -296,7 +293,7 @@
 
 @keyframes kkDance {
 	from {
-		transform: rotate(0);
+		transform: rotate(0deg);
 	}
 
 	/* 50% {
@@ -304,7 +301,7 @@
 	} */
 
 	to {
-		transform: rotate(25deg);
+		transform: rotate(20deg);
 	}
 }
 
@@ -323,7 +320,6 @@
 	pointer-events: auto;
 }
 
-
 .musicPlayerBg:hover .musicPlayerBg,
 .kkGuitar,
 .kkSlider,
@@ -331,6 +327,5 @@
 .buttonPlay {
 	opacity: 100%;
 }
-
 
 /* #TODO Uma linha no meio do musicplayer para indicar que pode ser abaixado */
