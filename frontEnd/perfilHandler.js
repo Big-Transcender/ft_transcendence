@@ -1,5 +1,5 @@
-var API_URL = 'http://localhost:3001/usuarios';
-var users = [];
+const API_URL = 'http://localhost:3000/users';
+let users = [];
 function updateWins() {
     document.getElementById('winNumberId').innerText = getWins();
 }
@@ -25,10 +25,10 @@ function getPlays() {
     return users[0].plays;
 }
 fetch(API_URL)
-    .then(function (res) { return res.json(); })
-    .then(function (data) {
+    .then(res => res.json())
+    .then(data => {
     users = data;
-    data.forEach(function (user) {
-        // console.log(user.id);
+    data.forEach(user => {
+        console.log(user.nickname);
     });
 });

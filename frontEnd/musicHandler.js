@@ -1,7 +1,7 @@
 // const music1AM = new Audio('audios/DayMusic/1AM.wav');
 // const music1PM = new Audio('audios/DayMusic/1PM.wav');
 var today = new Date();
-var dayMusic = {
+const dayMusic = {
     // "12AM": new Audio('audios/DayMusic/12AM.wav'),
     "1AM": new Audio('audios/DayMusic/1AM.wav'),
     // "2AM": new Audio('audios/DayMusic/2AM.wav'),
@@ -27,26 +27,26 @@ var dayMusic = {
     // "10PM": new Audio('audios/DayMusic/10PM.wav'),
     // "11PM": new Audio('audios/DayMusic/11PM.wav'),
 };
-var currentHour = 1;
-var period = currentHour < 12 ? "AM" : "PM";
-var musicButtonPlay = document.querySelector('.buttonPlay');
-var musicButtonStop = document.querySelector('.buttonStop');
-var formattedHour = (currentHour % 12 || 12) + period;
-var bgMusic = dayMusic[formattedHour];
+const currentHour = 1;
+const period = currentHour < 12 ? "AM" : "PM";
+const musicButtonPlay = document.querySelector('.buttonPlay');
+const musicButtonStop = document.querySelector('.buttonStop');
+const formattedHour = (currentHour % 12 || 12) + period;
+const bgMusic = dayMusic[formattedHour];
 bgMusic.loop = true;
 bgMusic.title = (currentHour % 12 || 12) + " " + period;
 bgMusic.play();
 console.log(bgMusic.title);
 console.log(today.getHours());
-var musicTitle = document.getElementById('musicTitle');
-var musicDate = document.getElementById('musicDate');
+const musicTitle = document.getElementById('musicTitle');
+const musicDate = document.getElementById('musicDate');
 musicTitle.textContent = bgMusic.title;
 musicDate.textContent = today.getHours().toString().padStart(2, '0') + ":" + today.getMinutes().toString().padStart(2, '0');
-musicButtonStop.addEventListener('click', function () {
+musicButtonStop.addEventListener('click', () => {
     musicPause();
     console.log("musica pausada");
 });
-musicButtonPlay.addEventListener('click', function () {
+musicButtonPlay.addEventListener('click', () => {
     musicResume();
     console.log("musica resume");
 });

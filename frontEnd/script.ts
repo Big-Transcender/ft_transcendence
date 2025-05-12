@@ -96,3 +96,34 @@ console.log(today.getHours());
 // 		// }, 1000);
 // 	}
 // });
+
+
+// Socket
+
+
+const socket = new WebSocket('ws://localhost:3000');
+
+socket.addEventListener('open', () => {
+	console.log('Connected to WebSocket server');
+	socket.send('Hello Back, from TypeScript client!');
+});
+
+document.addEventListener('keydown', (event: KeyboardEvent) => {
+	if (event.key === 'ArrowUp' || event.key === 'ArrowDown') {
+	  // Send the pressed key to the server
+	  socket.send(`Arrow key pressed: ${event.key}`);
+	  console.log(`${event.key} was pressed.`);
+	}
+  });
+
+socket.addEventListener('message', (event: MessageEvent) => {
+	console.log('Message from server->', event.data);
+});
+
+socket.addEventListener('close', () => {
+	console.log('WebSocket connection closed');
+});
+
+socket.addEventListener('error', (event: Event) => {
+	console.error('WebSocket error:', event);
+});

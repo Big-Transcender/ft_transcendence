@@ -1,4 +1,4 @@
-const API_URL = 'http://localhost:3001/usuarios'
+const API_URL = 'http://localhost:3000/users';
 let users = [];
 
 
@@ -38,7 +38,7 @@ fetch(API_URL)
 	.then(data =>{
 		users = data;
 		data.forEach(user =>{
-			// console.log(user.id);
+			 console.log(user.nickname);
 		})
 	});
 
