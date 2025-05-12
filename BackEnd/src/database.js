@@ -2,7 +2,7 @@ const Database = require('better-sqlite3');
 
 const db = new Database('./db/mydatabase.db');
 
-db.prepare('DROP TABLE IF EXISTS users').run();
+//db.prepare('DROP TABLE IF EXISTS users').run();
 
 db.prepare(`
 	CREATE TABLE IF NOT EXISTS users (
