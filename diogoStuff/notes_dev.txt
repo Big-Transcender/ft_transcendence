@@ -2,6 +2,8 @@ npm install fastify@^4 #instal fastify
 
 npm install bcryptjs #password hashing
 
+npm install @fastify/cors #conect to front
+
 curl -X POST http://localhost:3000/register \
   -H "Content-Type: application/json" \
   -d '{
