@@ -1,7 +1,6 @@
-@import url('https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Roboto&display=swap");
 @import "tailwindcss";
-
 
 @font-face {
 	font-family: animalCrossing;
@@ -18,12 +17,10 @@
 	src: url("../fonts/acSystem.otf");
 }
 
-
 body {
 	/* overflow: hidden; */
 	height: 100vh;
 }
-
 
 .mainBody {
 	background-image: url("../images/mainBg.jpeg");
@@ -33,14 +30,11 @@ body {
 	background-size: cover;
 }
 
-
-
 .mainBodyBackground {
 	position: relative;
 
 	width: 100vw;
 	height: 100vh;
-
 }
 
 @keyframes gradient {
@@ -68,13 +62,13 @@ body {
 	/* backdrop-filter: blur(6.9px); */
 	/* -webkit-backdrop-filter: blur(6.9px); */
 	/* border: 20px solid rgba(255, 255, 255, 1); */
-
 }
 
 .backgroudCenterBg {
 	position: absolute;
 
-	z-index: 0;
+	/* z-index: 0; */
+	/* top: 0px; */
 	width: 80vw;
 	height: 100vh;
 	right: 50%;
@@ -88,9 +82,7 @@ body {
 	/* border: 3px solid rgba(255, 255, 255, 0.85); */
 	outline: 5px solid rgba(255, 255, 255, 0.85);
 	outline-offset: -5px;
-
 }
-
 
 .menu {
 	position: absolute;
@@ -107,10 +99,6 @@ body {
 	padding-bottom: 50px;
 	padding-top: 40px;
 }
-
-
-
-
 
 nav a {
 	margin-right: 15px;

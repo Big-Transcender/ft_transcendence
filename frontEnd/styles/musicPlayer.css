@@ -99,6 +99,9 @@
 	top: 50%;
 	translate: -50% -50%;
 	transition: 10ms ease-in-out;
+	filter: invert(26%) sepia(13%) saturate(808%) hue-rotate(337deg)
+		brightness(94%) contrast(96%);
+	/* #524036 */
 }
 
 .musicButtons:hover .playIcon {
@@ -113,6 +116,8 @@
 	top: 50%;
 	translate: -50% -50%;
 	transition: 10ms ease-in-out;
+	filter: invert(26%) sepia(13%) saturate(808%) hue-rotate(337deg)
+		brightness(94%) contrast(96%);
 }
 
 .musicButtons:hover .stopIcon {
@@ -128,6 +133,8 @@
 	translate: -50% -50%;
 	transition: 10ms ease-in-out;
 	transform: rotate(180deg);
+	filter: invert(26%) sepia(13%) saturate(808%) hue-rotate(337deg)
+		brightness(94%) contrast(96%);
 }
 
 .musicButtons:hover .prevIcon {
@@ -142,6 +149,8 @@
 	top: 50%;
 	translate: -50% -50%;
 	transition: 10ms ease-in-out;
+	filter: invert(26%) sepia(13%) saturate(808%) hue-rotate(337deg)
+		brightness(94%) contrast(96%);
 	/* transform: rotate(180deg); */
 }
 

@@ -15,18 +15,22 @@
 	height: 60px;
 	z-index: 2;
 	overflow: hidden;
-	background-color: #F1E26F;
+	background-color: #f1e26f;
 	background-size: 150px;
 	/* --shadow-specs: 0px 12px 22px; */
 }
 
 .headerTitle {
 	position: absolute;
+	/* font-size: 2.2vw; */
 	font-size: 49px;
+	width: 20vw;
+	height: 5vh;
 	left: 50%;
 	top: 50%;
 	translate: -50% -50%;
 	text-align: center;
+	align-content: center;
 	font-family: animalCrossing;
 	color: #eed059;
 	text-shadow: 0px 1px 5px rgb(0, 0, 0);
@@ -60,7 +64,6 @@
 	/* text-align: right; */
 	gap: 50px;
 	right: 0px;
-
 }
 
 .leftButtons {
@@ -86,8 +89,8 @@
 	z-index: -1;
 	transition: 150ms ease-in-out;
 	border-radius: 1000px;
-	opacity: 0%
-		/* background-color: red; */
+	opacity: 0%;
+	/* background-color: red; */
 }
 
 .button:hover .buttonBG {
@@ -95,15 +98,13 @@
 	border-radius: 5px;
 }
 
-
 @keyframes gelatine {
-
 	from,
 	to {
 		height: 150%;
 		transform: scale(0.1, 0.1);
 		background-color: rgba(255, 255, 255, 0);
-		opacity: 100%
+		opacity: 100%;
 	}
 
 	50% {
@@ -123,7 +124,6 @@
 	top: 14px;
 	left: 35px;
 	z-index: -1;
-
 }
 
 .rightRibbon {

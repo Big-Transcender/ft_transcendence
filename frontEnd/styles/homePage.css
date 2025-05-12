@@ -1,18 +1,102 @@
 .home {
 	position: relative;
-	padding-top: px;
-	height: 90vh;
+	/* padding-top: 50px; */
+	top: 5vw;
+
+	height: 82vh;
+	/* background-color: rebeccapurple; */
+	/* width: 100v; */
 	/* background-color: rgb(185, 104, 104); */
+}
+
+.homePageWelcome {
+	/* background-color: red; */
+	height: 80vh;
+
+	/* width: 82vw; */
+}
+
+.homePageWelcome p {
+	position: relative;
+	font-family: animalCrossing;
+	font-size: 2vw;
+	/* background-color: red; */
+}
+
+.homePlayersRank {
+	position: absolute;
+	height: 50vh;
+	width: 25%;
+	top: 10vh;
+
+	/* background-color: rebeccapurple; */
+}
+
+.homePlayersRank p {
+	position: relative;
+	font-family: animalCrossingSystem;
+}
+
+.homePlayersRankBG {
+	position: absolute;
+	background-color: rgb(42, 153, 180);
+	background-image: url("/frontEnd/images/rankBg.jpg");
+	border-radius: 16px;
+	height: 50vh;
+	width: 100%;
+	filter: drop-shadow(0px 10px 10px rgba(0, 0, 0, 0.397));
+	/* opacity: 20%; */
+}
+
+.playersRankList {
+	position: relative;
+	height: 80%;
+	width: 90%;
+	left: 50%;
+	top: 25px;
+	translate: -50%;
+	/* background-color: black; */
+}
+
+.playersRankListBG {
+	position: absolute;
+	height: 100%;
+	width: 100%;
+	background-color: rgb(145, 113, 235);
+	border-radius: 16px;
+	/* opacity: 50%; */
+}
+
+.playerRankTable {
+	position: relative;
+}
+
+.playerRankTable th {
+	padding-bottom: 10px; /* Adiciona espaço abaixo do texto no <th> */
+}
+
+table {
+	width: 100%;
+	border-collapse: collapse;
+}
+
+th {
+	width: calc(100% / 3);
+	text-align: center;
+}
+
+tr {
+	border: 10px solid #ff000000;
 }
 
 .loadingGif {
 	position: absolute;
 	/* background-color: rebeccapurple; */
-	height: 25vh;
+	height: 250px;
 	/* left: 50%; */
 	/* right: 50%; */
-	bottom: 0px;
-	right: 0px;
+	bottom: 1vw;
+	right: 0vw;
 	/* translate: -50%; */
-
+	/* filter: drop-shadow(0px 0px 1px #000000); */
 }
