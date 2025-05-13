@@ -98,32 +98,55 @@ console.log(today.getHours());
 // });
 
 
-// Socket
-
-
+// --- WebSocket Setup ---
 const socket = new WebSocket('ws://localhost:3000');
 
 socket.addEventListener('open', () => {
-	console.log('Connected to WebSocket server');
-	socket.send('Hello Back, from TypeScript client!');
-});
-
-document.addEventListener('keydown', (event: KeyboardEvent) => {
-	if (event.key === 'ArrowUp' || event.key === 'ArrowDown') {
-	  // Send the pressed key to the server
-	  socket.send(`Arrow key pressed: ${event.key}`);
-	  console.log(`${event.key} was pressed.`);
-	}
-  });
-
-socket.addEventListener('message', (event: MessageEvent) => {
-	console.log('Message from server->', event.data);
+	console.log('✅ Connected to WebSocket server');
+	socket.send(JSON.stringify({ type: 'hello', payload: 'Client Ready' }));
 });
 
 socket.addEventListener('close', () => {
-	console.log('WebSocket connection closed');
+	console.log('❌ WebSocket connection closed');
 });
 
 socket.addEventListener('error', (event: Event) => {
 	console.error('WebSocket error:', event);
 });
+
+// --- Game Elements ---
+const paddle1 = document.querySelector('.paddle1') as HTMLElement;
+const paddle2 = document.querySelector('.paddle2') as HTMLElement;
+const ball = document.querySelector('.ball') as HTMLElement;
+
+// --- Send Input Events ---
+document.addEventListener('keydown', (event: KeyboardEvent) => {
+	if (event.key === 'ArrowUp' || event.key === 'ArrowDown' || event.key === 'w' || event.key === 's') {
+		socket.send(JSON.stringify({
+			type: 'input',
+			payload: event.key
+		}));
+		console.log(`➡️ Sent key: ${event.key}`);
+	}
+});
+
+// --- Receive Game State from Server ---
+socket.addEventListener('message', (event: MessageEvent) => {
+	try {
+		const data = JSON.parse(event.data);
+
+		if (data.type === 'state') {
+			const state = data.payload;
+
+			if (paddle1) paddle1.style.top = `${state.paddles.p1}%`;
+			if (paddle2) paddle2.style.top = `${state.paddles.p2}%`;
+			if (ball) {
+				ball.style.left = `${state.ball.x}%`;
+				ball.style.top = `${state.ball.y}%`;
+			}
+		}
+	} catch (err) {
+		console.error('❗ Invalid JSON from server:', event.data);
+	}
+});
+

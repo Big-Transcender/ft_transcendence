@@ -2,53 +2,69 @@ const Fastify = require('fastify');
 const routes = require('./routes');
 const cors = require('@fastify/cors');
 const WebSocket = require('ws');
+const {
+	movePaddle,
+	updateBall,
+	getGameState
+} = require('./gameLogic');
 
 
 const fastify = Fastify({ logger: true });
 
-
-async function start()
-{
+async function start() {
 	try {
+		await fastify.register(cors, { origin: '*' });
 
-		await fastify.register(cors, {
-			origin: '*', // ⚠️ Accept all origins (for testing)
-			// origin: 'http://your-friend-frontend.com', // ✅ In production, use specific domain
-		  });
-		
-		// Manually create and attach WebSocket server using `ws`
 		const httpServer = fastify.server;
 		const wss = new WebSocket.Server({ server: httpServer });
-	
-		// Handle WebSocket connections
+
 		wss.on('connection', (ws) => {
 			console.log('New WebSocket connection');
-	
-			// Send a message to the client when they connect
-			ws.send('Hello from server Brodah!');
+			ws.send(JSON.stringify({ type: 'state', payload: getGameState() }));
 
-			// Handle incoming messages from the client
 			ws.on('message', (message) => {
-			console.log('Received message:', message);
-			ws.send(` ${message}`); // Echo back the received message
+				let parsed;
+				try {
+					parsed = JSON.parse(message.toString());
+				} catch {
+					console.warn('Invalid JSON:', message.toString());
+					return;
+				}
+
+				if (parsed.type === 'input') {
+					const key = parsed.payload;
+					if (key === 'ArrowUp') movePaddle('p2', 'up');
+					else if (key === 'ArrowDown') movePaddle('p2', 'down');
+					else if (key === 'w') movePaddle('p1', 'up');
+					else if (key === 's') movePaddle('p1', 'down');
+				}
 			});
-	
-			// Handle WebSocket closure
+
 			ws.on('close', () => {
-			console.log('WebSocket connection closed');
+				console.log('WebSocket connection closed');
 			});
 		});
-		
-		fastify.register(routes);
 
-		await fastify.listen({port: 3000, host: '0.0.0.0'});
-		console.log('Server Started at localhost:3000');
-	}
-	catch (error) {
-		console.error('Failed to Start: ', error);
+		// Game loop
+		setInterval(() => {
+			updateBall();
+			const gameState = getGameState();
+			const message = JSON.stringify({ type: 'state', payload: gameState });
+
+			wss.clients.forEach(client => {
+				if (client.readyState === WebSocket.OPEN) {
+					client.send(message);
+				}
+			});
+		}, 15); // 60 FPS
+
+		fastify.register(routes);
+		await fastify.listen({ port: 3000, host: '0.0.0.0' });
+		console.log('✅ Server started at http://localhost:3000');
+	} catch (error) {
+		console.error('❌ Failed to start:', error);
 		process.exit(1);
 	}
 }
-
 
 start();
