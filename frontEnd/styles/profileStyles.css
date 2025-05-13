@@ -1,4 +1,171 @@
-.profileBox{
+.profile {
+	position: relative;
+	/* padding-top: 50px; */
+	left: 50%;
+	translate: -50%;
+	top: 150px;
+	height: 82%;
+	width: 95%;
+	background-color: rgb(131, 108, 155);
+	/* width: 100v; */
+	/* background-color: rgb(185, 104, 104); */
+}
+
+.loginBox {
+	position: absolute;
+	height: 75%;
+	width: 50%;
+	left: 50%;
+	top: 50%;
+	translate: -50% -50%;
+	background-color: rgb(87, 32, 32);
+}
+
+.newUserPage {
+	opacity: 0%;
+	pointer-events: none;
+}
+
+.loginBoxBG {
+	position: absolute;
+	height: 100%;
+	width: 100%;
+	/* background-color: rgb(34, 53, 107); */
+	opacity: 50%;
+}
+
+.loginText {
+	position: relative;
+	font-family: animalCrossingQuotes;
+	font-size: 50px;
+	text-align: center;
+	top: 10%;
+}
+
+.inputPass {
+	position: absolute;
+	text-align: center;
+	width: 25%;
+	height: 8%;
+	left: 75%;
+	top: 50%;
+	translate: -50%;
+	background-color: aquamarine;
+}
+
+.defaultButton {
+	position: absolute;
+	text-align: center;
+	width: 20%;
+	height: 8%;
+	/* bottom: 20%; */
+	/* left: 75%; */
+	/* translate: -50%; */
+	background-color: aqua;
+	cursor: pointer;
+}
+
+.loginUser {
+	bottom: 10%;
+	left: 75%;
+	translate: -50%;
+}
+
+.newUser {
+	bottom: 10%;
+	left: 25%;
+	translate: -50%;
+}
+
+.createNew {
+	bottom: 10%;
+	left: 75%;
+	translate: -50%;
+}
+
+.backNew {
+	bottom: 10%;
+	left: 25%;
+	translate: -50%;
+}
+
+.loginButton {
+	position: absolute;
+	text-align: center;
+	width: 20%;
+	height: 8%;
+	bottom: 20%;
+	left: 75%;
+	translate: -50%;
+	background-color: aqua;
+	cursor: pointer;
+}
+.newUserButton {
+	position: absolute;
+	text-align: center;
+	width: 20%;
+	bottom: 10%;
+	height: 8%;
+	left: 50%;
+	translate: -50%;
+	background-color: aqua;
+	cursor: pointer;
+}
+
+.inputBox {
+	position: absolute;
+	width: 70%;
+	height: 100px;
+	background-color: rgb(26, 118, 141);
+	left: 50%;
+	top: 25%;
+	translate: -50% -50%;
+}
+
+.inputBox label {
+	position: absolute;
+	left: 50%;
+	translate: -50%;
+	font-size: 30px;
+	height: 50%;
+	width: 50%;
+	text-align: center;
+	color: aquamarine;
+	/* background-color: black; */
+}
+
+.smallInput {
+	position: relative;
+	/* top: 50%; */
+	width: 50% !important;
+	/* background-color: azure; */
+}
+
+.email {
+	top: 45%;
+}
+
+.passwordNew {
+	top: 65%;
+}
+
+.inputText {
+	position: absolute;
+	text-align: center;
+	width: 100%;
+	height: 30%;
+	left: 50%;
+	top: 50%;
+	translate: -50%;
+	background-color: rgb(21, 121, 12);
+}
+
+.password {
+	top: 45%;
+}
+
+/*  */
+.profileBox {
 	position: relative;
 	width: 500px;
 	height: 300px;
@@ -9,27 +176,23 @@
 	background-color: black;
 }
 
-
-.profileIcon
-{
+.profileIcon {
 	position: absolute;
 	width: 100px;
 	height: 100px;
-	left:10px;
+	left: 10px;
 	top: 10px;
 	border-radius: 100%;
 	border: solid 1px #ffffff;
 	background-color: #fff;
 }
-.profileImg{
-
+.profileImg {
 }
 
-.profileBackground{
+.profileBackground {
 }
 
-
-.profileName{
+.profileName {
 	position: relative;
 	color: aquamarine;
 	padding-top: 30px;
@@ -38,9 +201,7 @@
 	text-align: center;
 }
 
-
-
-.profileStatusBox{
+.profileStatusBox {
 	position: relative;
 	display: flex;
 	justify-content: center;
@@ -48,15 +209,15 @@
 	color: bisque;
 }
 
-.statusBox{
+.statusBox {
 	position: relative;
 	/* background-color: black; */
 	height: 100px;
 	width: 100px;
-	transition: 0.8s ease
+	transition: 0.8s ease;
 }
 
-.statusBoxBg{
+.statusBoxBg {
 	/* z-index: 1; */
 	position: absolute;
 	height: 100%;
@@ -72,25 +233,22 @@
 	opacity: 100%;
 }
 
-.statusBox:hover .statusBoxBg{
+.statusBox:hover .statusBoxBg {
 	background-color: rgba(32, 32, 32, 0.644);
 }
 
-.statusBox:hover{
-	transform: scale(1.10);
+.statusBox:hover {
+	transform: scale(1.1);
 }
 
-
-.statusBoxText{
+.statusBoxText {
 	/* position: absolute; */
 	/* padding-top: 5px;
 	padding-bottom: 20px; */
 	/* justify-items: center; */
-
 }
 
 .statusBox > p {
 	position: relative;
 	z-index: 1;
 }
-

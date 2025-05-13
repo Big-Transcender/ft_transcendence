@@ -66,11 +66,10 @@ body {
 
 .backgroudCenterBg {
 	position: absolute;
-
 	/* z-index: 0; */
 	/* top: 0px; */
 	width: 80vw;
-	height: 100vh;
+	height: 100%;
 	right: 50%;
 	left: 50%;
 	translate: -50%;
@@ -91,6 +90,7 @@ body {
 	/* height: 1000px; */
 	right: 50%;
 	left: 50%;
+	background-color: red;
 
 	translate: -50%;
 }

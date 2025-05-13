@@ -1,49 +1,45 @@
 console.log("teste");
-const page = document.getElementById('home');
-
+const page = document.getElementById("home");
 
 function navigate(page) {
-	if (document.getElementById(page).classList.contains('active'))
-		return;
-	document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-	document.getElementById(page).classList.add('active');
-	history.pushState(null, '', `#${page}`);
-	getWins();
-	updateLoses();
-	updatePlays();
-	updateWins();
+	if (document.getElementById(page).classList.contains("active")) return;
+	document
+		.querySelectorAll(".page")
+		.forEach((p) => p.classList.remove("active"));
+	document.getElementById(page).classList.add("active");
+	history.pushState(null, "", `#${page}`);
+	// getWins();
+	// updateLoses();
+	// updatePlays();
+	// updateWins();
 }
 
-window.addEventListener('popstate', () => {
-	const page = location.hash.replace('#', '') || 'home';
+window.addEventListener("popstate", () => {
+	const page = location.hash.replace("#", "") || "home";
 	navigate(page);
 });
 
-window.addEventListener('load', () => {
-	const page = location.hash.replace('#', '') || 'home';
+window.addEventListener("load", () => {
+	const page = location.hash.replace("#", "") || "home";
 	navigate(page);
 });
 
-
-
-
-const buttons = document.querySelectorAll('.buttonHitBox');
-const div = document.querySelector('.buttonBG');
+const buttons = document.querySelectorAll(".buttonHitBox");
+const div = document.querySelector(".buttonBG");
 let mouseIn = false;
 
-
-const buttonSoundIn = new Audio('audios/in.wav');
-const buttonSoundOut = new Audio('audios/out.wav');
-const musicMenuIn = new Audio('audios/musicMenuIn.wav');
-const musicMenuOut = new Audio('audios/musicMenuOut.wav');
-const musicMenu = document.querySelector('.musicPlayerBg');
+const buttonSoundIn = new Audio("audios/in.wav");
+const buttonSoundOut = new Audio("audios/out.wav");
+const musicMenuIn = new Audio("audios/musicMenuIn.wav");
+const musicMenuOut = new Audio("audios/musicMenuOut.wav");
+const musicMenu = document.querySelector(".musicPlayerBg");
 
 let musicIn = false;
 
 // bgMusic.play()
 
-buttons.forEach(button => {
-	button.addEventListener('mouseenter', () => {
+buttons.forEach((button) => {
+	button.addEventListener("mouseenter", () => {
 		if (!mouseIn) {
 			buttonSoundIn.play();
 			mouseIn = true;
@@ -51,7 +47,7 @@ buttons.forEach(button => {
 		}
 	});
 
-	button.addEventListener('mouseleave', () => {
+	button.addEventListener("mouseleave", () => {
 		if (mouseIn) {
 			buttonSoundOut.play();
 			// console.log("teste2");
@@ -60,22 +56,19 @@ buttons.forEach(button => {
 	});
 });
 
-musicMenu.addEventListener('mouseenter', () => {
+musicMenu.addEventListener("mouseenter", () => {
 	if (!musicIn) {
 		musicMenuIn.play();
 		musicIn = true;
 	}
 });
 
-musicMenu.addEventListener('mouseleave', () => {
+musicMenu.addEventListener("mouseleave", () => {
 	if (musicIn) {
 		musicMenuOut.play();
 		musicIn = false;
 	}
 });
-
-
-
 
 console.log(today.getHours());
 

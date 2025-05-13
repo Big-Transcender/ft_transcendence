@@ -1,13 +1,17 @@
-
-
-.game1{
+.game1 {
 	position: relative;
 	/* background-color: blueviolet; Debbug */
-	height: 100vh;
+	height: 82%;
+	width: 95%;
+	left: 50%;
+	top: 150px;
+	translate: -50%;
 	font-size: 50px;
+
+	/* background-color: red; */
 }
 
-.game1Place{
+.game1Place {
 	position: absolute;
 	right: 50%;
 	left: 50%;
@@ -16,18 +20,18 @@
 	width: 900px;
 	height: 500px;
 	translate: -50% -50%;
-	background-color: black;
+	/* background-color: black; */
 }
 
-.board{
+.board {
 	position: absolute;
 	height: 100%;
 	width: 100%;
 	background-color: black;
 }
 
-.ball{
-	position:absolute;
+.ball {
+	position: absolute;
 	height: 30px;
 	width: 30px;
 	background-color: azure;
@@ -36,19 +40,18 @@
 	left: calc(50% - 15px);
 }
 
-.paddle{
+.paddle {
 	position: absolute;
 	height: 50px;
 	width: 10px;
 	border-radius: 10%;
 	background-color: white;
-
 }
 
-.paddle1{
+.paddle1 {
 	left: 0;
 }
 
-.paddle2{
+.paddle2 {
 	right: 0;
 }

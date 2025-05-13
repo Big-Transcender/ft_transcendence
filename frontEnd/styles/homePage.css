@@ -1,17 +1,21 @@
 .home {
 	position: relative;
 	/* padding-top: 50px; */
-	top: 5vw;
-
-	height: 82vh;
-	/* background-color: rebeccapurple; */
+	left: 50%;
+	translate: -50%;
+	top: 150px;
+	height: 82%;
+	width: 95%;
+	background-color: rgb(131, 108, 155);
 	/* width: 100v; */
 	/* background-color: rgb(185, 104, 104); */
 }
 
 .homePageWelcome {
+	position: relative;
+	text-align: center;
 	/* background-color: red; */
-	height: 80vh;
+	/* height: 100%; */
 
 	/* width: 82vw; */
 }
