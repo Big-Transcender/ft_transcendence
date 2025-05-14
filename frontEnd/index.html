@@ -157,7 +157,7 @@
 					</div>
 					<div id="profile" class="profile page">
 						<div class="loginBox">
-							<div class="loginPage">
+							<div class="loginPage profileId active" id="loginId">
 								<div class="loginBoxBG"></div>
 								<p class="loginText">Login!</p>
 								<div class="inputBox">
@@ -171,8 +171,13 @@
 								<button class="defaultButton loginUser">Login</button>
 								<button class="defaultButton newUser">New User</button>
 							</div>
-							<div class="newUserPage">
-								<div class="loginBoxBG"></div>
+							<div class="newUserPage profileId" id="newUserId">
+								<img src="images/avatar1.png" alt="" class="avatar1" />
+								<img src="images/avatar2.png" alt="" class="avatar2" />
+								<div class="loginBoxBG">
+									<img src="images/decoration1.svg" alt="" class="decoration1" />
+								</div>
+
 								<p class="loginText">Welcome, new resident!</p>
 								<div class="inputBox">
 									<label for="inputNick">Your new Nick</label>
@@ -192,18 +197,12 @@
 						</div>
 
 						<!-- <div class="profileBox">
-							<div
-								class="profileBackground absolute opacity-50 -inset-0 bg-gradient-to-r from-pink-600 to-purple-600 rounded-2xl blur"
-							></div>
+							<div class="profileBackground absolute opacity-50 -inset-0 bg-gradient-to-r from-pink-600 to-purple-600 rounded-2xl blur"></div>
 							<div class="profileName">
 								<p id="profileNickId">Cristiano Ronaldo</p>
 							</div>
 							<div class="profileIcon">
-								<img
-									src="images/profileDefault.png"
-									alt=""
-									class="profileImg"
-								/>
+								<img src="images/profileDefault.png" alt="" class="profileImg" />
 							</div>
 							<div class="profileStatusBox">
 								<div class="statusBox">

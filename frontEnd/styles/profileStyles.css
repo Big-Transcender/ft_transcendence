@@ -18,20 +18,53 @@
 	left: 50%;
 	top: 50%;
 	translate: -50% -50%;
-	background-color: rgb(87, 32, 32);
+	/* background-color: rgb(87, 32, 32); */
 }
 
 .newUserPage {
-	opacity: 0%;
-	pointer-events: none;
+	/* display: none; */
+	/* pointer-events: none; */
+}
+
+.avatar1 {
+	position: absolute;
+	right: -35%;
+	transform: rotate(50deg);
+	width: 50%;
+	/* z-index: 1; */
+
+	/* background-color: black; */
+}
+
+.avatar2 {
+	position: absolute;
+	left: -39%;
+	transform: rotate(-25deg);
+	width: 50%;
+	top: 50px;
+}
+
+.decoration1 {
+	position: absolute;
+	bottom: -1px;
 }
 
 .loginBoxBG {
 	position: absolute;
 	height: 100%;
 	width: 100%;
-	/* background-color: rgb(34, 53, 107); */
-	opacity: 50%;
+	background-color: rgb(34, 53, 107);
+	border-radius: 18px;
+	/* opacity: 50%; */
+	overflow: hidden;
+}
+
+.profileId {
+	display: none;
+}
+
+.profileId.active {
+	display: block;
 }
 
 .loginText {
@@ -126,9 +159,10 @@
 	position: absolute;
 	left: 50%;
 	translate: -50%;
-	font-size: 30px;
+	font-size: 20px;
+	top: 10%;
 	height: 50%;
-	width: 50%;
+	width: 80%;
 	text-align: center;
 	color: aquamarine;
 	/* background-color: black; */
