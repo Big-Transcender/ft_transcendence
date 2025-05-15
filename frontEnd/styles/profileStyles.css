@@ -44,16 +44,28 @@
 	top: 50px;
 }
 
+.avatar3 {
+	position: absolute;
+	left: 50%;
+	width: 50%;
+	bottom: 12%;
+	translate: -50%;
+	filter: drop-shadow(0px 15px 10px rgba(0, 0, 0, 0.507));
+}
+
 .decoration1 {
 	position: absolute;
-	bottom: -1px;
+	bottom: -10px;
+	/* bottom: -55px;
+	width: 800px;
+	height: 180px; */
 }
 
 .loginBoxBG {
 	position: absolute;
 	height: 100%;
 	width: 100%;
-	background-color: rgb(34, 53, 107);
+	background-color: #f8eebb;
 	border-radius: 18px;
 	/* opacity: 50%; */
 	overflow: hidden;
@@ -70,9 +82,12 @@
 .loginText {
 	position: relative;
 	font-family: animalCrossingQuotes;
+	color: #6ab490;
 	font-size: 50px;
 	text-align: center;
-	top: 10%;
+	top: 10px;
+	text-shadow: 0px 1px 0px#000000;
+	/* background-image: url(/frontEnd/images/grassBg.png); */
 }
 
 .inputPass {
@@ -153,6 +168,18 @@
 	left: 50%;
 	top: 25%;
 	translate: -50% -50%;
+	border-radius: 10px;
+	background-image: url(/frontEnd/images/bgPattern2.jpg);
+	animation: bgAnimation 20s infinite linear;
+}
+
+@keyframes bgAnimation {
+	from {
+		background-position: 0 0;
+	}
+	to {
+		background-position: 420px 420px;
+	}
 }
 
 .inputBox label {
@@ -164,7 +191,9 @@
 	height: 50%;
 	width: 80%;
 	text-align: center;
-	color: aquamarine;
+	color: rgb(0, 0, 0);
+	font-family: animalCrossingSystem;
+
 	/* background-color: black; */
 }
 
@@ -191,7 +220,24 @@
 	left: 50%;
 	top: 50%;
 	translate: -50%;
-	background-color: rgb(21, 121, 12);
+	background-color: #9ecf9c;
+	border-radius: 5px;
+}
+
+.inputText:focus {
+	background-color: #66b893;
+	/* outline: 1px; */
+	animation: expandOutline 0.1s forwards;
+}
+
+@keyframes expandOutline {
+	from {
+		outline: 0px groove #f98866;
+	}
+
+	to {
+		outline: 5px solid #f98866;
+	}
 }
 
 .password {
