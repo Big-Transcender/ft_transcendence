@@ -73,7 +73,7 @@ console.log(today.getHours());
 // 	}
 // });
 // --- WebSocket Setup ---
-const socket = new WebSocket('ws://localhost:3000');
+const socket = new WebSocket(`ws://${window.location.hostname}:3000`);
 socket.addEventListener('open', () => {
     console.log('✅ Connected to WebSocket server');
     socket.send(JSON.stringify({ type: 'hello', payload: 'Client Ready' }));
@@ -88,16 +88,29 @@ socket.addEventListener('error', (event) => {
 const paddle1 = document.querySelector('.paddle1');
 const paddle2 = document.querySelector('.paddle2');
 const ball = document.querySelector('.ball');
-// --- Send Input Events ---
+// --- Input State ---
+const keysPressed = new Set();
 document.addEventListener('keydown', (event) => {
-    if (event.key === 'ArrowUp' || event.key === 'ArrowDown' || event.key === 'w' || event.key === 's') {
-        socket.send(JSON.stringify({
-            type: 'input',
-            payload: event.key
-        }));
-        console.log(`➡️ Sent key: ${event.key}`);
+    const key = event.key;
+    if (key === 'ArrowUp' || key === 'ArrowDown' || key === 'w' || key === 's') {
+        keysPressed.add(key);
     }
 });
+document.addEventListener('keyup', (event) => {
+    const key = event.key;
+    if (key === 'ArrowUp' || key === 'ArrowDown' || key === 'w' || key === 's') {
+        keysPressed.delete(key);
+    }
+});
+// --- Send Input State to Server Repeatedly ---
+setInterval(() => {
+    if (keysPressed.size > 0) {
+        socket.send(JSON.stringify({
+            type: 'input',
+            payload: Array.from(keysPressed)
+        }));
+    }
+}, 15);
 // --- Receive Game State from Server ---
 socket.addEventListener('message', (event) => {
     try {

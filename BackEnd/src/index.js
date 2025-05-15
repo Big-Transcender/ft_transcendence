@@ -1,10 +1,14 @@
 const Fastify = require('fastify');
 const routes = require('./routes');
 const cors = require('@fastify/cors');
+
+const path = require('path');
+const fastifyStatic = require('@fastify/static');
+
 const WebSocket = require('ws');
 const {
-	movePaddle,
 	updateBall,
+	handleInput,
 	getGameState
 } = require('./gameLogic');
 
@@ -18,11 +22,22 @@ async function start() {
 		const httpServer = fastify.server;
 		const wss = new WebSocket.Server({ server: httpServer });
 
+		let nextPlayer = 'p1'; // start with p1
+		const players = new Map(); // ws -> playerId
+
 		wss.on('connection', (ws) => {
-			console.log('New WebSocket connection');
+			const assignedPlayer = nextPlayer;
+			players.set(ws, assignedPlayer);
+
+			// Switch to p2 for next player, then back to p1 for the 3rd connection, etc.
+			nextPlayer = (nextPlayer === 'p1') ? 'p2' : 'p1';
+
+			console.log(`New connection assigned to ${assignedPlayer}`);
+
 			ws.send(JSON.stringify({ type: 'state', payload: getGameState() }));
 
-			ws.on('message', (message) => {
+			ws.on('message', (message) =>
+			{
 				let parsed;
 				try {
 					parsed = JSON.parse(message.toString());
@@ -30,18 +45,16 @@ async function start() {
 					console.warn('Invalid JSON:', message.toString());
 					return;
 				}
-
 				if (parsed.type === 'input') {
-					const key = parsed.payload;
-					if (key === 'ArrowUp') movePaddle('p2', 'up');
-					else if (key === 'ArrowDown') movePaddle('p2', 'down');
-					else if (key === 'w') movePaddle('p1', 'up');
-					else if (key === 's') movePaddle('p1', 'down');
+					const keys = Array.isArray(parsed.payload) ? parsed.payload : [parsed.payload];
+					handleInput(parsed.playerId || 'p1', keys);
 				}
+				
 			});
 
 			ws.on('close', () => {
-				console.log('WebSocket connection closed');
+				console.log(`Connection for ${players.get(ws)} closed`);
+				players.delete(ws);
 			});
 		});
 
@@ -59,6 +72,13 @@ async function start() {
 		}, 15); // 60 FPS
 
 		fastify.register(routes);
+
+
+		fastify.register(fastifyStatic, {
+			root: path.join(__dirname, '../frontEnd'),
+			prefix: '/', // Serve index.html at root
+		});
+
 		await fastify.listen({ port: 3000, host: '0.0.0.0' });
 		console.log('✅ Server started at http://localhost:3000');
 	} catch (error) {
