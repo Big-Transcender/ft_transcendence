@@ -1,0 +1,340 @@
+.musicPlayerBg {
+	position: absolute;
+	/* z-index: -1; */
+	width: 40vh;
+	height: 70px;
+	left: 50%;
+	top: 50%;
+	translate: -50%;
+	bottom: -10px;
+	border-radius: 20px;
+	transition: 150ms ease-in-out;
+	background-image: url("../images/green-waves-3_orig.png");
+	background-position: bottom;
+	background-repeat: no-repeat;
+	overflow: hidden;
+	background-size: cover;
+	/* background-color: red; */
+	/* opacity: 20%; */
+}
+
+.musicPlayerHitBox {
+	position: absolute;
+	width: 400px;
+	height: 45px;
+	left: 50%;
+	top: 75%;
+	translate: -50%;
+	bottom: -10px;
+	border-radius: 20px;
+	z-index: 1;
+	/* opacity: 20%;
+	background-color: rebeccapurple; */
+}
+
+.musicPlayerBg:hover {
+	height: 285px;
+}
+
+/* .musicPlayerHitBox:hover {
+	height: 290px;
+} */
+
+.musicPlayerTextBox {
+	opacity: 0%;
+	position: relative;
+	/* display: flex; */
+	text-align: center;
+	top: 30px;
+	/* z-index: 1; */
+	transition: 150ms ease-in-out;
+	pointer-events: none;
+}
+
+.musicPlayerTextBox p {
+	position: relative;
+	pointer-events: none;
+	/* color: red; */
+	/* z-index: 2; */
+}
+
+.playButtons {
+	position: relative;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+
+	left: 50%;
+	/* bottom: 100px; */
+	bottom: 0;
+	translate: -50%;
+	gap: 15px;
+}
+
+.musicButtons {
+	width: 40px;
+	height: 40px;
+	transition: 150ms ease-in-out;
+}
+
+.musicButtonBG {
+	position: absolute;
+	cursor: pointer;
+	background-color: #f7afb2;
+	border-radius: 10px;
+	width: 40px;
+	height: 40px;
+}
+
+.musicButtons:hover .musicButtonBG {
+	/* background-color: red; */
+	animation: musicButtonHoverAnimation 0.3s forwards;
+	/* transform: scale(2, 2); */
+}
+
+.playIcon {
+	position: absolute;
+	width: 50px;
+	left: 55%;
+	top: 50%;
+	translate: -50% -50%;
+	transition: 10ms ease-in-out;
+	filter: invert(26%) sepia(13%) saturate(808%) hue-rotate(337deg)
+		brightness(94%) contrast(96%);
+	/* #524036 */
+}
+
+.musicButtons:hover .playIcon {
+	animation: playIconAnimation 0.5s infinite;
+	transform: scale(1.2, 1.2);
+}
+
+.stopIcon {
+	position: absolute;
+	width: 50px;
+	left: 50%;
+	top: 50%;
+	translate: -50% -50%;
+	transition: 10ms ease-in-out;
+	filter: invert(26%) sepia(13%) saturate(808%) hue-rotate(337deg)
+		brightness(94%) contrast(96%);
+}
+
+.musicButtons:hover .stopIcon {
+	animation: stopIconAnimation 1s infinite;
+	transform: scale(1.2, 1.2);
+}
+
+.prevIcon {
+	position: absolute;
+	width: 50px;
+	left: 48%;
+	top: 50%;
+	translate: -50% -50%;
+	transition: 10ms ease-in-out;
+	transform: rotate(180deg);
+	filter: invert(26%) sepia(13%) saturate(808%) hue-rotate(337deg)
+		brightness(94%) contrast(96%);
+}
+
+.musicButtons:hover .prevIcon {
+	animation: prevIconAnimation 0.5s infinite;
+	transform: scale(1.2, 1.2) rotate(180deg);
+}
+
+.nextIcon {
+	position: absolute;
+	width: 50px;
+	left: 52%;
+	top: 50%;
+	translate: -50% -50%;
+	transition: 10ms ease-in-out;
+	filter: invert(26%) sepia(13%) saturate(808%) hue-rotate(337deg)
+		brightness(94%) contrast(96%);
+	/* transform: rotate(180deg); */
+}
+
+.musicButtons:hover .nextIcon {
+	animation: nextIconAnimation 0.5s infinite;
+	transform: scale(1.2, 1.2);
+	/* transform: rotate(180deg); */
+}
+
+@keyframes musicButtonClickAnimation {
+	from {
+		transform: scale(1, 1);
+	}
+
+	50% {
+		transform: scale(0.8, 0.8);
+	}
+
+	to {
+		transform: scale(1, 1);
+	}
+}
+
+@keyframes musicButtonHoverAnimation {
+	from {
+		filter: drop-shadow(0px 0px 1px #f972aa) drop-shadow(0px 0px 1px #000000);
+	}
+
+	to {
+		filter: drop-shadow(0px 0px 5px #f972aa) drop-shadow(0px 0px 1px #000000);
+	}
+}
+
+@keyframes playIconAnimation {
+	50% {
+		top: 40%;
+	}
+
+	100% {
+		top: 50%;
+	}
+}
+
+@keyframes stopIconAnimation {
+	25% {
+		transform: rotate(10deg) scale(1.2, 1.2);
+	}
+
+	50% {
+		transform: rotate(0deg) scale(1.2, 1.2);
+	}
+
+	75% {
+		transform: rotate(-10deg) scale(1.2, 1.2);
+	}
+
+	100% {
+		transform: rotate(0deg) scale(1.2, 1.2);
+	}
+}
+
+@keyframes prevIconAnimation {
+	0% {
+		left: 48%;
+		transform: rotate(180deg) scale(1.2, 1.2);
+	}
+
+	25% {
+		left: 38%;
+		transform: rotate(180deg) scale(1.2, 1.2);
+	}
+
+	100% {
+		left: 48%;
+		transform: rotate(180deg) scale(1.2, 1.2);
+	}
+}
+
+@keyframes nextIconAnimation {
+	0% {
+		left: 52%;
+		/* transform: rotate(180deg); */
+	}
+
+	25% {
+		left: 62%;
+		/* transform: rotate(180deg); */
+	}
+
+	100% {
+		left: 52%;
+		/* transform: rotate(180deg); */
+	}
+}
+
+.footer {
+	position: absolute;
+	height: 5px;
+	width: 15vh;
+	bottom: 1vw;
+	left: 50%;
+	translate: -50%;
+	background-color: #ffffff;
+	filter: drop-shadow(0px 2px 1px #00000063);
+	border-radius: 5px;
+}
+
+.kkSliderQuote {
+	position: absolute;
+	height: 150px;
+	left: 50%;
+	top: -30px;
+	/* z-index: -1; */
+	translate: -50%;
+	opacity: 0%;
+	transition: 150ms ease-in-out;
+	filter: drop-shadow(0px 10px 2px #00000063)
+		drop-shadow(0px 0px 2px rgba(0, 0, 0, 0.493));
+	pointer-events: none;
+}
+
+.musicPlayerTextBox p {
+	font-family: animalCrossingSystem;
+	letter-spacing: 2px;
+	line-height: 1.2;
+}
+
+.kkSlider {
+	position: absolute;
+	width: 90px;
+	left: 1vh;
+	top: 5vw;
+	animation: kkDance 1s steps(2) infinite;
+	opacity: 0%;
+	filter: drop-shadow(0px 7px 1px #00000063);
+	pointer-events: none;
+}
+
+.kkGuitar {
+	position: absolute;
+	width: 100px;
+	right: 0vh;
+	top: 5vw;
+	animation: kkDance 1s steps(2) infinite;
+	opacity: 0%;
+	filter: drop-shadow(0px 7px 1px #00000063);
+	pointer-events: none;
+}
+
+@keyframes kkDance {
+	from {
+		transform: rotate(0deg);
+	}
+
+	/* 50% {
+		transform: rotate(-50deg);
+	} */
+
+	to {
+		transform: rotate(20deg);
+	}
+}
+
+/*
+.musicPlayerHitBox:hover+.musicPlayerBg .musicPlayerTextBox {
+	top: 80px;
+	opacity: 100%;
+} */
+
+.musicPlayerBg:hover .musicPlayerTextBox {
+	top: 80px;
+	opacity: 100%;
+}
+
+.musicPlayerBg:hover .musicButtons {
+	pointer-events: auto;
+}
+
+.musicPlayerBg:hover .musicPlayerBg,
+.kkGuitar,
+.kkSlider,
+.kkSliderQuote,
+.buttonPlay {
+	opacity: 100%;
+}
+
+/* #TODO Uma linha no meio do musicplayer para indicar que pode ser abaixado */

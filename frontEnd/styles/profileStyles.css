@@ -1,4 +1,293 @@
-.profileBox{
+.profile {
+	position: relative;
+	/* padding-top: 50px; */
+	left: 50%;
+	translate: -50%;
+	top: 150px;
+	height: 82%;
+	width: 95%;
+	background-color: rgb(131, 108, 155);
+	/* width: 100v; */
+	/* background-color: rgb(185, 104, 104); */
+}
+
+.loginBox {
+	position: absolute;
+	height: 75%;
+	width: 50%;
+	left: 50%;
+	top: 50%;
+	translate: -50% -50%;
+	/* background-color: rgb(87, 32, 32); */
+}
+
+.newUserPage {
+	/* display: none; */
+	/* pointer-events: none; */
+}
+
+.avatar1 {
+	position: absolute;
+	right: -35%;
+	transform: rotate(50deg);
+	width: 50%;
+	/* z-index: 1; */
+
+	/* background-color: black; */
+}
+
+.avatar2 {
+	position: absolute;
+	left: -39%;
+	transform: rotate(-25deg);
+	width: 50%;
+	top: 50px;
+}
+
+.avatar3 {
+	position: absolute;
+	left: 50%;
+	width: 50%;
+	bottom: 12%;
+	translate: -50%;
+	filter: drop-shadow(0px 15px 10px rgba(0, 0, 0, 0.507));
+}
+
+.decoration1 {
+	position: absolute;
+	bottom: -10px;
+	/* bottom: -55px;
+	width: 800px;
+	height: 180px; */
+}
+
+.loginBoxBG {
+	position: absolute;
+	height: 100%;
+	width: 100%;
+	background-color: #f8eebb;
+	border-radius: 18px;
+	/* opacity: 50%; */
+	overflow: hidden;
+}
+
+.profileId {
+	display: none;
+}
+
+.profileId.active {
+	display: block;
+}
+
+.loginText {
+	position: relative;
+	font-family: animalCrossingQuotes;
+	color: #6ab490;
+	font-size: 50px;
+	text-align: center;
+	top: 10px;
+	text-shadow: 0px 1px 0px#000000;
+	/* background-image: url(/frontEnd/images/grassBg.png); */
+}
+
+.inputPass {
+	position: absolute;
+	text-align: center;
+	width: 25%;
+	height: 8%;
+	left: 75%;
+	top: 50%;
+	translate: -50%;
+	background-color: aquamarine;
+}
+
+.defaultButton {
+	position: absolute;
+	text-align: center;
+	width: 20%;
+	height: 8%;
+	/* background-color: #0cc6b8; */
+	cursor: pointer;
+}
+
+.defaultButtonBG {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	background-color: #0cc6b8;
+	/* background: url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/85486/wave.svg); */
+
+	left: 50%;
+	top: 50%;
+	translate: -50% -50%;
+	z-index: -1;
+	overflow: hidden;
+}
+
+.defaultButtonBGWave {
+	/* width: 100%;
+	height: 100%; */
+	position: absolute;
+	background-color: #000000;
+	background: url("/frontEnd/images/wave.svg") repeat-x;
+	width: 1600px;
+	height: 198px;
+	top: 108px;
+	/* left: 0; */
+	background-size: 20%;
+	/* bottom: 0; */
+	translate: 0% -50%;
+	overflow: hidden;
+
+	animation: wave 15s cubic-bezier(0.36, 0.45, 0.63, 0.53) infinite;
+}
+
+.wave2 {
+	animation: wave 16s cubic-bezier(0.36, 0.45, 0.63, 0.53) infinite;
+}
+
+@keyframes wave {
+	0% {
+		margin-left: 0;
+	}
+	100% {
+		margin-left: -1280px;
+	}
+}
+
+.loginUser {
+	bottom: 10%;
+	left: 75%;
+	translate: -50%;
+}
+
+.newUser {
+	bottom: 10%;
+	left: 25%;
+	translate: -50%;
+}
+
+.createNew {
+	bottom: 10%;
+	left: 75%;
+	translate: -50%;
+}
+
+.backNew {
+	bottom: 10%;
+	left: 25%;
+	translate: -50%;
+}
+
+.loginButton {
+	position: absolute;
+	text-align: center;
+	width: 20%;
+	height: 8%;
+	bottom: 20%;
+	left: 75%;
+	translate: -50%;
+	background-color: aqua;
+	cursor: pointer;
+}
+.newUserButton {
+	position: absolute;
+	text-align: center;
+	width: 20%;
+	bottom: 10%;
+	height: 8%;
+	left: 50%;
+	translate: -50%;
+	background-color: aqua;
+	cursor: pointer;
+}
+
+.inputBox {
+	position: absolute;
+	width: 70%;
+	height: 100px;
+	background-color: rgb(26, 118, 141);
+	left: 50%;
+	top: 25%;
+	translate: -50% -50%;
+	border-radius: 10px;
+	background-image: url(/frontEnd/images/bgPattern2.jpg);
+	animation: bgAnimation 20s infinite linear;
+}
+
+@keyframes bgAnimation {
+	from {
+		background-position: 0 0;
+	}
+	to {
+		background-position: 420px 420px;
+	}
+}
+
+.inputBox label {
+	position: absolute;
+	left: 50%;
+	translate: -50%;
+	font-size: 20px;
+	top: 10%;
+	height: 50%;
+	width: 80%;
+	text-align: center;
+	color: rgb(0, 0, 0);
+	font-family: animalCrossingSystem;
+
+	/* background-color: black; */
+}
+
+.smallInput {
+	position: relative;
+	/* top: 50%; */
+	width: 50% !important;
+	/* background-color: azure; */
+}
+
+.email {
+	top: 45%;
+}
+
+.passwordNew {
+	top: 65%;
+}
+
+.inputText {
+	position: absolute;
+	text-align: center;
+	width: 100%;
+	height: 30%;
+	left: 50%;
+	top: 50%;
+	translate: -50%;
+	background-color: #9ecf9c;
+	border-radius: 5px;
+}
+
+.inputText:focus {
+	background-color: #66b893;
+	/* outline: 1px; */
+	animation: expandOutline 0.1s forwards;
+}
+
+@keyframes expandOutline {
+	from {
+		outline: 0px groove #f98866;
+	}
+
+	to {
+		outline: 5px solid #f98866;
+	}
+}
+
+.password {
+	top: 45%;
+}
+
+/*  */
+.profileBox {
 	position: relative;
 	width: 500px;
 	height: 300px;
@@ -9,27 +298,23 @@
 	background-color: black;
 }
 
-
-.profileIcon
-{
+.profileIcon {
 	position: absolute;
 	width: 100px;
 	height: 100px;
-	left:10px;
+	left: 10px;
 	top: 10px;
 	border-radius: 100%;
 	border: solid 1px #ffffff;
 	background-color: #fff;
 }
-.profileImg{
-
+.profileImg {
 }
 
-.profileBackground{
+.profileBackground {
 }
 
-
-.profileName{
+.profileName {
 	position: relative;
 	color: aquamarine;
 	padding-top: 30px;
@@ -38,62 +323,54 @@
 	text-align: center;
 }
 
-
-
-.profileStatusBox{
+.profileStatusBox {
 	position: relative;
 	display: flex;
 	justify-content: center;
-	/* flex-direction: row; */
 	gap: 50px;
-	/* height: 150px; */
-	/* background-color: aqua; */
-
 	color: bisque;
 }
 
-.statusBox{
+.statusBox {
 	position: relative;
 	/* background-color: black; */
 	height: 100px;
 	width: 100px;
-	transition: 0.8s ease
+	transition: 0.8s ease;
 }
 
-.statusBoxBg{
+.statusBoxBg {
 	/* z-index: 1; */
 	position: absolute;
 	height: 100%;
 	width: 100%;
-	background: rgba(70, 70, 70, 0.548);
+	background: rgba(0, 0, 0, 0.521);
 	border-radius: 16px;
 	box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
 	backdrop-filter: blur(6.9px);
 	-webkit-backdrop-filter: blur(6.9px);
 	border: 1px solid rgba(255, 255, 255, 1);
 	animation-duration: 5s;
-	transition: 1s ease
-	/* opacity: 50%; */
+	transition: 1s ease;
+	opacity: 100%;
 }
 
-.statusBox:hover .statusBoxBg{
+.statusBox:hover .statusBoxBg {
 	background-color: rgba(32, 32, 32, 0.644);
 }
 
-.statusBox:hover{
-	transform: scale(1.10);
+.statusBox:hover {
+	transform: scale(1.1);
 }
 
-
-.statusBoxText{
+.statusBoxText {
 	/* position: absolute; */
-	padding-top: 5px;
-	padding-bottom: 20px;
-
+	/* padding-top: 5px;
+	padding-bottom: 20px; */
+	/* justify-items: center; */
 }
 
 .statusBox > p {
 	position: relative;
 	z-index: 1;
 }
-

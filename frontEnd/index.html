@@ -1,86 +1,249 @@
 <!DOCTYPE html>
 <html lang="pt">
-<head>
-  <meta charset="UTF-8">
-  <title>ft_trans</title>
-  <link rel="stylesheet" href="styles/reset.css">
-  <link rel="stylesheet" href="styles/styles.css">
-  <link rel="stylesheet" href="styles/profileStyles.css">
-  <link rel="stylesheet" href="styles/game1Styles.css">
-  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-</head>
-<body>
-	<div class="mainBody">
+	<head>
+		<meta charset="UTF-8" />
+		<title>Animal Ponging</title>
+		<link rel="stylesheet" href="styles/reset.css" />
+		<link rel="stylesheet" href="styles/styles.css" />
+		<link rel="stylesheet" href="styles/profileStyles.css" />
+		<link rel="stylesheet" href="styles/game1Styles.css" />
+		<link rel="stylesheet" href="styles/homePage.css" />
+		<link rel="stylesheet" href="styles/header.css" />
+		<link rel="stylesheet" href="styles/musicPlayer.css" />
+		<link rel="icon" href="images/icons/favicon.ico" />
+		<script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+	</head>
 
-		<div class="mainBodyHeader">
-			<h1 class="headerTitle">ft_trans</h1>
-			<!-- Menu do header -->
-		</div>
-	<div class="mainBodyBackground">
-		<div class="backgroundCenter mask-x-from-90% mask-x-to-100%">
-			<div class="menu">
-				<nav class="menuOptions">
-					<a onclick="navigate('home')">Home</a>
-					<a onclick="navigate('game1')">Game 1</a>
-					<a onclick="navigate('game2')">Game 2</a>
-					<a onclick="navigate('profile')">Profile</a>
-				</nav>
-				<div id="home" class="home page active">
-					<h2>Bem-vindo à Home!</h2>
-					<p>Esta é a página inicial.</p>
+	<body>
+		<div class="mainBody">
+			<div class="header">
+				<div class="musicPlayer">
+					<!-- <div class="musicPlayerHitBox"> </div> -->
+					<div class="musicPlayerBg">
+						<div class="musicPlayerTextBox">
+							<img src="images/kkSliderQuote.png" alt="" class="kkSliderQuote" />
+							<img src="images/kkIcon.png" alt="" class="kkSlider" />
+							<img src="images/kkGuitarIcon.png" alt="" class="kkGuitar" />
+							<p>Now Playing:</p>
+							<p id="musicTitle">Music Title</p>
+							<p id="musicDate">Music Date</p>
+							<div class="playButtons">
+								<button class="buttonPlay musicButtons">
+									<div class="musicButtonBG">
+										<img src="images/icons/playIcon.png" alt="" class="playIcon" />
+									</div>
+									play
+								</button>
+								<button class="buttonPrev musicButtons">
+									<div class="musicButtonBG">
+										<img src="images/icons/nextIcon.png" alt="" class="prevIcon" />
+									</div>
+									prev
+								</button>
+								<button class="buttonNext musicButtons">
+									<div class="musicButtonBG">
+										<img src="images/icons/nextIcon.png" alt="" class="nextIcon" />
+									</div>
+									next
+								</button>
+								<button class="buttonStop musicButtons">
+									<div class="musicButtonBG">
+										<img src="images/icons/stopIcon.png" alt="" class="stopIcon" />
+									</div>
+									stop
+								</button>
+							</div>
+						</div>
+						<div class="footer"></div>
+					</div>
 				</div>
-				<div id="game1" class="game1 page">
-					<p>Pong Ping</p>
-					<div class="game1Place outline-2 outline-white outline-offset-2 hover:outline-lime-600 hover:outline-5">
-						<div class="board">
-							<div class="ball"></div>
-							<div class="paddle1 paddle"></div>
-							<div class="paddle2 paddle"></div>
+				<div class="ribbonLeft">
+					<img src="../frontEnd/images/ribbon.svg" class="leftRibbon" />
+				</div>
+				<div class="mainBodyHeader">
+					<h1 class="headerTitle">Animal Ponging</h1>
+					<div class="headerButtons">
+						<div class="leftButtons">
+							<a onclick="navigate('home')" class="button">
+								<div class="buttonBG"></div>
+								Home
+								<div class="buttonHitBox"></div>
+							</a>
+							<a onclick="navigate('game1')" class="button">
+								<div class="buttonBG"></div>
+								Pong
+								<div class="buttonHitBox"></div>
+							</a>
+						</div>
+						<div class="rightButtons">
+							<a onclick="navigate('game2')" class="button">
+								<div class="buttonBG"></div>
+								Game
+								<div class="buttonHitBox"></div>
+							</a>
+							<a onclick="navigate('profile')" class="button">
+								<div class="buttonBG"></div>
+								Profile
+								<div class="buttonHitBox"></div>
+							</a>
 						</div>
 					</div>
 				</div>
-				<div id="game2" class="game2 page">
-					<h2>Came2</h2>
-					<p>Game2 HERE</p>
+				<div class="ribbonRight">
+					<img src="../frontEnd/images/ribbon.svg" class="rightRibbon" />
 				</div>
-				<div id="profile" class="profile page">
+			</div>
+			<div class="mainBodyBackground">
+				<div class="backgroudCenterBg"></div>
+				<div class="backgroundCenter">
+					<div id="home" class="home page active">
+						<div class="homePageWelcome">
+							<p>Welcome to the Animal Ponging</p>
+						</div>
+						<div class="homePlayersRank">
+							<div class="homePlayersRankBG"></div>
+							<p class="playersRankTitle">Current Players Rank</p>
+							<div class="playersRankList">
+								<div class="playersRankListBG"></div>
+								<table id="playerRankListId" class="playerRankTable">
+									<tr>
+										<th>Position</th>
+										<th>Nick</th>
+										<th>Wins</th>
+									</tr>
+									<tr>
+										<td>1</td>
+										<td>BrunoB</td>
+										<td>10</td>
+									</tr>
+									<tr>
+										<td>2</td>
+										<td>BrunoB</td>
+										<td>10</td>
+									</tr>
+									<tr>
+										<td>3</td>
+										<td>BrunoB</td>
+										<td>10</td>
+									</tr>
+									<tr>
+										<td>4</td>
+										<td>BrunoB</td>
+										<td>10</td>
+									</tr>
+									<tr>
+										<td>5</td>
+										<td>BrunoB</td>
+										<td>10</td>
+									</tr>
+								</table>
+							</div>
+						</div>
+						<img src="/frontEnd/images/loading.gif" alt="" class="loadingGif drop-shadow-xl/50" />
+					</div>
 
-					<div class="profileBox ">
-						<div class="profileBackground absolute opacity-50 -inset-0 bg-gradient-to-r from-pink-600 to-purple-600 rounded-2xl blur"></div>
-						<div class="profileName ">
-							<p id="profileName">Cristiano Ronaldo</p>
-						</div>
-						<div class="profileIcon">
-							<img src="images/profileDefault.png" alt="" class="profileImg">
-						</div>
-						<div class="profileStatusBox">
-							<div class="statusBox">
-								<div class="statusBoxBg"></div>
-								<p class="statusBoxText">Wins</p>
-								<p id="winNumberId" class="winNumber">NULL</p>
-							</div>
-							<div class="statusBox">
-								<div class="statusBoxBg"></div>
-								<p class="statusBoxText">Loses</p>
-								<p id="loseNumberId" class="loseNumber">NULL</p>
-							</div>
-							<div class="statusBox">
-								<div class="statusBoxBg"></div>
-								<p class="statusBoxText">Plays</p>
-								<p id="playNumberId" class="playNumber">NULL</p>
+					<div id="game1" class="game1 page">
+						<p>Pong-Strike 1.6</p>
+						<div class="game1Place outline-2 outline-white outline-offset-2 hover:outline-lime-600 hover:outline-5">
+							<div class="board">
+								<div class="ball"></div>
+								<div class="paddle1 paddle">
+									<div class="paddleHitBox"></div>
+								</div>
+								<div class="paddle2 paddle"></div>
 							</div>
 						</div>
 					</div>
-				</div>
+					<div id="game2" class="game2 page">
+						<h2>Game2</h2>
+						<p>Game2 HERE</p>
+					</div>
+					<div id="profile" class="profile page">
+						<div class="loginBox">
+							<div class="loginPage profileId active" id="loginId">
+								<div class="loginBoxBG"></div>
+								<img src="images/avatar3.png" alt="" class="avatar3" />
+								<p class="loginText">Login!</p>
+								<div class="inputBox">
+									<label for="inputNick">Enter your nickname</label>
+									<input type="text" id="inputNick" class="inputText smallInput" placeholder="nick" autocomplete="off" />
+								</div>
+								<div class="inputBox password">
+									<label for="inputPass">Enter your Password</label>
+									<input type="password" id="inputPass" class="inputText smallInput" placeholder="password" autocomplete="off" />
+								</div>
+								<button class="defaultButton loginUser">
+									Login
+									<div class="defaultButtonBG">
+										<div class="defaultButtonBGWave"></div>
+									</div>
+								</button>
+								<button class="defaultButton newUser">
+									New User
+									<div class="defaultButtonBG">
+										<div class="defaultButtonBGWave"></div>
+										<div class="defaultButtonBGWave wave2"></div>
+									</div>
+								</button>
+							</div>
+							<div class="newUserPage profileId" id="newUserId">
+								<img src="images/avatar1.png" alt="" class="avatar1" />
+								<img src="images/avatar2.png" alt="" class="avatar2" />
+								<div class="loginBoxBG">
+									<img src="images/decoration1.svg" alt="" class="decoration1" />
+								</div>
 
+								<p class="loginText">Welcome, new resident!</p>
+								<div class="inputBox">
+									<label for="inputNick">Your new Nick</label>
+									<input type="text" id="inputNick" class="inputText" placeholder="nick" />
+								</div>
+								<div class="inputBox email">
+									<label for="inputEmail">Your Email!</label>
+									<input type="text" id="inputEmail" class="inputText" placeholder="E-Mail" />
+								</div>
+								<div class="inputBox passwordNew">
+									<label for="inputPass">Your Password</label>
+									<input type="password" id="inputPass" class="inputText" placeholder="password" />
+								</div>
+								<button class="defaultButton createNew" id="loginButtonNewUser">Create</button>
+								<button class="defaultButton backNew" id="backButtonNewUser">Back</button>
+							</div>
+						</div>
+
+						<!-- <div class="profileBox">
+							<div class="profileBackground absolute opacity-50 -inset-0 bg-gradient-to-r from-pink-600 to-purple-600 rounded-2xl blur"></div>
+							<div class="profileName">
+								<p id="profileNickId">Cristiano Ronaldo</p>
+							</div>
+							<div class="profileIcon">
+								<img src="images/profileDefault.png" alt="" class="profileImg" />
+							</div>
+							<div class="profileStatusBox">
+								<div class="statusBox">
+									<div class="statusBoxBg"></div>
+									<p class="statusBoxText">Wins</p>
+									<p id="winNumberId" class="winNumber">NULL</p>
+								</div>
+								<div class="statusBox">
+									<div class="statusBoxBg"></div>
+									<p class="statusBoxText">Loses</p>
+									<p id="loseNumberId" class="loseNumber">NULL</p>
+								</div>
+								<div class="statusBox">
+									<div class="statusBoxBg"></div>
+									<p class="statusBoxText">Plays</p>
+									<p id="playNumberId" class="playNumber">NULL</p>
+								</div>
+							</div>
+						</div> -->
+					</div>
+				</div>
 			</div>
 		</div>
-	</div>
-	</div>
-
-
-
-	<script src="perfilHandler.js"></script>
-	<script src="script.js"></script>
-</body>
+		<script src="perfilHandler.js"></script>
+		<script src="musicHandler.js"></script>
+		<script src="loginHandler.js"></script>
+		<script src="script.js"></script>
+	</body>
 </html>

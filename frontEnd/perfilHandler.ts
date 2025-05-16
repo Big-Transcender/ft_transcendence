@@ -1,44 +1,53 @@
-const API_URL = 'http://localhost:3001/usuarios'
-let users = [];
+// const API_URL = "http://127.0.0.1:3000/users";
 
+// let users = [];
 
-function updateWins(){
-	document.getElementById('winNumberId').innerText = getWins();
-}
+// fetch(API_URL)
+// 	.then((res) => res.json())
+// 	.then((data) => {
+// 		users = data;
+// 		data.forEach((user) => {
+// 			console.log(user.email);
+// 		});
 
-function updateLoses(){
-	document.getElementById('loseNumberId').innerText = getLoses();
-}
+// 		updateWins();
+// 		updateLoses();
+// 		updatePlays();
+// 		updateNick();
+// 	});
 
-function updatePlays(){
-	document.getElementById('playNumberId').innerText = getPlays();
-}
+// function updateWins() {
+// 	document.getElementById("winNumberId").innerText = getWins();
+// }
 
-function getWins(){
-	if (users[0] === undefined)
-		return "DEAD";
-	return users[0].wins;
-}
+// function updateLoses() {
+// 	document.getElementById("loseNumberId").innerText = getLoses();
+// }
 
-function getLoses(){
-	if (users[0] === undefined)
-		return "DEAD";
-	return users[0].loses;
-}
+// function updatePlays() {
+// 	document.getElementById("playNumberId").innerText = getPlays();
+// }
 
-function getPlays(){
-	if (users[0] === undefined)
-		return "DEAD";
-	return users[0].plays;
-}
+// function updateNick() {
+// 	document.getElementById("profileNickId").innerText = getNick();
+// }
 
+// function getNick() {
+// 	if (users[0] === undefined) return "DEAD";
+// 	return users[0].nickname;
+// }
 
-fetch(API_URL)
-	.then(res => res.json())
-	.then(data =>{
-		users = data;
-		data.forEach(user =>{
-			// console.log(user.id);
-		})
-	});
+// function getWins() {
+// 	if (users[0] === undefined) return "DEAD";
+// 	return users[0].id;
+// }
 
+// function getLoses() {
+// 	if (users[0] === undefined) return "DEAD";
+// 	return users[0].loses;
+// }
+
+// function getPlays() {
+// 	if (users[0] === undefined) return "DEAD";
+// 	return users[0].plays;
+// }
