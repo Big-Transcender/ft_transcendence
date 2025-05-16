@@ -10,7 +10,7 @@ const ballSizeX = (33 / 900) * 100;
 const ballSizeY = (33 / 500) * 100;
 
 
-var GamePlayLocal = false;
+var GamePlayLocal = true;
 const gameState = {
 	paddles: { p1: 40, p2: 40 }, // Position in %
 	ball: { x: 50, y: 50 },      // Position in %
@@ -83,6 +83,7 @@ function updateBall() {
 	// Wall collision
 	if (gameState.ball.y <= 0 || gameState.ball.y + ballSizeY >= 100) {
 		gameState.ballVel.y *= -1;
+		//speed += 0.1;
 	}
 
 	// Scoring: reset
