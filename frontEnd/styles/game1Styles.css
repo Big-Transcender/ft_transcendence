@@ -28,6 +28,7 @@
 	height: 100%;
 	width: 100%;
 	background-color: black;
+	overflow: hidden;
 }
 
 .ball {
@@ -42,10 +43,20 @@
 
 .paddle {
 	position: absolute;
-	height: 50px;
-	width: 10px;
-	border-radius: 10%;
+	height: 75px;
+	width: 20px;
+	/* border-radius: 10%; */
 	background-color: white;
+}
+
+.paddleHitBox {
+	position: absolute;
+	background-color: red;
+	opacity: 50%;
+	width: 20px;
+	height: 75px;
+	left: 50%;
+	translate: -50%;
 }
 
 .paddle1 {
