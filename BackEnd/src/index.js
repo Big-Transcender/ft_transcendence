@@ -12,7 +12,7 @@ const {
   getGameState
 } = require('./gameLogic');
 
-const fastify = Fastify({ logger: true });
+const fastify = Fastify({ logger: true});
 
 async function start() {
   try {
@@ -79,7 +79,7 @@ async function start() {
           client.send(message);
         }
       });
-    }, 15); // 60 FPS
+    }, 10); // 60 FPS
 
     fastify.register(routes);
     fastify.register(fastifyStatic, {
