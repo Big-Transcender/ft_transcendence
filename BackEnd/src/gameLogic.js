@@ -14,7 +14,8 @@ var GamePlayLocal = true;
 const gameState = {
 	paddles: { p1: 40, p2: 40 }, // Position in %
 	ball: { x: 50, y: 50 },      // Position in %
-	ballVel: { x: 0.5, y: 0.5 }  // Velocity in % per frame
+	ballVel: { x: 0.5, y: 0.5 }, // Velocity in % per frame
+	score: {p1: 0, p2: 0}
 };
 
 function resetBall(ball, ballVel) {
@@ -88,7 +89,15 @@ function updateBall() {
 
 	// Scoring: reset
 	if (gameState.ball.x + ballSizeX <= 0 || gameState.ball.x >= 100)
+	{
+		if (gameState.ball.x + ballSizeX <= 0)
+			gameState.score.p2 += 1;
+		else
+			gameState.score.p1 += 1;
+		
 		return resetBall(gameState.ball, gameState.ballVel), speed = 0.7
+	}
+		
 
 	// Calculate center Y of ball
 	const ballCenterY = gameState.ball.y + ballSizeY / 2;
@@ -124,7 +133,7 @@ function updateBall() {
 
 		//gameState.ball.x = 101 - paddleWidth - ballSizeX - 0.1;
 	}
-	console.log(speed)
+	console.log(gameState.score)
 }
 
 
