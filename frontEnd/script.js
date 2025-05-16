@@ -71,7 +71,7 @@ musicMenu.addEventListener("mouseleave", () => {
 // 		// }, 1000);
 // 	}
 // });
-// --- WebSocket Setup ---
+// --- WebSocket Setup
 const socket = new WebSocket(`ws://${window.location.hostname}:3000`);
 socket.addEventListener("open", () => {
     console.log("✅ Connected to WebSocket server");
@@ -83,46 +83,56 @@ socket.addEventListener("close", () => {
 socket.addEventListener("error", (event) => {
     console.error("WebSocket error:", event);
 });
-// --- Game Elements ---
+// --- Game Elements
+let playerId = 'p1';
 const paddle1 = document.querySelector(".paddle1");
 const paddle2 = document.querySelector(".paddle2");
 const ball = document.querySelector(".ball");
-// --- Input State ---
+// --- Input State
 const keysPressed = new Set();
 document.addEventListener("keydown", (event) => {
     const key = event.key;
-    if (key === "ArrowUp" || key === "ArrowDown" || key === "w" || key === "s") {
+    if (["ArrowUp", "ArrowDown", "w", "s"].includes(key)) {
         keysPressed.add(key);
     }
 });
 document.addEventListener("keyup", (event) => {
     const key = event.key;
-    if (key === "ArrowUp" || key === "ArrowDown" || key === "w" || key === "s") {
+    if (["ArrowUp", "ArrowDown", "w", "s"].includes(key)) {
         keysPressed.delete(key);
     }
 });
-// --- Send Input State to Server Repeatedly ---
+// ---- Send Input to Server
 setInterval(() => {
     if (keysPressed.size > 0) {
         socket.send(JSON.stringify({
             type: "input",
+            playerId, // send the current player's ID
             payload: Array.from(keysPressed),
         }));
     }
 }, 15);
-// --- Receive Game State from Server ---
+// ---- Receive Server Messages
 socket.addEventListener("message", (event) => {
     try {
         const data = JSON.parse(event.data);
-        if (data.type === "state") {
-            const state = data.payload;
-            if (paddle1)
-                paddle1.style.top = `${state.paddles.p1}%`;
-            if (paddle2)
-                paddle2.style.top = `${state.paddles.p2}%`;
-            if (ball) {
-                ball.style.left = `${state.ball.x}%`;
-                ball.style.top = `${state.ball.y}%`;
+        switch (data.type) {
+            case "state": {
+                const state = data.payload;
+                if (paddle1)
+                    paddle1.style.top = `${state.paddles.p1}%`;
+                if (paddle2)
+                    paddle2.style.top = `${state.paddles.p2}%`;
+                if (ball) {
+                    ball.style.left = `${state.ball.x}%`;
+                    ball.style.top = `${state.ball.y}%`;
+                }
+                break;
+            }
+            case "assign": {
+                playerId = data.payload;
+                console.log(`👤 You are assigned as ${playerId}`);
+                break;
             }
         }
     }
