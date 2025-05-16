@@ -1,43 +1,43 @@
-console.log("teste");
-const page = document.getElementById('home');
+const page = document.getElementById("home");
 function navigate(page) {
     if (document.getElementById(page).classList.contains("active")) {
         return;
-    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-    document.getElementById(page).classList.add('active');
-    history.pushState(null, '', `#${page}`);
+    }
+    document.querySelectorAll(".page").forEach((p) => p.classList.remove("active"));
+    document.getElementById(page).classList.add("active");
+    history.pushState(null, "", `#${page}`);
     // getWins();
     // updateLoses();
     // updatePlays();
     // updateWins();
 }
-window.addEventListener('popstate', () => {
-    const page = location.hash.replace('#', '') || 'home';
+window.addEventListener("popstate", () => {
+    const page = location.hash.replace("#", "") || "home";
     navigate(page);
 });
-window.addEventListener('load', () => {
-    const page = location.hash.replace('#', '') || 'home';
+window.addEventListener("load", () => {
+    const page = location.hash.replace("#", "") || "home";
     navigate(page);
 });
-const buttons = document.querySelectorAll('.buttonHitBox');
-const div = document.querySelector('.buttonBG');
+const buttons = document.querySelectorAll(".buttonHitBox");
+const div = document.querySelector(".buttonBG");
 let mouseIn = false;
-const buttonSoundIn = new Audio('audios/in.wav');
-const buttonSoundOut = new Audio('audios/out.wav');
-const musicMenuIn = new Audio('audios/musicMenuIn.wav');
-const musicMenuOut = new Audio('audios/musicMenuOut.wav');
-const musicMenu = document.querySelector('.musicPlayerBg');
+const buttonSoundIn = new Audio("audios/in.wav");
+const buttonSoundOut = new Audio("audios/out.wav");
+const musicMenuIn = new Audio("audios/musicMenuIn.wav");
+const musicMenuOut = new Audio("audios/musicMenuOut.wav");
+const musicMenu = document.querySelector(".musicPlayerBg");
 let musicIn = false;
 // bgMusic.play()
-buttons.forEach(button => {
-    button.addEventListener('mouseenter', () => {
+buttons.forEach((button) => {
+    button.addEventListener("mouseenter", () => {
         if (!mouseIn) {
             buttonSoundIn.play();
             mouseIn = true;
             // console.log("teste1");
         }
     });
-    button.addEventListener('mouseleave', () => {
+    button.addEventListener("mouseleave", () => {
         if (mouseIn) {
             buttonSoundOut.play();
             // console.log("teste2");
@@ -45,13 +45,13 @@ buttons.forEach(button => {
         }
     });
 });
-musicMenu.addEventListener('mouseenter', () => {
+musicMenu.addEventListener("mouseenter", () => {
     if (!musicIn) {
         musicMenuIn.play();
         musicIn = true;
     }
 });
-musicMenu.addEventListener('mouseleave', () => {
+musicMenu.addEventListener("mouseleave", () => {
     if (musicIn) {
         musicMenuOut.play();
         musicIn = false;
@@ -73,31 +73,31 @@ musicMenu.addEventListener('mouseleave', () => {
 // });
 // --- WebSocket Setup ---
 const socket = new WebSocket(`ws://${window.location.hostname}:3000`);
-socket.addEventListener('open', () => {
-    console.log('✅ Connected to WebSocket server');
-    socket.send(JSON.stringify({ type: 'hello', payload: 'Client Ready' }));
+socket.addEventListener("open", () => {
+    console.log("✅ Connected to WebSocket server");
+    socket.send(JSON.stringify({ type: "hello", payload: "Client Ready" }));
 });
-socket.addEventListener('close', () => {
-    console.log('❌ WebSocket connection closed');
+socket.addEventListener("close", () => {
+    console.log("❌ WebSocket connection closed");
 });
-socket.addEventListener('error', (event) => {
-    console.error('WebSocket error:', event);
+socket.addEventListener("error", (event) => {
+    console.error("WebSocket error:", event);
 });
 // --- Game Elements ---
-const paddle1 = document.querySelector('.paddle1');
-const paddle2 = document.querySelector('.paddle2');
-const ball = document.querySelector('.ball');
+const paddle1 = document.querySelector(".paddle1");
+const paddle2 = document.querySelector(".paddle2");
+const ball = document.querySelector(".ball");
 // --- Input State ---
 const keysPressed = new Set();
-document.addEventListener('keydown', (event) => {
+document.addEventListener("keydown", (event) => {
     const key = event.key;
-    if (key === 'ArrowUp' || key === 'ArrowDown' || key === 'w' || key === 's') {
+    if (key === "ArrowUp" || key === "ArrowDown" || key === "w" || key === "s") {
         keysPressed.add(key);
     }
 });
-document.addEventListener('keyup', (event) => {
+document.addEventListener("keyup", (event) => {
     const key = event.key;
-    if (key === 'ArrowUp' || key === 'ArrowDown' || key === 'w' || key === 's') {
+    if (key === "ArrowUp" || key === "ArrowDown" || key === "w" || key === "s") {
         keysPressed.delete(key);
     }
 });
@@ -105,16 +105,16 @@ document.addEventListener('keyup', (event) => {
 setInterval(() => {
     if (keysPressed.size > 0) {
         socket.send(JSON.stringify({
-            type: 'input',
-            payload: Array.from(keysPressed)
+            type: "input",
+            payload: Array.from(keysPressed),
         }));
     }
 }, 15);
 // --- Receive Game State from Server ---
-socket.addEventListener('message', (event) => {
+socket.addEventListener("message", (event) => {
     try {
         const data = JSON.parse(event.data);
-        if (data.type === 'state') {
+        if (data.type === "state") {
             const state = data.payload;
             if (paddle1)
                 paddle1.style.top = `${state.paddles.p1}%`;
@@ -127,6 +127,6 @@ socket.addEventListener('message', (event) => {
         }
     }
     catch (err) {
-        console.error('❗ Invalid JSON from server:', event.data);
+        console.error("❗ Invalid JSON from server:", event.data);
     }
 });

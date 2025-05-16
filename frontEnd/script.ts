@@ -87,43 +87,40 @@ musicMenu.addEventListener("mouseleave", () => {
 // 	}
 // });
 
-
 // --- WebSocket Setup ---
 const socket = new WebSocket(`ws://${window.location.hostname}:3000`);
 
-socket.addEventListener('open', () => {
-	console.log('✅ Connected to WebSocket server');
-	socket.send(JSON.stringify({ type: 'hello', payload: 'Client Ready' }));
+socket.addEventListener("open", () => {
+	console.log("✅ Connected to WebSocket server");
+	socket.send(JSON.stringify({ type: "hello", payload: "Client Ready" }));
 });
 
-socket.addEventListener('close', () => {
-	console.log('❌ WebSocket connection closed');
+socket.addEventListener("close", () => {
+	console.log("❌ WebSocket connection closed");
 });
 
-socket.addEventListener('error', (event: Event) => {
-	console.error('WebSocket error:', event);
+socket.addEventListener("error", (event: Event) => {
+	console.error("WebSocket error:", event);
 });
 
 // --- Game Elements ---
-const paddle1 = document.querySelector('.paddle1') as HTMLElement;
-const paddle2 = document.querySelector('.paddle2') as HTMLElement;
-const ball = document.querySelector('.ball') as HTMLElement;
-
-
+const paddle1 = document.querySelector(".paddle1") as HTMLElement;
+const paddle2 = document.querySelector(".paddle2") as HTMLElement;
+const ball = document.querySelector(".ball") as HTMLElement;
 
 // --- Input State ---
 const keysPressed = new Set<string>();
 
-document.addEventListener('keydown', (event: KeyboardEvent) => {
+document.addEventListener("keydown", (event: KeyboardEvent) => {
 	const key = event.key;
-	if (key === 'ArrowUp' || key === 'ArrowDown' || key === 'w' || key === 's') {
+	if (key === "ArrowUp" || key === "ArrowDown" || key === "w" || key === "s") {
 		keysPressed.add(key);
 	}
 });
 
-document.addEventListener('keyup', (event: KeyboardEvent) => {
+document.addEventListener("keyup", (event: KeyboardEvent) => {
 	const key = event.key;
-	if (key === 'ArrowUp' || key === 'ArrowDown' || key === 'w' || key === 's') {
+	if (key === "ArrowUp" || key === "ArrowDown" || key === "w" || key === "s") {
 		keysPressed.delete(key);
 	}
 });
@@ -131,20 +128,21 @@ document.addEventListener('keyup', (event: KeyboardEvent) => {
 // --- Send Input State to Server Repeatedly ---
 setInterval(() => {
 	if (keysPressed.size > 0) {
-		socket.send(JSON.stringify({
-			type: 'input',
-			payload: Array.from(keysPressed)
-		}));
+		socket.send(
+			JSON.stringify({
+				type: "input",
+				payload: Array.from(keysPressed),
+			})
+		);
 	}
 }, 15);
 
-
 // --- Receive Game State from Server ---
-socket.addEventListener('message', (event: MessageEvent) => {
+socket.addEventListener("message", (event: MessageEvent) => {
 	try {
 		const data = JSON.parse(event.data);
 
-		if (data.type === 'state') {
+		if (data.type === "state") {
 			const state = data.payload;
 
 			if (paddle1) paddle1.style.top = `${state.paddles.p1}%`;
@@ -155,7 +153,6 @@ socket.addEventListener('message', (event: MessageEvent) => {
 			}
 		}
 	} catch (err) {
-		console.error('❗ Invalid JSON from server:', event.data);
+		console.error("❗ Invalid JSON from server:", event.data);
 	}
 });
-
