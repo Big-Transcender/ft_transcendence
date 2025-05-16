@@ -161,25 +161,28 @@
 					<div id="profile" class="profile page">
 						<div class="loginBox">
 							<div class="loginPage profileId active" id="loginId">
-								<div class="loginBoxBG"></div>
+								<div class="loginBoxBG">
+									<img src="images/decoration1.svg" alt="" class="decoration1" />
+								</div>
 								<img src="images/avatar3.png" alt="" class="avatar3" />
 								<p class="loginText">Login!</p>
 								<div class="inputBox">
 									<label for="inputNick">Enter your nickname</label>
-									<input type="text" id="inputNick" class="inputText smallInput" placeholder="nick" autocomplete="off" />
+									<input type="text" id="inputNick" class="inputText smallInput" placeholder="NICK" autocomplete="off" />
 								</div>
 								<div class="inputBox password">
 									<label for="inputPass">Enter your Password</label>
-									<input type="password" id="inputPass" class="inputText smallInput" placeholder="password" autocomplete="off" />
+									<input type="password" id="inputPass" class="inputText smallInput" placeholder="PASSWORD" autocomplete="off" />
 								</div>
 								<button class="defaultButton loginUser">
-									Login
+									<p class="defaultButtonText">Login</p>
 									<div class="defaultButtonBG">
 										<div class="defaultButtonBGWave"></div>
+										<div class="defaultButtonBGWave wave2"></div>
 									</div>
 								</button>
 								<button class="defaultButton newUser">
-									New User
+									<p class="defaultButtonText">New User</p>
 									<div class="defaultButtonBG">
 										<div class="defaultButtonBGWave"></div>
 										<div class="defaultButtonBGWave wave2"></div>
@@ -192,22 +195,40 @@
 								<div class="loginBoxBG">
 									<img src="images/decoration1.svg" alt="" class="decoration1" />
 								</div>
+								<div class="topCover"></div>
+								<!-- <p class="loginText">Welcome, new resident!</p> -->
+								<div class="thinkingBubble">
+									<div class="thinkingBubbleBG">
+										<p class="thinkingBubbleText">Welcome, new resident!</p>
+									</div>
+								</div>
 
-								<p class="loginText">Welcome, new resident!</p>
 								<div class="inputBox">
 									<label for="inputNick">Your new Nick</label>
-									<input type="text" id="inputNick" class="inputText" placeholder="nick" />
+									<input type="text" id="inputNickNew" class="inputText smallInput" placeholder="NICK" autocomplete="off" />
 								</div>
 								<div class="inputBox email">
 									<label for="inputEmail">Your Email!</label>
-									<input type="text" id="inputEmail" class="inputText" placeholder="E-Mail" />
+									<input type="text" id="inputEmailNew" class="inputText smallInput" placeholder="E-MAIL" autocomplete="off" />
 								</div>
 								<div class="inputBox passwordNew">
 									<label for="inputPass">Your Password</label>
-									<input type="password" id="inputPass" class="inputText" placeholder="password" />
+									<input type="password" id="inputPassNew" class="inputText smallInput" placeholder="PASSWORD" autocomplete="off" />
 								</div>
-								<button class="defaultButton createNew" id="loginButtonNewUser">Create</button>
-								<button class="defaultButton backNew" id="backButtonNewUser">Back</button>
+								<button class="defaultButton createNew" id="loginButtonNewUser">
+									<p class="defaultButtonText">Create</p>
+									<div class="defaultButtonBG">
+										<div class="defaultButtonBGWave"></div>
+										<div class="defaultButtonBGWave wave2"></div>
+									</div>
+								</button>
+								<button class="defaultButton backNew" id="backButtonNewUser">
+									<p class="defaultButtonText">Back</p>
+									<div class="defaultButtonBG">
+										<div class="defaultButtonBGWave"></div>
+										<div class="defaultButtonBGWave wave2"></div>
+									</div>
+								</button>
 							</div>
 						</div>
 

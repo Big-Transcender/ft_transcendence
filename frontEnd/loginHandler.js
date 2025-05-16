@@ -1,18 +1,107 @@
 const loginButton = document.querySelector(".loginUser");
 const newUserButton = document.querySelector(".newUser");
+const createUserButton = document.getElementById("loginButtonNewUser");
 let pageProfile = document.getElementById("loginId");
 const API_USERS = "http://127.0.0.1:3000/users";
+// fetch(API_USERS)
+// 	.then((res) => res.json())
+// 	.then((data) => {
+// 		// users = data;
+// 		data.forEach((user) => {
+// 			console.log("aqui:" + user);
+// 		});
+// 		// updateWins();
+// 		// updateLoses();
+// 		// updatePlays();
+// 		// updateNick();
+// 	});
+const registerNewUser = async () => {
+    const nickname = document.getElementById("inputNickNew").value.trim();
+    const email = document.getElementById("inputEmailNew").value.trim();
+    const name = document.getElementById("inputNickNew").value.trim();
+    const password = document.getElementById("inputPassNew").value.trim();
+    let bubbleText = document.querySelector(".thinkingBubbleText");
+    console.log(nickname);
+    console.log(email);
+    console.log(name);
+    console.log(password);
+    try {
+        const response = await fetch("http://localhost:3000/register", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ name: nickname, email, nickname, password }),
+        });
+        const data = await response.json();
+        if (response.ok) {
+            alert("ok!");
+        }
+        else {
+            if (data.details.search("UNIQUE constraint failed: users.nickname") != -1) {
+                typeText(bubbleText, "Oh no... Seems like that| this *nick* already exist!", 50);
+            }
+            else if (data.details.search("UNIQUE constraint failed: users.email") != -1) {
+                typeText(bubbleText, "Oh no... Seems like that| this *e-mail* already exist!", 50);
+            }
+            else {
+                console.log(data.error.search("UNIQUE constraint failed: users.nickname"));
+            }
+            // bubbleText.textContent = `${data.details}`;
+            // alert(`Error: ${data.error}`);
+        }
+    }
+    catch (err) {
+        console.error("Failed to register:", err);
+        alert("Something went wrong!");
+    }
+    return 0;
+};
+function typeText(element, text, delay = 100) {
+    element.innerHTML = "";
+    let index = 0;
+    let isRed = false;
+    const type = () => {
+        if (index < text.length) {
+            const char = text[index];
+            if (char === "*") {
+                isRed = !isRed;
+            }
+            else if (char === "|") {
+                element.appendChild(document.createElement("br"));
+            }
+            else {
+                const span = document.createElement("span");
+                span.textContent = char;
+                if (isRed) {
+                    span.style.color = "red";
+                }
+                element.appendChild(span);
+            }
+            index++;
+            setTimeout(type, delay);
+        }
+    };
+    type();
+}
 function clickButton(button) {
     button.addEventListener("click", () => {
+        // console.log(button.className.search("createNew"));
         if (button.className.search("loginUser") != -1) {
             console.log(document.getElementById("inputNick").value);
             console.log(document.getElementById("inputPass").value);
             // console.log("request from database to see if can login");
         }
-        else if (button.className.search("newUser")) {
+        else if (button.className.search("newUser") != -1) {
             pageProfile = document.getElementById("newUserId");
             // navigateProfile(pageProfile);
             console.log("change page to newUser");
+        }
+        else if (button.className.search("createNew") != -1) {
+            // let bubbleText = document.querySelector(".thinkingBubbleText");
+            // bubbleText.textContent = "teste";
+            // console.log(bubbleText);
+            registerNewUser();
         }
         else {
             console.log("error on clickButton function");
@@ -22,6 +111,7 @@ function clickButton(button) {
 }
 clickButton(loginButton);
 clickButton(newUserButton);
+clickButton(createUserButton);
 // clickButton(forgotButton);
 document.addEventListener("DOMContentLoaded", () => {
     const loginPage = document.getElementById("loginId");
