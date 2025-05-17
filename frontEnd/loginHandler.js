@@ -21,10 +21,6 @@ const registerNewUser = async () => {
     const name = document.getElementById("inputNickNew").value.trim();
     const password = document.getElementById("inputPassNew").value.trim();
     let bubbleText = document.querySelector(".thinkingBubbleText");
-    console.log(nickname);
-    console.log(email);
-    console.log(name);
-    console.log(password);
     try {
         const response = await fetch("http://localhost:3000/register", {
             method: "POST",
@@ -57,33 +53,6 @@ const registerNewUser = async () => {
     }
     return 0;
 };
-function typeText(element, text, delay = 100) {
-    element.innerHTML = "";
-    let index = 0;
-    let isRed = false;
-    const type = () => {
-        if (index < text.length) {
-            const char = text[index];
-            if (char === "*") {
-                isRed = !isRed;
-            }
-            else if (char === "|") {
-                element.appendChild(document.createElement("br"));
-            }
-            else {
-                const span = document.createElement("span");
-                span.textContent = char;
-                if (isRed) {
-                    span.style.color = "red";
-                }
-                element.appendChild(span);
-            }
-            index++;
-            setTimeout(type, delay);
-        }
-    };
-    type();
-}
 function clickButton(button) {
     button.addEventListener("click", () => {
         // console.log(button.className.search("createNew"));
