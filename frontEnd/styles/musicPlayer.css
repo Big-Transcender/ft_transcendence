@@ -99,8 +99,7 @@
 	top: 50%;
 	translate: -50% -50%;
 	transition: 10ms ease-in-out;
-	filter: invert(26%) sepia(13%) saturate(808%) hue-rotate(337deg)
-		brightness(94%) contrast(96%);
+	filter: invert(26%) sepia(13%) saturate(808%) hue-rotate(337deg) brightness(94%) contrast(96%);
 	/* #524036 */
 }
 
@@ -116,8 +115,7 @@
 	top: 50%;
 	translate: -50% -50%;
 	transition: 10ms ease-in-out;
-	filter: invert(26%) sepia(13%) saturate(808%) hue-rotate(337deg)
-		brightness(94%) contrast(96%);
+	filter: invert(26%) sepia(13%) saturate(808%) hue-rotate(337deg) brightness(94%) contrast(96%);
 }
 
 .musicButtons:hover .stopIcon {
@@ -133,8 +131,7 @@
 	translate: -50% -50%;
 	transition: 10ms ease-in-out;
 	transform: rotate(180deg);
-	filter: invert(26%) sepia(13%) saturate(808%) hue-rotate(337deg)
-		brightness(94%) contrast(96%);
+	filter: invert(26%) sepia(13%) saturate(808%) hue-rotate(337deg) brightness(94%) contrast(96%);
 }
 
 .musicButtons:hover .prevIcon {
@@ -149,8 +146,7 @@
 	top: 50%;
 	translate: -50% -50%;
 	transition: 10ms ease-in-out;
-	filter: invert(26%) sepia(13%) saturate(808%) hue-rotate(337deg)
-		brightness(94%) contrast(96%);
+	filter: invert(26%) sepia(13%) saturate(808%) hue-rotate(337deg) brightness(94%) contrast(96%);
 	/* transform: rotate(180deg); */
 }
 
@@ -267,8 +263,7 @@
 	translate: -50%;
 	opacity: 0%;
 	transition: 150ms ease-in-out;
-	filter: drop-shadow(0px 10px 2px #00000063)
-		drop-shadow(0px 0px 2px rgba(0, 0, 0, 0.493));
+	filter: drop-shadow(0px 10px 2px #00000063) drop-shadow(0px 0px 2px rgba(0, 0, 0, 0.493));
 	pointer-events: none;
 }
 
