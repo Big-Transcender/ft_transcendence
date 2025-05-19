@@ -30,19 +30,19 @@ async function routes(fastify) {
 		const { name, password } = request.body;
 
 		if (!name || !password) {
-			return reply.code(400).send({ error: "Name and password are required" });
+			return reply.code(400).send({ error: "Name and password are required", details: "Missing field" });
 		}
 
 		const user = db.prepare("SELECT * FROM users WHERE name = ?").get(name);
 
 		if (!user) {
-			return reply.code(401).send({ error: "Invalid credentials" });
+			return reply.code(401).send({ error: "Invalid credentials", details: "User dont exist" });
 		}
 
 		const isValid = await bcrypt.compare(password, user.password);
 
 		if (!isValid) {
-			return reply.code(401).send({ error: "Invalid credentials" });
+			return reply.code(401).send({ error: "Invalid credentials", details: "Wrong password" });
 		}
 
 		reply.send({ message: "Login successful", user: { id: user.id, name: user.name } });

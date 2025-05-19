@@ -10,6 +10,8 @@
 		<link rel="stylesheet" href="styles/homePage.css" />
 		<link rel="stylesheet" href="styles/header.css" />
 		<link rel="stylesheet" href="styles/musicPlayer.css" />
+		<link rel="stylesheet" href="styles/profiles2Styles.css" />
+
 		<link rel="icon" href="images/icons/favicon.ico" />
 		<script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 	</head>
@@ -161,11 +163,18 @@
 					<div id="profile" class="profile page">
 						<div class="loginBox">
 							<div class="loginPage profileId active" id="loginId">
+								<img src="images/avatar4.png" alt="" class="avatar4" />
 								<div class="loginBoxBG">
-									<img src="images/decoration1.svg" alt="" class="decoration1" />
+									<div class="decoration1"></div>
 								</div>
+								<div class="topCover"></div>
 								<img src="images/avatar3.png" alt="" class="avatar3" />
-								<p class="loginText">Login!</p>
+								<div class="thinkingBubble">
+									<div class="thinkingBubbleBG">
+										<p class="thinkingBubbleName">Hazel</p>
+										<p class="thinkingBubbleText" id="thinkingBubbleTextLogin">Welcome back!</p>
+									</div>
+								</div>
 								<div class="inputBox">
 									<label for="inputNick">Enter your nickname</label>
 									<input type="text" id="inputNick" class="inputText smallInput" placeholder="NICK" autocomplete="off" />
@@ -174,7 +183,7 @@
 									<label for="inputPass">Enter your Password</label>
 									<input type="password" id="inputPass" class="inputText smallInput" placeholder="PASSWORD" autocomplete="off" />
 								</div>
-								<button class="defaultButton loginUser">
+								<button class="defaultButton loginUser" id="loginUserButton">
 									<p class="defaultButtonText">Login</p>
 									<div class="defaultButtonBG">
 										<div class="defaultButtonBGWave"></div>
@@ -193,14 +202,13 @@
 								<img src="images/avatar1.png" alt="" class="avatar1" />
 								<img src="images/avatar2.png" alt="" class="avatar2" />
 								<div class="loginBoxBG">
-									<img src="images/decoration1.svg" alt="" class="decoration1" />
+									<div class="decoration1"></div>
 								</div>
 								<div class="topCover"></div>
-								<!-- <p class="loginText">Welcome, new resident!</p> -->
 								<div class="thinkingBubble">
 									<div class="thinkingBubbleBG">
 										<p class="thinkingBubbleName">Rosie</p>
-										<p class="thinkingBubbleText">Welcome, new resident!</p>
+										<p class="thinkingBubbleText" id="thinkingBubbleTextNewUser">Welcome, new resident!</p>
 									</div>
 								</div>
 
@@ -225,6 +233,57 @@
 								</button>
 								<button class="defaultButton backNew" id="backButtonNewUser">
 									<p class="defaultButtonText">Back</p>
+									<div class="defaultButtonBG">
+										<div class="defaultButtonBGWave"></div>
+										<div class="defaultButtonBGWave wave2"></div>
+									</div>
+								</button>
+							</div>
+							<div class="profilePage profileId" id="profileId">
+								<div class="loginBoxBG">
+									<div class="decoration1"></div>
+								</div>
+								<div class="profileHeader">
+									<div class="profileHeaderBG"></div>
+									<div class="profileHeaderDecoration"></div>
+									<p class="profileHeaderText">Welcome, zeeeeeee</p>
+								</div>
+								<div class="profileMainBody">
+									<div class="profileMainBodyBG"></div>
+									<div class="winsBox">
+										<div class="boxNail1"></div>
+										<div class="boxNail2"></div>
+										<div class="winsBoxBG"></div>
+										<p class="boxText">Wins</p>
+										<p class="boxNumber" id="boxWinsNumber">99</p>
+									</div>
+									<div class="winsBox loses">
+										<div class="boxNail1"></div>
+										<div class="boxNail2"></div>
+										<div class="winsBoxBG"></div>
+										<p class="boxText">Loses</p>
+										<p class="boxNumber" id="boxLosesNumber">99</p>
+									</div>
+									<div class="winsBox games">
+										<div class="boxNail1"></div>
+										<div class="boxNail2"></div>
+										<div class="winsBoxBG"></div>
+										<p class="boxText">Games</p>
+										<p class="boxNumber" id="boxLosesNumber">99</p>
+									</div>
+
+									<div class="winRateBox">
+										<div class="winRateBoxBG"></div>
+										<p class="winRateText">Current Winrate: 100%</p>
+										<div class="positionBox">
+											<p class="positionHeader">Position</p>
+											<p class="positionText">1º</p>
+										</div>
+									</div>
+								</div>
+
+								<button class="defaultButton logoutButton" id="logoutButton">
+									<p class="defaultButtonText">Logout</p>
 									<div class="defaultButtonBG">
 										<div class="defaultButtonBGWave"></div>
 										<div class="defaultButtonBGWave wave2"></div>

@@ -11,11 +11,12 @@ for (let i = 97; i <= 122; i++) {
 }
 
 function typeText(element: HTMLElement, text: string, delay: number): void {
+	console.log("isTyping: " + isTyping);
+	console.log("stopSpeechFlag: " + stopSpeechFlag);
 	if (isTyping) {
 		return;
 	}
 	isTyping = true;
-
 	element.innerHTML = "";
 	let index = 0;
 	let isRed = false;
@@ -55,7 +56,6 @@ function typeText(element: HTMLElement, text: string, delay: number): void {
 			setTimeout(type, nextDelay);
 		} else {
 			isTyping = false;
-			console.log("finish");
 		}
 	};
 	type();

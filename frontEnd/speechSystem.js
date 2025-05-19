@@ -9,6 +9,8 @@ for (let i = 97; i <= 122; i++) {
     keyMap.set(letter, new Audio(`audios/speech/${letter}.wav`));
 }
 function typeText(element, text, delay) {
+    console.log("isTyping: " + isTyping);
+    console.log("stopSpeechFlag: " + stopSpeechFlag);
     if (isTyping) {
         return;
     }
@@ -53,7 +55,6 @@ function typeText(element, text, delay) {
         }
         else {
             isTyping = false;
-            console.log("finish");
         }
     };
     type();

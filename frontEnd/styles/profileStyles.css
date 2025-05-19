@@ -54,6 +54,14 @@
 	filter: drop-shadow(0px 15px 10px rgba(0, 0, 0, 0.507));
 }
 
+.avatar4 {
+	position: absolute;
+	right: -20%;
+	top: 5%;
+	transform: rotateY(180deg) rotateZ(-60deg);
+	width: 25%;
+}
+
 .thinkingBubble {
 	position: absolute;
 	/* background-color: red; */
@@ -106,7 +114,16 @@
 
 .decoration1 {
 	position: absolute;
-	bottom: -10px;
+	bottom: -1px;
+	left: -5px;
+	/* background-color: red; */
+	background-image: url(/frontEnd/images/decoration1.svg);
+	background-repeat: repeat-x;
+	background-size: 120%;
+	background-position: bottom;
+	/* bakc */
+	width: 740px;
+	height: 50%;
 	/* bottom: -55px;
 	width: 800px;
 	height: 180px; */
@@ -273,6 +290,12 @@
 .backNew {
 	bottom: 10%;
 	left: 25%;
+	translate: -50%;
+}
+
+.logoutButton {
+	bottom: 5%;
+	left: 50%;
 	translate: -50%;
 }
 
