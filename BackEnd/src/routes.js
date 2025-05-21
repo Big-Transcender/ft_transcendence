@@ -1,5 +1,6 @@
 const db = require("./database");
 const bcrypt = require("bcryptjs");
+const { getLeaderboard } = require("./dataQuerys");
 
 async function routes(fastify) {
 	// Get /home
@@ -29,6 +30,8 @@ async function routes(fastify) {
 	fastify.post("/login", async (request, reply) => {
 		const { nickname, password } = request.body;
 
+		console.log("nickname: " + nickname);
+		console.log("pass: " + password);
 		if (!nickname || !password) {
 			return reply.code(400).send({ error: "Name and password are required" });
 		}
@@ -52,6 +55,11 @@ async function routes(fastify) {
 	fastify.get("/users", async (request, reply) => {
 		const users = db.prepare("SELECT id, nickname FROM users").all();
 		reply.send(users);
+	});
+
+	fastify.get("/leaderBoard", async (request, reply) => {
+		const leaderBoard = getLeaderboard();
+		reply.send(leaderBoard);
 	});
 }
 

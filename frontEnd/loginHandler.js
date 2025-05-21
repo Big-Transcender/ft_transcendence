@@ -54,13 +54,15 @@ const registerNewUser = async () => {
 async function loginUser() {
     const nickname = document.getElementById("inputNick").value.trim();
     const password = document.getElementById("inputPass").value.trim();
+    console.log("nickname: " + nickname);
+    console.log("pass: " + password);
     try {
         const response = await fetch("http://localhost:3000/login", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
             },
-            body: JSON.stringify({ name: nickname, password }),
+            body: JSON.stringify({ nickname, password }),
         });
         const data = await response.json();
         if (response.ok) {
