@@ -3,7 +3,7 @@
 var today = new Date();
 const dayMusic = {
     // "12AM": new Audio('audios/DayMusic/12AM.wav'),
-    "1AM": new Audio('audios/DayMusic/1AM.wav'),
+    "1AM": new Audio("audios/DayMusic/1AM.wav"),
     // "2AM": new Audio('audios/DayMusic/2AM.wav'),
     // "3AM": new Audio('audios/DayMusic/3AM.wav'),
     // "4AM": new Audio('audios/DayMusic/4AM.wav'),
@@ -15,7 +15,7 @@ const dayMusic = {
     // "10AM": new Audio('audios/DayMusic/10AM.wav'),
     // "11AM": new Audio('audios/DayMusic/11AM.wav'),
     // "12PM": new Audio('audios/DayMusic/12PM.wav'),
-    "1PM": new Audio('audios/DayMusic/1PM.wav'),
+    "1PM": new Audio("audios/DayMusic/1PM.wav"),
     // "2PM": new Audio('audios/DayMusic/2PM.wav'),
     // "3PM": new Audio('audios/DayMusic/3PM.wav'),
     // "4PM": new Audio('audios/DayMusic/4PM.wav'),
@@ -29,24 +29,24 @@ const dayMusic = {
 };
 const currentHour = 1;
 const period = currentHour < 12 ? "AM" : "PM";
-const musicButtonPlay = document.querySelector('.buttonPlay');
-const musicButtonStop = document.querySelector('.buttonStop');
+const musicButtonPlay = document.querySelector(".buttonPlay");
+const musicButtonStop = document.querySelector(".buttonStop");
 const formattedHour = (currentHour % 12 || 12) + period;
 const bgMusic = dayMusic[formattedHour];
 bgMusic.loop = true;
 bgMusic.title = (currentHour % 12 || 12) + " " + period;
-bgMusic.play();
+// bgMusic.play();
 console.log(bgMusic.title);
 console.log(today.getHours());
-const musicTitle = document.getElementById('musicTitle');
-const musicDate = document.getElementById('musicDate');
+const musicTitle = document.getElementById("musicTitle");
+const musicDate = document.getElementById("musicDate");
 musicTitle.textContent = bgMusic.title;
-musicDate.textContent = today.getHours().toString().padStart(2, '0') + ":" + today.getMinutes().toString().padStart(2, '0');
-musicButtonStop.addEventListener('click', () => {
+musicDate.textContent = today.getHours().toString().padStart(2, "0") + ":" + today.getMinutes().toString().padStart(2, "0");
+musicButtonStop.addEventListener("click", () => {
     musicPause();
     console.log("musica pausada");
 });
-musicButtonPlay.addEventListener('click', () => {
+musicButtonPlay.addEventListener("click", () => {
     musicResume();
     console.log("musica resume");
 });

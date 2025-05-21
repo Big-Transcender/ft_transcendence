@@ -10,6 +10,8 @@
 		<link rel="stylesheet" href="styles/homePage.css" />
 		<link rel="stylesheet" href="styles/header.css" />
 		<link rel="stylesheet" href="styles/musicPlayer.css" />
+		<link rel="stylesheet" href="styles/profiles2Styles.css" />
+
 		<link rel="icon" href="images/icons/favicon.ico" />
 		<script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 	</head>
@@ -143,8 +145,18 @@
 					</div>
 
 					<div id="game1" class="game1 page">
-						<p>Pong-Strike 1.6</p>
-						<div class="game1Place outline-2 outline-white outline-offset-2 hover:outline-lime-600 hover:outline-5">
+						<div class="gameSelector gameId active" id="gameSelectorId">
+							<div class="gameSelectorBG"></div>
+							<div class="gameSelectorButton" id="pongButton">
+								<div class="gameSelectorButtonBG"></div>
+								<p class="gameSelectorText">Ping Pong</p>
+							</div>
+							<div class="gameSelectorButton Button2" id="snakeButton">
+								<div class="gameSelectorButtonBG ButtonBG2"></div>
+								<p class="gameSelectorText">Snake</p>
+							</div>
+						</div>
+						<div class="game1Place gameId outline-2 outline-white outline-offset-2 hover:outline-lime-600 hover:outline-5" id="pongGameId">
 							<div class="board">
 								<div class="ball"></div>
 								<div class="paddle1 paddle">
@@ -155,6 +167,10 @@
 								</div>
 							</div>
 						</div>
+						<div class="snakeGamePlace gameId" id="SnakeGameId">
+							<!-- <div class="snakeBackground"></div> -->
+							<p class="gameSnakeText">SNAAAKE</p>
+						</div>
 					</div>
 					<div id="game2" class="game2 page">
 						<h2>Game2</h2>
@@ -163,25 +179,35 @@
 					<div id="profile" class="profile page">
 						<div class="loginBox">
 							<div class="loginPage profileId active" id="loginId">
-								<div class="loginBoxBG"></div>
+								<img src="images/avatar4.png" alt="" class="avatar4" />
+								<div class="loginBoxBG">
+									<div class="decoration1"></div>
+								</div>
+								<div class="topCover"></div>
 								<img src="images/avatar3.png" alt="" class="avatar3" />
-								<p class="loginText">Login!</p>
+								<div class="thinkingBubble">
+									<div class="thinkingBubbleBG">
+										<p class="thinkingBubbleName">Hazel</p>
+										<p class="thinkingBubbleText" id="thinkingBubbleTextLogin">Welcome back!</p>
+									</div>
+								</div>
 								<div class="inputBox">
 									<label for="inputNick">Enter your nickname</label>
-									<input type="text" id="inputNick" class="inputText smallInput" placeholder="nick" autocomplete="off" />
+									<input type="text" id="inputNick" class="inputText smallInput" placeholder="NICK" autocomplete="off" />
 								</div>
 								<div class="inputBox password">
 									<label for="inputPass">Enter your Password</label>
-									<input type="password" id="inputPass" class="inputText smallInput" placeholder="password" autocomplete="off" />
+									<input type="password" id="inputPass" class="inputText smallInput" placeholder="PASSWORD" autocomplete="off" />
 								</div>
-								<button class="defaultButton loginUser">
-									Login
+								<button class="defaultButton loginUser" id="loginUserButton">
+									<p class="defaultButtonText">Login</p>
 									<div class="defaultButtonBG">
 										<div class="defaultButtonBGWave"></div>
+										<div class="defaultButtonBGWave wave2"></div>
 									</div>
 								</button>
 								<button class="defaultButton newUser">
-									New User
+									<p class="defaultButtonText">New User</p>
 									<div class="defaultButtonBG">
 										<div class="defaultButtonBGWave"></div>
 										<div class="defaultButtonBGWave wave2"></div>
@@ -192,24 +218,92 @@
 								<img src="images/avatar1.png" alt="" class="avatar1" />
 								<img src="images/avatar2.png" alt="" class="avatar2" />
 								<div class="loginBoxBG">
-									<img src="images/decoration1.svg" alt="" class="decoration1" />
+									<div class="decoration1"></div>
+								</div>
+								<div class="topCover"></div>
+								<div class="thinkingBubble">
+									<div class="thinkingBubbleBG">
+										<p class="thinkingBubbleName">Rosie</p>
+										<p class="thinkingBubbleText" id="thinkingBubbleTextNewUser">Welcome, new resident!</p>
+									</div>
 								</div>
 
-								<p class="loginText">Welcome, new resident!</p>
 								<div class="inputBox">
 									<label for="inputNick">Your new Nick</label>
-									<input type="text" id="inputNick" class="inputText" placeholder="nick" />
+									<input type="text" id="inputNickNew" class="inputText smallInput" placeholder="NICK" autocomplete="off" />
 								</div>
 								<div class="inputBox email">
 									<label for="inputEmail">Your Email!</label>
-									<input type="text" id="inputEmail" class="inputText" placeholder="E-Mail" />
+									<input type="text" id="inputEmailNew" class="inputText smallInput" placeholder="E-MAIL" autocomplete="off" />
 								</div>
 								<div class="inputBox passwordNew">
 									<label for="inputPass">Your Password</label>
-									<input type="password" id="inputPass" class="inputText" placeholder="password" />
+									<input type="password" id="inputPassNew" class="inputText smallInput" placeholder="PASSWORD" autocomplete="off" />
 								</div>
-								<button class="defaultButton createNew" id="loginButtonNewUser">Create</button>
-								<button class="defaultButton backNew" id="backButtonNewUser">Back</button>
+								<button class="defaultButton createNew" id="loginButtonNewUser">
+									<p class="defaultButtonText">Create</p>
+									<div class="defaultButtonBG">
+										<div class="defaultButtonBGWave"></div>
+										<div class="defaultButtonBGWave wave2"></div>
+									</div>
+								</button>
+								<button class="defaultButton backNew" id="backButtonNewUser">
+									<p class="defaultButtonText">Back</p>
+									<div class="defaultButtonBG">
+										<div class="defaultButtonBGWave"></div>
+										<div class="defaultButtonBGWave wave2"></div>
+									</div>
+								</button>
+							</div>
+							<div class="profilePage profileId" id="profileId">
+								<div class="loginBoxBG">
+									<div class="decoration1"></div>
+								</div>
+								<div class="profileHeader">
+									<div class="profileHeaderBG"></div>
+									<div class="profileHeaderDecoration"></div>
+									<p class="profileHeaderText">Welcome, zeeeeeee</p>
+								</div>
+								<div class="profileMainBody">
+									<div class="profileMainBodyBG"></div>
+									<div class="winsBox">
+										<div class="boxNail1"></div>
+										<div class="boxNail2"></div>
+										<div class="winsBoxBG"></div>
+										<p class="boxText">Wins</p>
+										<p class="boxNumber" id="boxWinsNumber">99</p>
+									</div>
+									<div class="winsBox loses">
+										<div class="boxNail1"></div>
+										<div class="boxNail2"></div>
+										<div class="winsBoxBG"></div>
+										<p class="boxText">Loses</p>
+										<p class="boxNumber" id="boxLosesNumber">99</p>
+									</div>
+									<div class="winsBox games">
+										<div class="boxNail1"></div>
+										<div class="boxNail2"></div>
+										<div class="winsBoxBG"></div>
+										<p class="boxText">Games</p>
+										<p class="boxNumber" id="boxLosesNumber">99</p>
+									</div>
+									<div class="winRateBox">
+										<div class="winRateBoxBG"></div>
+										<p class="winRateText">Current Winrate: 100%</p>
+										<div class="positionBox">
+											<p class="positionHeader">Position</p>
+											<p class="positionText">1º</p>
+										</div>
+									</div>
+								</div>
+
+								<button class="defaultButton logoutButton" id="logoutButton">
+									<p class="defaultButtonText">Logout</p>
+									<div class="defaultButtonBG">
+										<div class="defaultButtonBGWave"></div>
+										<div class="defaultButtonBGWave wave2"></div>
+									</div>
+								</button>
 							</div>
 						</div>
 
@@ -246,6 +340,8 @@
 		<script src="perfilHandler.js"></script>
 		<script src="musicHandler.js"></script>
 		<script src="loginHandler.js"></script>
+		<script src="speechSystem.js"></script>
+		<script src="gameSelector.js"></script>
 		<script src="script.js"></script>
 	</body>
 </html>

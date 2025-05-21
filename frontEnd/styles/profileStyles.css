@@ -6,7 +6,7 @@
 	top: 150px;
 	height: 82%;
 	width: 95%;
-	background-color: rgb(131, 108, 155);
+	/* background-color: rgb(131, 108, 155); */
 	/* width: 100v; */
 	/* background-color: rgb(185, 104, 104); */
 }
@@ -28,9 +28,10 @@
 
 .avatar1 {
 	position: absolute;
-	right: -35%;
+	right: -18%;
+	top: 5%;
 	transform: rotate(50deg);
-	width: 50%;
+	width: 25%;
 	/* z-index: 1; */
 
 	/* background-color: black; */
@@ -38,9 +39,9 @@
 
 .avatar2 {
 	position: absolute;
-	left: -39%;
+	left: -19%;
 	transform: rotate(-25deg);
-	width: 50%;
+	width: 25%;
 	top: 50px;
 }
 
@@ -53,9 +54,76 @@
 	filter: drop-shadow(0px 15px 10px rgba(0, 0, 0, 0.507));
 }
 
+.avatar4 {
+	position: absolute;
+	right: -20%;
+	top: 5%;
+	transform: rotateY(180deg) rotateZ(-60deg);
+	width: 25%;
+}
+
+.thinkingBubble {
+	position: absolute;
+	/* background-color: red; */
+	right: -50%;
+	top: 40%;
+	width: 350px;
+	height: 190px;
+	/* background-repeat: no-repeat; */
+}
+
+.thinkingBubbleBG {
+	position: absolute;
+	background-image: url(/frontEnd/images/genericQuote.png);
+	background-size: 100%;
+	background-repeat: no-repeat;
+	width: 100%;
+	height: 100%;
+}
+
+.thinkingBubbleName {
+	position: absolute;
+	/* color: red; */
+	/* background-color: red; */
+	transform: rotate(-21deg);
+	text-align: center;
+	align-content: center;
+	width: 80px;
+	top: 18px;
+	font-family: animalCrossingSystem;
+	left: 15px;
+	color: rgb(255, 255, 255);
+}
+
+.thinkingBubbleText {
+	position: absolute;
+	color: #3b372d;
+	/* background-color: red; */
+	left: 51%;
+	top: 55%;
+	translate: -50% -50%;
+	width: 80%;
+	height: 60%;
+	text-align: left;
+	line-height: 1.7;
+	/* align-content: center; */
+	font-size: 20px;
+	font-family: animalCrossingSystem;
+	/* background-color: rebeccapurple; */
+}
+
 .decoration1 {
 	position: absolute;
-	bottom: -10px;
+	bottom: -1px;
+	left: -5px;
+	/* background-color: red; */
+	background-image: url(/frontEnd/images/decoration1.svg);
+	background-repeat: repeat-x;
+	background-size: 120%;
+	background-position: bottom;
+	/* bakc */
+	width: 740px;
+	height: 50%;
 	/* bottom: -55px;
 	width: 800px;
 	height: 180px; */
@@ -79,14 +147,33 @@
 	display: block;
 }
 
+.topCover {
+	position: absolute;
+	width: 100%;
+	height: 120px;
+
+	/* background-color: red; */
+	filter: drop-shadow(0px 5px 1px rgba(0, 0, 0, 0.452));
+	background-image: url(/frontEnd/images/topCover.png);
+	background-size: 120%;
+	border-radius: 18px;
+
+	background-repeat: repeat-x;
+}
+
 .loginText {
 	position: relative;
 	font-family: animalCrossingQuotes;
-	color: #6ab490;
+	color: #403b18;
 	font-size: 50px;
 	text-align: center;
-	top: 10px;
-	text-shadow: 0px 1px 0px#000000;
+	align-content: center;
+	top: 15px;
+	/* background-image: url(/frontEnd/images/musicMenuBG.png); */
+	background-size: 50%;
+	height: 60px;
+	/* background-image: url(/frontEnd/images/ribbonRed.svg); */
+	/* text-shadow: 0px 5px 3px #000000d0; */
 	/* background-image: url(/frontEnd/images/grassBg.png); */
 }
 
@@ -104,46 +191,73 @@
 .defaultButton {
 	position: absolute;
 	text-align: center;
+	font-family: animalCrossingQuotes;
 	width: 20%;
 	height: 8%;
 	/* background-color: #0cc6b8; */
 	cursor: pointer;
+	/* color: #f8eebb; */
+	transition: 0.5s ease-in-out;
+}
+
+.defaultButtonText {
+	position: absolute;
+	color: #3a2d29;
+	/* text-shadow: 0px 3px 3px #2e2c2381; */
+	/* background-color: red; */
+	transition: 0.3s ease-in-out;
+	top: 50%;
+	left: 50%;
+	width: 100%;
+	translate: -50% -50%;
+}
+
+.defaultButton:hover .defaultButtonText {
+	color: #3a2d29;
+	transform: scale(1.5);
 }
 
 .defaultButtonBG {
 	position: absolute;
 	width: 100%;
 	height: 100%;
-	background-color: #0cc6b8;
-	/* background: url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/85486/wave.svg); */
-
+	background-color: #68b893;
+	border-radius: 10px;
+	filter: drop-shadow(0px 5px 1px rgba(0, 0, 0, 0.329));
 	left: 50%;
 	top: 50%;
 	translate: -50% -50%;
 	z-index: -1;
 	overflow: hidden;
+	transition: 0.5s ease-in-out;
 }
 
 .defaultButtonBGWave {
-	/* width: 100%;
-	height: 100%; */
 	position: absolute;
-	background-color: #000000;
 	background: url("/frontEnd/images/wave.svg") repeat-x;
 	width: 1600px;
 	height: 198px;
-	top: 108px;
-	/* left: 0; */
+	top: 110px;
 	background-size: 20%;
-	/* bottom: 0; */
 	translate: 0% -50%;
 	overflow: hidden;
-
-	animation: wave 15s cubic-bezier(0.36, 0.45, 0.63, 0.53) infinite;
+	opacity: 0%;
+	transition: 0.3s ease-in-out;
 }
 
-.wave2 {
-	animation: wave 16s cubic-bezier(0.36, 0.45, 0.63, 0.53) infinite;
+.defaultButton:hover .defaultButtonBGWave {
+	opacity: 100%;
+	animation: wave 20s cubic-bezier(0.36, 0.45, 0.63, 0.53) infinite;
+}
+
+.defaultButton:hover .defaultButtonBG {
+	background-color: #7ec9d6;
+}
+
+.defaultButton:hover .wave2 {
+	opacity: 100%;
+
+	animation: wave 22s cubic-bezier(0.36, 0.45, 0.63, 0.53) infinite;
 }
 
 @keyframes wave {
@@ -176,6 +290,12 @@
 .backNew {
 	bottom: 10%;
 	left: 25%;
+	translate: -50%;
+}
+
+.logoutButton {
+	bottom: 5%;
+	left: 50%;
 	translate: -50%;
 }
 
@@ -233,7 +353,7 @@
 	height: 50%;
 	width: 80%;
 	text-align: center;
-	color: rgb(0, 0, 0);
+	color: #f8eebb;
 	font-family: animalCrossingSystem;
 
 	/* background-color: black; */
@@ -262,8 +382,10 @@
 	left: 50%;
 	top: 50%;
 	translate: -50%;
-	background-color: #9ecf9c;
+	background-color: #68b893;
 	border-radius: 5px;
+	color: black;
+	font-family: animalCrossing;
 }
 
 .inputText:focus {

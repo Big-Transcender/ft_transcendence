@@ -5,6 +5,12 @@ function navigate(page) {
 		return;
 	}
 	document.querySelectorAll(".page").forEach((p) => p.classList.remove("active"));
+	stopSpech();
+	if (page === "profile") {
+		if (!checkIfLogged()) {
+			typeText(bubbleTextLogin, "Welcome back!", 60);
+		}
+	}
 	document.getElementById(page).classList.add("active");
 	history.pushState(null, "", `#${page}`);
 	// getWins();
