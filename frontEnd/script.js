@@ -113,12 +113,14 @@ setInterval(() => {
     }
 }, 15);
 // ---- Receive Server Messages
+let gameOver = false;
 socket.addEventListener("message", (event) => {
     try {
         const data = JSON.parse(event.data);
         switch (data.type) {
             case "state": {
                 const state = data.payload;
+                console.log("onGoing:", state.onGoing);
                 if (paddle1)
                     paddle1.style.top = `${state.paddles.p1}%`;
                 if (paddle2)

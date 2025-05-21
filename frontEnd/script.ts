@@ -144,6 +144,8 @@ setInterval(() => {
 
 
 // ---- Receive Server Messages
+
+let gameOver = false;
 socket.addEventListener("message", (event: MessageEvent) => {
 	try {
 		const data = JSON.parse(event.data);
@@ -151,6 +153,7 @@ socket.addEventListener("message", (event: MessageEvent) => {
 		switch (data.type) {
 			case "state": {
 				const state = data.payload;
+				console.log("onGoing:", state.onGoing);
 
 				if (paddle1) paddle1.style.top = `${state.paddles.p1}%`;
 				if (paddle2) paddle2.style.top = `${state.paddles.p2}%`;

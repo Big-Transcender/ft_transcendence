@@ -1,3 +1,5 @@
+const { insertMatch } = require('./dataQuerys');
+
 
 var PaddleSpeed = 3
 const HitBoxBuffer = 3
@@ -9,13 +11,18 @@ var speed = 0.7;
 const ballSizeX = (33 / 900) * 100;
 const ballSizeY = (33 / 500) * 100;
 
+var numbrBalls = 10;
 
-var GamePlayLocal = true;
+
+var GamePlayLocal = false;
+
 const gameState = {
 	paddles: { p1: 40, p2: 40 }, // Position in %
 	ball: { x: 50, y: 50 },      // Position in %
 	ballVel: { x: 0.5, y: 0.5 }, // Velocity in % per frame
-	score: {p1: 0, p2: 0}
+	score: { p1: 0, p2: 0},
+	playerId: { p1: 1, p2: 2},
+	onGoing: true
 };
 
 function resetBall(ball, ballVel) {
@@ -76,11 +83,11 @@ function getImpactAngle(impact)
 
 
 
-function updateBall() {
+function updateBall(){
+
 	gameState.ball.x += gameState.ballVel.x;
 	gameState.ball.y += gameState.ballVel.y;
 	
-
 	// Wall collision
 	if (gameState.ball.y <= 0 || gameState.ball.y + ballSizeY >= 100) {
 		gameState.ballVel.y *= -1;
@@ -94,10 +101,19 @@ function updateBall() {
 			gameState.score.p2 += 1;
 		else
 			gameState.score.p1 += 1;
-		
+		numbrBalls -= 1;
+		console.log(numbrBalls)
 		return resetBall(gameState.ball, gameState.ballVel), speed = 0.7
 	}
-		
+
+	if (numbrBalls == 0 && gameState.onGoing)
+	{
+		var winnerId = gameState.playerId.p1;
+		if (gameState.score.p1 < gameState.score.p2)
+			winnerId = gameState.playerId.p2;
+		insertMatch(gameState.playerId.p1, gameState.playerId.p2, winnerId, gameState.score.p1, gameState.score.p2);
+		gameState.onGoing = false
+	}
 
 	// Calculate center Y of ball
 	const ballCenterY = gameState.ball.y + ballSizeY / 2;
@@ -133,7 +149,6 @@ function updateBall() {
 
 		//gameState.ball.x = 101 - paddleWidth - ballSizeX - 0.1;
 	}
-	console.log(gameState.score)
 }
 
 

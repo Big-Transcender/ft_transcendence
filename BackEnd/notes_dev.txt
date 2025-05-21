@@ -7,10 +7,9 @@ npm install @fastify/cors #conect to front
 curl -X POST http://localhost:3000/register \
   -H "Content-Type: application/json" \
   -d '{
-    "name": "diogo",
+    "nickname": "diogosan",
     "password": "1234",
-    "email": "diogo@example.com",
-    "nickname": "diogosan"
+    "email": "diogo@example.com"
   }'
 
 

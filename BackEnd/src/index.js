@@ -70,15 +70,17 @@ async function start() {
 
     // Game loop
     setInterval(() => {
-      updateBall();
-      const gameState = getGameState();
-      const message = JSON.stringify({ type: 'state', payload: gameState });
+		const gameState = getGameState();
+		if (gameState.onGoing)
+			updateBall();
 
-      wss.clients.forEach(client => {
-        if (client.readyState === WebSocket.OPEN) {
-          client.send(message);
-        }
-      });
+		const message = JSON.stringify({ type: 'state', payload: gameState });
+		wss.clients.forEach(client => {
+			if (client.readyState === WebSocket.OPEN) {
+			client.send(message);
+			}
+		
+		});
     }, 10); // 60 FPS
 
     fastify.register(routes);
