@@ -145,10 +145,18 @@
 					</div>
 
 					<div id="game1" class="game1 page">
-						<div class="gameSelector">
+						<div class="gameSelector gameId active" id="gameSelectorId">
 							<div class="gameSelectorBG"></div>
+							<div class="gameSelectorButton" id="pongButton">
+								<div class="gameSelectorButtonBG"></div>
+								<p class="gameSelectorText">Ping Pong</p>
+							</div>
+							<div class="gameSelectorButton Button2" id="snakeButton">
+								<div class="gameSelectorButtonBG ButtonBG2"></div>
+								<p class="gameSelectorText">Snake</p>
+							</div>
 						</div>
-						<!-- <div class="game1Place outline-2 outline-white outline-offset-2 hover:outline-lime-600 hover:outline-5">
+						<div class="game1Place gameId outline-2 outline-white outline-offset-2 hover:outline-lime-600 hover:outline-5" id="pongGameId">
 							<div class="board">
 								<div class="ball"></div>
 								<div class="paddle1 paddle">
@@ -156,7 +164,11 @@
 								</div>
 								<div class="paddle2 paddle"></div>
 							</div>
-						</div> -->
+						</div>
+						<div class="snakeGamePlace gameId" id="SnakeGameId">
+							<!-- <div class="snakeBackground"></div> -->
+							<p class="gameSnakeText">SNAAAKE</p>
+						</div>
 					</div>
 					<div id="game2" class="game2 page">
 						<h2>Game2</h2>
@@ -327,6 +339,7 @@
 		<script src="musicHandler.js"></script>
 		<script src="loginHandler.js"></script>
 		<script src="speechSystem.js"></script>
+		<script src="gameSelector.js"></script>
 		<script src="script.js"></script>
 	</body>
 </html>
