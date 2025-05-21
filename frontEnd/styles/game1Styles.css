@@ -1,6 +1,6 @@
 .game1 {
 	position: relative;
-	background-color: blueviolet;
+	/* background-color: blueviolet; */
 	height: 82%;
 	width: 95%;
 	left: 50%;
@@ -141,7 +141,7 @@
 	width: 900px;
 	height: 500px;
 	translate: -50% -50%;
-	background-color: black;
+	/* background-color: black; */
 }
 
 .snakeBackground {
@@ -162,4 +162,15 @@
 
 .gameId.active {
 	display: block;
+}
+
+.backGameSnake {
+	position: absolute;
+	bottom: -75px;
+	left: 50%;
+	translate: -50%;
+}
+
+.backGameSnakeText {
+	font-size: 20px;
 }

@@ -122,11 +122,13 @@ document.addEventListener("DOMContentLoaded", () => {
     if (checkIfLogged()) {
         changeLogginPageTo(loginPage, profilePage);
         putNickOnProfileHeader(getNickOnLocalStorage());
+        flipboardNumberAnimation("23");
     }
     //Login Button
     loginButton.addEventListener("click", async () => {
         if ((await loginUser()) === true) {
             changeLogginPageTo(loginPage, profilePage);
+            flipboardNumberAnimation("23");
         }
     });
     //Logout Button
