@@ -7,6 +7,8 @@ const path = require('path');
 const fastifyStatic = require('@fastify/static');
 
 const setupWebSocket = require('./socketConnection');
+const startGameLoop = require('./gameLoop');
+
 const {
   updateBall,
   handleInput,
@@ -23,19 +25,7 @@ async function start() {
 		const wss = setupWebSocket(fastify.server, { handleInput, getGameState });
 
 		// Game loop
-		setInterval(() => {
-			const gameState = getGameState();
-			if (gameState.onGoing)
-				updateBall();
-
-			const message = JSON.stringify({ type: 'state', payload: gameState });
-			wss.clients.forEach(client => {
-				if (client.readyState === WebSocket.OPEN) {
-					client.send(message);
-				}
-			
-			});
-		}, 10); // 60 FPS
+		startGameLoop(wss, { getGameState, updateBall });
 
 		fastify.register(routes);
 
