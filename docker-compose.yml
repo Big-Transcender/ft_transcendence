@@ -1,0 +1,16 @@
+version: '3.8'
+services:
+  nginx:
+    restart: always
+    image: 
+      'nginx:latest'
+    build: 
+      dockerfile: Dockerfile
+      context: ./nginx
+    ports:
+      - '3050:3051'
+    depends_on:
+      - api
+      - client
+  api:
+    
