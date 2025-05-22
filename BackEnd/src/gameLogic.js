@@ -1,7 +1,7 @@
 const { insertMatch } = require('./dataQuerys');
 
 
-var PaddleSpeed = 1.5
+var PaddleSpeed = 2
 const HitBoxBuffer = 3
 const paddleHeight = (75 / 500) * 100 + HitBoxBuffer;
 const paddleWidth = (20 / 900) * 100;
@@ -13,8 +13,6 @@ const ballSizeY = (33 / 500) * 100;
 
 const BALLS = 10
 var numbrBalls = BALLS;
-
-
 
 
 var gameState = {
@@ -93,7 +91,11 @@ function getImpactAngle(impact)
 		angle = impact;
 
 	speed += 0.1
-	return angle + 0.2; //TODO this need some testing to avoid infinite loops
+	var extra = 0.2
+	if (angle < 0)
+		extra = -0.2;
+
+	return angle + extra; //TODO this need some testing to avoid infinite loops
 }
 
 
