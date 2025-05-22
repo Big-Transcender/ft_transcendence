@@ -91,7 +91,7 @@ function getImpactAngle(impact)
 		angle = impact;
 
 	speed += 0.1
-	return angle;
+	return angle + 0.2; //TODO this need some testing to avoid infinite loops
 }
 
 

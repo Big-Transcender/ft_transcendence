@@ -125,7 +125,7 @@ function startPongWebSocket()
 	const ball = document.querySelector(".ball") as HTMLElement;
 
 
-	// --- Input State
+	// --- Input State an array of inputs fo smothe animations
 	const keysPressed = new Set<string>();
 
 	document.addEventListener("keydown", (event: KeyboardEvent) => {
@@ -159,7 +159,6 @@ function startPongWebSocket()
 
 	// ---- Receive Server Messages
 
-	let gameOver = false;
 	socket.addEventListener("message", (event: MessageEvent) => {
 		try {
 			const data = JSON.parse(event.data);
@@ -167,8 +166,6 @@ function startPongWebSocket()
 			switch (data.type) {
 				case "state": {
 					const state = data.payload;
-					console.log("onGoing:", state.onGoing);
-
 					if (paddle1) paddle1.style.top = `${state.paddles.p1}%`;
 					if (paddle2) paddle2.style.top = `${state.paddles.p2}%`;
 					if (ball) {
