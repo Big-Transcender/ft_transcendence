@@ -1,7 +1,6 @@
 const Fastify = require('fastify');
 const routes = require('./routes');
 const cors = require('@fastify/cors');
-const WebSocket = require('ws');
 
 const path = require('path');
 const fastifyStatic = require('@fastify/static');
@@ -21,7 +20,7 @@ async function start() {
 	try {
 		await fastify.register(cors, { origin: '*' });
 
-
+		// Connection to players
 		const wss = setupWebSocket(fastify.server, { handleInput, getGameState });
 
 		// Game loop
@@ -29,6 +28,7 @@ async function start() {
 
 		fastify.register(routes);
 
+		// For connecting the front to the back
 		fastify.register(fastifyStatic, {
 			root: path.join(__dirname, '../frontEnd'),
 			prefix: '/',

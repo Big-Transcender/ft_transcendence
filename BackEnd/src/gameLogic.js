@@ -14,7 +14,7 @@ const ballSizeY = (33 / 500) * 100;
 var numbrBalls = 10;
 
 
-var GamePlayLocal = true;
+var GamePlayLocal = false;
 
 const gameState = {
 	paddles: { p1: 40, p2: 40 }, // Position in %
@@ -25,7 +25,8 @@ const gameState = {
 	onGoing: true
 };
 
-function resetBall(ball, ballVel) {
+function resetBall(ball, ballVel)
+{
 
 	ball.x = 50;
 	ball.y = 50;
@@ -40,30 +41,42 @@ function resetBall(ball, ballVel) {
 }
 
 
-function handleInput(playerId, keys) {
-	if (GamePlayLocal) {
+function handleInput(playerId, keys)
+{
+	if (GamePlayLocal)
 		keys.forEach((key) => handleInputLocal(key));
-	} else {
+	else
+	{
 		keys.forEach((key) => {
-			if (key === 'ArrowUp' || key === 'w') movePaddle(playerId, 'up');
-			else if (key === 'ArrowDown' || key === 's') movePaddle(playerId, 'down');
+			if (key === 'ArrowUp' || key === 'w')
+				movePaddle(playerId, 'up');
+			else if (key === 'ArrowDown' || key === 's')
+				movePaddle(playerId, 'down');
 		});
 	}
 }
 
 
-function handleInputLocal(key) {
-	if (key === 'ArrowUp') movePaddle('p2', 'up');
-	else if (key === 'ArrowDown') movePaddle('p2', 'down');
-	else if (key === 'w') movePaddle('p1', 'up');
-	else if (key === 's') movePaddle('p1', 'down');
+function handleInputLocal(key)
+{
+	if (key === 'ArrowUp')
+		movePaddle('p2', 'up');
+	else if (key === 'ArrowDown')
+		movePaddle('p2', 'down');
+	else if (key === 'w')
+		movePaddle('p1', 'up');
+	else if (key === 's')
+		movePaddle('p1', 'down');
 }
 
 
-function movePaddle(player, direction) {
+function movePaddle(player, direction)
+{
 	const step = PaddleSpeed;
-	if (direction === 'up') gameState.paddles[player] = Math.max(0, gameState.paddles[player] - step);
-	if (direction === 'down') gameState.paddles[player] = Math.min(85, gameState.paddles[player] + step);
+	if (direction === 'up')
+		gameState.paddles[player] = Math.max(0, gameState.paddles[player] - step);
+	if (direction === 'down')
+		gameState.paddles[player] = Math.min(85, gameState.paddles[player] + step);
 }
 
 function getImpactAngle(impact)
