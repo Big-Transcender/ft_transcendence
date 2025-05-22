@@ -6,11 +6,12 @@ const path = require('path');
 const fastifyStatic = require('@fastify/static');
 
 const setupWebSocket = require('./socketConnection');
-const startGameLoop = require('./gameLoop');
+const { startGameLoop, startGameLoopLocal } = require('./gameLoop');
 
 const {
   updateBall,
   handleInput,
+  resetGame,
   getGameState
 } = require('./gameLogic');
 
@@ -21,10 +22,11 @@ async function start() {
 		await fastify.register(cors, { origin: '*' });
 
 		// Connection to players
-		const wss = setupWebSocket(fastify.server, { handleInput, getGameState });
+		const wss = setupWebSocket(fastify.server, { handleInput, getGameState, resetGame });
 
 		// Game loop
-		startGameLoop(wss, { getGameState, updateBall });
+		//startGameLoop(wss, { getGameState, updateBall });
+		startGameLoopLocal(wss, { getGameState, updateBall });
 
 		fastify.register(routes);
 

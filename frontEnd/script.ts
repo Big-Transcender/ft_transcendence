@@ -94,16 +94,19 @@ musicMenu.addEventListener("mouseleave", () => {
 // });
 
 
-if (window.location.hash === "#game1") {
-	startPongWebSocket();
-}
+let socket: WebSocket | null = null;
+let socketInitialized = false;
 
 
 
 function startPongWebSocket()
 {
+	if (socketInitialized)
+		return;
+	socketInitialized = true;
+	
 	// --- WebSocket Setup
-	const socket = new WebSocket(`ws://${window.location.hostname}:3000`);
+	socket = new WebSocket(`ws://${window.location.hostname}:3000`);
 
 	socket.addEventListener("open", () => {
 		console.log("✅ Connected to WebSocket server");
@@ -154,7 +157,7 @@ function startPongWebSocket()
 				})
 			);
 		}
-	}, 15);
+	}, 20);
 
 
 	// ---- Receive Server Messages
@@ -186,3 +189,23 @@ function startPongWebSocket()
 		}
 	});
 }
+
+// Close the WebSocket when leaving the game
+function stopPongWebSocket() {
+	if (socket) {
+		socket.close();
+		socket = null;
+	}
+	socketInitialized = false;
+}
+
+// Poll URL hash every 100ms (SPA-safe)
+setInterval(() => {
+	const isOnPongGame = window.location.hash === "#game1";
+
+	if (isOnPongGame && !socketInitialized) {
+		startPongWebSocket();
+	} else if (!isOnPongGame && socketInitialized) {
+		stopPongWebSocket();
+	}
+}, 100);
