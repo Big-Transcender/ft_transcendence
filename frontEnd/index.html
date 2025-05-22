@@ -147,6 +147,7 @@
 					<div id="game1" class="game1 page">
 						<div class="gameSelector gameId active" id="gameSelectorId">
 							<div class="gameSelectorBG"></div>
+							<p class="gameSelectorHeader">Pick your game!</p>
 							<div class="gameSelectorButton" id="pongButton">
 								<div class="gameSelectorButtonBG"></div>
 								<p class="gameSelectorText">Ping Pong</p>
@@ -155,6 +156,25 @@
 								<div class="gameSelectorButtonBG ButtonBG2"></div>
 								<p class="gameSelectorText">Snake</p>
 							</div>
+						</div>
+						<div class="gameSelector gameId" id="gameSelectorPongId">
+							<div class="gameSelectorBG"></div>
+							<p class="gameSelectorHeader">Choose the mode!</p>
+							<div class="gameSelectorButton" id="buttonSinglePong">
+								<div class="gameSelectorButtonBG"></div>
+								<p class="gameSelectorText">Single</p>
+							</div>
+							<div class="gameSelectorButton Button2" id="buttonMultiplayerPong">
+								<div class="gameSelectorButtonBG ButtonBG2"></div>
+								<p class="gameSelectorText">Multiplayer</p>
+							</div>
+							<button class="defaultButton backGamePongMode" id="backGameSelectorPongId">
+								<p class="defaultButtonText backGameSnakeText">Back</p>
+								<div class="defaultButtonBG">
+									<div class="defaultButtonBGWave"></div>
+									<div class="defaultButtonBGWave wave2"></div>
+								</div>
+							</button>
 						</div>
 						<div class="game1Place gameId outline-2 outline-white outline-offset-2 hover:outline-lime-600 hover:outline-5" id="pongGameId">
 							<div class="board">
@@ -166,11 +186,18 @@
 									<div class="paddleHitBox"></div>
 								</div>
 							</div>
+							<button class="defaultButton backGamePong" id="backGamePongId">
+								<p class="defaultButtonText backGameSnakeText">Back</p>
+								<div class="defaultButtonBG">
+									<div class="defaultButtonBGWave"></div>
+									<div class="defaultButtonBGWave wave2"></div>
+								</div>
+							</button>
 						</div>
 						<div class="snakeGamePlace gameId" id="SnakeGameId">
 							<div class="snakeBackground"></div>
 							<p class="gameSnakeText">SNAAAKE</p>
-							<button class="defaultButton backGameSnake">
+							<button class="defaultButton backGameSnake" id="backGameSnakeId">
 								<p class="defaultButtonText backGameSnakeText">Back</p>
 								<div class="defaultButtonBG">
 									<div class="defaultButtonBGWave"></div>
