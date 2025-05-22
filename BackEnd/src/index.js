@@ -17,7 +17,8 @@ const {
 
 const fastify = Fastify({ logger: true});
 
-async function start() {
+async function start()
+{
 	try {
 		await fastify.register(cors, { origin: '*' });
 
