@@ -93,7 +93,6 @@ musicMenu.addEventListener("mouseleave", () => {
 // 	}
 // });
 
-
 // --- WebSocket Setup
 const socket = new WebSocket(`ws://${window.location.hostname}:3000`);
 
@@ -111,11 +110,10 @@ socket.addEventListener("error", (event: Event) => {
 });
 
 // --- Game Elements
-let playerId: 'p1' | 'p2' = 'p1';
+let playerId: "p1" | "p2" = "p1";
 const paddle1 = document.querySelector(".paddle1") as HTMLElement;
 const paddle2 = document.querySelector(".paddle2") as HTMLElement;
 const ball = document.querySelector(".ball") as HTMLElement;
-
 
 // --- Input State
 const keysPressed = new Set<string>();
@@ -134,7 +132,6 @@ document.addEventListener("keyup", (event: KeyboardEvent) => {
 	}
 });
 
-
 // ---- Send Input to Server
 setInterval(() => {
 	if (keysPressed.size > 0) {
@@ -148,7 +145,6 @@ setInterval(() => {
 	}
 }, 15);
 
-
 // ---- Receive Server Messages
 
 let gameOver = false;
@@ -159,7 +155,7 @@ socket.addEventListener("message", (event: MessageEvent) => {
 		switch (data.type) {
 			case "state": {
 				const state = data.payload;
-				console.log("onGoing:", state.onGoing);
+				// console.log("onGoing:", state.onGoing);
 
 				if (paddle1) paddle1.style.top = `${state.paddles.p1}%`;
 				if (paddle2) paddle2.style.top = `${state.paddles.p2}%`;

@@ -90,7 +90,7 @@ socket.addEventListener("error", (event) => {
     console.error("WebSocket error:", event);
 });
 // --- Game Elements
-let playerId = 'p1';
+let playerId = "p1";
 const paddle1 = document.querySelector(".paddle1");
 const paddle2 = document.querySelector(".paddle2");
 const ball = document.querySelector(".ball");
@@ -126,7 +126,7 @@ socket.addEventListener("message", (event) => {
         switch (data.type) {
             case "state": {
                 const state = data.payload;
-                console.log("onGoing:", state.onGoing);
+                // console.log("onGoing:", state.onGoing);
                 if (paddle1)
                     paddle1.style.top = `${state.paddles.p1}%`;
                 if (paddle2)

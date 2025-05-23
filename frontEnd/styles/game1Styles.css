@@ -115,62 +115,6 @@
 	background-color: #0bc7b9;
 } */
 
-.game1Place {
-	position: absolute;
-	right: 50%;
-	left: 50%;
-	top: 45%;
-	/* bottom: 50%; */
-	width: 900px;
-	height: 500px;
-	translate: -50% -50%;
-	/* background-color: black; */
-}
-
-.board {
-	position: absolute;
-	height: 100%;
-	width: 100%;
-	background-color: black;
-	overflow: hidden;
-}
-
-.ball {
-	position: absolute;
-	height: 30px;
-	width: 30px;
-	background-color: azure;
-	border-radius: 50%;
-	top: calc(50% - 15px);
-	left: calc(50% - 15px);
-}
-
-.paddle {
-	position: absolute;
-	height: 75px;
-	width: 20px;
-	/* border-radius: 10%; */
-	background-color: white;
-}
-
-.paddleHitBox {
-	position: absolute;
-	background-color: red;
-	opacity: 50%;
-	width: 20px;
-	height: 75px;
-	left: 50%;
-	translate: -50%;
-}
-
-.paddle1 {
-	left: 0;
-}
-
-.paddle2 {
-	right: 0;
-}
-
 .snakeGamePlace {
 	position: absolute;
 	right: 50%;
