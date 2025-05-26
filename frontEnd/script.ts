@@ -160,6 +160,10 @@ function startPongWebSocket() {
 			switch (data.type) {
 				case "state": {
 					const state = data.payload;
+					// (window as any).gameState = state;
+					// (window as any).gameState = data.payload;
+					window.dispatchEvent(new CustomEvent("gameStateUpdate", { detail: state }));
+					// console.log(state);
 					if (paddle1) paddle1.style.top = `${state.paddles.p1}%`;
 					if (paddle2) paddle2.style.top = `${state.paddles.p2}%`;
 					if (ball) {

@@ -80,13 +80,6 @@ function turnaround(player1, player2) {
         return false;
     }
 }
-function updateScore() {
-    // console.log(currentGameState);
-    // console.log(currentGameStatus.score.p1);
-    // if (currentGameStatus) {
-    // 	// const player1Text = currentGameStatus.
-    // }
-}
 updateScore();
 // export function setCurrentGameStatus(status: any) {
 // 	currentGameStatus = status;
@@ -111,12 +104,19 @@ updateScore();
 //You can take the player1ScoreId or player2ScoreId. Change the textContent
 // getEmotion();
 // updateScore();
-// setInterval(() => {
-// 	console.log(currentGameState);
-// 	console.log("teste teste");
-// }, 1000); // loga a cada 1 segundo
+let state2;
+window.addEventListener("gameStateUpdate", (event) => {
+    state2 = event.detail;
+});
+let player1ScoreId;
+function updateScore() {
+    //#TODO MAKE THIS, PUT THE EVENT IN THE SCOREBORD
+}
+setInterval(() => {
+    console.log(state2);
+    console.log("teste teste");
+}, 1000); // loga a cada 1 segundo
 // if (teste) {
 // 	console.log(teste);
 // }
-console.log(teste);
 console.log("testeeeeeeeeeeeeeeeeeeeeeeeee");
