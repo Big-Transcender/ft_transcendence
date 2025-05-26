@@ -9,8 +9,14 @@ services:
       context: ./nginx
     ports:
       - '3050:3051'
-    depends_on:
-      - api
-      - client
-  api:
+    # depends_on:
+    #   - api
+    #   - client
+    
+  frontend:
+    container_name: "frontend"
+    build: ./frontEnd
+    ports:
+      - "80:80"
+  # api:
     

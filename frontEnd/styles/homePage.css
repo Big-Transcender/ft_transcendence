@@ -44,7 +44,7 @@
 .homePlayersRankBG {
 	position: absolute;
 	background-color: rgb(42, 153, 180);
-	background-image: url("/frontEnd/images/rankBg.jpg");
+	background-image: url("/images/rankBg.jpg");
 	border-radius: 16px;
 	height: 50vh;
 	width: 100%;

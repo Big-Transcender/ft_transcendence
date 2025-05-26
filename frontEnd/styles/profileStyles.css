@@ -74,7 +74,7 @@
 
 .thinkingBubbleBG {
 	position: absolute;
-	background-image: url(/frontEnd/images/genericQuote.png);
+	background-image: url(/images/genericQuote.png);
 	background-size: 100%;
 	background-repeat: no-repeat;
 	width: 100%;
@@ -117,7 +117,7 @@
 	bottom: -1px;
 	left: -5px;
 	/* background-color: red; */
-	background-image: url(/frontEnd/images/decoration1.svg);
+	background-image: url(/images/decoration1.svg);
 	background-repeat: repeat-x;
 	background-size: 120%;
 	background-position: bottom;
@@ -154,7 +154,7 @@
 
 	/* background-color: red; */
 	filter: drop-shadow(0px 5px 1px rgba(0, 0, 0, 0.452));
-	background-image: url(/frontEnd/images/topCover.png);
+	background-image: url(/images/topCover.png);
 	background-size: 120%;
 	border-radius: 18px;
 
@@ -234,7 +234,7 @@
 
 .defaultButtonBGWave {
 	position: absolute;
-	background: url("/frontEnd/images/wave.svg") repeat-x;
+	background: url("/images/wave.svg") repeat-x;
 	width: 1600px;
 	height: 198px;
 	top: 110px;
@@ -331,7 +331,7 @@
 	top: 25%;
 	translate: -50% -50%;
 	border-radius: 10px;
-	background-image: url(/frontEnd/images/bgPattern2.jpg);
+	background-image: url(/images/bgPattern2.jpg);
 	animation: bgAnimation 20s infinite linear;
 }
 
