@@ -3,7 +3,8 @@ let socket: WebSocket | null = null;
 let socketInitialized = false;
 
 function startPongWebSocket() {
-	if (socketInitialized) return;
+	if (socketInitialized)
+		return;
 	socketInitialized = true;
 
 	let animationFrameId: number;
@@ -47,7 +48,7 @@ function startPongWebSocket() {
 		}
 	});
 
-	// ---- Send Input to Server using requestAnimationFrame
+	// ---- Sending player inputs to server
 	function sendInputLoop() {
 		if (keysPressed.size > 0 && socket && socket.readyState === WebSocket.OPEN) {
 			socket.send(
@@ -62,7 +63,7 @@ function startPongWebSocket() {
 	}
 	sendInputLoop();
 
-	// ---- Receive Server Messages
+	// ---- Receiving Server updated positions
 	socket.addEventListener("message", (event: MessageEvent) => {
 		try {
 			const data = JSON.parse(event.data);
@@ -70,8 +71,12 @@ function startPongWebSocket() {
 			switch (data.type) {
 				case "state": {
 					const state = data.payload;
-					if (paddle1) paddle1.style.top = `${state.paddles.p1}%`;
-					if (paddle2) paddle2.style.top = `${state.paddles.p2}%`;
+					if (paddle1)
+						paddle1.style.top = `${state.paddles.p1}%`;
+					
+					if (paddle2)
+						paddle2.style.top = `${state.paddles.p2}%`;
+					
 					if (ball) {
 						ball.style.left = `${state.ball.x}%`;
 						ball.style.top = `${state.ball.y}%`;

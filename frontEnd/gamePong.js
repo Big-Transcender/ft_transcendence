@@ -37,7 +37,7 @@ function startPongWebSocket() {
             keysPressed.delete(key);
         }
     });
-    // ---- Send Input to Server using requestAnimationFrame
+    // ---- Sending player inputs to server
     function sendInputLoop() {
         if (keysPressed.size > 0 && socket && socket.readyState === WebSocket.OPEN) {
             socket.send(JSON.stringify({
@@ -49,7 +49,7 @@ function startPongWebSocket() {
         animationFrameId = requestAnimationFrame(sendInputLoop);
     }
     sendInputLoop();
-    // ---- Receive Server Messages
+    // ---- Receiving Server updated positions
     socket.addEventListener("message", (event) => {
         try {
             const data = JSON.parse(event.data);
