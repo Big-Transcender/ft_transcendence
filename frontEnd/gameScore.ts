@@ -88,18 +88,21 @@ function turnaround(player1, player2) {
 document.addEventListener("keydown", (event: KeyboardEvent) => {
 	const key = event.key;
 	if (["ArrowUp"].includes(key)) {
-		let player1Score = parseInt((document.getElementById("player1ScoreId") as HTMLImageElement).textContent);
-		player1Score += 1;
-		(document.getElementById("player1ScoreId") as HTMLImageElement).textContent = player1Score.toString();
+		// let player1Score = parseInt((document.getElementById("player1ScoreId") as HTMLImageElement).textContent);
+		// player1Score += 1;
+		// (document.getElementById("player1ScoreId") as HTMLImageElement).textContent = player1Score.toString();
 		// console.log(player1Score);
 		getEmotion();
 	}
 	if (["ArrowDown"].includes(key)) {
-		let player2Score = parseInt((document.getElementById("player2ScoreId") as HTMLImageElement).textContent);
-		player2Score += 1;
-		(document.getElementById("player2ScoreId") as HTMLImageElement).textContent = player2Score.toString();
+		// let player2Score = parseInt((document.getElementById("player2ScoreId") as HTMLImageElement).textContent);
+		// player2Score += 1;
+		// (document.getElementById("player2ScoreId") as HTMLImageElement).textContent = player2Score.toString();
 		getEmotion();
 	}
 });
+
+//#TODO change the point of playerScore
+//You can take the player1ScoreId or player2ScoreId. Change the textContent
 
 getEmotion();
