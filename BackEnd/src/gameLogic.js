@@ -14,7 +14,7 @@ const ballSizeY = (33 / 500) * 100;
 var numbrBalls = 10;
 
 
-var GamePlayLocal = false;
+var GamePlayLocal = true;
 
 const gameState = {
 	paddles: { p1: 40, p2: 40 }, // Position in %
