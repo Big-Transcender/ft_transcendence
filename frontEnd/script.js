@@ -1,29 +1,29 @@
 const page = document.getElementById("home");
 function navigate(page) {
-	if (document.getElementById(page).classList.contains("active")) {
-		return;
-	}
-	document.querySelectorAll(".page").forEach((p) => p.classList.remove("active"));
-	stopSpech();
-	if (page === "profile") {
-		if (!checkIfLogged()) {
-			typeText(bubbleTextLogin, "Welcome back!", 60);
-		}
-	}
-	document.getElementById(page).classList.add("active");
-	history.pushState(null, "", `#${page}`);
-	// getWins();
-	// updateLoses();
-	// updatePlays();
-	// updateWins();
+    if (document.getElementById(page).classList.contains("active")) {
+        return;
+    }
+    document.querySelectorAll(".page").forEach((p) => p.classList.remove("active"));
+    stopSpech();
+    if (page === "profile") {
+        if (!checkIfLogged()) {
+            typeText(bubbleTextLogin, "Welcome back!", 60);
+        }
+    }
+    document.getElementById(page).classList.add("active");
+    history.pushState(null, "", `#${page}`);
+    // getWins();
+    // updateLoses();
+    // updatePlays();
+    // updateWins();
 }
 window.addEventListener("popstate", () => {
-	const page = location.hash.replace("#", "") || "home";
-	navigate(page);
+    const page = location.hash.replace("#", "") || "home";
+    navigate(page);
 });
 window.addEventListener("load", () => {
-	const page = location.hash.replace("#", "") || "home";
-	navigate(page);
+    const page = location.hash.replace("#", "") || "home";
+    navigate(page);
 });
 const buttons = document.querySelectorAll(".buttonHitBox");
 const div = document.querySelector(".buttonBG");
@@ -36,32 +36,32 @@ const musicMenu = document.querySelector(".musicPlayerBg");
 let musicIn = false;
 // bgMusic.play()
 buttons.forEach((button) => {
-	button.addEventListener("mouseenter", () => {
-		if (!mouseIn) {
-			buttonSoundIn.play();
-			mouseIn = true;
-			// console.log("teste1");
-		}
-	});
-	button.addEventListener("mouseleave", () => {
-		if (mouseIn) {
-			buttonSoundOut.play();
-			// console.log("teste2");
-			mouseIn = false;
-		}
-	});
+    button.addEventListener("mouseenter", () => {
+        if (!mouseIn) {
+            buttonSoundIn.play();
+            mouseIn = true;
+            // console.log("teste1");
+        }
+    });
+    button.addEventListener("mouseleave", () => {
+        if (mouseIn) {
+            buttonSoundOut.play();
+            // console.log("teste2");
+            mouseIn = false;
+        }
+    });
 });
 musicMenu.addEventListener("mouseenter", () => {
-	if (!musicIn) {
-		musicMenuIn.play();
-		musicIn = true;
-	}
+    if (!musicIn) {
+        musicMenuIn.play();
+        musicIn = true;
+    }
 });
 musicMenu.addEventListener("mouseleave", () => {
-	if (musicIn) {
-		musicMenuOut.play();
-		musicIn = false;
-	}
+    if (musicIn) {
+        musicMenuOut.play();
+        musicIn = false;
+    }
 });
 // console.log(bgMusic.title);
 // botao.addEventListener('mouseenter', () => {
@@ -80,91 +80,94 @@ musicMenu.addEventListener("mouseleave", () => {
 let socket = null;
 let socketInitialized = false;
 function startPongWebSocket() {
-	if (socketInitialized) return;
-	socketInitialized = true;
-	// --- WebSocket Setup
-	socket = new WebSocket(`ws://${window.location.hostname}:3000`);
-	socket.addEventListener("open", () => {
-		console.log("✅ Connected to WebSocket server");
-		socket.send(JSON.stringify({ type: "hello", payload: "Client Ready" }));
-	});
-	socket.addEventListener("close", () => {
-		console.log("❌ WebSocket connection closed");
-	});
-	socket.addEventListener("error", (event) => {
-		console.error("WebSocket error:", event);
-	});
-	// --- Game Elements
-	let playerId = "p1";
-	const paddle1 = document.querySelector(".paddle1");
-	const paddle2 = document.querySelector(".paddle2");
-	const ball = document.querySelector(".ball");
-	// --- Input State an array of inputs fo smothe animations
-	const keysPressed = new Set();
-	document.addEventListener("keydown", (event) => {
-		const key = event.key;
-		if (["ArrowUp", "ArrowDown", "w", "s"].includes(key)) {
-			keysPressed.add(key);
-		}
-	});
-	document.addEventListener("keyup", (event) => {
-		const key = event.key;
-		if (["ArrowUp", "ArrowDown", "w", "s"].includes(key)) {
-			keysPressed.delete(key);
-		}
-	});
-	// ---- Send Input to Server
-	setInterval(() => {
-		if (keysPressed.size > 0) {
-			socket.send(
-				JSON.stringify({
-					type: "input",
-					playerId, // send the current player's ID
-					payload: Array.from(keysPressed),
-				})
-			);
-		}
-	}, 20);
-	// ---- Receive Server Messages
-	socket.addEventListener("message", (event) => {
-		try {
-			const data = JSON.parse(event.data);
-			switch (data.type) {
-				case "state": {
-					const state = data.payload;
-					if (paddle1) paddle1.style.top = `${state.paddles.p1}%`;
-					if (paddle2) paddle2.style.top = `${state.paddles.p2}%`;
-					if (ball) {
-						ball.style.left = `${state.ball.x}%`;
-						ball.style.top = `${state.ball.y}%`;
-					}
-					break;
-				}
-				case "assign": {
-					playerId = data.payload;
-					console.log(`👤 You are assigned as ${playerId}`);
-					break;
-				}
-			}
-		} catch (err) {
-			console.error("❗ Invalid JSON from server:", event.data);
-		}
-	});
+    if (socketInitialized)
+        return;
+    socketInitialized = true;
+    // --- WebSocket Setup
+    socket = new WebSocket(`ws://${window.location.hostname}:3000`);
+    socket.addEventListener("open", () => {
+        console.log("✅ Connected to WebSocket server");
+        socket.send(JSON.stringify({ type: "hello", payload: "Client Ready" }));
+    });
+    socket.addEventListener("close", () => {
+        console.log("❌ WebSocket connection closed");
+    });
+    socket.addEventListener("error", (event) => {
+        console.error("WebSocket error:", event);
+    });
+    // --- Game Elements
+    let playerId = "p1";
+    const paddle1 = document.querySelector(".paddle1");
+    const paddle2 = document.querySelector(".paddle2");
+    const ball = document.querySelector(".ball");
+    // --- Input State an array of inputs fo smothe animations
+    const keysPressed = new Set();
+    document.addEventListener("keydown", (event) => {
+        const key = event.key;
+        if (["ArrowUp", "ArrowDown", "w", "s"].includes(key)) {
+            keysPressed.add(key);
+        }
+    });
+    document.addEventListener("keyup", (event) => {
+        const key = event.key;
+        if (["ArrowUp", "ArrowDown", "w", "s"].includes(key)) {
+            keysPressed.delete(key);
+        }
+    });
+    // ---- Send Input to Server
+    setInterval(() => {
+        if (keysPressed.size > 0) {
+            socket.send(JSON.stringify({
+                type: "input",
+                playerId, // send the current player's ID
+                payload: Array.from(keysPressed),
+            }));
+        }
+    }, 20);
+    // ---- Receive Server Messages
+    socket.addEventListener("message", (event) => {
+        try {
+            const data = JSON.parse(event.data);
+            switch (data.type) {
+                case "state": {
+                    const state = data.payload;
+                    if (paddle1)
+                        paddle1.style.top = `${state.paddles.p1}%`;
+                    if (paddle2)
+                        paddle2.style.top = `${state.paddles.p2}%`;
+                    if (ball) {
+                        ball.style.left = `${state.ball.x}%`;
+                        ball.style.top = `${state.ball.y}%`;
+                    }
+                    break;
+                }
+                case "assign": {
+                    playerId = data.payload;
+                    console.log(`👤 You are assigned as ${playerId}`);
+                    break;
+                }
+            }
+        }
+        catch (err) {
+            console.error("❗ Invalid JSON from server:", event.data);
+        }
+    });
 }
 // Close the WebSocket when leaving the game
 function stopPongWebSocket() {
-	if (socket) {
-		socket.close();
-		socket = null;
-	}
-	socketInitialized = false;
+    if (socket) {
+        socket.close();
+        socket = null;
+    }
+    socketInitialized = false;
 }
 // Poll URL hash every 100ms (SPA-safe)
 setInterval(() => {
-	const isOnPongGame = window.location.hash === "#game1";
-	if (isOnPongGame && !socketInitialized) {
-		startPongWebSocket();
-	} else if (!isOnPongGame && socketInitialized) {
-		stopPongWebSocket();
-	}
+    const isOnPongGame = window.location.hash === "#pongSingle";
+    if (isOnPongGame && !socketInitialized) {
+        startPongWebSocket();
+    }
+    else if (!isOnPongGame && socketInitialized) {
+        stopPongWebSocket();
+    }
 }, 100);

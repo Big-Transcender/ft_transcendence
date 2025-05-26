@@ -193,7 +193,7 @@ function stopPongWebSocket() {
 
 // Poll URL hash every 100ms (SPA-safe)
 setInterval(() => {
-	const isOnPongGame = window.location.hash === "#game1";
+	const isOnPongGame = window.location.hash === "#pongSingle";
 
 	if (isOnPongGame && !socketInitialized) {
 		startPongWebSocket();
