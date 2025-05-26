@@ -15,6 +15,7 @@ const {
   getGameState
 } = require('./gameLogic');
 
+
 const fastify = Fastify({ logger: true});
 
 async function start()
