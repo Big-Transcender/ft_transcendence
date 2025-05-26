@@ -157,7 +157,6 @@ function startPongWebSocket() {
 	socket.addEventListener("message", (event: MessageEvent) => {
 		try {
 			const data = JSON.parse(event.data);
-
 			switch (data.type) {
 				case "state": {
 					const state = data.payload;
@@ -201,3 +200,5 @@ setInterval(() => {
 		stopPongWebSocket();
 	}
 }, 100);
+
+(window as any).navigate = navigate;

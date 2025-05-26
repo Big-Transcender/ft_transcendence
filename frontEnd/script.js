@@ -171,3 +171,4 @@ setInterval(() => {
         stopPongWebSocket();
     }
 }, 100);
+window.navigate = navigate;
