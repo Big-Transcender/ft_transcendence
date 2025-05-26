@@ -1,5 +1,5 @@
 
-
+let gameLoopStarted = false;
 
 
 function startGameLoop(wss, { getGameState, updateBall })
@@ -23,26 +23,50 @@ function startGameLoop(wss, { getGameState, updateBall })
 	}, 10); // 60 FPS
 }
 
-function startGameLoopLocal(wss, { getGameState, updateBall })
-{
+function startGameLoopLocal(wss, { getGameState, updateBall }) {
+	if (gameLoopStarted)
+		return; // avoid double start
+	gameLoopStarted = true;
+
 	setInterval(() => {
 		const gameState = getGameState();
 		gameState.GamePlayLocal = true;
-		const message = JSON.stringify({ type: 'state', payload: gameState });
 
-		if (wss.clients.size === 1)
-		{
-			if (gameState.onGoing)
+		if (wss.clients.size === 1) {
+			// Start timer only once when game is not ongoing
+			if (!gameState.onGoing && !gameState.started) {
+				gameState.started = true;
+				console.log("⏳ Starting game in 3 seconds...");
+				startTimer(3000, gameState);
+			}
+
+			// Only update ball if game is active
+			if (gameState.onGoing) {
 				updateBall();
-			
+			}
+
+			const message = JSON.stringify({ type: 'state', payload: gameState });
+
+			// Send game state to client
 			wss.clients.forEach(client => {
-				if (client.readyState === 1)
+				if (client.readyState === 1) {
 					client.send(message);
+				}
 			});
-			
 		}
-		
 	}, 10); // 60 FPS
+}
+
+
+
+
+function startTimer(time, gameState) {
+	gameState.onGoing = false;
+
+	setTimeout(() => {
+		gameState.onGoing = true;
+		console.log("✅ Game started!");
+	}, time);
 }
 
 

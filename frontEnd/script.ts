@@ -100,6 +100,10 @@ function startPongWebSocket() {
 	if (socketInitialized) return;
 	socketInitialized = true;
 
+	let animationFrameId: number;
+	let playerId: "p1" | "p2" = "p1";
+	const keysPressed = new Set<string>();
+
 	// --- WebSocket Setup
 	socket = new WebSocket(`ws://${window.location.hostname}:3000`);
 
@@ -110,6 +114,7 @@ function startPongWebSocket() {
 
 	socket.addEventListener("close", () => {
 		console.log("❌ WebSocket connection closed");
+		cancelAnimationFrame(animationFrameId); // Stop sending inputs
 	});
 
 	socket.addEventListener("error", (event: Event) => {
@@ -117,14 +122,11 @@ function startPongWebSocket() {
 	});
 
 	// --- Game Elements
-	let playerId: "p1" | "p2" = "p1";
 	const paddle1 = document.querySelector(".paddle1") as HTMLElement;
 	const paddle2 = document.querySelector(".paddle2") as HTMLElement;
 	const ball = document.querySelector(".ball") as HTMLElement;
 
-	// --- Input State an array of inputs fo smothe animations
-	const keysPressed = new Set<string>();
-
+	// --- Input Handling
 	document.addEventListener("keydown", (event: KeyboardEvent) => {
 		const key = event.key;
 		if (["ArrowUp", "ArrowDown", "w", "s"].includes(key)) {
@@ -139,21 +141,22 @@ function startPongWebSocket() {
 		}
 	});
 
-	// ---- Send Input to Server
-	setInterval(() => {
-		if (keysPressed.size > 0) {
+	// ---- Send Input to Server using requestAnimationFrame
+	function sendInputLoop() {
+		if (keysPressed.size > 0 && socket && socket.readyState === WebSocket.OPEN) {
 			socket.send(
 				JSON.stringify({
 					type: "input",
-					playerId, // send the current player's ID
+					playerId,
 					payload: Array.from(keysPressed),
 				})
 			);
 		}
-	}, 20);
+		animationFrameId = requestAnimationFrame(sendInputLoop);
+	}
+	sendInputLoop();
 
 	// ---- Receive Server Messages
-
 	socket.addEventListener("message", (event: MessageEvent) => {
 		try {
 			const data = JSON.parse(event.data);
@@ -169,7 +172,6 @@ function startPongWebSocket() {
 					}
 					break;
 				}
-
 				case "assign": {
 					playerId = data.payload;
 					console.log(`👤 You are assigned as ${playerId}`);
@@ -181,6 +183,7 @@ function startPongWebSocket() {
 		}
 	});
 }
+
 
 // Close the WebSocket when leaving the game
 function stopPongWebSocket() {
