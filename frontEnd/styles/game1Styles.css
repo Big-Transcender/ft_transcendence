@@ -1,6 +1,6 @@
 .game1 {
 	position: relative;
-	background-color: blueviolet;
+	/* background-color: blueviolet; */
 	height: 82%;
 	width: 95%;
 	left: 50%;
@@ -13,135 +13,118 @@
 
 .gameSelector {
 	position: absolute;
-	width: 500px;
-	height: 500px;
+	width: calc(1230px / 1.5);
+	height: calc(780px / 1.5);
 	left: 50%;
-	top: 50%;
+	top: 45%;
 	translate: -50% -50%;
-	cursor: pointer;
+	filter: drop-shadow(0px 20px 5px rgba(0, 0, 0, 0.575));
+	outline: 10px solid #f1e26f;
+	border-radius: 20px;
+	overflow: hidden;
+	/* cursor: pointer; */
 }
 
 .gameSelectorBG {
 	position: absolute;
-	background-color: rgb(13, 82, 172);
 	width: 100%;
 	height: 100%;
+	background-image: url(/frontEnd/images/gameSelectorBG.png);
+	background-size: 100%;
+	background-repeat: no-repeat;
+}
+
+.gameSelectorHeader {
+	position: absolute;
+	width: 500px;
+	height: 60px;
+	text-align: center;
+	align-content: center;
+	/* background-color: red; */
+	left: 50%;
+	top: 7.5%;
+	translate: -50%;
+	font-family: animalCrossing;
+	color: #00171f;
 }
 
 .gameSelectorButton {
 	position: absolute;
-	width: 100%;
-	height: 50%;
+	width: 30%;
+	height: 30%;
+	cursor: pointer;
 	/* background-color: red; */
-}
-
-.Button2 {
-	bottom: 0;
-}
-
-.gameSelectorText {
-	position: absolute;
-	/* background-color: red; */
-	width: 70%;
-	text-align: center;
-	align-content: center;
-	height: 50%;
-	left: 50%;
+	left: 30%;
 	top: 50%;
 	translate: -50% -50%;
-	font-size: 50px;
-	font-family: animalCrossing;
-	transition: ease-in-out 0.5s;
+	filter: drop-shadow(0px 10px 5px rgba(0, 0, 0, 0.473));
 }
 
 .gameSelectorButtonBG {
 	position: absolute;
 	width: 100%;
 	height: 100%;
-	background-color: bisque;
+	background-color: #0bc7b9;
+	border-radius: 50px;
+
 	/* background-color: red; */
-	transition: ease-in-out 0.5s;
 }
 
 .gameSelectorButton:hover .gameSelectorButtonBG {
-	background-color: tomato;
+	background-image: url(/frontEnd/images/stripeBG.png);
+	background-size: 150%;
+	animation: pickGameAnimation 20s infinite linear;
+	background-repeat: repeat;
+	outline: 6px solid #4ae5d5;
+}
+
+@keyframes pickGameAnimation {
+	from {
+		background-position: 0 0;
+	}
+	to {
+		background-position: 736px 0px;
+	}
+}
+
+.Button2 {
+	left: 70%;
+}
+
+.gameSelectorText {
+	position: absolute;
+	width: 100%;
+	text-align: center;
+	align-content: center;
+	height: 50%;
+	left: 50%;
+	top: 50%;
+	translate: -50% -50%;
+	font-size: 30px;
+	font-family: animalCrossingQuotes;
+	color: #00171f;
+	transition: ease-in-out 0.1s;
 }
 
 .gameSelectorButton:hover .gameSelectorText {
-	color: blue;
-	font-size: 70px;
+	font-size: 40px;
+	color: #d5faf2;
 }
 
-.ButtonBG2 {
-	background-color: aquamarine;
-}
-
-.game1Place {
-	position: absolute;
-	right: 50%;
-	left: 50%;
-	top: 40%;
-	/* bottom: 50%; */
-	width: 900px;
-	height: 500px;
-	translate: -50% -50%;
-	/* background-color: black; */
-}
-
-.board {
-	position: absolute;
-	height: 100%;
-	width: 100%;
-	background-color: black;
-	overflow: hidden;
-}
-
-.ball {
-	position: absolute;
-	height: 30px;
-	width: 30px;
-	background-color: azure;
-	border-radius: 50%;
-	top: calc(50% - 15px);
-	left: calc(50% - 15px);
-}
-
-.paddle {
-	position: absolute;
-	height: 75px;
-	width: 20px;
-	/* border-radius: 10%; */
-	background-color: white;
-}
-
-.paddleHitBox {
-	position: absolute;
-	background-color: red;
-	opacity: 50%;
-	width: 20px;
-	height: 75px;
-	left: 50%;
-	translate: -50%;
-}
-
-.paddle1 {
-	left: 0;
-}
-
-.paddle2 {
-	right: 0;
-}
+/* .ButtonBG2 {
+	background-color: #0bc7b9;
+} */
 
 .snakeGamePlace {
 	position: absolute;
 	right: 50%;
 	left: 50%;
-	top: 50%;
+	top: 45%;
 	/* bottom: 50%; */
 	width: 900px;
 	height: 500px;
 	translate: -50% -50%;
-	background-color: black;
+	/* background-color: black; */
 }
 
 .snakeBackground {
@@ -162,4 +145,29 @@
 
 .gameId.active {
 	display: block;
+}
+
+.backGameSnake {
+	position: absolute;
+	bottom: -75px;
+	left: 50%;
+	translate: -50%;
+}
+
+.backGamePong {
+	position: absolute;
+	bottom: -75px;
+	left: 50%;
+	translate: -50%;
+}
+
+.backGamePongMode {
+	position: absolute;
+	bottom: 20px;
+	left: 50%;
+	translate: -50%;
+}
+
+.backGameSnakeText {
+	font-size: 20px;
 }

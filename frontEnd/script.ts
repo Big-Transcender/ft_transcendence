@@ -93,18 +93,13 @@ musicMenu.addEventListener("mouseleave", () => {
 // 	}
 // });
 
-
 let socket: WebSocket | null = null;
 let socketInitialized = false;
 
-
-
-function startPongWebSocket()
-{
-	if (socketInitialized)
-		return;
+function startPongWebSocket() {
+	if (socketInitialized) return;
 	socketInitialized = true;
-	
+
 	// --- WebSocket Setup
 	socket = new WebSocket(`ws://${window.location.hostname}:3000`);
 
@@ -122,11 +117,10 @@ function startPongWebSocket()
 	});
 
 	// --- Game Elements
-	let playerId: 'p1' | 'p2' = 'p1';
+	let playerId: "p1" | "p2" = "p1";
 	const paddle1 = document.querySelector(".paddle1") as HTMLElement;
 	const paddle2 = document.querySelector(".paddle2") as HTMLElement;
 	const ball = document.querySelector(".ball") as HTMLElement;
-
 
 	// --- Input State an array of inputs fo smothe animations
 	const keysPressed = new Set<string>();
@@ -145,7 +139,6 @@ function startPongWebSocket()
 		}
 	});
 
-
 	// ---- Send Input to Server
 	setInterval(() => {
 		if (keysPressed.size > 0) {
@@ -158,7 +151,6 @@ function startPongWebSocket()
 			);
 		}
 	}, 20);
-
 
 	// ---- Receive Server Messages
 
