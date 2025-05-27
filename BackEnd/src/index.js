@@ -28,13 +28,13 @@ async function start()
 
 		// Game loop
 		//startGameLoop(wss, { getGameState, updateBall });
-		startGameLoopLocal(wss, { getGameState, updateBall });
+		//startGameLoopLocal(wss, { getGameState, updateBall });
 
 		fastify.register(routes);
 
 		// For connecting the front to the back
 		fastify.register(fastifyStatic, {
-			root: path.join(__dirname, '../frontEnd'),
+			root: path.join(__dirname, '../../frontEnd'), 
 			prefix: '/',
 		});
 

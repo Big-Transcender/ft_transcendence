@@ -73,7 +73,7 @@ async function routes(fastify) {
 	fastify.post("/tournament", async (request, reply) => {
 		const { name, players } = request.body;
 	  
-		if (!name || !Array.isArray(players) || players.length < 2) {
+		if (!name || !Array.isArray(players) || players.length < 4) {
 		  return reply.code(400).send({ error: "Invalid tournament data" });
 		}
 	  

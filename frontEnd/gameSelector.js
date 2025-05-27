@@ -9,6 +9,7 @@ const pongGamePage = document.getElementById("pongGameId");
 const snakeGamePage = document.getElementById("SnakeGameId");
 const gameSelectorPongPage = document.getElementById("gameSelectorPongId");
 const backGameSelectorPongId = document.getElementById("backGameSelectorPongId");
+import { startPongWebSocket } from "./gamePong.js"; //TODO brendon
 document.addEventListener("DOMContentLoaded", () => {
     pongButton.addEventListener("click", () => {
         changePageTo(gameSelectorPage, gameSelectorPongPage);
@@ -30,10 +31,12 @@ document.addEventListener("DOMContentLoaded", () => {
     backGameSelectorPongId.addEventListener("click", () => {
         changePageTo(gameSelectorPongPage, gameSelectorPage);
     });
-    //Singleplayer Pong
+    //Singleplayer Pong #TODO brendon
     buttonSinglePong.addEventListener("click", () => {
         changePageTo(gameSelectorPongPage, pongGamePage);
         history.replaceState(undefined, "", "#pongSingle");
+        const matchId = "match-" + Date.now() + "-" + Math.floor(Math.random() * 10000);
+        startPongWebSocket(matchId, true); // true = local mode
     });
     //Multiplayer Pong
     buttonMultiplayerPong.addEventListener("click", () => {

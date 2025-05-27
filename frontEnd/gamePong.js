@@ -1,9 +1,13 @@
 let socket = null;
 let socketInitialized = false;
-function startPongWebSocket() {
+let currentMatchId = null;
+let currentIsLocal = true;
+export function startPongWebSocket(matchId, isLocal) {
     if (socketInitialized)
         return;
     socketInitialized = true;
+    currentMatchId = matchId;
+    currentIsLocal = isLocal;
     let animationFrameId;
     let playerId = "p1";
     const keysPressed = new Set();
@@ -11,7 +15,11 @@ function startPongWebSocket() {
     socket = new WebSocket(`ws://${window.location.hostname}:3000`);
     socket.addEventListener("open", () => {
         console.log("✅ Connected to WebSocket server");
-        socket.send(JSON.stringify({ type: "hello", payload: "Client Ready" }));
+        socket.send(JSON.stringify({
+            type: "join",
+            matchId: matchId,
+            isLocal: isLocal
+        }));
     });
     socket.addEventListener("close", () => {
         console.log("❌ WebSocket connection closed");
@@ -39,9 +47,10 @@ function startPongWebSocket() {
     });
     // ---- Sending player inputs to server
     function sendInputLoop() {
-        if (keysPressed.size > 0 && socket && socket.readyState === WebSocket.OPEN) {
+        if (keysPressed.size > 0 && socket && socket.readyState === WebSocket.OPEN && currentMatchId) {
             socket.send(JSON.stringify({
                 type: "input",
+                matchId: currentMatchId,
                 playerId,
                 payload: Array.from(keysPressed),
             }));
@@ -85,14 +94,12 @@ function stopPongWebSocket() {
         socket = null;
     }
     socketInitialized = false;
+    currentMatchId = null;
 }
-// Poll URL hash every 100ms (SPA-safe)
+// Example: Poll URL hash and start/stop with a generated matchId
 setInterval(() => {
     const isOnPongGame = window.location.hash === "#pongSingle";
-    if (isOnPongGame && !socketInitialized) {
-        startPongWebSocket();
-    }
-    else if (!isOnPongGame && socketInitialized) {
+    if (!isOnPongGame && socketInitialized) {
         stopPongWebSocket();
     }
 }, 100);

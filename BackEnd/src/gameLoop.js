@@ -1,16 +1,23 @@
+const matches = new Map(); // matchId -> { gameState, clients, intervalId }
 
-let gameLoopStarted = false;
+function createMatch(matchId, createInitialGameState) {
+	const gameState = createInitialGameState();
+	const clients = new Set();
+	const match = { gameState, clients, intervalId: null };
+	matches.set(matchId, match);
+	return match;
+}
 
-function startGameLoop(wss, { getGameState, updateBall }) {
-	if (gameLoopStarted)
-		return; // avoid double start
-	gameLoopStarted = true;
+function startGameLoopForMatch(matchId, updateBall, isLocal = false) {
+	const match = matches.get(matchId);
+	if (!match || match.intervalId) return;
 
-	setInterval(() => {
-		const gameState = getGameState();
-		gameState.GamePlayLocal = false;
+	match.intervalId = setInterval(() => {
+		const { gameState, clients } = match;
+		gameState.GamePlayLocal = isLocal;
 
-		if (wss.clients.size === 2) {
+		const requiredPlayers = isLocal ? 1 : 2;
+		if (clients.size === requiredPlayers) {
 			// Start timer only once when game is not ongoing
 			if (!gameState.onGoing && !gameState.started) {
 				gameState.started = true;
@@ -20,13 +27,13 @@ function startGameLoop(wss, { getGameState, updateBall }) {
 
 			// Only update ball if game is active
 			if (gameState.onGoing) {
-				updateBall();
+				updateBall(gameState);
 			}
 
 			const message = JSON.stringify({ type: 'state', payload: gameState });
 
-			// Send game state to client
-			wss.clients.forEach(client => {
+			// Send game state to clients
+			clients.forEach(client => {
 				if (client.readyState === 1) {
 					client.send(message);
 				}
@@ -35,74 +42,28 @@ function startGameLoop(wss, { getGameState, updateBall }) {
 	}, 10); // 60 FPS
 }
 
-
-function startGameLoopLocal(wss, { getGameState, updateBall }) {
-	if (gameLoopStarted)
-		return; // avoid double start
-	gameLoopStarted = true;
-
-	setInterval(() => {
-		const gameState = getGameState();
-		gameState.GamePlayLocal = true;
-
-		if (wss.clients.size === 1) {
-			// Start timer only once when game is not ongoing
-			if (!gameState.onGoing && !gameState.started) {
-				gameState.started = true;
-				console.log("⏳ Starting game in 3 seconds...");
-				startTimer(3000, gameState);
-			}
-
-			// Only update ball if game is active
-			if (gameState.onGoing) {
-				updateBall();
-			}
-
-			const message = JSON.stringify({ type: 'state', payload: gameState });
-
-			// Send game state to client
-			wss.clients.forEach(client => {
-				if (client.readyState === 1) {
-					client.send(message);
-				}
-			});
-		}
-	}, 10); // 60 FPS
+function removeClientFromMatch(matchId, ws) {
+	const match = matches.get(matchId);
+	if (!match) return;
+	match.clients.delete(ws);
+	if (match.clients.size === 0) {
+		clearInterval(match.intervalId);
+		matches.delete(matchId);
+	}
 }
-
-
-
 
 function startTimer(time, gameState) {
 	gameState.onGoing = false;
-
 	setTimeout(() => {
 		gameState.onGoing = true;
 		console.log("✅ Game started!");
 	}, time);
 }
 
-
-module.exports = {startGameLoop, startGameLoopLocal};
-
-
-/*function startGameLoop(wss, { getGameState, updateBall })
-{
-	setInterval(() => {
-		const gameState = getGameState();
-		gameState.GamePlayLocal = false;
-		const message = JSON.stringify({ type: 'state', payload: gameState });
-
-		if (wss.clients.size === 2)
-		{
-			if (gameState.onGoing)
-				updateBall();
-			
-			wss.clients.forEach(client => {
-				if (client.readyState === 1)
-					client.send(message);
-			});
-		}
-		
-	}, 10); // 60 FPS
-}*/
+module.exports = {
+	matches,
+	createMatch,
+	startGameLoopForMatch,
+	removeClientFromMatch,
+	startTimer
+};
