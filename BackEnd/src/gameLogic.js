@@ -12,18 +12,20 @@ const ballSizeY = (33 / 500) * 100;
 const BALLS = 10;
 
 function createInitialGameState() {
-    return {
-        paddles: { p1: 40, p2: 40 },
-        ball: { x: 50, y: 50 },
-        ballVel: { x: 0.5, y: 0.5 },
-        score: { p1: 0, p2: 0 },
-        playerId: { p1: 1, p2: 2 },
-        onGoing: false,
-        started: false,
-        GamePlayLocal: true,
-        numbrBalls: BALLS,
-        speed: SPEED,
-    };
+		
+	return {
+		paddles: { p1: 40, p2: 40 },
+		ball: { x: 50, y: 50 },
+		ballVel: { x: 0.5, y: 0.5 },
+		score: { p1: 0, p2: 0 },
+		playerId: { p1: 1, p2: 2 },
+		onGoing: false,
+		started: false,
+		GamePlayLocal: true,
+		numbrBalls: BALLS,
+		speed: SPEED,
+	};
+	
 }
 
 function resetBall(gameState) {
@@ -104,7 +106,8 @@ function updateBall(gameState) {
             gameState.score.p1 += 1;
         gameState.numbrBalls -= 1;
         resetBall(gameState);
-        speed = 0.7;
+		console.log(gameState.speed)
+		console.log(gameState.numbrBalls);
         return;
     }
 
@@ -146,21 +149,10 @@ function updateBall(gameState) {
     }
 }
 
-function resetGame(gameState) {
-    gameState.paddles = { p1: 40, p2: 40 };
-    gameState.ball = { x: 50, y: 50 };
-    gameState.ballVel = { x: 0.5, y: 0.5 };
-    gameState.score = { p1: 0, p2: 0 };
-    gameState.playerId = { p1: 1, p2: 2 };
-    gameState.onGoing = false;
-    gameState.started = false;
-    gameState.numbrBalls = BALLS;
-    gameState.speed = SPEED;
-}
+
 
 module.exports = {
     updateBall,
     handleInput,
-    resetGame,
     createInitialGameState
 };
