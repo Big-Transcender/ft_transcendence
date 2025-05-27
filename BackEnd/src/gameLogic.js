@@ -1,7 +1,7 @@
 const { insertMatch } = require('./dataQuerys');
 
 
-var PaddleSpeed = 3
+var PaddleSpeed = 2
 const HitBoxBuffer = 3
 const paddleHeight = (75 / 500) * 100 + HitBoxBuffer;
 const paddleWidth = (20 / 900) * 100;
@@ -11,21 +11,22 @@ var speed = 0.7;
 const ballSizeX = (33 / 900) * 100;
 const ballSizeY = (33 / 500) * 100;
 
-var numbrBalls = 10;
+const BALLS = 10
+var numbrBalls = BALLS;
 
 
-var GamePlayLocal = true;
-
-const gameState = {
+var gameState = {
 	paddles: { p1: 40, p2: 40 }, // Position in %
 	ball: { x: 50, y: 50 },      // Position in %
 	ballVel: { x: 0.5, y: 0.5 }, // Velocity in % per frame
 	score: { p1: 0, p2: 0},
 	playerId: { p1: 1, p2: 2},
-	onGoing: true
+	onGoing: true,
+	GamePlayLocal: true,
 };
 
-function resetBall(ball, ballVel) {
+function resetBall(ball, ballVel)
+{
 
 	ball.x = 50;
 	ball.y = 50;
@@ -40,30 +41,42 @@ function resetBall(ball, ballVel) {
 }
 
 
-function handleInput(playerId, keys) {
-	if (GamePlayLocal) {
+function handleInput(playerId, keys)
+{
+	if (gameState.GamePlayLocal)
 		keys.forEach((key) => handleInputLocal(key));
-	} else {
+	else
+	{
 		keys.forEach((key) => {
-			if (key === 'ArrowUp' || key === 'w') movePaddle(playerId, 'up');
-			else if (key === 'ArrowDown' || key === 's') movePaddle(playerId, 'down');
+			if (key === 'ArrowUp' || key === 'w')
+				movePaddle(playerId, 'up');
+			else if (key === 'ArrowDown' || key === 's')
+				movePaddle(playerId, 'down');
 		});
 	}
 }
 
 
-function handleInputLocal(key) {
-	if (key === 'ArrowUp') movePaddle('p2', 'up');
-	else if (key === 'ArrowDown') movePaddle('p2', 'down');
-	else if (key === 'w') movePaddle('p1', 'up');
-	else if (key === 's') movePaddle('p1', 'down');
+function handleInputLocal(key)
+{
+	if (key === 'ArrowUp')
+		movePaddle('p2', 'up');
+	else if (key === 'ArrowDown')
+		movePaddle('p2', 'down');
+	else if (key === 'w')
+		movePaddle('p1', 'up');
+	else if (key === 's')
+		movePaddle('p1', 'down');
 }
 
 
-function movePaddle(player, direction) {
+function movePaddle(player, direction)
+{
 	const step = PaddleSpeed;
-	if (direction === 'up') gameState.paddles[player] = Math.max(0, gameState.paddles[player] - step);
-	if (direction === 'down') gameState.paddles[player] = Math.min(85, gameState.paddles[player] + step);
+	if (direction === 'up')
+		gameState.paddles[player] = Math.max(0, gameState.paddles[player] - step);
+	if (direction === 'down')
+		gameState.paddles[player] = Math.min(85, gameState.paddles[player] + step);
 }
 
 function getImpactAngle(impact)
@@ -78,7 +91,11 @@ function getImpactAngle(impact)
 		angle = impact;
 
 	speed += 0.1
-	return angle;
+	var extra = 0.2
+	if (angle < 0)
+		extra = -0.2;
+
+	return angle + extra; //TODO this need some testing to avoid infinite loops
 }
 
 
@@ -152,6 +169,20 @@ function updateBall(){
 }
 
 
+
+function resetGame()
+{
+	gameState = {
+		paddles: { p1: 40, p2: 40 }, // Position in %
+		ball: { x: 50, y: 50 },      // Position in %
+		ballVel: { x: 0.5, y: 0.5 }, // Velocity in % per frame
+		score: { p1: 0, p2: 0},
+		playerId: { p1: 1, p2: 2},
+		onGoing: true,
+	};
+	numbrBalls = BALLS;
+}
+
 function getGameState() {
 	return gameState;
 }
@@ -159,5 +190,6 @@ function getGameState() {
 module.exports = {
 	updateBall,
 	handleInput,
+	resetGame,
 	getGameState
 };

@@ -120,25 +120,27 @@ document.addEventListener("DOMContentLoaded", () => {
     const newUserPage = document.getElementById("newUserId");
     const loginPage = document.getElementById("loginId");
     if (checkIfLogged()) {
-        changeLogginPageTo(loginPage, profilePage);
+        changePageTo(loginPage, profilePage);
         putNickOnProfileHeader(getNickOnLocalStorage());
+        flipboardNumberAnimation("23");
     }
     //Login Button
     loginButton.addEventListener("click", async () => {
         if ((await loginUser()) === true) {
-            changeLogginPageTo(loginPage, profilePage);
+            changePageTo(loginPage, profilePage);
+            flipboardNumberAnimation("23");
         }
     });
     //Logout Button
     logoutButton.addEventListener("click", () => {
         setToUnLogged();
-        changeLogginPageTo(profilePage, loginPage);
+        changePageTo(profilePage, loginPage);
         stopSpech();
         typeText(bubbleTextLogin, "Welcome back!", 60);
     });
     //NewUser Button
     newUserButton.addEventListener("click", () => {
-        changeLogginPageTo(loginPage, newUserPage);
+        changePageTo(loginPage, newUserPage);
         stopSpech();
         if (!checkIfLogged()) {
             typeText(bubbleTextNewUser, "Welcome, new resident!", 60);
@@ -146,7 +148,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
     //Back Button
     backButton.addEventListener("click", () => {
-        changeLogginPageTo(newUserPage, loginPage);
+        changePageTo(newUserPage, loginPage);
         stopSpech();
         if (!checkIfLogged()) {
             typeText(bubbleTextLogin, "Welcome back!", 60);
@@ -177,7 +179,7 @@ function setToUnLogged() {
 function putNickOnProfileHeader(nick) {
     document.querySelector(".profileHeaderText").textContent = "Welcome, " + nick;
 }
-function changeLogginPageTo(remove, activate) {
+function changePageTo(remove, activate) {
     remove.classList.remove("active");
     activate.classList.add("active");
 }
