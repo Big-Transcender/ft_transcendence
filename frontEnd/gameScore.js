@@ -1,5 +1,7 @@
 let player1Icon = document.getElementById("player1IconId");
 let player2Icon = document.getElementById("player2IconId");
+let player1ScoreText = document.getElementById("player1ScoreId").textContent;
+let player2ScoreText = document.getElementById("player2ScoreId").textContent;
 let bigScoreP1 = false;
 let bigScoreP2 = false;
 let turnaroundflag = false;
@@ -12,8 +14,6 @@ playerIconMap.set("shock", "images/pongGame/playerEmotions/shock.png");
 playerIconMap.set("proud", "images/pongGame/playerEmotions/proud.png");
 playerIconMap.set("focus", "images/pongGame/playerEmotions/focus.png");
 playerIconMap.set("laught", "images/pongGame/playerEmotions/laught.png");
-// playerIconMap.set("happy", "images/pongGame/playerEmotions/happy.png");
-// console.log(player1Icon);
 function getEmotion() {
     const player1Score = parseInt(document.getElementById("player1ScoreId").textContent);
     const player2Score = parseInt(document.getElementById("player2ScoreId").textContent);
@@ -60,7 +60,6 @@ function bigScore(player1, player2) {
     }
 }
 function turnaround(player1, player2) {
-    console.log(bigScoreP2);
     if (bigScoreP1 && player2 > player1) {
         changeEmotion(player1Icon, "shock");
         changeEmotion(player2Icon, "proud");
@@ -80,43 +79,17 @@ function turnaround(player1, player2) {
         return false;
     }
 }
-updateScore();
-// export function setCurrentGameStatus(status: any) {
-// 	currentGameStatus = status;
-// }
-// document.addEventListener("keydown", (event: KeyboardEvent) => {
-// 	const key = event.key;
-// 	if (["ArrowUp"].includes(key)) {
-// 		// let player1Score = parseInt((document.getElementById("player1ScoreId") as HTMLImageElement).textContent);
-// 		// player1Score += 1;
-// 		// (document.getElementById("player1ScoreId") as HTMLImageElement).textContent = player1Score.toString();
-// 		// console.log(player1Score);
-// 		getEmotion();
-// 	}
-// 	if (["ArrowDown"].includes(key)) {
-// 		// let player2Score = parseInt((document.getElementById("player2ScoreId") as HTMLImageElement).textContent);
-// 		// player2Score += 1;
-// 		// (document.getElementById("player2ScoreId") as HTMLImageElement).textContent = player2Score.toString();
-// 		getEmotion();
-// 	}
-// });
-//#TODO change the point of playerScore
-//You can take the player1ScoreId or player2ScoreId. Change the textContent
-// getEmotion();
-// updateScore();
+function resetEmotions() {
+    bigScoreP1 = false;
+    bigScoreP2 = false;
+    turnaroundflag = false;
+}
 let state2;
 window.addEventListener("gameStateUpdate", (event) => {
     state2 = event.detail;
+    if (state2) {
+        document.getElementById("player1ScoreId").textContent = state2.score.p1;
+        document.getElementById("player2ScoreId").textContent = state2.score.p2;
+        getEmotion();
+    }
 });
-let player1ScoreId;
-function updateScore() {
-    //#TODO MAKE THIS, PUT THE EVENT IN THE SCOREBORD
-}
-setInterval(() => {
-    console.log(state2);
-    console.log("teste teste");
-}, 1000); // loga a cada 1 segundo
-// if (teste) {
-// 	console.log(teste);
-// }
-console.log("testeeeeeeeeeeeeeeeeeeeeeeeee");

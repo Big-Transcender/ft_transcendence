@@ -1,6 +1,11 @@
 const page = document.getElementById("home");
 function navigate(page) {
-    if (document.getElementById(page).classList.contains("active")) {
+    const pageElement = document.getElementById(page);
+    if (!pageElement) {
+        console.warn(`Page element with id "${page}" not found. Redirecionando para home.`);
+        history.replaceState(null, "", "#home");
+        document.querySelectorAll(".page").forEach((p) => p.classList.remove("active"));
+        document.getElementById("home").classList.add("active");
         return;
     }
     document.querySelectorAll(".page").forEach((p) => p.classList.remove("active"));
@@ -10,12 +15,8 @@ function navigate(page) {
             typeText(bubbleTextLogin, "Welcome back!", 60);
         }
     }
-    document.getElementById(page).classList.add("active");
+    pageElement.classList.add("active");
     history.pushState(null, "", `#${page}`);
-    // getWins();
-    // updateLoses();
-    // updatePlays();
-    // updateWins();
 }
 window.addEventListener("popstate", () => {
     const page = location.hash.replace("#", "") || "home";

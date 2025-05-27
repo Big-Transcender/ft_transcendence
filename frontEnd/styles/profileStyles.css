@@ -194,9 +194,7 @@
 	font-family: animalCrossingQuotes;
 	width: 20%;
 	height: 8%;
-	/* background-color: #0cc6b8; */
 	cursor: pointer;
-	/* color: #f8eebb; */
 	transition: 0.5s ease-in-out;
 }
 

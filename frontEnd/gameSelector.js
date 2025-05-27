@@ -34,6 +34,7 @@ document.addEventListener("DOMContentLoaded", () => {
     buttonSinglePong.addEventListener("click", () => {
         changePageTo(gameSelectorPongPage, pongGamePage);
         history.replaceState(undefined, "", "#pongSingle");
+        resetEmotions();
     });
     //Multiplayer Pong
     buttonMultiplayerPong.addEventListener("click", () => {
