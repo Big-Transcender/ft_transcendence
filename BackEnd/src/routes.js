@@ -81,18 +81,18 @@ async function routes(fastify) {
 		const matches = generateMatches(players);
 	  
 		fastify.tournaments[id] = {
-		  id,
-		  name,
-		  players,
-		  matches,
-		  currentMatchIndex: 0,
-		  status: "pending",
+			id,
+			name,
+			players,
+			matches,
+			currentMatchIndex: 0,
+			status: "pending",
 		};
 	  
 		reply.code(201).send({
-		  tournamentId: id,
-		  message: "Tournament created",
-		  tournament: fastify.tournaments[id],
+			tournamentId: id,
+			message: "Tournament created",
+			tournament: fastify.tournaments[id],
 		});
 	});
 	  
@@ -101,11 +101,11 @@ async function routes(fastify) {
 	fastify.get("/tournament/:id", async (request, reply) => {
 		const { id } = request.params;
 		const tournament = fastify.tournaments[id];
-	  
+
 		if (!tournament) {
-		  return reply.code(404).send({ error: "Tournament not found" });
+			return reply.code(404).send({ error: "Tournament not found" });
 		}
-	  
+
 		reply.send(tournament);
 	});
 
