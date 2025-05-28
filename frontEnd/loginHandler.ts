@@ -40,8 +40,7 @@ const registerNewUser = async () => {
 		const data = await response.json();
 
 		if (response.ok) {
-			// alert("ok!");
-			return;
+			typeText(bubbleTextNewUser, "New resident registered!| Welcome *" + nickname + "*!", 60);
 		} else {
 			errorCatcher(data, bubbleTextNewUser);
 		}
@@ -56,8 +55,6 @@ async function loginUser() {
 	const nickname = (document.getElementById("inputNick") as HTMLInputElement).value.trim();
 	const password = (document.getElementById("inputPass") as HTMLInputElement).value.trim();
 
-	console.log("nickname: " + nickname);
-	console.log("pass: " + password);
 	try {
 		const response = await fetch("http://localhost:3000/login", {
 			method: "POST",
@@ -86,22 +83,16 @@ async function loginUser() {
 
 function clickButton(button) {
 	button.addEventListener("click", () => {
-		// console.log(button.className.search("createNew"));
 		if (button.className.search("loginUser") != -1) {
-			// console.log((document.getElementById("inputNick") as HTMLInputElement).value);
-			// console.log((document.getElementById("inputPass") as HTMLInputElement).value);
-			// console.log("request from database to see if can login");
 			// loginUser();
 		} else if (button.className.search("newUser") != -1) {
 			// pageProfile = document.getElementById("newUserId");
 			// navigateProfile(pageProfile);
 			// stopSpech();
 			// typeText(bubbleText, "Welcome, new resident!", 60);
-			// console.log("aqui");
 		} else if (button.className.search("createNew") != -1) {
 			// let bubbleText = document.querySelector(".thinkingBubbleText");
 			// bubbleText.textContent = "teste";
-			// console.log(bubbleText);
 			registerNewUser();
 		} else {
 		}

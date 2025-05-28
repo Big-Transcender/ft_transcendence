@@ -222,11 +222,8 @@
 						</div>
 					</div>
 					<div id="contest" class="contest page">
-						<h2>Game2</h2>
-						<p>Game2 HERE</p>
-
 						<!-- CONTEST OPTION SELECTOR -->
-						<!-- <div class="gameSelector gameId active" id="contestSelectorId">
+						<div class="gameSelector contestId active" id="contestSelectorId">
 							<div class="gameSelectorBG"></div>
 							<p class="gameSelectorHeader headerContest">What do you wanna do?</p>
 							<div class="gameSelectorButton" id="joinContestId">
@@ -237,17 +234,17 @@
 								<div class="gameSelectorButtonBG ButtonBG2"></div>
 								<p class="gameSelectorText">Create!</p>
 							</div>
-						</div> -->
+						</div>
 
 						<!-- ENTER THE PIN PAGE -->
-						<!-- <div class="gameSelector gameId active" id="contestJoinSelectorId">
+						<div class="gameSelector contestId" id="contestJoinSelectorId">
 							<div class="gameSelectorBG"></div>
 							<p class="gameSelectorHeader headerContest">Enter the pin!</p>
 							<div class="inputBox inputPinContest">
 								<label for="inputNick">What is the pin?</label>
 								<input type="text" id="inputPin" class="inputText smallInput" placeholder="PIN" autocomplete="off" />
 							</div>
-							<button class="defaultButton contestBackButton" id="backContestButtonId">
+							<button class="defaultButton contestBackButton genericBackButton">
 								<p class="defaultButtonText">Back</p>
 								<div class="defaultButtonBG">
 									<div class="defaultButtonBGWave"></div>
@@ -261,9 +258,10 @@
 									<div class="defaultButtonBGWave"></div>
 									<div class="defaultButtonBGWave wave2"></div>
 								</div>
-							</button> -->
+							</button>
+						</div>
 
-						<div class="gameSelector gameId active" id="contestJoinSelectorId">
+						<div class="gameSelector contestId" id="contestJoinedSelectorId">
 							<div class="gameSelectorBG"></div>
 							<p class="gameSelectorHeader headerContest">Winner gets all!</p>
 							<p class=""></p>
@@ -302,22 +300,13 @@
 									<p class="playerContestPlaceName">waiting</p>
 								</div>
 							</div>
-							<button class="defaultButton contestInBackButton" id="backContestInButtonId">
+							<button class="defaultButton contestInBackButton genericBackButton">
 								<p class="defaultButtonText">Back</p>
 								<div class="defaultButtonBG">
 									<div class="defaultButtonBGWave"></div>
 									<div class="defaultButtonBGWave wave2"></div>
 								</div>
 							</button>
-
-							<!-- <div class="gameSelectorButton" id="joinContestId">
-								<div class="gameSelectorButtonBG"></div>
-								<p class="gameSelectorText">Join!</p>
-							</div>
-							<div class="gameSelectorButton Button2" id="createContestId">
-								<div class="gameSelectorButtonBG ButtonBG2"></div>
-								<p class="gameSelectorText">Create!</p>
-							</div> -->
 						</div>
 					</div>
 					<div id="profile" class="profile page">
@@ -487,6 +476,7 @@
 		<script src="speechSystem.js"></script>
 		<script src="gameSelector.js"></script>
 		<script src="gameScore.js"></script>
+		<script src="contestHandler.js"></script>
 		<script src="script.js"></script>
 	</body>
 </html>
