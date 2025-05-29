@@ -10,7 +10,7 @@ const snakeGamePage = document.getElementById("SnakeGameId");
 const gameSelectorPongPage = document.getElementById("gameSelectorPongId");
 const backGameSelectorPongId = document.getElementById("backGameSelectorPongId");
 document.addEventListener("DOMContentLoaded", () => {
-    pongButton.addEventListener("click", () => {
+    pongButton.addEventListener("click", async () => {
         changePageTo(gameSelectorPage, gameSelectorPongPage);
     });
     snakeButton.addEventListener("click", () => {
