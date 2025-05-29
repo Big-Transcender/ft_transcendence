@@ -2,7 +2,7 @@ const matches = new Map(); // matchId -> { gameState, clients, intervalId }
 
 function createMatch(matchId, createInitialGameState) {
 	const gameState = createInitialGameState();
-	const clients = new Set();
+	const clients = new Map();
 	const match = { gameState, clients, intervalId: null };
 	matches.set(matchId, match);
 	return match;

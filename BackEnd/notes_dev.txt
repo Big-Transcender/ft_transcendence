@@ -19,6 +19,9 @@ curl -X POST http://localhost:3000/login \
 
 curl http://localhost:3000/users
 
+curl -X POST http://localhost:3000/tournament \
+  -H "Content-Type: application/json" \
+  -d '{"name": "Diogo'\''s Epic Clash", "players": ["Diogo", "Ana", "Rui", "Joana"]}'
 
 
 node src/index.js
