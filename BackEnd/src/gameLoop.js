@@ -44,7 +44,8 @@ function startGameLoopForMatch(matchId, updateBall, isLocal = false) {
 
 function removeClientFromMatch(matchId, ws) {
 	const match = matches.get(matchId);
-	if (!match) return;
+	if (!match)
+		return;
 	match.clients.delete(ws);
 	if (match.clients.size === 0) {
 		clearInterval(match.intervalId);
