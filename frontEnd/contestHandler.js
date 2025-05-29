@@ -18,15 +18,47 @@ function genericBackFunctionContest() {
         }
     }
 }
+let isPlaying = false;
+async function displayWarning(text) {
+    const warningBubble = document.querySelector(".defaultWarning");
+    const warningText = document.getElementById("warningContest");
+    if (!isPlaying) {
+        isPlaying = true;
+        warningText.textContent = text;
+        warningBubble.classList.add("warning");
+        await new Promise((resolve) => {
+            setTimeout(resolve, 5000);
+        });
+        warningBubble.classList.remove("warning");
+        isPlaying = false;
+    }
+}
 document.addEventListener("DOMContentLoaded", () => {
     joinContestButton.addEventListener("click", () => {
-        changePageTo(contestMainPage, joinContestPage);
+        if (!checkIfLogged()) {
+            displayWarning("You need to log in.");
+        }
+        else {
+            changePageTo(contestMainPage, joinContestPage);
+        }
     });
     createContesButton.addEventListener("click", () => {
-        changePageTo(contestMainPage, createContestPage);
+        if (!checkIfLogged()) {
+            displayWarning("You need to log in.");
+        }
+        else {
+            changePageTo(contestMainPage, createContestPage);
+        }
     });
-    enterContestButton.addEventListener("click", () => {
-        changePageTo(joinContestPage, joinedContestPage);
+    //Enter Pin Page
+    enterContestButton.addEventListener("click", async () => {
+        const inputPin = document.getElementById("inputPin").value.trim();
+        if (!inputPin.length) {
+            displayWarning("Invalid pin.");
+        }
+        else if (await checkIsValidPin(inputPin)) {
+            changePageTo(joinContestPage, joinedContestPage);
+        }
     });
     genericBackButton.forEach((button) => {
         button.addEventListener("click", () => {
@@ -54,3 +86,21 @@ document.addEventListener("DOMContentLoaded", () => {
     // 	history.replaceState(undefined, "", "#pongMulti");
     // });
 });
+async function checkIsValidPin(pin) {
+    try {
+        const response = await fetch(`http://localhost:3000/tournament/${pin}`);
+        const data = await response.json();
+        if (response.ok) {
+            return true;
+        }
+        else {
+            displayWarning("No contest with this pin");
+            return false;
+        }
+    }
+    catch (err) {
+        console.error("Failed to check pin:", err);
+        displayWarning("Erro ao verificar o pin");
+        return false;
+    }
+}

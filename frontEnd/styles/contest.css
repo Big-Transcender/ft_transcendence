@@ -6,11 +6,13 @@
 	left: 50%;
 	top: 150px;
 	translate: -50%;
-	background-color: rgba(44, 2, 2, 0.322);
+	/* background-color: rgba(44, 2, 2, 0.322); */
 }
 
 .headerContest {
 	font-size: 50px;
+	color: #f1e26f;
+	text-shadow: 0px 1px 5px black;
 }
 
 .inputPinContest {
@@ -37,7 +39,7 @@
 	position: absolute;
 	width: 750px;
 	height: 400px;
-	background-color: rgba(102, 51, 153, 0.295);
+	/* background-color: rgba(102, 51, 153, 0.295); */
 	left: 50%;
 	top: 57%;
 	translate: -50% -50%;
@@ -54,12 +56,13 @@
 	position: absolute;
 	width: 100%;
 	height: 100%;
-	background-image: url("/images/musicMenuBG.png");
+	background-image: url("/frontEnd/images/musicMenuBG.png");
 	background-size: 250px;
 	background-repeat: no-repeat;
 	/* box-shadow: inset 0px 0px 10px rgba(81, 255, 0, 0.548); */
 	outline: solid 5px black;
 	outline-offset: -5px;
+	border-radius: 15px;
 }
 
 .noGame {
@@ -130,10 +133,70 @@
 	translate: -50%;
 }
 
+.contestBG {
+	background-image: url(/frontEnd/images/gameSelector2BG.png);
+}
+
 .contestId {
 	display: none;
 }
 
 .contestId.active {
 	display: block;
+}
+
+.defaultWarning {
+	position: absolute;
+	width: 500px;
+	height: 50px;
+	left: 50%;
+	top: 20px;
+	translate: -50%;
+	opacity: 0%;
+}
+
+.defaultWarningBG {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	background-image: url(/frontEnd/images/genericBG.png);
+	background-size: 25%;
+	outline: 3px solid black;
+	outline-offset: -5px;
+	border-radius: 10px;
+	box-shadow: inset 0px 0px 10px rgb(255, 255, 255), 0px 0px 10px rgba(0, 0, 0, 0.438);
+}
+
+.defaultWarningText {
+	position: absolute;
+	/* color: red; */
+	width: 100%;
+	top: 50%;
+	translate: 0 -50%;
+	text-align: center;
+	font-family: animalCrossingSystem;
+	font-size: 25px;
+	/* text-shadow: 0px 1px 3px rgba(0, 0, 0, 0.459)	; */
+}
+
+@keyframes warning {
+	0% {
+		/* color: red; */
+	}
+	5% {
+		opacity: 100%;
+		/* color: red; */
+	}
+	80% {
+		opacity: 100%;
+		/* color: red; */
+	}
+	100% {
+		/* color: red; */
+		opacity: 0%;
+	}
+}
+
+.warning {
+	animation: warning 5s forwards;
 }
