@@ -57,6 +57,7 @@ document.addEventListener("DOMContentLoaded", () => {
 		}
 	});
 
+	//Enter create Contest Page
 	createContesButton.addEventListener("click", async () => {
 		if (!checkIfLogged()) {
 			displayWarning("You need to log in.");

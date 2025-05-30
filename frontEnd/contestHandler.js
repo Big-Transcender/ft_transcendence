@@ -50,6 +50,7 @@ document.addEventListener("DOMContentLoaded", () => {
             changePageTo(contestMainPage, joinContestPage);
         }
     });
+    //Enter create Contest Page
     createContesButton.addEventListener("click", async () => {
         if (!checkIfLogged()) {
             displayWarning("You need to log in.");
