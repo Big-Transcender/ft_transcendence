@@ -73,6 +73,7 @@ async function routes(fastify) {
 
 	// GET /leaderBoard
 
+	// GET /leaderBoard
 	fastify.get("/leaderBoard", async (request, reply) => {
 		const leaderBoard = getLeaderboard();
 
@@ -80,7 +81,6 @@ async function routes(fastify) {
 	});
 
 	// POST /tournament
-
 	fastify.post("/tournament", async (request, reply) => {
 		const { name, players } = request.body;
 
@@ -89,37 +89,27 @@ async function routes(fastify) {
 		}
 
 		const id = Date.now().toString(); // unique ID
-
 		const matches = generateMatches(players);
 
 		fastify.tournaments[id] = {
 			id,
-
 			name,
-
 			players,
-
 			matches,
-
 			currentMatchIndex: 0,
-
 			status: "pending",
 		};
 
 		reply.code(201).send({
 			tournamentId: id,
-
 			message: "Tournament created",
-
 			tournament: fastify.tournaments[id],
 		});
 	});
 
 	// GET /tournament/:id
-
 	fastify.get("/tournament/:id", async (request, reply) => {
 		const { id } = request.params;
-
 		const tournament = fastify.tournaments[id];
 
 		if (!tournament) {
@@ -130,10 +120,8 @@ async function routes(fastify) {
 	});
 
 	// GET /tournament/:id/match/:matchId
-
 	fastify.get("/tournament/:id/match/:matchId", async (request, reply) => {
 		const { id, matchId } = request.params;
-
 		const tournament = fastify.tournaments[id];
 
 		if (!tournament) {
@@ -148,11 +136,8 @@ async function routes(fastify) {
 
 		reply.send({
 			matchId: match.id,
-
 			p1: match.p1,
-
 			p2: match.p2,
-
 			winner: match.winner,
 		});
 	});
@@ -160,37 +145,27 @@ async function routes(fastify) {
 
 function generateMatches(players) {
 	const matches = [];
-
 	const shuffled = [...players].sort(() => Math.random() - 0.5);
-
 	let matchCounter = 0;
 
 	for (let i = 0; i < shuffled.length; i += 2) {
 		matches.push({
 			id: `match-${matchCounter++}`,
-
 			p1: shuffled[i],
-
 			p2: shuffled[i + 1] || null, // handle odd number
-
 			winner: null,
 		});
 	}
 
 	// Fill in placeholders for future rounds (if needed)
-
 	let rounds = Math.ceil(Math.log2(players.length));
-
 	let totalMatches = Math.pow(2, rounds) - 1;
 
 	while (matches.length < totalMatches) {
 		matches.push({
 			id: `match-${matchCounter++}`,
-
 			p1: null,
-
 			p2: null,
-
 			winner: null,
 		});
 	}

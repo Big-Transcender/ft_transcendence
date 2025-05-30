@@ -78,6 +78,7 @@ musicMenu.addEventListener("mouseleave", () => {
 // 		// }, 1000);
 // 	}
 // });
+<<<<<<< HEAD
 let socket = null;
 let socketInitialized = false;
 function startPongWebSocket() {
@@ -177,3 +178,5 @@ setInterval(() => {
     }
 }, 100);
 window.navigate = navigate;
+=======
+>>>>>>> mudkip
