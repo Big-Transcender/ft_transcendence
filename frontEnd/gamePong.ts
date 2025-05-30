@@ -4,8 +4,7 @@ let currentMatchId: string | null = null;
 let currentIsLocal: boolean = true;
 
 export function startPongWebSocket(matchId: string, isLocal: boolean) {
-	if (socketInitialized)
-		return;
+	if (socketInitialized) return;
 	socketInitialized = true;
 	currentMatchId = matchId;
 	currentIsLocal = isLocal;
@@ -19,11 +18,13 @@ export function startPongWebSocket(matchId: string, isLocal: boolean) {
 
 	socket.addEventListener("open", () => {
 		console.log("✅ Connected to WebSocket server");
-		socket.send(JSON.stringify({
-			type: "join",
-			matchId: matchId,
-			isLocal: isLocal
-		}));
+		socket.send(
+			JSON.stringify({
+				type: "join",
+				matchId: matchId,
+				isLocal: isLocal,
+			})
+		);
 	});
 
 	socket.addEventListener("close", () => {
@@ -79,11 +80,15 @@ export function startPongWebSocket(matchId: string, isLocal: boolean) {
 			switch (data.type) {
 				case "state": {
 					const state = data.payload;
-					if (paddle1)
-						paddle1.style.top = `${state.paddles.p1}%`;
+					window.dispatchEvent(new CustomEvent("gameStateUpdate", { detail: state }));
 
-					if (paddle2)
+					if (paddle1) {
+						paddle1.style.top = `${state.paddles.p1}%`;
+					}
+
+					if (paddle2) {
 						paddle2.style.top = `${state.paddles.p2}%`;
+					}
 
 					if (ball) {
 						ball.style.left = `${state.ball.x}%`;
@@ -113,13 +118,11 @@ function stopPongWebSocket() {
 	currentMatchId = null;
 }
 
-
-
 // Example: Poll URL hash and start/stop with a generated matchId
 setInterval(() => {
 	// E.g., URL format: http://localhost:3000/#pong/abcd1234
 	const hash = window.location.hash;
-	const matchPrefix = '#pong/';
+	const matchPrefix = "#pong/";
 	const isOnPongGame = hash.startsWith(matchPrefix) && hash.slice(matchPrefix.length) === currentMatchId;
 
 	if (!isOnPongGame && socketInitialized) {

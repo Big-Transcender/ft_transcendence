@@ -9,10 +9,10 @@ let SPEED = 0.7;
 const ballSizeX = (33 / 900) * 100;
 const ballSizeY = (33 / 500) * 100;
 
-const BALLS = 10;
+const BALLS = 19;
 
 function createInitialGameState() {
-		
+
 	return {
 		paddles: { p1: 40, p2: 40 },
 		ball: { x: 50, y: 50 },
@@ -25,7 +25,7 @@ function createInitialGameState() {
 		numbrBalls: BALLS,
 		speed: SPEED,
 	};
-	
+
 }
 
 function resetBall(gameState) {
@@ -111,7 +111,7 @@ function updateBall(gameState) {
 		return;
 	}
 
-	if (gameState.numbrBalls === 0 && gameState.onGoing) {
+	if ((gameState.score.p2 === 10 || gameState.score.p1 === 10) && gameState.onGoing ) {
 		let winnerId = gameState.playerId.p1;
 		if (gameState.score.p1 < gameState.score.p2)
 			winnerId = gameState.playerId.p2;

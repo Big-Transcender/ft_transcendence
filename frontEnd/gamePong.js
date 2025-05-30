@@ -18,7 +18,7 @@ export function startPongWebSocket(matchId, isLocal) {
         socket.send(JSON.stringify({
             type: "join",
             matchId: matchId,
-            isLocal: isLocal
+            isLocal: isLocal,
         }));
     });
     socket.addEventListener("close", () => {
@@ -65,10 +65,13 @@ export function startPongWebSocket(matchId, isLocal) {
             switch (data.type) {
                 case "state": {
                     const state = data.payload;
-                    if (paddle1)
+                    window.dispatchEvent(new CustomEvent("gameStateUpdate", { detail: state }));
+                    if (paddle1) {
                         paddle1.style.top = `${state.paddles.p1}%`;
-                    if (paddle2)
+                    }
+                    if (paddle2) {
                         paddle2.style.top = `${state.paddles.p2}%`;
+                    }
                     if (ball) {
                         ball.style.left = `${state.ball.x}%`;
                         ball.style.top = `${state.ball.y}%`;
@@ -100,7 +103,7 @@ function stopPongWebSocket() {
 setInterval(() => {
     // E.g., URL format: http://localhost:3000/#pong/abcd1234
     const hash = window.location.hash;
-    const matchPrefix = '#pong/';
+    const matchPrefix = "#pong/";
     const isOnPongGame = hash.startsWith(matchPrefix) && hash.slice(matchPrefix.length) === currentMatchId;
     if (!isOnPongGame && socketInitialized) {
         stopPongWebSocket();
