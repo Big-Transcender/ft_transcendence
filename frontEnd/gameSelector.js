@@ -31,7 +31,7 @@ document.addEventListener("DOMContentLoaded", () => {
     backGameSelectorPongId.addEventListener("click", () => {
         changePageTo(gameSelectorPongPage, gameSelectorPage);
     });
-    //Singleplayer Pong #TODO brendon
+    //Singleplayer Pong 
     buttonSinglePong.addEventListener("click", () => {
         changePageTo(gameSelectorPongPage, pongGamePage);
         const matchId = "match-" + Date.now() + "-" + Math.floor(Math.random() * 10000);
