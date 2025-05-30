@@ -36,7 +36,7 @@
 
 .gameSelectorHeader {
 	position: absolute;
-	width: 500px;
+	width: 640px;
 	height: 60px;
 	text-align: center;
 	align-content: center;
@@ -46,6 +46,7 @@
 	translate: -50%;
 	font-family: animalCrossing;
 	color: #00171f;
+	/* background-color: red; */
 }
 
 .gameSelectorButton {

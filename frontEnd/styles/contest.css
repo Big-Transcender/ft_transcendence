@@ -238,7 +238,7 @@
 	width: 500px;
 	height: 50px;
 	left: 50%;
-	top: 20px;
+	top: 160px;
 	translate: -50%;
 	opacity: 0%;
 }
@@ -287,4 +287,16 @@
 
 .warning {
 	animation: warning 5s forwards;
+}
+
+.inputContestName {
+	position: absolute;
+	top: 40%;
+}
+
+.contestNewCreateButton {
+	position: absolute;
+	bottom: 50px;
+	left: 50%;
+	translate: -50%;
 }

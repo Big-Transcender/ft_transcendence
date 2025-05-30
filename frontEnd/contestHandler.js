@@ -2,6 +2,7 @@ const joinContestButton = document.getElementById("joinContestId");
 const createContesButton = document.getElementById("createContestId");
 const enterContestButton = document.getElementById("enterContestButtonId");
 const genericBackButton = document.querySelectorAll(".genericBackButton");
+const createNewContestButton = document.getElementById("createNewContestButtonId");
 const contestMainPage = document.getElementById("contestSelectorId");
 const joinContestPage = document.getElementById("contestJoinSelectorId");
 const joinedContestPage = document.getElementById("contestJoinedSelectorId");
@@ -72,6 +73,15 @@ document.addEventListener("DOMContentLoaded", () => {
             getInfoFromContest(inputPin);
         }
     });
+    createNewContestButton.addEventListener("click", async () => {
+        if (!checkIfLogged()) {
+            displayWarning("You need to log in.");
+        }
+        else {
+            await betterWait(100);
+            changePageTo(contestMainPage, joinContestPage);
+        }
+    });
     genericBackButton.forEach((button) => {
         button.addEventListener("click", () => {
             genericBackFunctionContest();
@@ -110,8 +120,7 @@ if (pinBox) {
         }
     });
 }
-// function placeNameInContest() {
-// }
+async function createNewContest() { }
 async function getInfoFromContest(pin) {
     try {
         const response = await fetch(`http://localhost:3000/tournament/${pin}`);

@@ -178,6 +178,26 @@
 								</div>
 							</button>
 						</div>
+
+						<div class="gameSelector gameId" id="gameSelectorPongMultiplayerId">
+							<div class="gameSelectorBG"></div>
+							<p class="gameSelectorHeader">What type of Multiplayer?</p>
+							<div class="gameSelectorButton" id="buttonLocalMP">
+								<div class="gameSelectorButtonBG"></div>
+								<p class="gameSelectorText">Local</p>
+							</div>
+							<div class="gameSelectorButton Button2" id="buttonVersusMPId">
+								<div class="gameSelectorButtonBG ButtonBG2"></div>
+								<p class="gameSelectorText">Versus</p>
+							</div>
+							<button class="defaultButton backGamePongMode" id="backButtonMPId">
+								<p class="defaultButtonText backGameSnakeText">Back</p>
+								<div class="defaultButtonBG">
+									<div class="defaultButtonBGWave"></div>
+									<div class="defaultButtonBGWave wave2"></div>
+								</div>
+							</button>
+						</div>
 						<div class="game1Place gameId" id="pongGameId">
 							<div class="gameScore">
 								<div class="gameScoreBG"></div>
@@ -318,9 +338,22 @@
 								<p class="contestName" id="contestNameId">teste</p>
 							</div>
 						</div>
-						<div class="defaultWarning">
-							<div class="defaultWarningBG"></div>
-							<p class="defaultWarningText" id="warningContest">Generic Error</p>
+
+						<!-- CONTEST CREATING PAGE -->
+						<div class="gameSelector contestId" id="contestCreateId">
+							<div class="gameSelectorBG contestBG"></div>
+							<p class="gameSelectorHeader headerContest">Create your contest</p>
+							<div class="inputBox inputContestName">
+								<label for="inputNick">Enter your contest name</label>
+								<input type="text" id="inputContestNameId" class="inputText smallInput" placeholder="CONTEST NAME" autocomplete="off" />
+							</div>
+							<button class="defaultButton contestNewCreateButton" id="createNewContestButtonId">
+								<p class="defaultButtonText">Create</p>
+								<div class="defaultButtonBG">
+									<div class="defaultButtonBGWave"></div>
+									<div class="defaultButtonBGWave wave2"></div>
+								</div>
+							</button>
 						</div>
 					</div>
 					<div id="profile" class="profile page">
@@ -480,6 +513,10 @@
 								</div>
 							</div>
 						</div> -->
+					</div>
+					<div class="defaultWarning">
+						<div class="defaultWarningBG"></div>
+						<p class="defaultWarningText" id="warningContest">Generic Error</p>
 					</div>
 				</div>
 			</div>

@@ -88,7 +88,7 @@ async function routes(fastify) {
 			return reply.code(400).send({ error: "Invalid tournament data" });
 		}
 
-		const id = Date.now().toString(); // unique ID
+		const id = Math.floor(1000 + Math.random() * 9000).toString(); // unique ID
 		const matches = generateMatches(players);
 
 		fastify.tournaments[id] = {
