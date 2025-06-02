@@ -27,7 +27,7 @@
 	width: 100%;
 	height: 100%;
 	/* background-color: rgb(238, 131, 8); */
-	background-image: url(/frontEnd/images/pongGame/gameScoreBG.png);
+	background-image: url(/images/pongGame/gameScoreBG.png);
 	background-size: 100%;
 }
 
@@ -115,7 +115,7 @@
 	height: 100%;
 	width: 100%;
 	background-color: black;
-	background-image: url(/frontEnd/images/pongGame/pongGameBG3.png);
+	background-image: url(/images/pongGame/pongGameBG3.png);
 	background-size: contain;
 	background-repeat: no-repeat;
 	box-shadow: inset 0px 0px 150px;
