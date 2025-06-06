@@ -106,67 +106,78 @@ async function routes(fastify) {
 
 		if (!tournamentName)
 			return reply.code(400).send({ error: "Name is empty" });
+
 		if (!nick)
 			return reply.code(400).send({ error: "Nick is empty" });
 
-		// Check if the user exists
+		// Get user ID from nickname
 		const user = db.prepare("SELECT id FROM users WHERE nickname = ?").get(nick);
 		if (!user)
-			return reply.code(404).send({ error: "User not found in database" });
+			return reply.code(404).send({ error: "User not found" });
 
 		const createdAt = new Date().toISOString();
 		let code;
-		let exists;
+
+		// Try until a unique code is generated
 		do {
 			code = Math.floor(1000 + Math.random() * 9000).toString();
-			exists = db.prepare("SELECT 1 FROM tournaments WHERE code = ?").get(code);
-		} while (exists);
+		} while (db.prepare("SELECT 1 FROM tournaments WHERE code = ?").get(code));
 
-		// Call createTournament with correct order and proper user ID
-		const info = createTournament(tournamentName, code, user.id, createdAt);
+		// Insert tournament
+		const insert = db.prepare(`
+		INSERT INTO tournaments (name, code, created_by, created_at)
+		VALUES (?, ?, ?, ?)
+	`);
+		const result = insert.run(tournamentName, code, user.id, createdAt);
 
+		// Auto-join creator to the tournament
+		db.prepare(`
+		INSERT INTO tournament_players (tournament_id, user_id)
+		VALUES (?, ?)
+	`).run(result.lastInsertRowid, user.id);
+
+		// Respond
 		reply.code(201).send({
-			tournamentId: info.lastInsertRowid,  // use inserted row id here
+			tournamentId: result.lastInsertRowid,
 			tournamentName,
-			message: "Tournament created",
+			code,
+			message: "Tournament created and user joined"
 		});
 	});
 
+
 	// GET /tournament/:id
-	fastify.get("/tournament/:id", async (request, reply) =>
-	{
-		const { id } = request.params;
-		const tournament = fastify.tournaments[id];
+	fastify.get("/tournament/:code", async (request, reply) => {
+		const { code } = request.params;
+
+		if (!code)
+			return reply.code(400).send({ error: "Tournament code is required" });
+
+		const tournament = db.prepare(`
+			SELECT t.id, t.name, t.code, t.created_at, u.nickname AS created_by
+			FROM tournaments t
+					 JOIN users u ON t.created_by = u.id
+			WHERE t.code = ?
+		`).get(code);
 
 		if (!tournament)
 			return reply.code(404).send({ error: "Tournament not found" });
-		reply.send(tournament);
-	});
 
-	// GET /tournament/:id/match/:matchId
-	fastify.get("/tournament/:id/match/:matchId", async (request, reply) =>
-	{
-		const { id, matchId } = request.params;
-		const tournament = fastify.tournaments[id];
+		// Get players who joined this tournament
+		const players = db.prepare(`
+		SELECT u.id, u.nickname
+		FROM tournament_players tp
+		JOIN users u ON tp.user_id = u.id
+		WHERE tp.tournament_id = ?
+	`).all(tournament.id);
 
-		if (!tournament) {
-			return reply.code(404).send({ error: "Tournament not found" });
-		}
-
-		const match = tournament.matches.find((m) => m.id === matchId);
-
-		if (!match) {
-			return reply.code(404).send({ error: "Match not found" });
-		}
-
-		reply.send({
-			matchId: match.id,
-			p1: match.p1,
-			p2: match.p2,
-			winner: match.winner,
+		reply.code(200).send({
+			...tournament,
+			players,
 		});
 	});
 
+	
 	//ONLY FOR TESTING API
 	fastify.delete("/test-cleanup", async (request, reply) => {
 		try {
@@ -214,20 +225,11 @@ function createTournament(name, code, createdBy, createdAt) {
 	return stmt.run(name, code, createdBy, createdAt);
 }
 
-function insertMatch(player1Id, player2Id, winnerId, scoreP1, scoreP2, tournamentId = null) {
-	const stmt = db.prepare(`
-    INSERT INTO matches (player1_id, player2_id, winner_id, score_p1, score_p2, tournament_id)
-    VALUES (?, ?, ?, ?, ?, ?)
-  `);
-	return stmt.run(player1Id, player2Id, winnerId, scoreP1, scoreP2, tournamentId);
+function addPlayerToTournament(tournamentId, userId) {
+	const stmt = db.prepare(`INSERT OR IGNORE INTO tournament_players (tournament_id, user_id) VALUES (?, ?)`);
+	stmt.run(tournamentId, userId);
 }
 
-function getTournamentMatches(tournamentId) {
-	const stmt = db.prepare(`
-    SELECT * FROM matches WHERE tournament_id = ? ORDER BY timestamp DESC
-  `);
-	return stmt.all(tournamentId);
-}
 
 
 module.exports = routes;
