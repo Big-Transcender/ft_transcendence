@@ -1,8 +1,11 @@
 const db = require("./database");
+const { getUserMatchHistory, /* other functions */ } = require('./dataQuerys');
 
 const bcrypt = require("bcryptjs");
 
 const { getLeaderboard } = require("./dataQuerys");
+const repl = require("node:repl");
+const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 async function routes(fastify) {
 	fastify.decorate("tournaments", {});
@@ -15,14 +18,41 @@ async function routes(fastify) {
 
 	// POST /register
 
-	fastify.post("/register", async (request, reply) => {
+	fastify.post("/register", async (request, reply) =>
+	{
 		const { password, email, nickname } = request.body;
 
-		if (!password || !email || !nickname) {
-			return reply.code(400).send({ error: "All fields are required", details: "Missing field" });
-		}
+		if (!password || !email || !nickname)
+			return reply.code(400).send({ error: "All fields are required"});
 
-		try {
+		if(!emailRegex.test(email))
+			return reply.code(400).send({error: "Invalid email format"})
+
+		if(password.length < 8)
+			return reply.code(400).send({error: "Password must be at least 8 characters long"})
+
+		if(!/\d/.test(password))
+			return reply.code(400).send({error: "Password must have at least 1 number"})
+
+		if(!/[a-z]/.test(password))
+			return reply.code(400).send({error: "Password must include at least 1 lower case letter"})
+
+		if(!/[A-Z]/.test(password))
+			return reply.code(400).send({error: "Password must include at least 1 upper case letter"})
+
+		if(!/[^A-Za-z0-9]/.test(password))
+			return reply.code(400).send({error: "Password must include at least 1 special character"})
+
+		try
+		{
+			const nickNameExist = db.prepare("SELECT 1 from USERS WHERE nickname = ?").get(nickname)
+			if(nickNameExist)
+				return reply.code(400).send({error: "Nickname already in use"})
+
+			const emailExist = db.prepare("SELECT 1 FROM USERS where email = ?").get(email)
+			if(emailExist)
+				return reply.code(400).send({error: "Email already in use"})
+
 			const hashedPassword = await bcrypt.hash(password, 10);
 
 			const stmt = db.prepare("INSERT INTO users (nickname, password, email) VALUES (?, ?, ?)");
@@ -81,29 +111,43 @@ async function routes(fastify) {
 	});
 
 	// POST /tournament
-	fastify.post("/tournament", async (request, reply) => {
-		const { name, players } = request.body;
+	fastify.post("/create-tournament", async (request, reply) => {
+		const { nick, name } = request.body;
 
-		if (!name || !Array.isArray(players) || players.length < 4) {
-			return reply.code(400).send({ error: "Invalid tournament data" });
+		if (!name)
+		{
+			return reply.code(400).send({ error: "Name is empty" });
 		}
 
-		const id = Date.now().toString(); // unique ID
-		const matches = generateMatches(players);
+		if(!nick)
+		{
+			return reply.code(400).send({ error: "Nick is empty"});
+		}
+
+		// Check if the user exists
+		const user = db.prepare("SELECT * FROM users WHERE nickname = ?").get(nick);
+		if (!user)
+		{
+			return reply.code(404).send({ error: "User not found in database" });
+		}
+
+		const players = [nick];
+		const id = Math.floor(1000 + Math.random() * 9000).toString();
+		createTournament(name);
 
 		fastify.tournaments[id] = {
 			id,
 			name,
 			players,
-			matches,
+			matches: [],
 			currentMatchIndex: 0,
 			status: "pending",
 		};
 
 		reply.code(201).send({
 			tournamentId: id,
+			tournametName: name,
 			message: "Tournament created",
-			tournament: fastify.tournaments[id],
 		});
 	});
 
@@ -115,7 +159,6 @@ async function routes(fastify) {
 		if (!tournament) {
 			return reply.code(404).send({ error: "Tournament not found" });
 		}
-
 		reply.send(tournament);
 	});
 
@@ -140,6 +183,17 @@ async function routes(fastify) {
 			p2: match.p2,
 			winner: match.winner,
 		});
+	});
+
+	//ONLY FOR TESTING API
+	fastify.delete("/test-cleanup", async (request, reply) => {
+		try {
+			const stmt = db.prepare("DELETE FROM users WHERE email = ?");
+			const info = stmt.run("validuser@example.com");
+			return reply.send({ deleted: info.changes });
+		} catch (err) {
+			return reply.code(500).send({ error: "Cleanup failed", details: err.message });
+		}
 	});
 }
 
@@ -172,5 +226,26 @@ function generateMatches(players) {
 
 	return matches;
 }
+
+function createTournament(name) {
+	const stmt = db.prepare(`INSERT INTO tournaments (name) VALUES (?)`);
+	return stmt.run(name);
+}
+
+function insertMatch(player1Id, player2Id, winnerId, scoreP1, scoreP2, tournamentId = null) {
+	const stmt = db.prepare(`
+    INSERT INTO matches (player1_id, player2_id, winner_id, score_p1, score_p2, tournament_id)
+    VALUES (?, ?, ?, ?, ?, ?)
+  `);
+	return stmt.run(player1Id, player2Id, winnerId, scoreP1, scoreP2, tournamentId);
+}
+
+function getTournamentMatches(tournamentId) {
+	const stmt = db.prepare(`
+    SELECT * FROM matches WHERE tournament_id = ? ORDER BY timestamp DESC
+  `);
+	return stmt.all(tournamentId);
+}
+
 
 module.exports = routes;
