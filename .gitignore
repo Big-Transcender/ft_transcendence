@@ -1,0 +1,43 @@
+# Node.js dependencies
+node_modules/
+package-lock.json
+pnpm-lock.yaml
+yarn.lock
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# SQLite database files
+*.sqlite
+*.sqlite3
+*.db
+
+# Logs
+logs/
+*.log
+
+# Environment variables
+.env
+.env.*
+
+# Build directories
+dist/
+build/
+.cache/
+.nyc_output/
+
+# VSCode and JetBrains IDE configs
+.vscode/
+.idea/
+
+# Coverage and testing
+coverage/
+*.lcov
+
+# Mac-specific
+.AppleDouble
+.LSOverride
+
+# Optional: local test/cleanup scripts
+test-cleanup.js
