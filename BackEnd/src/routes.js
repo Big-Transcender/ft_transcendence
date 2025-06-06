@@ -163,7 +163,6 @@ async function routes(fastify) {
 		if (!tournament)
 			return reply.code(404).send({ error: "Tournament not found" });
 
-		// Get players who joined this tournament
 		const players = db.prepare(`
 		SELECT u.id, u.nickname
 		FROM tournament_players tp
@@ -177,7 +176,49 @@ async function routes(fastify) {
 		});
 	});
 
-	
+	fastify.post("/join-tournament", async (request, reply) => {
+		const { nick, code } = request.body;
+
+		if (!nick)
+			return reply.code(400).send({ error: "Nick is required" });
+
+		if (!code)
+			return reply.code(400).send({ error: "Tournament code is required" });
+
+		// Check if user exists
+		const user = db.prepare("SELECT id FROM users WHERE nickname = ?").get(nick);
+		if (!user)
+			return reply.code(404).send({ error: "User not found" });
+
+		// Check if tournament with the given code exists
+		const tournament = db.prepare("SELECT id FROM tournaments WHERE code = ?").get(code);
+		if (!tournament)
+			return reply.code(404).send({ error: "Tournament not found" });
+
+		// Check if the user is already in the tournament
+		const alreadyJoined = db.prepare(`
+		SELECT 1 FROM tournament_players
+		WHERE tournament_id = ? AND user_id = ?
+	`).get(tournament.id, user.id);
+
+		if (alreadyJoined)
+			return reply.code(400).send({ error: "User already joined this tournament" });
+
+		// Add user to tournament
+		db.prepare(`
+		INSERT INTO tournament_players (tournament_id, user_id)
+		VALUES (?, ?)
+	`).run(tournament.id, user.id);
+
+		reply.code(200).send({
+			message: "User successfully joined the tournament",
+			tournamentId: tournament.id,
+			userId: user.id
+		});
+	});
+
+
+
 	//ONLY FOR TESTING API
 	fastify.delete("/test-cleanup", async (request, reply) => {
 		try {
