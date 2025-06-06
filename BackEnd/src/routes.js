@@ -54,9 +54,7 @@ async function routes(fastify) {
 				return reply.code(400).send({error: "Email already in use"})
 
 			const hashedPassword = await bcrypt.hash(password, 10);
-
 			const stmt = db.prepare("INSERT INTO users (nickname, password, email) VALUES (?, ?, ?)");
-
 			const info = stmt.run(nickname, hashedPassword, email);
 
 			reply.code(201).send({ id: info.lastInsertRowid });
@@ -67,35 +65,28 @@ async function routes(fastify) {
 
 	// POST /login
 
-	fastify.post("/login", async (request, reply) => {
-		const { nickname, password } = request.body;
+	fastify.post("/login", async (request, reply) =>
+	{
+		const { identifier, password } = request.body; // identifier = nickname or email
 
-		console.log("nickname: " + nickname);
+		if (!identifier || !password)
+			return reply.code(400).send({ error: "Identifier and password are required" });
 
-		console.log("pass: " + password);
-
-		if (!nickname || !password) {
-			return reply.code(400).send({ error: "Name and password are required" });
-		}
-
-		const user = db.prepare("SELECT * FROM users WHERE nickname = ?").get(nickname);
-
-		if (!user) {
-			return reply.code(401).send({ error: "Invalid credentials", details: "User dont exist" });
-		}
+		// Try to find user by nickname OR email
+		const user = db.prepare("SELECT * FROM users WHERE nickname = ? OR email = ?").get(identifier, identifier);
+		if (!user)
+			return reply.code(401).send({ error: "Invalid credentials", details: "User does not exist" });
 
 		const isValid = await bcrypt.compare(password, user.password);
-
-		if (!isValid) {
+		if (!isValid)
 			return reply.code(401).send({ error: "Invalid credentials", details: "Wrong password" });
-		}
-
 		reply.send({ message: "Login successful", user: { id: user.id, name: user.nickname } });
 	});
 
 	// GET /users
 
-	fastify.get("/users", async (request, reply) => {
+	fastify.get("/users", async (request, reply) =>
+	{
 		const users = db.prepare("SELECT id, nickname FROM users").all();
 
 		reply.send(users);
