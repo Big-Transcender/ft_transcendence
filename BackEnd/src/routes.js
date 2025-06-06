@@ -67,12 +67,11 @@ async function routes(fastify) {
 
 	fastify.post("/login", async (request, reply) =>
 	{
-		const { identifier, password } = request.body; // identifier = nickname or email
+		const { identifier, password } = request.body;
 
 		if (!identifier || !password)
 			return reply.code(400).send({ error: "Identifier and password are required" });
 
-		// Try to find user by nickname OR email
 		const user = db.prepare("SELECT * FROM users WHERE nickname = ? OR email = ?").get(identifier, identifier);
 		if (!user)
 			return reply.code(401).send({ error: "Invalid credentials", details: "User does not exist" });
@@ -103,58 +102,50 @@ async function routes(fastify) {
 
 	// POST /tournament
 	fastify.post("/create-tournament", async (request, reply) => {
-		const { nick, name } = request.body;
+		const { nick, tournamentName } = request.body;
 
-		if (!name)
-		{
+		if (!tournamentName)
 			return reply.code(400).send({ error: "Name is empty" });
-		}
-
-		if(!nick)
-		{
-			return reply.code(400).send({ error: "Nick is empty"});
-		}
+		if (!nick)
+			return reply.code(400).send({ error: "Nick is empty" });
 
 		// Check if the user exists
-		const user = db.prepare("SELECT * FROM users WHERE nickname = ?").get(nick);
+		const user = db.prepare("SELECT id FROM users WHERE nickname = ?").get(nick);
 		if (!user)
-		{
 			return reply.code(404).send({ error: "User not found in database" });
-		}
 
-		const players = [nick];
-		const id = Math.floor(1000 + Math.random() * 9000).toString();
-		createTournament(name);
+		const createdAt = new Date().toISOString();
+		let code;
+		let exists;
+		do {
+			code = Math.floor(1000 + Math.random() * 9000).toString();
+			exists = db.prepare("SELECT 1 FROM tournaments WHERE code = ?").get(code);
+		} while (exists);
 
-		fastify.tournaments[id] = {
-			id,
-			name,
-			players,
-			matches: [],
-			currentMatchIndex: 0,
-			status: "pending",
-		};
+		// Call createTournament with correct order and proper user ID
+		const info = createTournament(tournamentName, code, user.id, createdAt);
 
 		reply.code(201).send({
-			tournamentId: id,
-			tournametName: name,
+			tournamentId: info.lastInsertRowid,  // use inserted row id here
+			tournamentName,
 			message: "Tournament created",
 		});
 	});
 
 	// GET /tournament/:id
-	fastify.get("/tournament/:id", async (request, reply) => {
+	fastify.get("/tournament/:id", async (request, reply) =>
+	{
 		const { id } = request.params;
 		const tournament = fastify.tournaments[id];
 
-		if (!tournament) {
+		if (!tournament)
 			return reply.code(404).send({ error: "Tournament not found" });
-		}
 		reply.send(tournament);
 	});
 
 	// GET /tournament/:id/match/:matchId
-	fastify.get("/tournament/:id/match/:matchId", async (request, reply) => {
+	fastify.get("/tournament/:id/match/:matchId", async (request, reply) =>
+	{
 		const { id, matchId } = request.params;
 		const tournament = fastify.tournaments[id];
 
@@ -218,9 +209,9 @@ function generateMatches(players) {
 	return matches;
 }
 
-function createTournament(name) {
-	const stmt = db.prepare(`INSERT INTO tournaments (name) VALUES (?)`);
-	return stmt.run(name);
+function createTournament(name, code, createdBy, createdAt) {
+	const stmt = db.prepare(`INSERT INTO tournaments (name, code, created_by, created_at) VALUES (?, ?, ?, ?)`);
+	return stmt.run(name, code, createdBy, createdAt);
 }
 
 function insertMatch(player1Id, player2Id, winnerId, scoreP1, scoreP2, tournamentId = null) {
