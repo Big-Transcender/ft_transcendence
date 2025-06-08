@@ -25,15 +25,15 @@ async function routes(fastify) {
 
 		if (!emailRegex.test(email)) return reply.code(400).send({ error: "Invalid email format" });
 
-		if (password.length < 8) return reply.code(400).send({ error: "Password must be at least 8 characters long" });
+		if (password.length < 8) return reply.code(400).send({ error: "Password 8 long" });
 
-		if (!/\d/.test(password)) return reply.code(400).send({ error: "Password must have at least 1 number" });
+		if (!/\d/.test(password)) return reply.code(400).send({ error: "Password 1 number" });
 
-		if (!/[a-z]/.test(password)) return reply.code(400).send({ error: "Password must include at least 1 lower case letter" });
+		if (!/[a-z]/.test(password)) return reply.code(400).send({ error: "Password lower case" });
 
-		if (!/[A-Z]/.test(password)) return reply.code(400).send({ error: "Password must include at least 1 upper case letter" });
+		if (!/[A-Z]/.test(password)) return reply.code(400).send({ error: "Password uper case" });
 
-		if (!/[^A-Za-z0-9]/.test(password)) return reply.code(400).send({ error: "Password must include at least 1 special character" });
+		if (!/[^A-Za-z0-9]/.test(password)) return reply.code(400).send({ error: "Password special character" });
 
 		try {
 			const nickNameExist = db.prepare("SELECT 1 from USERS WHERE nickname = ?").get(nickname);
@@ -57,13 +57,13 @@ async function routes(fastify) {
 	fastify.post("/login", async (request, reply) => {
 		const { identifier, password } = request.body;
 
-		if (!identifier || !password) return reply.code(400).send({ error: "Identifier and password are required" });
+		if (!identifier || !password) return reply.code(400).send({ error: "All fields are required" });
 
 		const user = db.prepare("SELECT * FROM users WHERE nickname = ? OR email = ?").get(identifier, identifier);
-		if (!user) return reply.code(401).send({ error: "Invalid credentials", details: "User does not exist" });
+		if (!user) return reply.code(401).send({ error: "User does not exist", details: "User does not exist" });
 
 		const isValid = await bcrypt.compare(password, user.password);
-		if (!isValid) return reply.code(401).send({ error: "Invalid credentials", details: "Wrong password" });
+		if (!isValid) return reply.code(401).send({ error: "Wrong password", details: "Wrong password" });
 		reply.send({ message: "Login successful", user: { id: user.id, name: user.nickname } });
 	});
 

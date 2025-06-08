@@ -80,7 +80,8 @@ document.addEventListener("DOMContentLoaded", () => {
         }
         else {
             await betterWait(100);
-            changePageTo(createContestPage, joinedContestPage);
+            createNewContest();
+            // changePageTo(createContestPage, joinedContestPage);
         }
     });
     genericBackButton.forEach((button) => {
@@ -121,7 +122,34 @@ if (pinBox) {
         }
     });
 }
-async function createNewContest() { }
+async function createNewContest() {
+    //Create Contest here
+    const tournamentName = document.getElementById("inputContestNameId").value.trim();
+    const nick = getNickOnLocalStorage();
+    console.log("tournamentName:", tournamentName);
+    console.log("nick:", nick);
+    try {
+        const response = await fetch("http://localhost:3000/create-tournament", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ nick, tournamentName }),
+        });
+        const data = await response.json();
+        if (!response.ok) {
+            console.error("Erro:", data.error);
+            displayWarning(data.error);
+            return null;
+        }
+        console.log("Torneio criado com sucesso:", data);
+        return data;
+    }
+    catch (err) {
+        console.error("Erro na requisição:", err);
+        return null;
+    }
+}
 async function getInfoFromContest(pin) {
     try {
         const response = await fetch(`http://localhost:3000/tournament/${pin}`);
