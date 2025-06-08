@@ -29,6 +29,7 @@ function getUserMatchHistory(userId) {
 	return stmt.all(userId, userId);
 }
 
+
 module.exports = {
 	insertMatch,
 	getLeaderboard,

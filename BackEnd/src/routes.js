@@ -1,8 +1,11 @@
 const db = require("./database");
+const { getUserMatchHistory /* other functions */ } = require("./dataQuerys");
 
 const bcrypt = require("bcryptjs");
 
 const { getLeaderboard } = require("./dataQuerys");
+const repl = require("node:repl");
+const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 async function routes(fastify) {
 	fastify.decorate("tournaments", {});
@@ -18,15 +21,29 @@ async function routes(fastify) {
 	fastify.post("/register", async (request, reply) => {
 		const { password, email, nickname } = request.body;
 
-		if (!password || !email || !nickname) {
-			return reply.code(400).send({ error: "All fields are required", details: "Missing field" });
-		}
+		if (!password || !email || !nickname) return reply.code(400).send({ error: "All fields are required" });
+
+		if (!emailRegex.test(email)) return reply.code(400).send({ error: "Invalid email format" });
+
+		if (password.length < 8) return reply.code(400).send({ error: "Password must be at least 8 characters long" });
+
+		if (!/\d/.test(password)) return reply.code(400).send({ error: "Password must have at least 1 number" });
+
+		if (!/[a-z]/.test(password)) return reply.code(400).send({ error: "Password must include at least 1 lower case letter" });
+
+		if (!/[A-Z]/.test(password)) return reply.code(400).send({ error: "Password must include at least 1 upper case letter" });
+
+		if (!/[^A-Za-z0-9]/.test(password)) return reply.code(400).send({ error: "Password must include at least 1 special character" });
 
 		try {
+			const nickNameExist = db.prepare("SELECT 1 from USERS WHERE nickname = ?").get(nickname);
+			if (nickNameExist) return reply.code(400).send({ error: "Nickname already in use" });
+
+			const emailExist = db.prepare("SELECT 1 FROM USERS where email = ?").get(email);
+			if (emailExist) return reply.code(400).send({ error: "Email already in use" });
+
 			const hashedPassword = await bcrypt.hash(password, 10);
-
 			const stmt = db.prepare("INSERT INTO users (nickname, password, email) VALUES (?, ?, ?)");
-
 			const info = stmt.run(nickname, hashedPassword, email);
 
 			reply.code(201).send({ id: info.lastInsertRowid });
@@ -38,28 +55,15 @@ async function routes(fastify) {
 	// POST /login
 
 	fastify.post("/login", async (request, reply) => {
-		const { nickname, password } = request.body;
+		const { identifier, password } = request.body;
 
-		console.log("nickname: " + nickname);
+		if (!identifier || !password) return reply.code(400).send({ error: "Identifier and password are required" });
 
-		console.log("pass: " + password);
-
-		if (!nickname || !password) {
-			return reply.code(400).send({ error: "Name and password are required" });
-		}
-
-		const user = db.prepare("SELECT * FROM users WHERE nickname = ?").get(nickname);
-
-		if (!user) {
-			return reply.code(401).send({ error: "Invalid credentials", details: "User dont exist" });
-		}
+		const user = db.prepare("SELECT * FROM users WHERE nickname = ? OR email = ?").get(identifier, identifier);
+		if (!user) return reply.code(401).send({ error: "Invalid credentials", details: "User does not exist" });
 
 		const isValid = await bcrypt.compare(password, user.password);
-
-		if (!isValid) {
-			return reply.code(401).send({ error: "Invalid credentials", details: "Wrong password" });
-		}
-
+		if (!isValid) return reply.code(401).send({ error: "Invalid credentials", details: "Wrong password" });
 		reply.send({ message: "Login successful", user: { id: user.id, name: user.nickname } });
 	});
 
@@ -81,65 +85,136 @@ async function routes(fastify) {
 	});
 
 	// POST /tournament
-	fastify.post("/tournament", async (request, reply) => {
-		const { name, players } = request.body;
+	fastify.post("/create-tournament", async (request, reply) => {
+		const { nick, tournamentName } = request.body;
 
-		if (!name || !Array.isArray(players) || players.length < 4) {
-			return reply.code(400).send({ error: "Invalid tournament data" });
-		}
+		if (!tournamentName) return reply.code(400).send({ error: "Name is empty" });
 
-		const id = Math.floor(1000 + Math.random() * 9000).toString(); // unique ID
-		const matches = generateMatches(players);
+		if (!nick) return reply.code(400).send({ error: "Nick is empty" });
 
-		fastify.tournaments[id] = {
-			id,
-			name,
-			players,
-			matches,
-			currentMatchIndex: 0,
-			status: "pending",
-		};
+		// Get user ID from nickname
+		const user = db.prepare("SELECT id FROM users WHERE nickname = ?").get(nick);
+		if (!user) return reply.code(404).send({ error: "User not found" });
 
+		const createdAt = new Date().toISOString();
+		let code;
+
+		// Try until a unique code is generated
+		do {
+			code = Math.floor(1000 + Math.random() * 9000).toString();
+		} while (db.prepare("SELECT 1 FROM tournaments WHERE code = ?").get(code));
+
+		// Insert tournament
+		const insert = db.prepare(`
+		INSERT INTO tournaments (name, code, created_by, created_at)
+		VALUES (?, ?, ?, ?)
+	`);
+		const result = insert.run(tournamentName, code, user.id, createdAt);
+
+		// Auto-join creator to the tournament
+		db.prepare(
+			`
+		INSERT INTO tournament_players (tournament_id, user_id)
+		VALUES (?, ?)
+	`
+		).run(result.lastInsertRowid, user.id);
+
+		// Respond
 		reply.code(201).send({
-			tournamentId: id,
-			message: "Tournament created",
-			tournament: fastify.tournaments[id],
+			tournamentId: result.lastInsertRowid,
+			tournamentName,
+			code,
+			message: "Tournament created and user joined",
 		});
 	});
 
 	// GET /tournament/:id
-	fastify.get("/tournament/:id", async (request, reply) => {
-		const { id } = request.params;
-		const tournament = fastify.tournaments[id];
+	fastify.get("/tournament/:code", async (request, reply) => {
+		const { code } = request.params;
 
-		if (!tournament) {
-			return reply.code(404).send({ error: "Tournament not found" });
-		}
+		if (!code) return reply.code(400).send({ error: "Tournament code is required" });
 
-		reply.send(tournament);
+		const tournament = db
+			.prepare(
+				`
+			SELECT t.id, t.name, t.code, t.created_at, u.nickname AS created_by
+			FROM tournaments t
+					 JOIN users u ON t.created_by = u.id
+			WHERE t.code = ?
+		`
+			)
+			.get(code);
+
+		if (!tournament) return reply.code(404).send({ error: "Tournament not found" });
+
+		const players = db
+			.prepare(
+				`
+		SELECT u.id, u.nickname
+		FROM tournament_players tp
+		JOIN users u ON tp.user_id = u.id
+		WHERE tp.tournament_id = ?
+	`
+			)
+			.all(tournament.id);
+
+		reply.code(200).send({
+			...tournament,
+			players,
+		});
 	});
 
-	// GET /tournament/:id/match/:matchId
-	fastify.get("/tournament/:id/match/:matchId", async (request, reply) => {
-		const { id, matchId } = request.params;
-		const tournament = fastify.tournaments[id];
+	fastify.post("/join-tournament", async (request, reply) => {
+		const { nick, code } = request.body;
 
-		if (!tournament) {
-			return reply.code(404).send({ error: "Tournament not found" });
-		}
+		if (!nick) return reply.code(400).send({ error: "Nick is required" });
 
-		const match = tournament.matches.find((m) => m.id === matchId);
+		if (!code) return reply.code(400).send({ error: "Tournament code is required" });
 
-		if (!match) {
-			return reply.code(404).send({ error: "Match not found" });
-		}
+		// Check if user exists
+		const user = db.prepare("SELECT id FROM users WHERE nickname = ?").get(nick);
+		if (!user) return reply.code(404).send({ error: "User not found" });
 
-		reply.send({
-			matchId: match.id,
-			p1: match.p1,
-			p2: match.p2,
-			winner: match.winner,
+		// Check if tournament with the given code exists
+		const tournament = db.prepare("SELECT id FROM tournaments WHERE code = ?").get(code);
+		if (!tournament) return reply.code(404).send({ error: "Tournament not found" });
+
+		// Check if the user is already in the tournament
+		const alreadyJoined = db
+			.prepare(
+				`
+		SELECT 1 FROM tournament_players
+		WHERE tournament_id = ? AND user_id = ?
+	`
+			)
+			.get(tournament.id, user.id);
+
+		if (alreadyJoined) return reply.code(400).send({ error: "User already joined this tournament" });
+
+		// Add user to tournament
+		db.prepare(
+			`
+		INSERT INTO tournament_players (tournament_id, user_id)
+		VALUES (?, ?)
+	`
+		).run(tournament.id, user.id);
+
+		reply.code(200).send({
+			message: "User successfully joined the tournament",
+			tournamentId: tournament.id,
+			userId: user.id,
 		});
+	});
+
+	//ONLY FOR TESTING API
+	fastify.delete("/test-cleanup", async (request, reply) => {
+		try {
+			const stmt = db.prepare("DELETE FROM users WHERE email = ?");
+			const info = stmt.run("validuser@example.com");
+			return reply.send({ deleted: info.changes });
+		} catch (err) {
+			return reply.code(500).send({ error: "Cleanup failed", details: err.message });
+		}
 	});
 }
 
@@ -171,6 +246,16 @@ function generateMatches(players) {
 	}
 
 	return matches;
+}
+
+function createTournament(name, code, createdBy, createdAt) {
+	const stmt = db.prepare(`INSERT INTO tournaments (name, code, created_by, created_at) VALUES (?, ?, ?, ?)`);
+	return stmt.run(name, code, createdBy, createdAt);
+}
+
+function addPlayerToTournament(tournamentId, userId) {
+	const stmt = db.prepare(`INSERT OR IGNORE INTO tournament_players (tournament_id, user_id) VALUES (?, ?)`);
+	stmt.run(tournamentId, userId);
 }
 
 module.exports = routes;

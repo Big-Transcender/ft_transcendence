@@ -1,4 +1,4 @@
-const Fastify = require('fastify');
+const fastify = require('fastify')({logger: true})
 const routes = require('./routes');
 const cors = require('@fastify/cors');
 
@@ -6,8 +6,6 @@ const path = require('path');
 const fastifyStatic = require('@fastify/static');
 
 const setupWebSocket = require('./socketConnection');
-
-const fastify = Fastify({ logger: true});
 
 async function start()
 {
