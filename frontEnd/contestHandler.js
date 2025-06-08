@@ -6,7 +6,7 @@ const createNewContestButton = document.getElementById("createNewContestButtonId
 const contestMainPage = document.getElementById("contestSelectorId");
 const joinContestPage = document.getElementById("contestJoinSelectorId");
 const joinedContestPage = document.getElementById("contestJoinedSelectorId");
-const createContestPage = document.getElementById("contestCreateSelectorId");
+const createContestPage = document.getElementById("contestCreateId");
 const pinBox = document.querySelector(".contestPinBox");
 function genericBackFunctionContest() {
     const currentActive = document.querySelector(".contestId.active");
@@ -73,13 +73,14 @@ document.addEventListener("DOMContentLoaded", () => {
             getInfoFromContest(inputPin);
         }
     });
+    // Create new Contest, join the contest created
     createNewContestButton.addEventListener("click", async () => {
         if (!checkIfLogged()) {
             displayWarning("You need to log in.");
         }
         else {
             await betterWait(100);
-            changePageTo(contestMainPage, joinContestPage);
+            changePageTo(createContestPage, joinedContestPage);
         }
     });
     genericBackButton.forEach((button) => {
