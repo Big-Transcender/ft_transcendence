@@ -261,7 +261,8 @@ async function routes(fastify) {
 	fastify.get('/pong/game/:matchId/state', async (request, reply) => {
 		const { matchId } = request.params;
 		const match = matches.get(matchId);
-		if (!match) return reply.code(404).send({ error: "Match not found" });
+		if (!match)
+			return reply.code(404).send({ error: "Match not found" });
 		return match.gameState;
 	});
 

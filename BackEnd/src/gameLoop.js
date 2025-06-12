@@ -1,3 +1,5 @@
+const { aiMove } = require('./aiPong');
+
 const matches = new Map(); // matchId -> { gameState, clients, intervalId }
 
 function createMatch(matchId, createInitialGameState) {
@@ -18,7 +20,7 @@ function startGameLoopForMatch(matchId, updateBall, isLocal = false) {
 
 		const requiredPlayers = isLocal ? 1 : 2;
 		if (clients.size === requiredPlayers) {
-			// Start timer only once when game is not ongoing
+
 			if (!gameState.onGoing && !gameState.started) {
 				gameState.started = true;
 				console.log("⏳ Starting game in 3 seconds...");
@@ -27,6 +29,7 @@ function startGameLoopForMatch(matchId, updateBall, isLocal = false) {
 
 			// Only update ball if game is active
 			if (gameState.onGoing) {
+				aiMove(gameState);
 				updateBall(gameState);
 			}
 
