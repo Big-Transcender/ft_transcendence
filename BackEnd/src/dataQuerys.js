@@ -1,5 +1,13 @@
 const db = require("./database");
 
+function insertMatch(player1Id, player2Id, winnerId, scoreP1, scoreP2) {
+	const stmt = db.prepare(`
+		INSERT INTO matches (player1_id, player2_id, winner_id, score_p1, score_p2)
+		VALUES (?, ?, ?, ?, ?)
+	`);
+	return stmt.run(player1Id, player2Id, winnerId, scoreP1, scoreP2);
+}
+
 function getLeaderboard() {
 	return db.prepare(`
     SELECT u.id, u.nickname, COUNT(m.winner_id) AS wins
@@ -27,4 +35,5 @@ function getUserLeaderboardPosition(userId) {
 module.exports = {
 	getLeaderboard,
 	getUserLeaderboardPosition,
+	insertMatch,
 };
