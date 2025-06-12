@@ -14,7 +14,7 @@ function aiMove(gameState) {
 	if (aiTick % 4 !== 0)
 		return;
 
-	const tolerance = 5; // Only move if ball is more than 2 units away
+	const tolerance = 5;
 
 	let keys = [];
 	if (ballVel > 0)
