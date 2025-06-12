@@ -73,26 +73,26 @@ document.addEventListener("DOMContentLoaded", () => {
 		updatePageHash(`#pong/multiplayerMenu`);
 
 		// // Prompt user to create or join a match
-		// const action = prompt("Do you want to create a new match or join an existing one? (Type 'create' or 'join')");
+		const action = prompt("Do you want to create a new match or join an existing one? (Type 'create' or 'join')");
 
-		// if (action === "create") {
-		// 	// Create a new match
-		// 	const matchId = "match-" + Date.now() + "-" + Math.floor(Math.random() * 10000);
-		// 	alert(`Match created! Share this ID with your friend: ${matchId}`);
-		// 	history.replaceState(undefined, "", `#pong/${matchId}`);
-		// 	startPongWebSocket(matchId, false); // Start as host
-		// } else if (action === "join") {
-		// 	// Join an existing match
-		// 	const matchId = prompt("Enter the match ID:");
-		// 	if (matchId) {
-		// 		history.replaceState(undefined, "", `#pong/${matchId}`);
-		// 		startPongWebSocket(matchId, false); // Join as client
-		// 	} else {
-		// 		alert("You must enter a match ID to join.");
-		// 	}
-		// } else {
-		// 	alert("Invalid action. Please type 'create' or 'join'.");
-		// }
+		if (action === "create") {
+			// Create a new match
+			const matchId = "match-" + Date.now() + "-" + Math.floor(Math.random() * 10000);
+			alert(`Match created! Share this ID with your friend: ${matchId}`);
+			history.replaceState(undefined, "", `#pong/${matchId}`);
+			startPongWebSocket(matchId, false); // Start as host
+		} else if (action === "join") {
+			// Join an existing match
+			const matchId = prompt("Enter the match ID:");
+			if (matchId) {
+				history.replaceState(undefined, "", `#pong/${matchId}`);
+				startPongWebSocket(matchId, false); // Join as client
+			} else {
+				alert("You must enter a match ID to join.");
+			}
+		} else {
+			alert("Invalid action. Please type 'create' or 'join'.");
+		}
 
 		//Change to Multiplayer Versus
 		buttonVersusMP.addEventListener("click", () => {
