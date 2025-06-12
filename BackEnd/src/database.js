@@ -1,20 +1,21 @@
 const Database = require("better-sqlite3");
 
-const db = new Database("/app/db/mydatabase.db");
+const db = new Database("./db/mydatabase.db");
 
 // USERS table
 db.prepare(
-`
+	`
 	CREATE TABLE IF NOT EXISTS users (
 		id INTEGER PRIMARY KEY AUTOINCREMENT,
 		nickname TEXT NOT NULL UNIQUE,
 		password TEXT NOT NULL,
 		email TEXT NOT NULL UNIQUE
 	);
-`).run();
+`
+).run();
 
 db.prepare(
-    `
+	`
     CREATE TABLE IF NOT EXISTS tournaments (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         name TEXT NOT NULL,
@@ -23,7 +24,8 @@ db.prepare(
         started BOOL DEFAULT 0,
         created_at DATETIME DEFAULT CURRENT_TIMESTAMP
     )
-    `).run();
+    `
+).run();
 
 db.prepare(
 	`
@@ -43,7 +45,8 @@ db.prepare(
 	`
 ).run();
 
-db.prepare(`
+db.prepare(
+	`
 	CREATE TABLE IF NOT EXISTS tournament_players (
 		tournament_id INTEGER,
 		user_id INTEGER,
@@ -51,6 +54,7 @@ db.prepare(`
 		FOREIGN KEY (tournament_id) REFERENCES tournaments(id),
 		FOREIGN KEY (user_id) REFERENCES users(id)
 	)
-`).run();
+`
+).run();
 
 module.exports = db;
