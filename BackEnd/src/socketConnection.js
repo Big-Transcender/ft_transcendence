@@ -18,20 +18,16 @@ function setupWebSocket(server) {
 				return;
 			}
 
-			// Handle "join" message
 			if (parsed.type === 'join') {
 				matchId = parsed.matchId;
 				const isLocal = parsed.isLocal || false;
 
-				// Create new match if it doesn't exist
 				if (!matches.has(matchId)) {
 					createMatch(matchId, createInitialGameState);
 					startGameLoopForMatch(matchId, updateBall, isLocal);
 				}
 
 				const match = matches.get(matchId);
-
-				// Assign player slot
 				if (!match.clients.has('p1')) {
 					match.clients.set('p1', ws);
 					assignedPlayer = 'p1';
@@ -43,14 +39,9 @@ function setupWebSocket(server) {
 					ws.close();
 					return;
 				}
-
-				// Acknowledge player role
 				ws.send(JSON.stringify({ type: 'assign', payload: assignedPlayer }));
-
 				console.log(`🎮 Player ${assignedPlayer} joined match ${matchId}`);
 			}
-
-			// Handle input
 			else if (parsed.type === 'input' && matchId && matches.has(matchId)) {
 				const match = matches.get(matchId);
 				handleInput(match.gameState, parsed.playerId, parsed.payload);
@@ -65,7 +56,6 @@ function setupWebSocket(server) {
 					console.log(`👋 Player ${assignedPlayer} left match ${matchId}`);
 				}
 
-				// Clean up if match is empty
 				if (match.clients.size === 0) {
 					matches.delete(matchId);
 					console.log(`🗑️ Match ${matchId} removed (no players left)`);

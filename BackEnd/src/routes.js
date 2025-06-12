@@ -1,10 +1,7 @@
 const db = require("./database");
-const { getUserMatchHistory /* other functions */ } = require("./dataQuerys");
-
 const bcrypt = require("bcryptjs");
 
-const { getLeaderboard } = require("./dataQuerys");
-const repl = require("node:repl");
+const { getLeaderboard, getUserLeaderboardPosition} = require("./dataQuerys");
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 async function routes(fastify) {
@@ -16,9 +13,8 @@ async function routes(fastify) {
 		return { message: "Hello Bitches!!!" };
 	});
 
-	// POST /register
-
-	fastify.post("/register", async (request, reply) => {
+	fastify.post("/register", async (request, reply) =>
+	{
 		const { password, email, nickname } = request.body;
 
 		if (!password || !email || !nickname) return reply.code(400).send({ error: "All fields are required" });
@@ -75,10 +71,7 @@ async function routes(fastify) {
 		reply.send(users);
 	});
 
-	// GET /leaderBoard
-
-	// GET /leaderBoard
-	fastify.get("/leaderBoard", async (request, reply) => {
+	fastify.get("/leaderboard", async (request, reply) => {
 		const leaderBoard = getLeaderboard();
 
 		reply.send(leaderBoard);
@@ -111,7 +104,6 @@ async function routes(fastify) {
 	`);
 		const result = insert.run(tournamentName, code, user.id, createdAt);
 
-		// Auto-join creator to the tournament
 		db.prepare(
 			`
 		INSERT INTO tournament_players (tournament_id, user_id)
@@ -179,7 +171,6 @@ async function routes(fastify) {
 		const tournament = db.prepare("SELECT id FROM tournaments WHERE code = ?").get(code);
 		if (!tournament) return reply.code(404).send({ error: "Tournament not found" });
 
-		// Check if the user is already in the tournament
 		const alreadyJoined = db
 			.prepare(
 				`
@@ -191,7 +182,6 @@ async function routes(fastify) {
 
 		if (alreadyJoined) return reply.code(400).send({ error: "User already joined this tournament" });
 
-		// Add user to tournament
 		db.prepare(
 			`
 		INSERT INTO tournament_players (tournament_id, user_id)
@@ -202,11 +192,40 @@ async function routes(fastify) {
 		reply.code(200).send({
 			message: "User successfully joined the tournament",
 			tournamentId: tournament.id,
-			userId: user.id,
+			userId: user.id
 		});
 	});
 
-	//ONLY FOR TESTING API
+	fastify.post("/start-tournament", async (request, reply) => {
+		const { code } = request.body;
+
+		if (!code)
+			return reply.code(400).send({ error: "Tournament code is required" });
+
+		const tournament = db.prepare("SELECT * FROM tournaments WHERE code = ?").get(code);
+		if (!tournament)
+			return reply.code(404).send({ error: "Tournament not found" });
+
+		if (tournament.started)
+			return reply.code(400).send({ error: "Tournament already started" });
+
+		db.prepare("UPDATE tournaments SET started = 1 WHERE code = ?").run(code);
+
+		reply.code(200).send({ message: "Tournament started successfully" });
+	});
+
+	fastify.get("/leaderBoard", async (request, reply) => {
+		const leaderBoard = getLeaderboard();
+		reply.send(leaderBoard);
+	});
+
+	fastify.get("/leaderboard/position/:userId", async (request, reply) => {
+		const { userId } = request.params;
+		const position = getUserLeaderboardPosition(Number(userId));
+		if (!position)
+			return reply.code(404).send({ error: "User not found in leaderboard" });
+		reply.send({ position });
+	});
 	fastify.delete("/test-cleanup", async (request, reply) => {
 		try {
 			const stmt = db.prepare("DELETE FROM users WHERE email = ?");
@@ -216,46 +235,6 @@ async function routes(fastify) {
 			return reply.code(500).send({ error: "Cleanup failed", details: err.message });
 		}
 	});
-}
-
-function generateMatches(players) {
-	const matches = [];
-	const shuffled = [...players].sort(() => Math.random() - 0.5);
-	let matchCounter = 0;
-
-	for (let i = 0; i < shuffled.length; i += 2) {
-		matches.push({
-			id: `match-${matchCounter++}`,
-			p1: shuffled[i],
-			p2: shuffled[i + 1] || null, // handle odd number
-			winner: null,
-		});
-	}
-
-	// Fill in placeholders for future rounds (if needed)
-	let rounds = Math.ceil(Math.log2(players.length));
-	let totalMatches = Math.pow(2, rounds) - 1;
-
-	while (matches.length < totalMatches) {
-		matches.push({
-			id: `match-${matchCounter++}`,
-			p1: null,
-			p2: null,
-			winner: null,
-		});
-	}
-
-	return matches;
-}
-
-function createTournament(name, code, createdBy, createdAt) {
-	const stmt = db.prepare(`INSERT INTO tournaments (name, code, created_by, created_at) VALUES (?, ?, ?, ?)`);
-	return stmt.run(name, code, createdBy, createdAt);
-}
-
-function addPlayerToTournament(tournamentId, userId) {
-	const stmt = db.prepare(`INSERT OR IGNORE INTO tournament_players (tournament_id, user_id) VALUES (?, ?)`);
-	stmt.run(tournamentId, userId);
 }
 
 module.exports = routes;

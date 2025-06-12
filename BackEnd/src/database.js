@@ -35,9 +35,9 @@ db.prepare(
         winner_id INTEGER NOT NULL,
         rounds INTEGER,
         FOREIGN KEY (tournament_id) REFERENCES tournaments(id),
-        FOREIGN KEY (player1_id) references users(id),
-        FOREIGN KEY (player2_id) references users(id),
-        FOREIGN KEY (winner_id) references users(id)
+        FOREIGN KEY (player1_id) REFERENCES users(id),
+        FOREIGN KEY (player2_id) REFERENCES users(id),
+        FOREIGN KEY (winner_id) REFERENCES users(id)
     )
     `
 ).run()
