@@ -13,3 +13,8 @@ services:
       - "3000:3000"
     depends_on:
       - frontend
+    volumes:
+      - backend-db:/app/db
+
+volumes:
+  backend-db:

@@ -29,7 +29,7 @@
 	position: absolute;
 	width: 100%;
 	height: 100%;
-	background-image: url(/frontEnd/images/gameSelectorBG.png);
+	background-image: url(/images/gameSelectorBG.png);
 	background-size: 100%;
 	background-repeat: no-repeat;
 }
@@ -73,7 +73,7 @@
 }
 
 .gameSelectorButton:hover .gameSelectorButtonBG {
-	background-image: url(/frontEnd/images/stripeBG.png);
+	background-image: url(/images/stripeBG.png);
 	background-size: 150%;
 	animation: pickGameAnimation 20s infinite linear;
 	background-repeat: repeat;

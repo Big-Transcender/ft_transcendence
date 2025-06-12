@@ -9,7 +9,7 @@ RUN npm install
 
 COPY . .
 
-RUN npx tsc
+RUN npx tsc -w
 
 FROM debian:bullseye
 
