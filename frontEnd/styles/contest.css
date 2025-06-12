@@ -1,0 +1,302 @@
+.contest {
+	position: relative;
+	/* background-color: blueviolet; */
+	height: 82%;
+	width: 95%;
+	left: 50%;
+	top: 150px;
+	translate: -50%;
+	/* background-color: rgba(44, 2, 2, 0.322); */
+}
+
+.headerContest {
+	font-size: 50px;
+	color: #f1e26f;
+	text-shadow: 0px 1px 5px black;
+}
+
+.contestPinBox {
+	position: absolute;
+	width: 150px;
+	height: 50px;
+	left: 20%;
+	top: 100px;
+	translate: -50%;
+	transition: 0.1s ease-in-out;
+}
+
+.contestPinBox:hover {
+	transform: scale(1.1);
+}
+
+.contestPinBox:active {
+	transform: scale(1);
+}
+
+.contestPinBoxBG {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	background-color: rgb(255, 255, 255);
+	background-image: url(/frontEnd/images/bgPattern5.jpg);
+	background-size: 100px;
+	outline: solid 3px black;
+	outline-offset: -3px;
+	border-radius: 15px;
+}
+
+.contestPinBoxText {
+	position: absolute;
+	width: 100%;
+	top: 30%;
+	translate: 0 -50%;
+	text-align: center;
+	color: rgb(0, 0, 0);
+	font-family: animalCrossingSystem;
+	line-height: 20px;
+}
+
+.contestPinBoxNumber {
+	position: absolute;
+	width: 100%;
+	top: 70%;
+	translate: 0 -50%;
+	text-align: center;
+	color: rgb(0, 0, 0);
+	font-family: animalCrossingSystem;
+	line-height: 20px;
+}
+
+.contestNameBox {
+	position: absolute;
+	width: 150px;
+	height: 50px;
+	right: 20%;
+	top: 100px;
+	translate: 50%;
+	overflow: hidden;
+}
+
+.contestNameBG {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	/* background-color: rgb(255, 255, 255); */
+	background-image: url(/frontEnd/images/bgPattern5.jpg);
+	background-size: 100px;
+	background-repeat: repeat-x;
+	outline: solid 3px black;
+	outline-offset: -3px;
+	border-radius: 15px;
+}
+
+.contestName {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	top: 0%;
+	/* translate: 0 -50%; */
+	text-align: center;
+	align-content: center;
+	font-family: animalCrossingSystem;
+	line-height: 20px;
+	color: rgb(0, 0, 0);
+	/* background-color: red; */
+	overflow: hidden;
+}
+
+.inputPinContest {
+	top: 40%;
+}
+
+.contestBackButton {
+	position: absolute;
+	bottom: 50px;
+	left: 30%;
+	translate: -50%;
+}
+
+.contestEnterButton {
+	position: absolute;
+	bottom: 50px;
+	left: 70%;
+	translate: -50%;
+}
+
+.contestBox {
+	position: absolute;
+	width: 750px;
+	height: 400px;
+	/* background-color: rgba(102, 51, 153, 0.295); */
+	left: 50%;
+	top: 57%;
+	translate: -50% -50%;
+}
+
+.playerContestPlace {
+	position: absolute;
+	width: 150px;
+	height: 50px;
+	/* cursor: default; */
+}
+
+.playerContestPlaceBG {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	background-image: url("/frontEnd/images/generic3BG.png");
+	background-size: 100px;
+	/* background-repeat: no-repeat; */
+	/* box-shadow: inset 0px 0px 10px rgba(81, 255, 0, 0.548); */
+	outline: solid 5px black;
+	outline-offset: -5px;
+	border-radius: 15px;
+}
+
+.noGame {
+	/* background-color: red;. */
+	box-shadow: inset 0px 0px 100px rgba(0, 0, 0, 0.733);
+}
+
+.noGame + .playerContestPlaceName {
+	color: rgba(0, 0, 0, 0.329);
+	/* color: red; */
+	text-shadow: 0px 0px 0px rgba(0, 0, 0, 0.541);
+}
+
+.playerContestPlaceName {
+	position: absolute;
+	width: 100%;
+	top: 50%;
+	translate: 0 -50%;
+	font-family: animalCrossingSystem;
+	text-align: center;
+	font-size: 25px;
+	color: black;
+	/* text-shadow: 0px 4px 5px rgba(0, 0, 0, 0.541); */
+	/* background-color: red; */
+}
+
+.place1 {
+	bottom: 70px;
+	left: 0%;
+}
+
+.place2 {
+	bottom: 70px;
+	left: 25%;
+}
+
+.place3 {
+	bottom: 70px;
+	left: 55%;
+}
+
+.place4 {
+	bottom: 70px;
+	left: 80%;
+}
+
+.place5 {
+	bottom: 210px;
+	left: 13%;
+}
+
+.place6 {
+	bottom: 210px;
+	right: 13%;
+}
+
+.place7 {
+	top: 30px;
+	left: 50%;
+	translate: -50%;
+}
+
+.contestInBackButton {
+	position: absolute;
+	bottom: 25px;
+	left: 50%;
+	transform: scale(0.8);
+	translate: -50%;
+}
+
+.contestBG {
+	background-image: url(/frontEnd/images/gameSelector2BG.png);
+}
+
+.contestId {
+	display: none;
+}
+
+.contestId.active {
+	display: block;
+}
+
+.defaultWarning {
+	position: absolute;
+	width: 500px;
+	height: 50px;
+	left: 50%;
+	top: 160px;
+	translate: -50%;
+	opacity: 0%;
+}
+
+.defaultWarningBG {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	background-image: url(/frontEnd/images/genericBG.png);
+	background-size: 25%;
+	outline: 3px solid black;
+	outline-offset: -5px;
+	border-radius: 10px;
+	box-shadow: inset 0px 0px 10px rgb(255, 255, 255), 0px 0px 10px rgba(0, 0, 0, 0.438);
+}
+
+.defaultWarningText {
+	position: absolute;
+	/* color: red; */
+	width: 100%;
+	top: 50%;
+	translate: 0 -50%;
+	text-align: center;
+	font-family: animalCrossingSystem;
+	font-size: 25px;
+	/* text-shadow: 0px 1px 3px rgba(0, 0, 0, 0.459)	; */
+}
+
+@keyframes warning {
+	0% {
+		/* color: red; */
+	}
+	5% {
+		opacity: 100%;
+		/* color: red; */
+	}
+	80% {
+		opacity: 100%;
+		/* color: red; */
+	}
+	100% {
+		/* color: red; */
+		opacity: 0%;
+	}
+}
+
+.warning {
+	animation: warning 5s forwards;
+}
+
+.inputContestName {
+	position: absolute;
+	top: 40%;
+}
+
+.contestNewCreateButton {
+	position: absolute;
+	bottom: 50px;
+	left: 50%;
+	translate: -50%;
+}

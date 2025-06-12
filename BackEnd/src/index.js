@@ -1,4 +1,4 @@
-const Fastify = require('fastify');
+const fastify = require('fastify')({logger: true})
 const routes = require('./routes');
 const cors = require('@fastify/cors');
 
@@ -6,16 +6,6 @@ const path = require('path');
 const fastifyStatic = require('@fastify/static');
 
 const setupWebSocket = require('./socketConnection');
-const { startGameLoop, startGameLoopLocal } = require('./gameLoop');
-
-const {
-  updateBall,
-  handleInput,
-  resetGame,
-  getGameState
-} = require('./gameLogic');
-
-const fastify = Fastify({ logger: true});
 
 async function start()
 {
@@ -23,17 +13,14 @@ async function start()
 		await fastify.register(cors, { origin: '*' });
 
 		// Connection to players
-		const wss = setupWebSocket(fastify.server, { handleInput, getGameState, resetGame });
+		setupWebSocket(fastify.server);
 
-		// Game loop
-		//startGameLoop(wss, { getGameState, updateBall });
-		startGameLoopLocal(wss, { getGameState, updateBall });
-
+		// Register routes REST API's
 		fastify.register(routes);
 
 		// For connecting the front to the back
 		fastify.register(fastifyStatic, {
-			root: path.join(__dirname, '../frontEnd'),
+			root: path.join(__dirname, '../../frontEnd'), 
 			prefix: '/',
 		});
 

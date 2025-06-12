@@ -9,28 +9,31 @@ function insertMatch(player1Id, player2Id, winnerId, scoreP1, scoreP2) {
 }
 
 function getLeaderboard() {
-	const stmt = db.prepare(`
-		SELECT u.nickname, COUNT(m.winner_id) AS wins
-		FROM users u
-		LEFT JOIN matches m ON u.id = m.winner_id
-		GROUP BY u.id
-		ORDER BY wins DESC
-		LIMIT 5
-	`);
-	return stmt.all();
+	return db.prepare(`
+    SELECT u.id, u.nickname, COUNT(m.winner_id) AS wins
+    FROM users u
+    LEFT JOIN matches m ON u.id = m.winner_id
+    GROUP BY u.id
+    ORDER BY wins DESC, u.nickname ASC
+    LIMIT 5
+  `).all();
 }
 
-function getUserMatchHistory(userId) {
-	const stmt = db.prepare(`
-		SELECT * FROM matches
-		WHERE player1_id = ? OR player2_id = ?
-		ORDER BY match_date DESC
-	`);
-	return stmt.all(userId, userId);
+function getUserLeaderboardPosition(userId) {
+	const rows = db.prepare(`
+    SELECT u.id, u.nickname, COUNT(m.winner_id) AS wins
+    FROM users u
+    LEFT JOIN matches m ON u.id = m.winner_id
+    GROUP BY u.id
+    ORDER BY wins DESC, u.nickname ASC
+  `).all();
+
+	const position = rows.findIndex(row => row.id === userId) + 1;
+	return position > 0 ? position : null;
 }
 
 module.exports = {
-	insertMatch,
 	getLeaderboard,
-	getUserMatchHistory,
+	getUserLeaderboardPosition,
+	insertMatch,
 };

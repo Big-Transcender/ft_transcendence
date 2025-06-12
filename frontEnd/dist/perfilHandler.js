@@ -2,6 +2,7 @@ let winsNumber = document.getElementById("boxWinsNumber");
 // winsNumber.textContent = "0";
 async function flipboardNumberAnimation(target, flips = 80, delay = 100) {
     winsNumber.textContent = "";
+    console.log("Teste final");
     // Inicializa todos os dígitos como "0"
     const spans = [];
     for (let i = 0; i < target.length; i++) {

@@ -1,28 +1,15 @@
 const WebSocket = require('ws');
+const { matches, createMatch, startGameLoopForMatch, removeClientFromMatch } = require('./gameLoop');
+const { createInitialGameState, updateBall, handleInput } = require('./gameLogic');
 
-function setupWebSocket(server, { handleInput, getGameState, resetGame }) {
+function setupWebSocket(server) {
 	const wss = new WebSocket.Server({ server });
-	const players = new Map();
-	let availablePlayers = ['p1', 'p2'];
 
-	wss.on('connection', (ws) =>
-	{
+	wss.on('connection', (ws) => {
+		let matchId = null;
 		let assignedPlayer = null;
-		if (availablePlayers.length > 0)
-		{
-			assignedPlayer = availablePlayers.shift();
-			players.set(ws, assignedPlayer);
-			console.log(`🟢 Connected: ${assignedPlayer}`);
-			ws.send(JSON.stringify({ type: 'assign', payload: assignedPlayer }));
-		}
-		else
-			console.log('⚠️ Extra connection rejected');
 
-
-		ws.send(JSON.stringify({ type: 'state', payload: getGameState() }));
-
-		ws.on('message', (message) =>
-		{
+		ws.on('message', (message) => {
 			let parsed;
 			try {
 				parsed = JSON.parse(message.toString());
@@ -31,27 +18,48 @@ function setupWebSocket(server, { handleInput, getGameState, resetGame }) {
 				return;
 			}
 
-			if (parsed.type === 'input') {
-				const keys = Array.isArray(parsed.payload) ? parsed.payload : [parsed.payload];
-				const playerId = players.get(ws);
-				if (playerId)
-					handleInput(playerId, keys);
+			if (parsed.type === 'join') {
+				matchId = parsed.matchId;
+				const isLocal = parsed.isLocal || false;
+
+				if (!matches.has(matchId)) {
+					createMatch(matchId, createInitialGameState);
+					startGameLoopForMatch(matchId, updateBall, isLocal);
+				}
+
+				const match = matches.get(matchId);
+				if (!match.clients.has('p1')) {
+					match.clients.set('p1', ws);
+					assignedPlayer = 'p1';
+				} else if (!match.clients.has('p2')) {
+					match.clients.set('p2', ws);
+					assignedPlayer = 'p2';
+				} else {
+					ws.send(JSON.stringify({ type: 'error', message: 'Match is full' }));
+					ws.close();
+					return;
+				}
+				ws.send(JSON.stringify({ type: 'assign', payload: assignedPlayer }));
+				console.log(`🎮 Player ${assignedPlayer} joined match ${matchId}`);
+			}
+			else if (parsed.type === 'input' && matchId && matches.has(matchId)) {
+				const match = matches.get(matchId);
+				handleInput(match.gameState, parsed.playerId, parsed.payload);
 			}
 		});
 
-		ws.on('close', () =>
-		{
-			const playerId = players.get(ws);
-			console.log(`🔴 Disconnected: ${playerId}`);
-			players.delete(ws);
-			if (playerId && !availablePlayers.includes(playerId)) {
-				availablePlayers.push(playerId);
-				availablePlayers.sort();
-			}
+		ws.on('close', () => {
+			if (matchId && matches.has(matchId)) {
+				const match = matches.get(matchId);
+				if (assignedPlayer && match.clients.get(assignedPlayer) === ws) {
+					match.clients.delete(assignedPlayer);
+					console.log(`👋 Player ${assignedPlayer} left match ${matchId}`);
+				}
 
-			if (players.size < 2) {
-				resetGame();
-				console.log('🔄 Game state reset due to player disconnect');
+				if (match.clients.size === 0) {
+					matches.delete(matchId);
+					console.log(`🗑️ Match ${matchId} removed (no players left)`);
+				}
 			}
 		});
 	});

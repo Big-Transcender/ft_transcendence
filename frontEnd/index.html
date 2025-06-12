@@ -12,6 +12,7 @@
 		<link rel="stylesheet" href="styles/musicPlayer.css" />
 		<link rel="stylesheet" href="styles/profiles2Styles.css" />
 		<link rel="stylesheet" href="styles/pongStyles.css" />
+		<link rel="stylesheet" href="styles/contest.css" />
 
 		<link rel="icon" href="images/icons/favicon.ico" />
 		<script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
@@ -79,9 +80,9 @@
 							</a>
 						</div>
 						<div class="rightButtons">
-							<a onclick="navigate('game2')" class="button">
+							<a onclick="navigate('contest')" class="button">
 								<div class="buttonBG"></div>
-								Game
+								Contest
 								<div class="buttonHitBox"></div>
 							</a>
 							<a onclick="navigate('profile')" class="button">
@@ -177,6 +178,26 @@
 								</div>
 							</button>
 						</div>
+
+						<div class="gameSelector gameId" id="gameSelectorPongMultiplayerId">
+							<div class="gameSelectorBG"></div>
+							<p class="gameSelectorHeader">What type of Multiplayer?</p>
+							<div class="gameSelectorButton" id="buttonLocalMP">
+								<div class="gameSelectorButtonBG"></div>
+								<p class="gameSelectorText">Local</p>
+							</div>
+							<div class="gameSelectorButton Button2" id="buttonVersusMPId">
+								<div class="gameSelectorButtonBG ButtonBG2"></div>
+								<p class="gameSelectorText">Versus</p>
+							</div>
+							<button class="defaultButton backGamePongMode" id="backButtonMPId">
+								<p class="defaultButtonText backGameSnakeText">Back</p>
+								<div class="defaultButtonBG">
+									<div class="defaultButtonBGWave"></div>
+									<div class="defaultButtonBGWave wave2"></div>
+								</div>
+							</button>
+						</div>
 						<div class="game1Place gameId" id="pongGameId">
 							<div class="gameScore">
 								<div class="gameScoreBG"></div>
@@ -220,9 +241,120 @@
 							</button>
 						</div>
 					</div>
-					<div id="game2" class="game2 page">
-						<h2>Game2</h2>
-						<p>Game2 HERE</p>
+					<div id="contest" class="contest page">
+						<!-- CONTEST OPTION SELECTOR -->
+						<div class="gameSelector contestId active" id="contestSelectorId">
+							<div class="gameSelectorBG contestBG"></div>
+							<p class="gameSelectorHeader headerContest">What do you wanna do?</p>
+							<div class="gameSelectorButton" id="joinContestId">
+								<div class="gameSelectorButtonBG"></div>
+								<p class="gameSelectorText">Join!</p>
+							</div>
+							<div class="gameSelectorButton Button2" id="createContestId">
+								<div class="gameSelectorButtonBG ButtonBG2"></div>
+								<p class="gameSelectorText">Create!</p>
+							</div>
+						</div>
+
+						<!-- ENTER THE PIN PAGE -->
+						<div class="gameSelector contestId" id="contestJoinSelectorId">
+							<div class="gameSelectorBG contestBG"></div>
+							<p class="gameSelectorHeader headerContest">Enter the pin!</p>
+							<div class="inputBox inputPinContest">
+								<label for="inputNick">What is the pin?</label>
+								<input type="text" id="inputPin" class="inputText smallInput" placeholder="PIN" autocomplete="off" />
+							</div>
+							<button class="defaultButton contestBackButton genericBackButton">
+								<p class="defaultButtonText">Back</p>
+								<div class="defaultButtonBG">
+									<div class="defaultButtonBGWave"></div>
+									<div class="defaultButtonBGWave wave2"></div>
+								</div>
+							</button>
+
+							<button class="defaultButton contestEnterButton" id="enterContestButtonId">
+								<p class="defaultButtonText">Enter</p>
+								<div class="defaultButtonBG">
+									<div class="defaultButtonBGWave"></div>
+									<div class="defaultButtonBGWave wave2"></div>
+								</div>
+							</button>
+						</div>
+
+						<!-- CONTEST PLAYERS PAGE -->
+						<div class="gameSelector contestId" id="contestJoinedSelectorId">
+							<div class="gameSelectorBG contestBG"></div>
+							<p class="gameSelectorHeader headerContest">Winner gets all!</p>
+
+							<div class="contestBox">
+								<div class="playerContestPlace place1 noplayer">
+									<div class="playerContestPlaceBG noGame"></div>
+									<p class="playerContestPlaceName" id="player1">waiting</p>
+								</div>
+								<div class="playerContestPlace place2 noplayer">
+									<div class="playerContestPlaceBG noGame"></div>
+									<p class="playerContestPlaceName" id="player2">waiting</p>
+								</div>
+
+								<div class="playerContestPlace place3 noplayer">
+									<div class="playerContestPlaceBG noGame"></div>
+									<p class="playerContestPlaceName" id="player3">waiting</p>
+								</div>
+
+								<div class="playerContestPlace place4 noplayer">
+									<div class="playerContestPlaceBG noGame"></div>
+									<p class="playerContestPlaceName" id="player4">waiting</p>
+								</div>
+
+								<div class="playerContestPlace place5">
+									<div class="playerContestPlaceBG noGame"></div>
+									<p class="playerContestPlaceName" id="player5">waiting</p>
+								</div>
+
+								<div class="playerContestPlace place6">
+									<div class="playerContestPlaceBG noGame"></div>
+									<p class="playerContestPlaceName" id="player6">waiting</p>
+								</div>
+
+								<div class="playerContestPlace place7">
+									<div class="playerContestPlaceBG noGame"></div>
+									<p class="playerContestPlaceName" id="player7">waiting</p>
+								</div>
+							</div>
+							<button class="defaultButton contestInBackButton genericBackButton">
+								<p class="defaultButtonText">Back</p>
+								<div class="defaultButtonBG">
+									<div class="defaultButtonBGWave"></div>
+									<div class="defaultButtonBGWave wave2"></div>
+								</div>
+							</button>
+							<div class="contestPinBox">
+								<div class="contestPinBoxBG"></div>
+								<p class="contestPinBoxText">Pin:</p>
+								<p class="contestPinBoxNumber" id="contestPinBoxNumberId">00000000000</p>
+							</div>
+							<div class="contestNameBox">
+								<div class="contestNameBG"></div>
+								<p class="contestName" id="contestNameId">teste</p>
+							</div>
+						</div>
+
+						<!-- CONTEST CREATING PAGE -->
+						<div class="gameSelector contestId" id="contestCreateId">
+							<div class="gameSelectorBG contestBG"></div>
+							<p class="gameSelectorHeader headerContest">Create your contest</p>
+							<div class="inputBox inputContestName">
+								<label for="inputContestNameId">Enter your contest name</label>
+								<input type="text" id="inputContestNameId" class="inputText smallInput" placeholder="CONTEST NAME" autocomplete="off" />
+							</div>
+							<button class="defaultButton contestNewCreateButton" id="createNewContestButtonId">
+								<p class="defaultButtonText">Create</p>
+								<div class="defaultButtonBG">
+									<div class="defaultButtonBGWave"></div>
+									<div class="defaultButtonBGWave wave2"></div>
+								</div>
+							</button>
+						</div>
 					</div>
 					<div id="profile" class="profile page">
 						<div class="loginBox">
@@ -382,6 +514,10 @@
 							</div>
 						</div> -->
 					</div>
+					<div class="defaultWarning">
+						<div class="defaultWarningBG"></div>
+						<p class="defaultWarningText" id="warningContest">Generic Error</p>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -389,8 +525,10 @@
 		<script src="musicHandler.js"></script>
 		<script src="loginHandler.js"></script>
 		<script src="speechSystem.js"></script>
-		<script src="gameSelector.js"></script>
+		<script type="module" src="gameSelector.js"></script>
 		<script src="gameScore.js"></script>
+		<script src="contestHandler.js"></script>
 		<script src="script.js"></script>
+		<!--<script src="gamePong.js"></script> -->
 	</body>
 </html>

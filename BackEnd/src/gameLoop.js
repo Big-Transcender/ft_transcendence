@@ -1,49 +1,70 @@
+const matches = new Map(); // matchId -> { gameState, clients, intervalId }
 
+function createMatch(matchId, createInitialGameState) {
+	const gameState = createInitialGameState();
+	const clients = new Map();
+	const match = { gameState, clients, intervalId: null };
+	matches.set(matchId, match);
+	return match;
+}
 
+function startGameLoopForMatch(matchId, updateBall, isLocal = false) {
+	const match = matches.get(matchId);
+	if (!match || match.intervalId) return;
 
+	match.intervalId = setInterval(() => {
+		const { gameState, clients } = match;
+		gameState.GamePlayLocal = isLocal;
 
-function startGameLoop(wss, { getGameState, updateBall })
-{
-	setInterval(() => {
-		const gameState = getGameState();
-		gameState.GamePlayLocal = false;
-		const message = JSON.stringify({ type: 'state', payload: gameState });
+		const requiredPlayers = isLocal ? 1 : 2;
+		if (clients.size === requiredPlayers) {
+			// Start timer only once when game is not ongoing
+			if (!gameState.onGoing && !gameState.started) {
+				gameState.started = true;
+				console.log("⏳ Starting game in 3 seconds...");
+				startTimer(3000, gameState);
+			}
 
-		if (wss.clients.size === 2)
-		{
-			if (gameState.onGoing)
-				updateBall();
-			
-			wss.clients.forEach(client => {
-				if (client.readyState === 1)
+			// Only update ball if game is active
+			if (gameState.onGoing) {
+				updateBall(gameState);
+			}
+
+			const message = JSON.stringify({ type: 'state', payload: gameState });
+
+			// Send game state to clients
+			clients.forEach(client => {
+				if (client.readyState === 1) {
 					client.send(message);
+				}
 			});
 		}
-		
 	}, 10); // 60 FPS
 }
 
-function startGameLoopLocal(wss, { getGameState, updateBall })
-{
-	setInterval(() => {
-		const gameState = getGameState();
-		gameState.GamePlayLocal = true;
-		const message = JSON.stringify({ type: 'state', payload: gameState });
-
-		if (wss.clients.size === 1)
-		{
-			if (gameState.onGoing)
-				updateBall();
-			
-			wss.clients.forEach(client => {
-				if (client.readyState === 1)
-					client.send(message);
-			});
-			
-		}
-		
-	}, 10); // 60 FPS
+function removeClientFromMatch(matchId, ws) {
+	const match = matches.get(matchId);
+	if (!match)
+		return;
+	match.clients.delete(ws);
+	if (match.clients.size === 0) {
+		clearInterval(match.intervalId);
+		matches.delete(matchId);
+	}
 }
 
+function startTimer(time, gameState) {
+	gameState.onGoing = false;
+	setTimeout(() => {
+		gameState.onGoing = true;
+		console.log("✅ Game started!");
+	}, time);
+}
 
-module.exports = {startGameLoop, startGameLoopLocal};
+module.exports = {
+	matches,
+	createMatch,
+	startGameLoopForMatch,
+	removeClientFromMatch,
+	startTimer
+};
