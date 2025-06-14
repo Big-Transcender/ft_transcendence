@@ -1,4 +1,5 @@
 const { insertMatch } = require('./dataQuerys');
+const { aiMove } = require('./aiPong');
 
 const PaddleSpeed = 2;
 const HitBoxBuffer = 3;
@@ -24,6 +25,7 @@ function createInitialGameState() {
 		GamePlayLocal: true,
 		numbrBalls: BALLS,
 		speed: SPEED,
+		aiGame: false,
 	};
 
 }
@@ -39,12 +41,12 @@ function resetBall(gameState) {
 	gameState.ballVel.y = gameState.speed * Math.sin(angle);
 }
 
-function handleInput(gameState, playerId, keys) {
+function handleInput(gameState, playerId, keys, isAI = false) {
 
 	if (!Array.isArray(keys))
-		return; // Defensive: ignore bad input
+		return;
 	if (gameState.GamePlayLocal)
-		keys.forEach((key) => handleInputLocal(gameState, key));
+		keys.forEach((key) => handleInputLocal(gameState, key, isAI));
 	else
 		keys.forEach((key) => {
 			if (key === 'ArrowUp' || key === 'w')
@@ -54,15 +56,20 @@ function handleInput(gameState, playerId, keys) {
 		});
 }
 
-function handleInputLocal(gameState, key) {
-	if (key === 'ArrowUp')
-		movePaddle(gameState, 'p2', 'up');
-	else if (key === 'ArrowDown')
-		movePaddle(gameState, 'p2', 'down');
-	else if (key === 'w')
+function handleInputLocal(gameState, key, isAI) {
+
+	if (key === 'w')
 		movePaddle(gameState, 'p1', 'up');
 	else if (key === 's')
 		movePaddle(gameState, 'p1', 'down');
+
+	if (isAI || !gameState.aiGame) {
+		if (key === 'ArrowUp')
+			movePaddle(gameState, 'p2', 'up');
+		else if (key === 'ArrowDown')
+			movePaddle(gameState, 'p2', 'down');
+	}
+
 }
 
 function movePaddle(gameState, player, direction) {
@@ -147,6 +154,8 @@ function updateBall(gameState) {
 		gameState.ballVel.x = -Math.sqrt(1 - angle ** 2) * gameState.speed;
 		gameState.ballVel.y = angle * gameState.speed;
 	}
+	if (gameState.aiGame)
+		aiMove(gameState, handleInput);
 }
 
 

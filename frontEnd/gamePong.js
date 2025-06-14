@@ -2,7 +2,7 @@ let socket = null;
 let socketInitialized = false;
 let currentMatchId = null;
 let currentIsLocal = true;
-export function startPongWebSocket(matchId, isLocal) {
+export function startPongWebSocket(matchId, isLocal, aiGame) {
     if (socketInitialized)
         return;
     socketInitialized = true;
@@ -19,6 +19,7 @@ export function startPongWebSocket(matchId, isLocal) {
             type: "join",
             matchId: matchId,
             isLocal: isLocal,
+            aiGame: aiGame,
         }));
     });
     socket.addEventListener("close", () => {

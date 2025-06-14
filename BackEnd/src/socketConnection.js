@@ -21,10 +21,11 @@ function setupWebSocket(server) {
 			if (parsed.type === 'join') {
 				matchId = parsed.matchId;
 				const isLocal = parsed.isLocal || false;
+				const aiGame = parsed.aiGame || false;
 
 				if (!matches.has(matchId)) {
 					createMatch(matchId, createInitialGameState);
-					startGameLoopForMatch(matchId, updateBall, isLocal);
+					startGameLoopForMatch(matchId, updateBall, isLocal, aiGame);
 				}
 
 				const match = matches.get(matchId);

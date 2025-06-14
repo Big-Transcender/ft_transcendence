@@ -1,8 +1,7 @@
-const { handleInput } = require('./gameLogic');
 
 let aiTick = 0;
 
-function aiMove(gameState) {
+function aiMove(gameState, handleInput) {
 	if (!gameState.onGoing)
 		return;
 
@@ -25,7 +24,8 @@ function aiMove(gameState) {
 			keys.push('ArrowDown');
 	}
 	
-	handleInput(gameState, 'p2', keys);
+	handleInput(gameState, 'p2', keys, true);
+	//console.log(`AI moved paddle p2 with keys: ${keys.join(', ')}`);
 }
 
 module.exports = { aiMove };

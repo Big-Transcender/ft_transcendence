@@ -1,4 +1,3 @@
-const { aiMove } = require('./aiPong');
 
 const matches = new Map(); // matchId -> { gameState, clients, intervalId }
 
@@ -10,13 +9,15 @@ function createMatch(matchId, createInitialGameState) {
 	return match;
 }
 
-function startGameLoopForMatch(matchId, updateBall, isLocal = false) {
+function startGameLoopForMatch(matchId, updateBall, isLocal = false, aiGame = false) {
 	const match = matches.get(matchId);
-	if (!match || match.intervalId) return;
+	if (!match || match.intervalId)
+		return;
 
 	match.intervalId = setInterval(() => {
 		const { gameState, clients } = match;
 		gameState.GamePlayLocal = isLocal;
+		gameState.aiGame = aiGame;
 
 		const requiredPlayers = isLocal ? 1 : 2;
 		if (clients.size === requiredPlayers) {
@@ -29,7 +30,6 @@ function startGameLoopForMatch(matchId, updateBall, isLocal = false) {
 
 			// Only update ball if game is active
 			if (gameState.onGoing) {
-				aiMove(gameState);
 				updateBall(gameState);
 			}
 
