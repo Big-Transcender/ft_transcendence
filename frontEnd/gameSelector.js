@@ -13,7 +13,7 @@ const snakeGamePage = document.getElementById("SnakeGameId");
 const gameSelectorPongPage = document.getElementById("gameSelectorPongId");
 const gameSelectorPongMultiplayerPage = document.getElementById("gameSelectorPongMultiplayerId");
 const backGameSelectorPongId = document.getElementById("backGameSelectorPongId");
-import { startPongWebSocket } from "./gamePong.js"; //TODO brendon
+import { startPongWebSocket } from "./gamePong.js";
 function updatePageHash(hash) {
     history.replaceState(undefined, "", hash);
 }

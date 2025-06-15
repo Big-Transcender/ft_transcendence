@@ -22,6 +22,7 @@ function setupWebSocket(server) {
 				matchId = parsed.matchId;
 				const isLocal = parsed.isLocal || false;
 				const aiGame = parsed.aiGame || false;
+				const nickname = parsed.nickname || null;
 
 				if (!matches.has(matchId)) {
 					createMatch(matchId, createInitialGameState);
@@ -30,10 +31,10 @@ function setupWebSocket(server) {
 
 				const match = matches.get(matchId);
 				if (!match.clients.has('p1')) {
-					match.clients.set('p1', ws);
+					match.clients.set('p1', {nickname, ws});
 					assignedPlayer = 'p1';
 				} else if (!match.clients.has('p2')) {
-					match.clients.set('p2', ws);
+					match.clients.set('p2', {nickname, ws});
 					assignedPlayer = 'p2';
 				} else {
 					ws.send(JSON.stringify({ type: 'error', message: 'Match is full' }));

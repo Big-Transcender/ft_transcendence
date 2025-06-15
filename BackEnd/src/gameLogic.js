@@ -15,11 +15,12 @@ const BALLS = 19;
 function createInitialGameState() {
 
 	return {
-		paddles: { p1: 40, p2: 40 },
+		paddles: { p1: 40, p2: 40 , p3: 40, p4: 40 },
 		ball: { x: 50, y: 50 },
 		ballVel: { x: 0.5, y: 0.5 },
 		score: { p1: 0, p2: 0 },
 		playerId: { p1: 1, p2: 2 },
+		playerDbId: { p1: null, p2: null },
 		onGoing: false,
 		started: false,
 		GamePlayLocal: true,
@@ -113,8 +114,6 @@ function updateBall(gameState) {
 			gameState.score.p1 += 1;
 		gameState.numbrBalls -= 1;
 		resetBall(gameState);
-		console.log(gameState.speed)
-		console.log(gameState.numbrBalls);
 		return;
 	}
 
@@ -157,6 +156,95 @@ function updateBall(gameState) {
 	if (gameState.aiGame)
 		aiMove(gameState, handleInput);
 }
+
+
+function updateBall4Players(gameState) {
+	gameState.ball.x += gameState.ballVel.x;
+	gameState.ball.y += gameState.ballVel.y;
+
+	// Wall collision
+	if (gameState.ball.y <= 0 || gameState.ball.y + ballSizeY >= 100) {
+		gameState.ballVel.y *= -1;
+	}
+
+	// Scoring: reset
+	if (gameState.ball.x + ballSizeX <= 0 || gameState.ball.x >= 100) {
+		if (gameState.ball.x + ballSizeX <= 0)
+			gameState.score.p2 += 1;
+		else
+			gameState.score.p1 += 1;
+		gameState.numbrBalls -= 1;
+		resetBall(gameState);
+		return;
+	}
+
+	if ((gameState.score.p2 === 10 || gameState.score.p1 === 10) && gameState.onGoing ) {
+		let winnerId = gameState.playerId.p1;
+		if (gameState.score.p1 < gameState.score.p2)
+			winnerId = gameState.playerId.p2;
+		insertMatch(gameState.playerId.p1, gameState.playerId.p2, winnerId, gameState.score.p1, gameState.score.p2);
+		gameState.onGoing = false;
+	}
+
+	// Calculate center Y of ball
+	const ballCenterY = gameState.ball.y + ballSizeY / 2;
+
+	// (Player 1 and 2) left
+	if (
+		gameState.ball.x <= paddleWidth &&
+		ballCenterY >= gameState.paddles.p1 - HitBoxBuffer &&
+		ballCenterY <= gameState.paddles.p1 + paddleHeight
+	) {
+		const paddleCenterY = gameState.paddles.p1 + paddleHeight / 2;
+		const impact = (ballCenterY - paddleCenterY) / (paddleHeight / 2);
+		const angle = getImpactAngle(gameState, impact);
+		gameState.ballVel.x = Math.sqrt(1 - angle ** 2) * gameState.speed;
+		gameState.ballVel.y = angle * gameState.speed;
+	}
+
+	if (
+		gameState.ball.x <= paddleWidth &&
+		ballCenterY >= gameState.paddles.p2 - HitBoxBuffer &&
+		ballCenterY <= gameState.paddles.p2 + paddleHeight
+	) {
+		const paddleCenterY = gameState.paddles.p1 + paddleHeight / 2;
+		const impact = (ballCenterY - paddleCenterY) / (paddleHeight / 2);
+		const angle = getImpactAngle(gameState, impact);
+		gameState.ballVel.x = Math.sqrt(1 - angle ** 2) * gameState.speed;
+		gameState.ballVel.y = angle * gameState.speed;
+	}
+
+	// (Player 3 and 4) right
+	if (
+		gameState.ball.x + ballSizeX >= 100 - paddleWidth &&
+		ballCenterY >= gameState.paddles.p3 - HitBoxBuffer &&
+		ballCenterY <= gameState.paddles.p3 + paddleHeight
+	) {
+		const paddleCenterY = gameState.paddles.p2 + paddleHeight / 2;
+		const impact = (ballCenterY - paddleCenterY) / (paddleHeight / 2);
+		const angle = getImpactAngle(gameState, impact);
+		gameState.ballVel.x = -Math.sqrt(1 - angle ** 2) * gameState.speed;
+		gameState.ballVel.y = angle * gameState.speed;
+	}
+
+	if (
+		gameState.ball.x + ballSizeX >= 100 - paddleWidth &&
+		ballCenterY >= gameState.paddles.p4 - HitBoxBuffer &&
+		ballCenterY <= gameState.paddles.p4 + paddleHeight
+	) {
+		const paddleCenterY = gameState.paddles.p2 + paddleHeight / 2;
+		const impact = (ballCenterY - paddleCenterY) / (paddleHeight / 2);
+		const angle = getImpactAngle(gameState, impact);
+		gameState.ballVel.x = -Math.sqrt(1 - angle ** 2) * gameState.speed;
+		gameState.ballVel.y = angle * gameState.speed;
+	}
+
+
+
+	if (gameState.aiGame)
+		aiMove(gameState, handleInput);
+}
+
 
 
 

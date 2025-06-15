@@ -13,6 +13,7 @@ export function startPongWebSocket(matchId, isLocal, aiGame) {
     const keysPressed = new Set();
     // --- WebSocket Setup
     socket = new WebSocket(`ws://${window.location.hostname}:3000`);
+    const nickname = getNickOnLocalStorage();
     socket.addEventListener("open", () => {
         console.log("✅ Connected to WebSocket server");
         socket.send(JSON.stringify({
@@ -20,6 +21,7 @@ export function startPongWebSocket(matchId, isLocal, aiGame) {
             matchId: matchId,
             isLocal: isLocal,
             aiGame: aiGame,
+            nickname: nickname,
         }));
     });
     socket.addEventListener("close", () => {

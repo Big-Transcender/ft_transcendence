@@ -15,7 +15,7 @@ export function startPongWebSocket(matchId: string, isLocal: boolean, aiGame: bo
 
 	// --- WebSocket Setup
 	socket = new WebSocket(`ws://${window.location.hostname}:3000`);
-
+	const nickname = getNickOnLocalStorage();
 	socket.addEventListener("open", () => {
 		console.log("✅ Connected to WebSocket server");
 		socket.send(
@@ -24,6 +24,7 @@ export function startPongWebSocket(matchId: string, isLocal: boolean, aiGame: bo
 				matchId: matchId,
 				isLocal: isLocal,
 				aiGame: aiGame,
+				nickname: nickname,
 			})
 		);
 	});

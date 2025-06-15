@@ -18,6 +18,10 @@ function startGameLoopForMatch(matchId, updateBall, isLocal = false, aiGame = fa
 		const { gameState, clients } = match;
 		gameState.GamePlayLocal = isLocal;
 		gameState.aiGame = aiGame;
+		gameState.playerDbId.p1 = match.clients.get('p1')?.nickname;
+		gameState.playerDbId.p2 = match.clients.get('p2')?.nickname;
+		//const p1Nick = match.clients.get('p1')?.nickname;
+		//console.log(gameState.playerDbId.p1);
 
 		const requiredPlayers = isLocal ? 1 : 2;
 		if (clients.size === requiredPlayers) {
@@ -37,8 +41,8 @@ function startGameLoopForMatch(matchId, updateBall, isLocal = false, aiGame = fa
 
 			// Send game state to clients
 			clients.forEach(client => {
-				if (client.readyState === 1) {
-					client.send(message);
+				if (client.ws.readyState === 1) {
+					client.ws.send(message);
 				}
 			});
 		}

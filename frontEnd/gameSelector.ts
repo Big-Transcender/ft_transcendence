@@ -15,7 +15,7 @@ const gameSelectorPongPage = document.getElementById("gameSelectorPongId");
 const gameSelectorPongMultiplayerPage = document.getElementById("gameSelectorPongMultiplayerId");
 const backGameSelectorPongId = document.getElementById("backGameSelectorPongId");
 
-import { startPongWebSocket } from "./gamePong.js"; //TODO brendon
+import { startPongWebSocket } from "./gamePong.js";
 
 function updatePageHash(hash: string) {
 	history.replaceState(undefined, "", hash);
@@ -71,7 +71,7 @@ document.addEventListener("DOMContentLoaded", () => {
 	buttonMultiplayerPong.addEventListener("click", () => {
 		changePageTo(gameSelectorPongPage, gameSelectorPongMultiplayerPage);
 		updatePageHash(`#pong/multiplayerMenu`);
-
+			
 		// // Prompt user to create or join a match
 		const action = prompt("Do you want to create a new match or join an existing one? (Type 'create' or 'join')");
 
