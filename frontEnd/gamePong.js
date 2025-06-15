@@ -35,6 +35,8 @@ export function startPongWebSocket(matchId, isLocal, aiGame, teamGame = false) {
     // --- Game Elements
     const paddle1 = document.querySelector(".paddle1");
     const paddle2 = document.querySelector(".paddle2");
+    //const paddle3 = document.querySelector(".paddle2") as HTMLElement;
+    //const paddle4 = document.querySelector(".paddle2") as HTMLElement;
     const ball = document.querySelector(".ball");
     // --- Input Handling
     document.addEventListener("keydown", (event) => {
@@ -76,6 +78,13 @@ export function startPongWebSocket(matchId, isLocal, aiGame, teamGame = false) {
                     if (paddle2) {
                         paddle2.style.top = `${state.paddles.p2}%`;
                     }
+                    /*if (paddle3) {
+                        paddle2.style.top = `${state.paddles.p2}%`;
+                    }
+
+                    if (paddle4) {
+                        paddle2.style.top = `${state.paddles.p2}%`;
+                    }*/
                     if (ball) {
                         ball.style.left = `${state.ball.x}%`;
                         ball.style.top = `${state.ball.y}%`;

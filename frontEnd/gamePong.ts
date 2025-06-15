@@ -42,6 +42,8 @@ export function startPongWebSocket(matchId: string, isLocal: boolean, aiGame: bo
 	// --- Game Elements
 	const paddle1 = document.querySelector(".paddle1") as HTMLElement;
 	const paddle2 = document.querySelector(".paddle2") as HTMLElement;
+	//const paddle3 = document.querySelector(".paddle2") as HTMLElement;
+	//const paddle4 = document.querySelector(".paddle2") as HTMLElement;
 	const ball = document.querySelector(".ball") as HTMLElement;
 
 	// --- Input Handling
@@ -92,6 +94,14 @@ export function startPongWebSocket(matchId: string, isLocal: boolean, aiGame: bo
 					if (paddle2) {
 						paddle2.style.top = `${state.paddles.p2}%`;
 					}
+
+					/*if (paddle3) {
+						paddle2.style.top = `${state.paddles.p2}%`;
+					}
+
+					if (paddle4) {
+						paddle2.style.top = `${state.paddles.p2}%`;
+					}*/
 
 					if (ball) {
 						ball.style.left = `${state.ball.x}%`;

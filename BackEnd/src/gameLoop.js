@@ -9,7 +9,7 @@ function createMatch(matchId, createInitialGameState) {
 	return match;
 }
 
-function startGameLoopForMatch(matchId, updateBall, isLocal = false, aiGame = false) {
+function startGameLoopForMatch(matchId, updateBall, isLocal = false, aiGame = false, teamGame = false) {
 	const match = matches.get(matchId);
 	if (!match || match.intervalId)
 		return;
@@ -26,6 +26,8 @@ function startGameLoopForMatch(matchId, updateBall, isLocal = false, aiGame = fa
 		//console.log(gameState.playerDbId.p1);
 
 		const requiredPlayers = isLocal ? 1 : 2;
+		if (teamGame)
+			requiredPlayers = 4
 		if (clients.size === requiredPlayers) {
 
 			if (!gameState.onGoing && !gameState.started) {
