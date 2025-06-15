@@ -207,7 +207,7 @@ function updateBall4Players(gameState) {
 		ballCenterY >= gameState.paddles.p2 - HitBoxBuffer &&
 		ballCenterY <= gameState.paddles.p2 + paddleHeight
 	) {
-		const paddleCenterY = gameState.paddles.p1 + paddleHeight / 2;
+		const paddleCenterY = gameState.paddles.p2 + paddleHeight / 2;
 		const impact = (ballCenterY - paddleCenterY) / (paddleHeight / 2);
 		const angle = getImpactAngle(gameState, impact);
 		gameState.ballVel.x = Math.sqrt(1 - angle ** 2) * gameState.speed;
@@ -220,7 +220,7 @@ function updateBall4Players(gameState) {
 		ballCenterY >= gameState.paddles.p3 - HitBoxBuffer &&
 		ballCenterY <= gameState.paddles.p3 + paddleHeight
 	) {
-		const paddleCenterY = gameState.paddles.p2 + paddleHeight / 2;
+		const paddleCenterY = gameState.paddles.p3 + paddleHeight / 2;
 		const impact = (ballCenterY - paddleCenterY) / (paddleHeight / 2);
 		const angle = getImpactAngle(gameState, impact);
 		gameState.ballVel.x = -Math.sqrt(1 - angle ** 2) * gameState.speed;
@@ -232,17 +232,13 @@ function updateBall4Players(gameState) {
 		ballCenterY >= gameState.paddles.p4 - HitBoxBuffer &&
 		ballCenterY <= gameState.paddles.p4 + paddleHeight
 	) {
-		const paddleCenterY = gameState.paddles.p2 + paddleHeight / 2;
+		const paddleCenterY = gameState.paddles.p4 + paddleHeight / 2;
 		const impact = (ballCenterY - paddleCenterY) / (paddleHeight / 2);
 		const angle = getImpactAngle(gameState, impact);
 		gameState.ballVel.x = -Math.sqrt(1 - angle ** 2) * gameState.speed;
 		gameState.ballVel.y = angle * gameState.speed;
 	}
 
-
-
-	if (gameState.aiGame)
-		aiMove(gameState, handleInput);
 }
 
 
@@ -250,6 +246,7 @@ function updateBall4Players(gameState) {
 
 module.exports = {
 	updateBall,
+	updateBall4Players,
 	handleInput,
 	createInitialGameState
 };

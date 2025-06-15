@@ -20,6 +20,8 @@ function startGameLoopForMatch(matchId, updateBall, isLocal = false, aiGame = fa
 		gameState.aiGame = aiGame;
 		gameState.playerDbId.p1 = match.clients.get('p1')?.nickname;
 		gameState.playerDbId.p2 = match.clients.get('p2')?.nickname;
+		gameState.playerDbId.p1 = match.clients.get('p3')?.nickname;
+		gameState.playerDbId.p2 = match.clients.get('p4')?.nickname;
 		//const p1Nick = match.clients.get('p1')?.nickname;
 		//console.log(gameState.playerDbId.p1);
 

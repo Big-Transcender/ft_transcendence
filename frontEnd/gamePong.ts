@@ -3,7 +3,7 @@ let socketInitialized = false;
 let currentMatchId: string | null = null;
 let currentIsLocal: boolean = true;
 
-export function startPongWebSocket(matchId: string, isLocal: boolean, aiGame: boolean) {
+export function startPongWebSocket(matchId: string, isLocal: boolean, aiGame: boolean, teamGame: boolean = false) {
 	if (socketInitialized) return;
 	socketInitialized = true;
 	currentMatchId = matchId;
@@ -25,6 +25,7 @@ export function startPongWebSocket(matchId: string, isLocal: boolean, aiGame: bo
 				isLocal: isLocal,
 				aiGame: aiGame,
 				nickname: nickname,
+				teamGame: teamGame,
 			})
 		);
 	});

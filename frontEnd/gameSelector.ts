@@ -63,7 +63,7 @@ document.addEventListener("DOMContentLoaded", () => {
 		changePageTo(gameSelectorPongPage, pongGamePage);
 		const matchId = "match-" + Date.now() + "-" + Math.floor(Math.random() * 10000);
 		updatePageHash(`#pong/${matchId}`);
-		startPongWebSocket(matchId, true, false); // true = local mode, true = AI game
+		startPongWebSocket(matchId, true, false); // true = local mode, true = AI game, true = Team game
 		resetEmotions();
 	});
 
