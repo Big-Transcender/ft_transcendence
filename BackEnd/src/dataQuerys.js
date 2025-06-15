@@ -19,16 +19,16 @@ function getLeaderboard() {
   `).all();
 }
 
-function getUserLeaderboardPosition(userId) {
+function getUserLeaderboardPosition(nickname) {
 	const rows = db.prepare(`
-    SELECT u.id, u.nickname, COUNT(m.winner_id) AS wins
-    FROM users u
-    LEFT JOIN matches m ON u.id = m.winner_id
-    GROUP BY u.id
-    ORDER BY wins DESC, u.nickname ASC
-  `).all();
+		SELECT u.id, u.nickname, COUNT(m.winner_id) AS wins
+		FROM users u
+				 LEFT JOIN matches m ON u.id = m.winner_id
+		GROUP BY u.id
+		ORDER BY wins DESC, u.nickname ASC
+	`).all();
 
-	const position = rows.findIndex(row => row.id === userId) + 1;
+	const position = rows.findIndex(row => row.nickname === nickname) + 1;
 	return position > 0 ? position : null;
 }
 
