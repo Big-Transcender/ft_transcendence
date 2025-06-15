@@ -1,6 +1,4 @@
-const pongButton = document.getElementById("pongButton");
-const snakeButton = document.getElementById("snakeButton");
-const backGameSnakeButton = document.getElementById("backGameSnakeId");
+// const pongButton = document.getElementById("pongButton");
 const backGamePongButton = document.getElementById("backGamePongId");
 const buttonSinglePong = document.getElementById("buttonSinglePong");
 const buttonMultiplayerPong = document.getElementById("buttonMultiplayerPong");
@@ -8,12 +6,9 @@ const buttonVersusMP = document.getElementById("buttonVersusMPId");
 const buttonLocalMP = document.getElementById("buttonLocalMP");
 const backButtonMP = document.getElementById("backButtonMPId");
 
-const gameSelectorPage = document.getElementById("gameSelectorId");
 const pongGamePage = document.getElementById("pongGameId");
-const snakeGamePage = document.getElementById("SnakeGameId");
 const gameSelectorPongPage = document.getElementById("gameSelectorPongId");
 const gameSelectorPongMultiplayerPage = document.getElementById("gameSelectorPongMultiplayerId");
-const backGameSelectorPongId = document.getElementById("backGameSelectorPongId");
 
 import { startPongWebSocket } from "./gamePong.js"; //TODO brendon
 
@@ -22,39 +17,9 @@ function updatePageHash(hash: string) {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-	pongButton.addEventListener("click", async () => {
-		if (checkIfLogged()) {
-			changePageTo(gameSelectorPage, gameSelectorPongPage);
-			updatePageHash("#pong");
-		} else {
-			displayWarning("You need to log in.");
-		}
-	});
-
-	snakeButton.addEventListener("click", () => {
-		if (checkIfLogged()) {
-			changePageTo(gameSelectorPage, snakeGamePage);
-			updatePageHash("#snake");
-		} else {
-			displayWarning("You need to log in.");
-		}
-	});
-
-	//BackButton in Snake
-	backGameSnakeButton.addEventListener("click", () => {
-		changePageTo(snakeGamePage, gameSelectorPage);
-		updatePageHash("#game1");
-	});
-
 	//BackButton in Pong
 	backGamePongButton.addEventListener("click", () => {
-		changePageTo(pongGamePage, gameSelectorPage);
-		updatePageHash("#game1");
-	});
-
-	//BackButton in GameSelector
-	backGameSelectorPongId.addEventListener("click", () => {
-		changePageTo(gameSelectorPongPage, gameSelectorPage);
+		changePageTo(pongGamePage, gameSelectorPongPage);
 		updatePageHash("#game1");
 	});
 

@@ -100,6 +100,7 @@
 			<div class="mainBodyBackground">
 				<div class="backgroudCenterBg"></div>
 				<div class="backgroundCenter">
+					<!-- HOME PAGE -->
 					<div id="home" class="home page active">
 						<div class="homePageWelcome">
 							<p>Welcome to the Animal Ponging</p>
@@ -145,21 +146,10 @@
 						</div>
 						<img src="/images/loading.gif" alt="" class="loadingGif drop-shadow-xl/50" />
 					</div>
-
+					<!-- GAME PAGE -->
 					<div id="game1" class="game1 page">
-						<div class="gameSelector gameId active" id="gameSelectorId">
-							<div class="gameSelectorBG"></div>
-							<p class="gameSelectorHeader">Pick your game!</p>
-							<div class="gameSelectorButton" id="pongButton">
-								<div class="gameSelectorButtonBG"></div>
-								<p class="gameSelectorText">Ping Pong</p>
-							</div>
-							<div class="gameSelectorButton Button2" id="snakeButton">
-								<div class="gameSelectorButtonBG ButtonBG2"></div>
-								<p class="gameSelectorText">Snake</p>
-							</div>
-						</div>
-						<div class="gameSelector gameId" id="gameSelectorPongId">
+						<!-- SELECT GAMEMODE -->
+						<div class="gameSelector gameId active" id="gameSelectorPongId">
 							<div class="gameSelectorBG"></div>
 							<p class="gameSelectorHeader">Choose the mode!</p>
 							<div class="gameSelectorButton" id="buttonSinglePong">
@@ -170,15 +160,8 @@
 								<div class="gameSelectorButtonBG ButtonBG2"></div>
 								<p class="gameSelectorText">Multiplayer</p>
 							</div>
-							<button class="defaultButton backGamePongMode" id="backGameSelectorPongId">
-								<p class="defaultButtonText backGameSnakeText">Back</p>
-								<div class="defaultButtonBG">
-									<div class="defaultButtonBGWave"></div>
-									<div class="defaultButtonBGWave wave2"></div>
-								</div>
-							</button>
 						</div>
-
+						<!-- SELECT WHAT TYPE OF MULTIPLAYER -->
 						<div class="gameSelector gameId" id="gameSelectorPongMultiplayerId">
 							<div class="gameSelectorBG"></div>
 							<p class="gameSelectorHeader">What type of Multiplayer?</p>
@@ -198,6 +181,7 @@
 								</div>
 							</button>
 						</div>
+						<!-- GAME PAGE -->
 						<div class="game1Place gameId" id="pongGameId">
 							<div class="gameScore">
 								<div class="gameScoreBG"></div>
@@ -222,17 +206,6 @@
 								</div>
 							</div>
 							<button class="defaultButton backGamePong" id="backGamePongId">
-								<p class="defaultButtonText backGameSnakeText">Back</p>
-								<div class="defaultButtonBG">
-									<div class="defaultButtonBGWave"></div>
-									<div class="defaultButtonBGWave wave2"></div>
-								</div>
-							</button>
-						</div>
-						<div class="snakeGamePlace gameId" id="SnakeGameId">
-							<div class="snakeBackground"></div>
-							<p class="gameSnakeText">SNAAAKE</p>
-							<button class="defaultButton backGameSnake" id="backGameSnakeId">
 								<p class="defaultButtonText backGameSnakeText">Back</p>
 								<div class="defaultButtonBG">
 									<div class="defaultButtonBGWave"></div>
@@ -356,8 +329,10 @@
 							</button>
 						</div>
 					</div>
+					<!-- PROFILE PAGE -->
 					<div id="profile" class="profile page">
 						<div class="loginBox">
+							<!-- LOGIN PAGE -->
 							<div class="loginPage profileId active" id="loginId">
 								<img src="images/avatar4.png" alt="" class="avatar4" />
 								<div class="loginBoxBG">
@@ -394,6 +369,7 @@
 									</div>
 								</button>
 							</div>
+							<!-- NEW USER PAGE -->
 							<div class="newUserPage profileId" id="newUserId">
 								<img src="images/avatar1.png" alt="" class="avatar1" />
 								<img src="images/avatar2.png" alt="" class="avatar2" />
@@ -435,6 +411,7 @@
 									</div>
 								</button>
 							</div>
+							<!-- USER PROFILE PAGE -->
 							<div class="profilePage profileId" id="profileId">
 								<div class="loginBoxBG">
 									<div class="decoration1"></div>
@@ -465,14 +442,14 @@
 										<div class="boxNail2"></div>
 										<div class="winsBoxBG"></div>
 										<p class="boxText">Games</p>
-										<p class="boxNumber" id="boxLosesNumber">99</p>
+										<p class="boxNumber" id="boxGamesNumber">99</p>
 									</div>
 									<div class="winRateBox">
 										<div class="winRateBoxBG"></div>
-										<p class="winRateText">Current Winrate: 100%</p>
+										<p class="winRateText" id="winRateTextId">Current Winrate: ...</p>
 										<div class="positionBox">
 											<p class="positionHeader">Position</p>
-											<p class="positionText">1º</p>
+											<p class="positionText" id="positionId">Wait</p>
 										</div>
 									</div>
 								</div>
@@ -514,6 +491,7 @@
 							</div>
 						</div> -->
 					</div>
+					<!-- WARNING POPUP -->
 					<div class="defaultWarning">
 						<div class="defaultWarningBG"></div>
 						<p class="defaultWarningText" id="warningContest">Generic Error</p>

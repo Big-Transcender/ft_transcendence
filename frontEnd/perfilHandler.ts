@@ -1,9 +1,21 @@
 let winsNumber = document.getElementById("boxWinsNumber");
+let losesNumber = document.getElementById("boxLosesNumber");
+let gamesNumber = document.getElementById("boxGamesNumber");
+let positionNumber = document.getElementById("positionId");
+let winRateText = document.getElementById("winRateTextId");
 
 // winsNumber.textContent = "0";
 
-async function flipboardNumberAnimation(target: string, flips: number = 80, delay: number = 100) {
-	winsNumber.textContent = "";
+getUserPosition();
+getUserWinrate();
+//getUserStatus();
+flipboardNumberAnimation("23", winsNumber);
+
+async function flipboardNumberAnimation(target: string, targetBox) {
+	targetBox.textContent = "";
+
+	let flips = 50;
+	let delay = 100;
 
 	console.log("Teste final");
 	// Inicializa todos os dígitos como "0"
@@ -11,7 +23,7 @@ async function flipboardNumberAnimation(target: string, flips: number = 80, dela
 	for (let i = 0; i < target.length; i++) {
 		const span = document.createElement("span");
 		span.textContent = "0";
-		winsNumber.appendChild(span);
+		targetBox.appendChild(span);
 		spans.push(span);
 	}
 
@@ -41,7 +53,35 @@ async function flipboardNumberAnimation(target: string, flips: number = 80, dela
 	}
 }
 
-flipboardNumberAnimation("23");
+function getUserPosition() {
+	//TODO GET THE NICK OF THE USER, NOT THE ID
+	const userId = 2;
+	fetch(`http://localhost:3000/leaderboard/position/${userId}`)
+		.then((response) => {
+			if (!response.ok) {
+				return response.json().then((err) => {
+					throw new Error(err.error || "Unknown error");
+				});
+			}
+			return response.json();
+		})
+		.then((data) => {
+			positionNumber.textContent = data.position + "º";
+
+			console.log(`User ${userId} is at position:`, data.position);
+		})
+		.catch((error) => {
+			console.error("Failed to fetch leaderboard position:", error.message);
+		});
+}
+
+function getUserWinrate() {
+	//calulate win-rate percentage
+	// let winPercentage = wins / games
+
+	let winPercentage = 1 / 50;
+	winRateText.textContent = "Current Winrate: " + (winPercentage * 100).toString() + " %";
+}
 
 // runNumberAnimation("23");
 
