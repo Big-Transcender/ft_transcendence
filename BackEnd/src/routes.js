@@ -219,9 +219,9 @@ async function routes(fastify) {
 		reply.send(leaderBoard);
 	});
 
-	fastify.get("/leaderboard/position/:userId", async (request, reply) => {
-		const { userId } = request.params;
-		const position = getUserLeaderboardPosition(Number(userId));
+	fastify.get("/leaderboard/position/:nickname", async (request, reply) => {
+		const { nickname } = request.params;
+		const position = getUserLeaderboardPosition(nickname);
 		if (!position)
 			return reply.code(404).send({ error: "User not found in leaderboard" });
 		reply.send({ position });
