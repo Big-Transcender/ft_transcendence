@@ -157,3 +157,15 @@
 .paddle2 {
 	right: 0;
 }
+
+.paddle3 {
+	left: 80px;
+}
+
+.paddle4 {
+	right: 80px;
+}
+
+.offPaddle {
+	opacity: 0;
+}

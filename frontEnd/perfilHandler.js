@@ -47,9 +47,8 @@ async function flipboardNumberAnimation(target, targetBox) {
     }
 }
 function getUserPosition() {
-    //TODO GET THE NICK OF THE USER, NOT THE ID
-    const userId = 2;
-    fetch(`http://localhost:3000/leaderboard/position/${userId}`)
+    const userNick = localStorage.getItem("nickname");
+    fetch(`http://localhost:3000/leaderboard/position/${userNick}`)
         .then((response) => {
         if (!response.ok) {
             return response.json().then((err) => {
@@ -60,7 +59,7 @@ function getUserPosition() {
     })
         .then((data) => {
         positionNumber.textContent = data.position + "º";
-        console.log(`User ${userId} is at position:`, data.position);
+        console.log(`User ${userNick} is at position:`, data.position);
     })
         .catch((error) => {
         console.error("Failed to fetch leaderboard position:", error.message);

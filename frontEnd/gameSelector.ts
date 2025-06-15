@@ -25,11 +25,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
 	//Singleplayer Pong
 	buttonSinglePong.addEventListener("click", () => {
-		changePageTo(gameSelectorPongPage, pongGamePage);
-		const matchId = "match-" + Date.now() + "-" + Math.floor(Math.random() * 10000);
-		updatePageHash(`#pong/${matchId}`);
-		startPongWebSocket(matchId, true); // true = local mode
-		resetEmotions();
+		if (checkIfLogged()) {
+			changePageTo(gameSelectorPongPage, pongGamePage);
+			const matchId = "match-" + Date.now() + "-" + Math.floor(Math.random() * 10000);
+			updatePageHash(`#pong/${matchId}`);
+			startPongWebSocket(matchId, true); // true = local mode
+			resetEmotions();
+		} else {
+			displayWarning("You need to log in.");
+		}
 	});
 
 	//Change to Multiplayer type selector

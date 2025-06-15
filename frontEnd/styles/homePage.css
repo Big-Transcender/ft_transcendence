@@ -6,7 +6,7 @@
 	top: 150px;
 	height: 82%;
 	width: 95%;
-	background-color: rgb(131, 108, 155);
+	/* background-color: rgb(131, 108, 155); */
 	/* width: 100v; */
 	/* background-color: rgb(185, 104, 104); */
 }
@@ -14,24 +14,22 @@
 .homePageWelcome {
 	position: relative;
 	text-align: center;
-	/* background-color: red; */
-	/* height: 100%; */
-
-	/* width: 82vw; */
+	top: 20px;
 }
 
 .homePageWelcome p {
 	position: relative;
 	font-family: animalCrossing;
-	font-size: 2vw;
-	/* background-color: red; */
+	font-size: 50px;
 }
 
 .homePlayersRank {
 	position: absolute;
-	height: 50vh;
-	width: 25%;
-	top: 10vh;
+	height: 400px;
+	width: 400px;
+	top: 150px;
+	left: 50%;
+	translate: -50%;
 
 	/* background-color: rebeccapurple; */
 }
@@ -44,12 +42,20 @@
 .homePlayersRankBG {
 	position: absolute;
 	background-color: rgb(42, 153, 180);
-	background-image: url("/images/rankBg.jpg");
+	background-image: url("/frontEnd/images/rankBg.jpg");
 	border-radius: 16px;
-	height: 50vh;
+	height: 400px;
 	width: 100%;
 	filter: drop-shadow(0px 10px 10px rgba(0, 0, 0, 0.397));
 	/* opacity: 20%; */
+}
+
+.playersRankTitle {
+	position: absolute;
+	/* background-color: red; */
+	text-align: center;
+	top: 10px;
+	font-size: 20px;
 }
 
 .playersRankList {
@@ -66,31 +72,64 @@
 	position: absolute;
 	height: 100%;
 	width: 100%;
-	background-color: rgb(145, 113, 235);
+	background-color: #ff1a1a;
 	border-radius: 16px;
-	/* opacity: 50%; */
+	/* background-image: url("/frontEnd/images/topCover.png"); */
+	background-image: url("/frontEnd/images/generic3BG.png");
+
+	background-position: center bottom 0px;
+	background-size: 150px;
+	/* background-repeat: repeat-x; */
 }
 
 .playerRankTable {
-	position: relative;
+	position: absolute;
 }
 
 .playerRankTable th {
-	padding-bottom: 10px; /* Adiciona espaço abaixo do texto no <th> */
+	padding-bottom: 10px;
 }
 
 table {
 	width: 100%;
 	border-collapse: collapse;
+	/* background-color: beige; */
+	/* background-image: url("/frontEnd/images/generic3BG.png"); */
+	/* filter: drop-shadow(0px 2px 1px #00000056); */
+	overflow: hidden;
 }
 
 th {
 	width: calc(100% / 3);
 	text-align: center;
+	font-family: animalCrossing;
+	text-shadow: 0px 2px 2px rgba(0, 0, 0, 0.137);
+	font-size: 25px;
+	background-image: url(/frontEnd/images/musicMenuBG.png);
+	background-size: 280px;
+	background-repeat: no-repeat;
+	background-position: center;
 }
 
 tr {
-	border: 10px solid #ff000000;
+	border: 25px solid #00000000;
+	text-align: center;
+	/* background-color: lime; */
+	background-color: rgba(0, 0, 0, 0.233);
+
+	/* filter: blur(5px); */
+	font-family: animalCrossingSystem;
+	/* color: red; */
+}
+
+tr:hover {
+	transition: 0.15s ease-in-out;
+
+	background-color: rgba(255, 255, 255, 0.432);
+}
+
+td {
+	font-size: 20px;
 }
 
 .loadingGif {

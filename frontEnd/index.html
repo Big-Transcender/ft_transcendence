@@ -105,11 +105,13 @@
 						<div class="homePageWelcome">
 							<p>Welcome to the Animal Ponging</p>
 						</div>
+						<!-- PLAYER LEADERBOARD -->
 						<div class="homePlayersRank">
 							<div class="homePlayersRankBG"></div>
 							<p class="playersRankTitle">Current Players Rank</p>
 							<div class="playersRankList">
 								<div class="playersRankListBG"></div>
+								<!-- RANK LIST -->
 								<table id="playerRankListId" class="playerRankTable">
 									<tr>
 										<th>Position</th>
@@ -118,28 +120,28 @@
 									</tr>
 									<tr>
 										<td>1</td>
-										<td>BrunoB</td>
-										<td>10</td>
+										<td>Loading</td>
+										<td>0</td>
 									</tr>
 									<tr>
 										<td>2</td>
-										<td>BrunoB</td>
-										<td>10</td>
+										<td>Loading</td>
+										<td>0</td>
 									</tr>
 									<tr>
 										<td>3</td>
-										<td>BrunoB</td>
-										<td>10</td>
+										<td>Loading</td>
+										<td>0</td>
 									</tr>
 									<tr>
 										<td>4</td>
-										<td>BrunoB</td>
-										<td>10</td>
+										<td>Loading</td>
+										<td>0</td>
 									</tr>
 									<tr>
 										<td>5</td>
-										<td>BrunoB</td>
-										<td>10</td>
+										<td>Loading</td>
+										<td>0</td>
 									</tr>
 								</table>
 							</div>
@@ -183,6 +185,7 @@
 						</div>
 						<!-- GAME PAGE -->
 						<div class="game1Place gameId" id="pongGameId">
+							<!-- GAME SCORE DIV -->
 							<div class="gameScore">
 								<div class="gameScoreBG"></div>
 								<div class="player1">
@@ -196,12 +199,19 @@
 									<p class="player2Score" id="player2ScoreId">0</p>
 								</div>
 							</div>
+							<!-- GAME BASE -->
 							<div class="board">
 								<div class="ball"></div>
 								<div class="paddle1 paddle">
 									<div class="paddleHitBox"></div>
 								</div>
 								<div class="paddle2 paddle">
+									<div class="paddleHitBox"></div>
+								</div>
+								<div class="paddle3 paddle offPaddle">
+									<div class="paddleHitBox"></div>
+								</div>
+								<div class="paddle4 paddle offPaddle">
 									<div class="paddleHitBox"></div>
 								</div>
 							</div>
@@ -214,6 +224,7 @@
 							</button>
 						</div>
 					</div>
+					<!-- CONTEST PAGE -->
 					<div id="contest" class="contest page">
 						<!-- CONTEST OPTION SELECTOR -->
 						<div class="gameSelector contestId active" id="contestSelectorId">
@@ -504,6 +515,7 @@
 		<script src="loginHandler.js"></script>
 		<script src="speechSystem.js"></script>
 		<script type="module" src="gameSelector.js"></script>
+		<script src="homeHandler.js"></script>
 		<script src="gameScore.js"></script>
 		<script src="contestHandler.js"></script>
 		<script src="script.js"></script>
