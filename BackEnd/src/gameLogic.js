@@ -101,9 +101,14 @@ function updateBall(gameState) {
 	gameState.ball.x += gameState.ballVel.x;
 	gameState.ball.y += gameState.ballVel.y;
 
+	// Calculate center Y of ball
+	const ballCenterY = gameState.ball.y + ballSizeY / 2;
+
 	// Wall collision
+	let wallCollision = false; //TODO testing this change
 	if (gameState.ball.y <= 0 || gameState.ball.y + ballSizeY >= 100) {
 		gameState.ballVel.y *= -1;
+		wallCollision = true;
 	}
 
 	// Scoring: reset
@@ -125,8 +130,7 @@ function updateBall(gameState) {
 		gameState.onGoing = false;
 	}
 
-	// Calculate center Y of ball
-	const ballCenterY = gameState.ball.y + ballSizeY / 2;
+
 
 	// (Player 1) left
 	if (
@@ -138,7 +142,9 @@ function updateBall(gameState) {
 		const impact = (ballCenterY - paddleCenterY) / (paddleHeight / 2);
 		const angle = getImpactAngle(gameState, impact);
 		gameState.ballVel.x = Math.sqrt(1 - angle ** 2) * gameState.speed;
-		gameState.ballVel.y = angle * gameState.speed;
+		if (!wallCollision) {
+			gameState.ballVel.y = angle * gameState.speed;
+		}
 	}
 
 	// (Player 2) right
@@ -151,8 +157,11 @@ function updateBall(gameState) {
 		const impact = (ballCenterY - paddleCenterY) / (paddleHeight / 2);
 		const angle = getImpactAngle(gameState, impact);
 		gameState.ballVel.x = -Math.sqrt(1 - angle ** 2) * gameState.speed;
-		gameState.ballVel.y = angle * gameState.speed;
+		if (!wallCollision) {
+			gameState.ballVel.y = angle * gameState.speed;
+		}
 	}
+	//AI Game
 	if (gameState.aiGame)
 		aiMove(gameState, handleInput);
 }
