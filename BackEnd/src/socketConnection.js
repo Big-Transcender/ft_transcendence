@@ -51,6 +51,7 @@ function setupWebSocket(server) {
 				}
 
 				if (match.clients.size === 0) {
+					clearInterval(match.intervalId)
 					matches.delete(matchId);
 					console.log(`🗑️ Match ${matchId} removed (no players left)`);
 				}

@@ -15,15 +15,13 @@ function startGameLoopForMatch(matchId, updateBall, isLocal = false, aiGame = fa
 		return;
 
 	match.intervalId = setInterval(() => {
+
 		const { gameState, clients } = match;
 		gameState.GamePlayLocal = isLocal;
 		gameState.aiGame = aiGame;
-		gameState.playerDbId.p1 = match.clients.get('p1')?.nickname;
-		gameState.playerDbId.p2 = match.clients.get('p2')?.nickname;
-		gameState.playerDbId.p1 = match.clients.get('p3')?.nickname;
-		gameState.playerDbId.p2 = match.clients.get('p4')?.nickname;
-		//const p1Nick = match.clients.get('p1')?.nickname;
-		//console.log(gameState.playerDbId.p1);
+
+		//gameState.playerDbId.p3 = match.clients.get('p3')?.nickname;
+		//gameState.playerDbId.p4 = match.clients.get('p4')?.nickname;
 
 		const requiredPlayers = isLocal ? 1 : 2;
 		if (teamGame)
@@ -39,6 +37,11 @@ function startGameLoopForMatch(matchId, updateBall, isLocal = false, aiGame = fa
 			// Only update ball if game is active
 			if (gameState.onGoing) {
 				updateBall(gameState);
+			}
+			else
+			{
+				gameState.playerDbId.p1 = match.clients.get('p1')?.nickname || null;
+				gameState.playerDbId.p2 = match.clients.get('p2')?.nickname || null;
 			}
 
 			const message = JSON.stringify({ type: 'state', payload: gameState });

@@ -1,4 +1,4 @@
-const { insertMatch } = require('./dataQuerys');
+const { insertMatch, getUserIdByNickname } = require('./dataQuerys');
 const { aiMove } = require('./aiPong');
 
 const PaddleSpeed = 2;
@@ -20,7 +20,7 @@ function createInitialGameState() {
 		ballVel: { x: 0.5, y: 0.5 },
 		score: { p1: 0, p2: 0 },
 		playerId: { p1: 1, p2: 2 },
-		playerDbId: { p1: null, p2: null },
+		playerDbId: { p1: null, p2: null, p3: null, p4: null},
 		onGoing: false,
 		started: false,
 		GamePlayLocal: true,
@@ -123,10 +123,12 @@ function updateBall(gameState) {
 	}
 
 	if ((gameState.score.p2 === 10 || gameState.score.p1 === 10) && gameState.onGoing ) {
-		let winnerId = gameState.playerId.p1;
+		let winnerId = gameState.playerDbId.p1;
 		if (gameState.score.p1 < gameState.score.p2)
-			winnerId = gameState.playerId.p2;
-		insertMatch(gameState.playerId.p1, gameState.playerId.p2, winnerId, gameState.score.p1, gameState.score.p2);
+			winnerId = gameState.playerDbId.p1;
+		console.log(gameState.playerDbId);
+		insertOnDb(gameState, winnerId);
+		
 		gameState.onGoing = false;
 	}
 
@@ -251,6 +253,21 @@ function updateBall4Players(gameState) {
 }
 
 
+function insertOnDb(gameState, winnerId)
+{
+	// console.log(gameState.playerDbId.p1);
+	// if (!gameState.playerDbId.p1 || !gameState.playerDbId.p2) {
+    //     console.error("❌ Missing player database IDs in gameState");
+    //     return;
+    // }
+	
+	var p1 = getUserIdByNickname(gameState.playerDbId.p1);
+	var p2 = p1;
+	if(!gameState.GamePlayLocal)
+		p2 = getUserIdByNickname(gameState.playerDbId.p2);
+	var pw = getUserIdByNickname(winnerId);
+	insertMatch(p1, p2, pw, gameState.score.p1, gameState.score.p2);
+}
 
 
 module.exports = {
