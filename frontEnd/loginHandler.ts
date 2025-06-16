@@ -76,7 +76,7 @@ const registerNewUser = async () => {
 	const password = (document.getElementById("inputPassNew") as HTMLInputElement).value.trim();
 
 	try {
-		const response = await fetch("http://localhost:3000/register", {
+		const response = await fetch("http://10.11.242.92:3000/register", {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json",
@@ -105,7 +105,7 @@ async function loginUser() {
 	console.log("nickname:", identifier);
 	console.log("password:", password);
 	try {
-		const response = await fetch("http://localhost:3000/login", {
+		const response = await fetch("http://10.11.242.92:3000/login", {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json",
