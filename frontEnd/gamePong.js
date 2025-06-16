@@ -112,9 +112,7 @@ function stopPongWebSocket() {
     socketInitialized = false;
     currentMatchId = null;
 }
-// Example: Poll URL hash and start/stop with a generated matchId
 setInterval(() => {
-    // E.g., URL format: http://localhost:3000/#pong/abcd1234
     const hash = window.location.hash;
     const matchPrefix = "#pong/";
     const isOnPongGame = hash.startsWith(matchPrefix) && hash.slice(matchPrefix.length) === currentMatchId;
