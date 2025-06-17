@@ -29,7 +29,7 @@ document.addEventListener("DOMContentLoaded", () => {
 			changePageTo(gameSelectorPongPage, pongGamePage);
 			const matchId = "match-" + Date.now() + "-" + Math.floor(Math.random() * 10000);
 			updatePageHash(`#pong/${matchId}`);
-			startPongWebSocket(matchId, true, false); // true = local mode
+			startPongWebSocket(matchId, true, true); // true = local mode
 			resetEmotions();
 		} else {
 			displayWarning("You need to log in.");
