@@ -2,6 +2,8 @@ let player1Icon = document.getElementById("player1IconId") as HTMLImageElement;
 let player2Icon = document.getElementById("player2IconId") as HTMLImageElement;
 let player1ScoreText = (document.getElementById("player1ScoreId") as HTMLImageElement).textContent;
 let player2ScoreText = (document.getElementById("player2ScoreId") as HTMLImageElement).textContent;
+let player1Nick = document.getElementById("player1NickId") as HTMLImageElement;
+let player2Nick = document.getElementById("player2NickId") as HTMLImageElement;
 let bigScoreP1 = false;
 let bigScoreP2 = false;
 let turnaroundflag = false;
@@ -89,6 +91,11 @@ function resetEmotions() {
 	turnaroundflag = false;
 	changeEmotion(player1Icon, "happy");
 	changeEmotion(player2Icon, "happy");
+}
+
+function setGameScore(name1: string, name2: string = "Bot") {
+	player1Nick.textContent = name1;
+	player2Nick.textContent = name2;
 }
 
 let state2: any;

@@ -27,6 +27,7 @@ document.addEventListener("DOMContentLoaded", () => {
     backGamePongButton.addEventListener("click", () => {
         changePageTo(pongGamePage, gameSelectorPongPage);
         updatePageHash("#game1");
+        backGamePongButton.classList.remove("active");
     });
     //Singleplayer Pong
     buttonSinglePong.addEventListener("click", () => {
@@ -37,6 +38,8 @@ document.addEventListener("DOMContentLoaded", () => {
             startPongWebSocket(matchId, true, true); // true = local mode
             animateTimer();
             resetEmotions();
+            setGameScore(getNickOnLocalStorage());
+            backGamePongButton.classList.add("active");
         }
         else {
             displayWarning("You need to log in.");
