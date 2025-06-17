@@ -35,6 +35,11 @@ document.addEventListener("DOMContentLoaded", () => {
     buttonMultiplayerPong.addEventListener("click", () => {
         changePageTo(gameSelectorPongPage, gameSelectorPongMultiplayerPage);
         updatePageHash(`#pong/multiplayerMenu`);
+    });
+    //Change to Multiplayer Versus
+    buttonVersusMP.addEventListener("click", () => {
+        // changePageTo(gameSelectorPongPage, gameSelectorPage);
+        updatePageHash(`#pong/pongVersusMP`);
         // // Prompt user to create or join a match
         const action = prompt("Do you want to create a new match or join an existing one? (Type 'create' or 'join')");
         if (action === "create") {
@@ -43,6 +48,7 @@ document.addEventListener("DOMContentLoaded", () => {
             alert(`Match created! Share this ID with your friend: ${matchId}`);
             history.replaceState(undefined, "", `#pong/${matchId}`);
             startPongWebSocket(matchId, false, false); // Start as host
+            changePageTo(gameSelectorPongMultiplayerPage, pongGamePage);
         }
         else if (action === "join") {
             // Join an existing match
@@ -50,6 +56,7 @@ document.addEventListener("DOMContentLoaded", () => {
             if (matchId) {
                 history.replaceState(undefined, "", `#pong/${matchId}`);
                 startPongWebSocket(matchId, false, false); // Join as client
+                changePageTo(gameSelectorPongMultiplayerPage, pongGamePage);
             }
             else {
                 alert("You must enter a match ID to join.");
@@ -57,22 +64,18 @@ document.addEventListener("DOMContentLoaded", () => {
         }
         else {
             alert("Invalid action. Please type 'create' or 'join'.");
-        }
-        changePageTo(gameSelectorPongPage, pongGamePage);
-        //Change to Multiplayer Versus
-        buttonVersusMP.addEventListener("click", () => {
-            // changePageTo(gameSelectorPongPage, gameSelectorPage);
-            updatePageHash(`#pong/pongVersusMP`);
-        });
-        //Change to Multiplayer Local
-        buttonLocalMP.addEventListener("click", () => {
-            // changePageTo(gameSelectorPongPage, gameSelectorPage);
-            updatePageHash(`#pong/pongLocalMP`);
-        });
-        //Back button of Multiplayer type Selector
-        backButtonMP.addEventListener("click", () => {
             changePageTo(gameSelectorPongMultiplayerPage, gameSelectorPongPage);
-            updatePageHash(`#pong`);
-        });
+        }
+        // changePageTo(gameSelectorPongPage, pongGamePage);
+    });
+    //Change to Multiplayer Local
+    buttonLocalMP.addEventListener("click", () => {
+        // changePageTo(gameSelectorPongPage, gameSelectorPage);
+        updatePageHash(`#pong/pongLocalMP`);
+    });
+    //Back button of Multiplayer type Selector
+    backButtonMP.addEventListener("click", () => {
+        changePageTo(gameSelectorPongMultiplayerPage, gameSelectorPongPage);
+        updatePageHash(`#pong`);
     });
 });
