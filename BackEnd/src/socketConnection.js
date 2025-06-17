@@ -30,7 +30,7 @@ function setupWebSocket(server) {
 					if (!team)
 						startGameLoopForMatch(matchId, updateBall, isLocal, aiGame);
 					else
-						startGameLoopForMatch(matchId, updateBall4Players, isLocal, aiGame, true);
+						startGameLoopForMatch(matchId, updateBall4Players, isLocal, aiGame, team);
 				}
 
 				const match = matches.get(matchId);
@@ -66,9 +66,11 @@ function setPlayers(match, nickname, ws, matchId, team) {
 
 	if (!match.clients.has('p1')) {
 		match.clients.set('p1', {nickname, ws});
+		match.gameState.playerDbId.p1 = nickname;
 		assignedPlayer = 'p1';
 	} else if (!match.clients.has('p2')) {
 		match.clients.set('p2', {nickname, ws});
+		match.gameState.playerDbId.p2 = nickname;
 		assignedPlayer = 'p2';
 	} else {
 		if (!team)
@@ -79,10 +81,12 @@ function setPlayers(match, nickname, ws, matchId, team) {
 		}
 		else if (!match.clients.has('p3')) {
 			match.clients.set('p3', {nickname, ws});
+			match.gameState.playerDbId.p3 = nickname;
 			assignedPlayer = 'p3';
 		}
 		else if (!match.clients.has('p4')) {
 			match.clients.set('p4', {nickname, ws});
+			match.gameState.playerDbId.p4 = nickname;
 			assignedPlayer = 'p4';
 		}
 	}

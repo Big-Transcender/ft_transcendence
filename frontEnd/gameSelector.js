@@ -58,6 +58,7 @@ document.addEventListener("DOMContentLoaded", () => {
         else {
             alert("Invalid action. Please type 'create' or 'join'.");
         }
+        changePageTo(gameSelectorPongPage, pongGamePage);
         //Change to Multiplayer Versus
         buttonVersusMP.addEventListener("click", () => {
             // changePageTo(gameSelectorPongPage, gameSelectorPage);

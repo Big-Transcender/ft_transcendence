@@ -14,19 +14,20 @@ function startGameLoopForMatch(matchId, updateBall, isLocal = false, aiGame = fa
 	if (!match || match.intervalId)
 		return;
 
+	var setPlayers = false
+	const { gameState, clients } = match;
+	gameState.GamePlayLocal = isLocal;
+	gameState.aiGame = aiGame;
+	const requiredPlayers = isLocal ? 1 : 2;
+	if (teamGame)
+		requiredPlayers = 4
+
 	match.intervalId = setInterval(() => {
 
-		const { gameState, clients } = match;
-		gameState.GamePlayLocal = isLocal;
-		gameState.aiGame = aiGame;
-
-		//gameState.playerDbId.p3 = match.clients.get('p3')?.nickname;
-		//gameState.playerDbId.p4 = match.clients.get('p4')?.nickname;
-
-		const requiredPlayers = isLocal ? 1 : 2;
-		if (teamGame)
-			requiredPlayers = 4
+		//TODO removed what is in line 17 -> 22, needs testing
+		
 		if (clients.size === requiredPlayers) {
+
 
 			if (!gameState.onGoing && !gameState.started) {
 				gameState.started = true;
@@ -37,11 +38,12 @@ function startGameLoopForMatch(matchId, updateBall, isLocal = false, aiGame = fa
 			// Only update ball if game is active
 			if (gameState.onGoing) {
 				updateBall(gameState);
-			}
-			else
-			{
-				gameState.playerDbId.p1 = match.clients.get('p1')?.nickname || null;
-				gameState.playerDbId.p2 = match.clients.get('p2')?.nickname || null;
+				if (gameState.finished) {
+					console.log("🏁 Game over! Cleaning up match...");
+					clearInterval(match.intervalId);
+					matches.delete(matchId);
+					return;
+				}
 			}
 
 			const message = JSON.stringify({ type: 'state', payload: gameState });
@@ -53,6 +55,7 @@ function startGameLoopForMatch(matchId, updateBall, isLocal = false, aiGame = fa
 				}
 			});
 		}
+
 	}, 10); // 60 FPS
 }
 

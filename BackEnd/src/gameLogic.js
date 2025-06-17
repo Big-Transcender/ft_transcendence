@@ -23,6 +23,7 @@ function createInitialGameState() {
 		playerDbId: { p1: null, p2: null, p3: null, p4: null},
 		onGoing: false,
 		started: false,
+		finished: false,
 		GamePlayLocal: true,
 		numbrBalls: BALLS,
 		speed: SPEED,
@@ -130,6 +131,7 @@ function updateBall(gameState) {
 		insertOnDb(gameState, winnerId);
 		
 		gameState.onGoing = false;
+		gameState.finished= true;
 	}
 
 
@@ -260,11 +262,10 @@ function insertOnDb(gameState, winnerId)
     //     console.error("❌ Missing player database IDs in gameState");
     //     return;
     // }
-	
+	if (gameState.GamePlayLocal || gameState.aiGame)
+		return ;
 	var p1 = getUserIdByNickname(gameState.playerDbId.p1);
-	var p2 = p1;
-	if(!gameState.GamePlayLocal)
-		p2 = getUserIdByNickname(gameState.playerDbId.p2);
+	var	p2 = getUserIdByNickname(gameState.playerDbId.p2);
 	var pw = getUserIdByNickname(winnerId);
 	insertMatch(p1, p2, pw, gameState.score.p1, gameState.score.p2);
 }
