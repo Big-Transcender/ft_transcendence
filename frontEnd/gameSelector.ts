@@ -10,6 +10,13 @@ const pongGamePage = document.getElementById("pongGameId");
 const gameSelectorPongPage = document.getElementById("gameSelectorPongId");
 const gameSelectorPongMultiplayerPage = document.getElementById("gameSelectorPongMultiplayerId");
 
+
+function generateMatchId()
+{
+	return "match-" + Date.now() + "-" + Math.floor(Math.random() * 10000);
+}
+
+
 import { startPongWebSocket } from "./gamePong.js";
 
 function updatePageHash(hash: string) {
@@ -27,7 +34,7 @@ document.addEventListener("DOMContentLoaded", () => {
 	buttonSinglePong.addEventListener("click", () => {
 		if (checkIfLogged()) {
 			changePageTo(gameSelectorPongPage, pongGamePage);
-			const matchId = "match-" + Date.now() + "-" + Math.floor(Math.random() * 10000);
+			const matchId = generateMatchId()
 			updatePageHash(`#pong/${matchId}`);
 			startPongWebSocket(matchId, true, true); // true = local mode
 			resetEmotions();
@@ -54,7 +61,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 		if (action === "create") {
 			// Create a new match
-			const matchId = "match-" + Date.now() + "-" + Math.floor(Math.random() * 10000);
+			const matchId = generateMatchId()
 			alert(`Match created! Share this ID with your friend: ${matchId}`);
 			history.replaceState(undefined, "", `#pong/${matchId}`);
 			startPongWebSocket(matchId, false, false); // Start as host
@@ -77,16 +84,20 @@ document.addEventListener("DOMContentLoaded", () => {
 	});
 
 	//Change to Multiplayer Local
-	buttonLocalMP.addEventListener("click", () => {
+	/*buttonLocalMP.addEventListener("click", () => {
 		if (checkIfLogged()) {
 			changePageTo(gameSelectorPongMultiplayerPage, pongGamePage);
-			const matchId = "match-" + Date.now() + "-" + Math.floor(Math.random() * 10000);
+			const matchId = generateMatchId()
 			updatePageHash(`#pong/${matchId}`);
 			startPongWebSocket(matchId, true); // true = local mode
 			resetEmotions();
 		} else {
 			displayWarning("You need to log in.");
 		}
+	});*/
+
+	buttonLocalMP.addEventListener("click", () => {
+
 	});
 
 	//Back button of Multiplayer type Selector

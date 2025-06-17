@@ -14,7 +14,6 @@ function startGameLoopForMatch(matchId, updateBall, isLocal = false, aiGame = fa
 	if (!match || match.intervalId)
 		return;
 
-	var setPlayers = false
 	const { gameState, clients } = match;
 	gameState.GamePlayLocal = isLocal;
 	gameState.aiGame = aiGame;

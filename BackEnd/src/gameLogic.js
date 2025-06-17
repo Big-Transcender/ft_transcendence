@@ -202,7 +202,7 @@ function updateBall4Players(gameState) {
 	// Calculate center Y of ball
 	const ballCenterY = gameState.ball.y + ballSizeY / 2;
 
-	// (Player 1 and 2) left
+	// (Player 1 and 3) left
 	if (
 		gameState.ball.x <= paddleWidth &&
 		ballCenterY >= gameState.paddles.p1 - HitBoxBuffer &&
@@ -217,23 +217,23 @@ function updateBall4Players(gameState) {
 
 	if (
 		gameState.ball.x <= paddleWidth &&
-		ballCenterY >= gameState.paddles.p2 - HitBoxBuffer &&
-		ballCenterY <= gameState.paddles.p2 + paddleHeight
+		ballCenterY >= gameState.paddles.p3 - HitBoxBuffer &&
+		ballCenterY <= gameState.paddles.p3 + paddleHeight
 	) {
-		const paddleCenterY = gameState.paddles.p2 + paddleHeight / 2;
+		const paddleCenterY = gameState.paddles.p3 + paddleHeight / 2;
 		const impact = (ballCenterY - paddleCenterY) / (paddleHeight / 2);
 		const angle = getImpactAngle(gameState, impact);
 		gameState.ballVel.x = Math.sqrt(1 - angle ** 2) * gameState.speed;
 		gameState.ballVel.y = angle * gameState.speed;
 	}
 
-	// (Player 3 and 4) right
+	// (Player 2 and 4) right
 	if (
 		gameState.ball.x + ballSizeX >= 100 - paddleWidth &&
-		ballCenterY >= gameState.paddles.p3 - HitBoxBuffer &&
-		ballCenterY <= gameState.paddles.p3 + paddleHeight
+		ballCenterY >= gameState.paddles.p2 - HitBoxBuffer &&
+		ballCenterY <= gameState.paddles.p2 + paddleHeight
 	) {
-		const paddleCenterY = gameState.paddles.p3 + paddleHeight / 2;
+		const paddleCenterY = gameState.paddles.p2 + paddleHeight / 2;
 		const impact = (ballCenterY - paddleCenterY) / (paddleHeight / 2);
 		const angle = getImpactAngle(gameState, impact);
 		gameState.ballVel.x = -Math.sqrt(1 - angle ** 2) * gameState.speed;
