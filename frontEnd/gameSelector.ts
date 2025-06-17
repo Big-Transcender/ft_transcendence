@@ -9,8 +9,19 @@ const backButtonMP = document.getElementById("backButtonMPId");
 const pongGamePage = document.getElementById("pongGameId");
 const gameSelectorPongPage = document.getElementById("gameSelectorPongId");
 const gameSelectorPongMultiplayerPage = document.getElementById("gameSelectorPongMultiplayerId");
+const startGameTimer = document.getElementById("timerId");
+const startGameTimerBox = document.getElementById("timerBoxId");
 
 import { startPongWebSocket } from "./gamePong.js";
+
+async function animateTimer() {
+	startGameTimerBox.style.opacity = "1";
+	for (let i = 1; i <= 3; i++) {
+		startGameTimer.textContent = i.toString();
+		await new Promise((resolve) => setTimeout(resolve, 1000));
+	}
+	startGameTimerBox.style.opacity = "0";
+}
 
 function updatePageHash(hash: string) {
 	history.replaceState(undefined, "", hash);
@@ -30,6 +41,7 @@ document.addEventListener("DOMContentLoaded", () => {
 			const matchId = "match-" + Date.now() + "-" + Math.floor(Math.random() * 10000);
 			updatePageHash(`#pong/${matchId}`);
 			startPongWebSocket(matchId, true, true); // true = local mode
+			animateTimer();
 			resetEmotions();
 		} else {
 			displayWarning("You need to log in.");
@@ -46,8 +58,6 @@ document.addEventListener("DOMContentLoaded", () => {
 	buttonVersusMP.addEventListener("click", () => {
 		// changePageTo(gameSelectorPongPage, gameSelectorPage);
 		updatePageHash(`#pong/pongVersusMP`);
-		
-
 
 		// // Prompt user to create or join a match
 		const action = prompt("Do you want to create a new match or join an existing one? (Type 'create' or 'join')");
@@ -94,5 +104,4 @@ document.addEventListener("DOMContentLoaded", () => {
 		changePageTo(gameSelectorPongMultiplayerPage, gameSelectorPongPage);
 		updatePageHash(`#pong`);
 	});
-	
 });

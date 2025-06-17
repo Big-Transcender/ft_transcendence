@@ -83,6 +83,8 @@ function resetEmotions() {
     bigScoreP1 = false;
     bigScoreP2 = false;
     turnaroundflag = false;
+    changeEmotion(player1Icon, "happy");
+    changeEmotion(player2Icon, "happy");
 }
 let state2;
 window.addEventListener("gameStateUpdate", (event) => {
