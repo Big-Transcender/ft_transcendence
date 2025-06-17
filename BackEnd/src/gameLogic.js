@@ -6,7 +6,11 @@ const HitBoxBuffer = 3;
 const paddleHeight = (75 / 500) * 100 + HitBoxBuffer;
 const paddleWidth = (20 / 900) * 100;
 
-let SPEED = 0.7;
+
+const paddle3X = (80 / 900) * 100; // 80px offset from left, in percent
+const paddle4X = 100 - ((80 / 900) * 100) - paddleWidth;
+
+var SPEED = 0.7;
 const ballSizeX = (33 / 900) * 100;
 const ballSizeY = (33 / 500) * 100;
 
@@ -19,7 +23,7 @@ function createInitialGameState() {
 		ball: { x: 50, y: 50 },
 		ballVel: { x: 0.5, y: 0.5 },
 		score: { p1: 0, p2: 0 },
-		playerId: { p1: 1, p2: 2 },
+		playerId: { p1: 1, p2: 2, p3: 3, p4: 4 },
 		playerDbId: { p1: null, p2: null, p3: null, p4: null},
 		onGoing: false,
 		started: false,
@@ -195,15 +199,16 @@ function updateBall4Players(gameState) {
 		let winnerId = gameState.playerId.p1;
 		if (gameState.score.p1 < gameState.score.p2)
 			winnerId = gameState.playerId.p2;
-		insertMatch(gameState.playerId.p1, gameState.playerId.p2, winnerId, gameState.score.p1, gameState.score.p2);
+		insertMatch(gameState.playerId.p1, gameState.playerId.p2, winnerId, gameState.score.p1, gameState.score.p2); //TODO talk to bruno to see the best way to and the teams matchs to DB
 		gameState.onGoing = false;
 	}
 
 	// Calculate center Y of ball
 	const ballCenterY = gameState.ball.y + ballSizeY / 2;
 
-	// (Player 1 and 3) left
+	// (Player 1 ) left
 	if (
+		gameState.ballVel.x < 0 &&
 		gameState.ball.x <= paddleWidth &&
 		ballCenterY >= gameState.paddles.p1 - HitBoxBuffer &&
 		ballCenterY <= gameState.paddles.p1 + paddleHeight
@@ -214,11 +219,13 @@ function updateBall4Players(gameState) {
 		gameState.ballVel.x = Math.sqrt(1 - angle ** 2) * gameState.speed;
 		gameState.ballVel.y = angle * gameState.speed;
 	}
-
+	// (Player 3) left
 	if (
-		gameState.ball.x <= paddleWidth &&
+		gameState.ballVel.x < 0 &&
+		gameState.ball.x <= paddle3X + paddleWidth + 1 &&
 		ballCenterY >= gameState.paddles.p3 - HitBoxBuffer &&
 		ballCenterY <= gameState.paddles.p3 + paddleHeight
+		
 	) {
 		const paddleCenterY = gameState.paddles.p3 + paddleHeight / 2;
 		const impact = (ballCenterY - paddleCenterY) / (paddleHeight / 2);
@@ -227,8 +234,9 @@ function updateBall4Players(gameState) {
 		gameState.ballVel.y = angle * gameState.speed;
 	}
 
-	// (Player 2 and 4) right
+	// (Player 2) right
 	if (
+		gameState.ballVel.x > 0 &&
 		gameState.ball.x + ballSizeX >= 100 - paddleWidth &&
 		ballCenterY >= gameState.paddles.p2 - HitBoxBuffer &&
 		ballCenterY <= gameState.paddles.p2 + paddleHeight
@@ -239,9 +247,10 @@ function updateBall4Players(gameState) {
 		gameState.ballVel.x = -Math.sqrt(1 - angle ** 2) * gameState.speed;
 		gameState.ballVel.y = angle * gameState.speed;
 	}
-
+	// (Player4) right
 	if (
-		gameState.ball.x + ballSizeX >= 100 - paddleWidth &&
+		gameState.ballVel.x > 0 &&
+		gameState.ball.x + ballSizeX >= paddle4X - 1 &&
 		ballCenterY >= gameState.paddles.p4 - HitBoxBuffer &&
 		ballCenterY <= gameState.paddles.p4 + paddleHeight
 	) {
@@ -254,14 +263,11 @@ function updateBall4Players(gameState) {
 
 }
 
+//TODO gameState.ball.x + ballSizeX <= paddle4X + paddleWidth && for testing 
+
 
 function insertOnDb(gameState, winnerId)
 {
-	// console.log(gameState.playerDbId.p1);
-	// if (!gameState.playerDbId.p1 || !gameState.playerDbId.p2) {
-    //     console.error("❌ Missing player database IDs in gameState");
-    //     return;
-    // }
 	if (gameState.GamePlayLocal || gameState.aiGame)
 		return ;
 	var p1 = getUserIdByNickname(gameState.playerDbId.p1);

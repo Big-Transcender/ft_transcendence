@@ -17,7 +17,7 @@ function startGameLoopForMatch(matchId, updateBall, isLocal = false, aiGame = fa
 	const { gameState, clients } = match;
 	gameState.GamePlayLocal = isLocal;
 	gameState.aiGame = aiGame;
-	const requiredPlayers = isLocal ? 1 : 2;
+	var requiredPlayers = isLocal ? 1 : 2;
 	if (teamGame)
 		requiredPlayers = 4
 
@@ -25,7 +25,7 @@ function startGameLoopForMatch(matchId, updateBall, isLocal = false, aiGame = fa
 
 		//TODO removed what is in line 17 -> 22, needs testing
 		
-		if (clients.size === requiredPlayers) {
+		if (clients.size === requiredPlayers) { //requiredPlayers
 
 
 			if (!gameState.onGoing && !gameState.started) {

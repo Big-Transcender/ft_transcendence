@@ -50,7 +50,7 @@ document.addEventListener("DOMContentLoaded", () => {
 	});
 
 	//Change to Multiplayer Versus
-	buttonVersusMP.addEventListener("click", () => {
+	buttonVersusMP.addEventListener("click", () => { // testing the teams games
 		// changePageTo(gameSelectorPongPage, gameSelectorPage);
 		updatePageHash(`#pong/pongVersusMP`);
 		
@@ -64,14 +64,14 @@ document.addEventListener("DOMContentLoaded", () => {
 			const matchId = generateMatchId()
 			alert(`Match created! Share this ID with your friend: ${matchId}`);
 			history.replaceState(undefined, "", `#pong/${matchId}`);
-			startPongWebSocket(matchId, false, false); // Start as host
+			startPongWebSocket(matchId, false, false, true); // Start as host
 			changePageTo(gameSelectorPongMultiplayerPage, pongGamePage);
 		} else if (action === "join") {
 			// Join an existing match
 			const matchId = prompt("Enter the match ID:");
 			if (matchId) {
 				history.replaceState(undefined, "", `#pong/${matchId}`);
-				startPongWebSocket(matchId, false, false); // Join as client
+				startPongWebSocket(matchId, false, false, true); // Join as client
 				changePageTo(gameSelectorPongMultiplayerPage, pongGamePage);
 			} else {
 				alert("You must enter a match ID to join.");
@@ -84,7 +84,7 @@ document.addEventListener("DOMContentLoaded", () => {
 	});
 
 	//Change to Multiplayer Local
-	/*buttonLocalMP.addEventListener("click", () => {
+	buttonLocalMP.addEventListener("click", () => {
 		if (checkIfLogged()) {
 			changePageTo(gameSelectorPongMultiplayerPage, pongGamePage);
 			const matchId = generateMatchId()
@@ -94,11 +94,8 @@ document.addEventListener("DOMContentLoaded", () => {
 		} else {
 			displayWarning("You need to log in.");
 		}
-	});*/
-
-	buttonLocalMP.addEventListener("click", () => {
-
 	});
+
 
 	//Back button of Multiplayer type Selector
 	backButtonMP.addEventListener("click", () => {

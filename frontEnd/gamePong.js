@@ -35,8 +35,8 @@ export function startPongWebSocket(matchId, isLocal, aiGame = false, teamGame = 
     // --- Game Elements
     const paddle1 = document.querySelector(".paddle1");
     const paddle2 = document.querySelector(".paddle2");
-    //const paddle3 = document.querySelector(".paddle2") as HTMLElement;
-    //const paddle4 = document.querySelector(".paddle2") as HTMLElement;
+    const paddle3 = document.querySelector(".paddle3");
+    const paddle4 = document.querySelector(".paddle4");
     const ball = document.querySelector(".ball");
     // --- Input Handling
     document.addEventListener("keydown", (event) => {
@@ -65,6 +65,14 @@ export function startPongWebSocket(matchId, isLocal, aiGame = false, teamGame = 
     }
     sendInputLoop();
     // ---- Receiving Server updated positions
+    if (!teamGame) {
+        paddle3.classList.add('offPaddle');
+        paddle4.classList.add('offPaddle');
+    }
+    else {
+        paddle3.classList.remove('offPaddle');
+        paddle4.classList.remove('offPaddle');
+    }
     socket.addEventListener("message", (event) => {
         try {
             const data = JSON.parse(event.data);
@@ -78,13 +86,12 @@ export function startPongWebSocket(matchId, isLocal, aiGame = false, teamGame = 
                     if (paddle2) {
                         paddle2.style.top = `${state.paddles.p2}%`;
                     }
-                    /*if (paddle3) {
-                        paddle2.style.top = `${state.paddles.p2}%`;
+                    if (paddle3 && teamGame) {
+                        paddle3.style.top = `${state.paddles.p3}%`;
                     }
-
-                    if (paddle4) {
-                        paddle2.style.top = `${state.paddles.p2}%`;
-                    }*/
+                    if (paddle4 && teamGame) {
+                        paddle4.style.top = `${state.paddles.p4}%`;
+                    }
                     if (ball) {
                         ball.style.left = `${state.ball.x}%`;
                         ball.style.top = `${state.ball.y}%`;
