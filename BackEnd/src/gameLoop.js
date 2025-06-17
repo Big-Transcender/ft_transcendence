@@ -1,3 +1,4 @@
+
 const matches = new Map(); // matchId -> { gameState, clients, intervalId }
 
 function createMatch(matchId, createInitialGameState) {
@@ -8,17 +9,25 @@ function createMatch(matchId, createInitialGameState) {
 	return match;
 }
 
-function startGameLoopForMatch(matchId, updateBall, isLocal = false) {
+function startGameLoopForMatch(matchId, updateBall, isLocal = false, aiGame = false, teamGame = false) {
 	const match = matches.get(matchId);
-	if (!match || match.intervalId) return;
+	if (!match || match.intervalId)
+		return;
 
 	match.intervalId = setInterval(() => {
+
 		const { gameState, clients } = match;
 		gameState.GamePlayLocal = isLocal;
+		gameState.aiGame = aiGame;
+
+		//gameState.playerDbId.p3 = match.clients.get('p3')?.nickname;
+		//gameState.playerDbId.p4 = match.clients.get('p4')?.nickname;
 
 		const requiredPlayers = isLocal ? 1 : 2;
+		if (teamGame)
+			requiredPlayers = 4
 		if (clients.size === requiredPlayers) {
-			// Start timer only once when game is not ongoing
+
 			if (!gameState.onGoing && !gameState.started) {
 				gameState.started = true;
 				console.log("⏳ Starting game in 3 seconds...");
@@ -29,13 +38,18 @@ function startGameLoopForMatch(matchId, updateBall, isLocal = false) {
 			if (gameState.onGoing) {
 				updateBall(gameState);
 			}
+			else
+			{
+				gameState.playerDbId.p1 = match.clients.get('p1')?.nickname || null;
+				gameState.playerDbId.p2 = match.clients.get('p2')?.nickname || null;
+			}
 
 			const message = JSON.stringify({ type: 'state', payload: gameState });
 
 			// Send game state to clients
 			clients.forEach(client => {
-				if (client.readyState === 1) {
-					client.send(message);
+				if (client.ws.readyState === 1) {
+					client.ws.send(message);
 				}
 			});
 		}

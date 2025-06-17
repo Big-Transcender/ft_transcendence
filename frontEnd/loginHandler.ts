@@ -6,7 +6,7 @@ let bubbleTextNewUser = document.getElementById("thinkingBubbleTextNewUser") as 
 let bubbleTextLogin = document.getElementById("thinkingBubbleTextLogin") as HTMLInputElement;
 let stopSpeechFlag = false;
 
-const API_USERS = "http://127.0.0.1:3000/users";
+const API_USERS = "http://10.11.3.2:3000/users";
 
 function errorCatcher(data, bubbleText) {
 	// Empty Field
@@ -76,7 +76,7 @@ const registerNewUser = async () => {
 	const password = (document.getElementById("inputPassNew") as HTMLInputElement).value.trim();
 
 	try {
-		const response = await fetch("http://localhost:3000/register", {
+		const response = await fetch("http://10.11.3.2:3000/register", {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json",
@@ -105,7 +105,7 @@ async function loginUser() {
 	console.log("nickname:", identifier);
 	console.log("password:", password);
 	try {
-		const response = await fetch("http://localhost:3000/login", {
+		const response = await fetch("http://10.11.3.2:3000/login", {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json",

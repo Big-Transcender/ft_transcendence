@@ -2,7 +2,7 @@ let socket = null;
 let socketInitialized = false;
 let currentMatchId = null;
 let currentIsLocal = true;
-export function startPongWebSocket(matchId, isLocal) {
+export function startPongWebSocket(matchId, isLocal, aiGame, teamGame = false) {
     if (socketInitialized)
         return;
     socketInitialized = true;
@@ -13,12 +13,16 @@ export function startPongWebSocket(matchId, isLocal) {
     const keysPressed = new Set();
     // --- WebSocket Setup
     socket = new WebSocket(`ws://${window.location.hostname}:3000`);
+    const nickname = getNickOnLocalStorage();
     socket.addEventListener("open", () => {
         console.log("✅ Connected to WebSocket server");
         socket.send(JSON.stringify({
             type: "join",
             matchId: matchId,
             isLocal: isLocal,
+            aiGame: aiGame,
+            nickname: nickname,
+            teamGame: teamGame,
         }));
     });
     socket.addEventListener("close", () => {
@@ -31,6 +35,8 @@ export function startPongWebSocket(matchId, isLocal) {
     // --- Game Elements
     const paddle1 = document.querySelector(".paddle1");
     const paddle2 = document.querySelector(".paddle2");
+    //const paddle3 = document.querySelector(".paddle2") as HTMLElement;
+    //const paddle4 = document.querySelector(".paddle2") as HTMLElement;
     const ball = document.querySelector(".ball");
     // --- Input Handling
     document.addEventListener("keydown", (event) => {
@@ -72,6 +78,13 @@ export function startPongWebSocket(matchId, isLocal) {
                     if (paddle2) {
                         paddle2.style.top = `${state.paddles.p2}%`;
                     }
+                    /*if (paddle3) {
+                        paddle2.style.top = `${state.paddles.p2}%`;
+                    }
+
+                    if (paddle4) {
+                        paddle2.style.top = `${state.paddles.p2}%`;
+                    }*/
                     if (ball) {
                         ball.style.left = `${state.ball.x}%`;
                         ball.style.top = `${state.ball.y}%`;
@@ -99,9 +112,7 @@ function stopPongWebSocket() {
     socketInitialized = false;
     currentMatchId = null;
 }
-// Example: Poll URL hash and start/stop with a generated matchId
 setInterval(() => {
-    // E.g., URL format: http://localhost:3000/#pong/abcd1234
     const hash = window.location.hash;
     const matchPrefix = "#pong/";
     const isOnPongGame = hash.startsWith(matchPrefix) && hash.slice(matchPrefix.length) === currentMatchId;

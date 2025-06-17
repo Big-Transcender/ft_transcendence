@@ -3,7 +3,7 @@ let socketInitialized = false;
 let currentMatchId: string | null = null;
 let currentIsLocal: boolean = true;
 
-export function startPongWebSocket(matchId: string, isLocal: boolean) {
+export function startPongWebSocket(matchId: string, isLocal: boolean, aiGame: boolean, teamGame: boolean = false) {
 	if (socketInitialized) return;
 	socketInitialized = true;
 	currentMatchId = matchId;
@@ -15,7 +15,7 @@ export function startPongWebSocket(matchId: string, isLocal: boolean) {
 
 	// --- WebSocket Setup
 	socket = new WebSocket(`ws://${window.location.hostname}:3000`);
-
+	const nickname = getNickOnLocalStorage();
 	socket.addEventListener("open", () => {
 		console.log("✅ Connected to WebSocket server");
 		socket.send(
@@ -23,6 +23,9 @@ export function startPongWebSocket(matchId: string, isLocal: boolean) {
 				type: "join",
 				matchId: matchId,
 				isLocal: isLocal,
+				aiGame: aiGame,
+				nickname: nickname,
+				teamGame: teamGame,
 			})
 		);
 	});
@@ -39,6 +42,8 @@ export function startPongWebSocket(matchId: string, isLocal: boolean) {
 	// --- Game Elements
 	const paddle1 = document.querySelector(".paddle1") as HTMLElement;
 	const paddle2 = document.querySelector(".paddle2") as HTMLElement;
+	//const paddle3 = document.querySelector(".paddle2") as HTMLElement;
+	//const paddle4 = document.querySelector(".paddle2") as HTMLElement;
 	const ball = document.querySelector(".ball") as HTMLElement;
 
 	// --- Input Handling
@@ -90,6 +95,14 @@ export function startPongWebSocket(matchId: string, isLocal: boolean) {
 						paddle2.style.top = `${state.paddles.p2}%`;
 					}
 
+					/*if (paddle3) {
+						paddle2.style.top = `${state.paddles.p2}%`;
+					}
+
+					if (paddle4) {
+						paddle2.style.top = `${state.paddles.p2}%`;
+					}*/
+
 					if (ball) {
 						ball.style.left = `${state.ball.x}%`;
 						ball.style.top = `${state.ball.y}%`;
@@ -118,9 +131,9 @@ function stopPongWebSocket() {
 	currentMatchId = null;
 }
 
-// Example: Poll URL hash and start/stop with a generated matchId
+
 setInterval(() => {
-	// E.g., URL format: http://localhost:3000/#pong/abcd1234
+
 	const hash = window.location.hash;
 	const matchPrefix = "#pong/";
 	const isOnPongGame = hash.startsWith(matchPrefix) && hash.slice(matchPrefix.length) === currentMatchId;

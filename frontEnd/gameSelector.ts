@@ -10,7 +10,7 @@ const pongGamePage = document.getElementById("pongGameId");
 const gameSelectorPongPage = document.getElementById("gameSelectorPongId");
 const gameSelectorPongMultiplayerPage = document.getElementById("gameSelectorPongMultiplayerId");
 
-import { startPongWebSocket } from "./gamePong.js"; //TODO brendon
+import { startPongWebSocket } from "./gamePong.js";
 
 function updatePageHash(hash: string) {
 	history.replaceState(undefined, "", hash);
@@ -29,7 +29,7 @@ document.addEventListener("DOMContentLoaded", () => {
 			changePageTo(gameSelectorPongPage, pongGamePage);
 			const matchId = "match-" + Date.now() + "-" + Math.floor(Math.random() * 10000);
 			updatePageHash(`#pong/${matchId}`);
-			startPongWebSocket(matchId, true); // true = local mode
+			startPongWebSocket(matchId, true, false); // true = local mode
 			resetEmotions();
 		} else {
 			displayWarning("You need to log in.");
@@ -49,13 +49,13 @@ document.addEventListener("DOMContentLoaded", () => {
 			const matchId = "match-" + Date.now() + "-" + Math.floor(Math.random() * 10000);
 			alert(`Match created! Share this ID with your friend: ${matchId}`);
 			history.replaceState(undefined, "", `#pong/${matchId}`);
-			startPongWebSocket(matchId, false); // Start as host
+			startPongWebSocket(matchId, false, false); // Start as host
 		} else if (action === "join") {
 			// Join an existing match
 			const matchId = prompt("Enter the match ID:");
 			if (matchId) {
 				history.replaceState(undefined, "", `#pong/${matchId}`);
-				startPongWebSocket(matchId, false); // Join as client
+				startPongWebSocket(matchId, false, false); // Join as client
 			} else {
 				alert("You must enter a match ID to join.");
 			}

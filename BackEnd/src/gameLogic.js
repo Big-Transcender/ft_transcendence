@@ -1,4 +1,5 @@
-const { insertMatch } = require('./dataQuerys');
+const { insertMatch, getUserIdByNickname } = require('./dataQuerys');
+const { aiMove } = require('./aiPong');
 
 const PaddleSpeed = 2;
 const HitBoxBuffer = 3;
@@ -14,16 +15,18 @@ const BALLS = 19;
 function createInitialGameState() {
 
 	return {
-		paddles: { p1: 40, p2: 40 },
+		paddles: { p1: 40, p2: 40 , p3: 40, p4: 40 },
 		ball: { x: 50, y: 50 },
 		ballVel: { x: 0.5, y: 0.5 },
 		score: { p1: 0, p2: 0 },
 		playerId: { p1: 1, p2: 2 },
+		playerDbId: { p1: null, p2: null, p3: null, p4: null},
 		onGoing: false,
 		started: false,
 		GamePlayLocal: true,
 		numbrBalls: BALLS,
 		speed: SPEED,
+		aiGame: false,
 	};
 
 }
@@ -39,12 +42,12 @@ function resetBall(gameState) {
 	gameState.ballVel.y = gameState.speed * Math.sin(angle);
 }
 
-function handleInput(gameState, playerId, keys) {
+function handleInput(gameState, playerId, keys, isAI = false) {
 
 	if (!Array.isArray(keys))
-		return; // Defensive: ignore bad input
+		return;
 	if (gameState.GamePlayLocal)
-		keys.forEach((key) => handleInputLocal(gameState, key));
+		keys.forEach((key) => handleInputLocal(gameState, key, isAI));
 	else
 		keys.forEach((key) => {
 			if (key === 'ArrowUp' || key === 'w')
@@ -54,15 +57,20 @@ function handleInput(gameState, playerId, keys) {
 		});
 }
 
-function handleInputLocal(gameState, key) {
-	if (key === 'ArrowUp')
-		movePaddle(gameState, 'p2', 'up');
-	else if (key === 'ArrowDown')
-		movePaddle(gameState, 'p2', 'down');
-	else if (key === 'w')
+function handleInputLocal(gameState, key, isAI) {
+
+	if (key === 'w')
 		movePaddle(gameState, 'p1', 'up');
 	else if (key === 's')
 		movePaddle(gameState, 'p1', 'down');
+
+	if (isAI || !gameState.aiGame) {
+		if (key === 'ArrowUp')
+			movePaddle(gameState, 'p2', 'up');
+		else if (key === 'ArrowDown')
+			movePaddle(gameState, 'p2', 'down');
+	}
+
 }
 
 function movePaddle(gameState, player, direction) {
@@ -93,6 +101,78 @@ function updateBall(gameState) {
 	gameState.ball.x += gameState.ballVel.x;
 	gameState.ball.y += gameState.ballVel.y;
 
+	// Calculate center Y of ball
+	const ballCenterY = gameState.ball.y + ballSizeY / 2;
+
+	// Wall collision
+	let wallCollision = false; //TODO testing this change
+	if (gameState.ball.y <= 0 || gameState.ball.y + ballSizeY >= 100) {
+		gameState.ballVel.y *= -1;
+		wallCollision = true;
+	}
+
+	// Scoring: reset
+	if (gameState.ball.x + ballSizeX <= 0 || gameState.ball.x >= 100) {
+		if (gameState.ball.x + ballSizeX <= 0)
+			gameState.score.p2 += 1;
+		else
+			gameState.score.p1 += 1;
+		gameState.numbrBalls -= 1;
+		resetBall(gameState);
+		return;
+	}
+
+	if ((gameState.score.p2 === 10 || gameState.score.p1 === 10) && gameState.onGoing ) {
+		let winnerId = gameState.playerDbId.p1;
+		if (gameState.score.p1 < gameState.score.p2)
+			winnerId = gameState.playerDbId.p1;
+		console.log(gameState.playerDbId);
+		insertOnDb(gameState, winnerId);
+		
+		gameState.onGoing = false;
+	}
+
+
+
+	// (Player 1) left
+	if (
+		gameState.ball.x <= paddleWidth &&
+		ballCenterY >= gameState.paddles.p1 - HitBoxBuffer &&
+		ballCenterY <= gameState.paddles.p1 + paddleHeight
+	) {
+		const paddleCenterY = gameState.paddles.p1 + paddleHeight / 2;
+		const impact = (ballCenterY - paddleCenterY) / (paddleHeight / 2);
+		const angle = getImpactAngle(gameState, impact);
+		gameState.ballVel.x = Math.sqrt(1 - angle ** 2) * gameState.speed;
+		if (!wallCollision) {
+			gameState.ballVel.y = angle * gameState.speed;
+		}
+	}
+
+	// (Player 2) right
+	if (
+		gameState.ball.x + ballSizeX >= 100 - paddleWidth &&
+		ballCenterY >= gameState.paddles.p2 - HitBoxBuffer &&
+		ballCenterY <= gameState.paddles.p2 + paddleHeight
+	) {
+		const paddleCenterY = gameState.paddles.p2 + paddleHeight / 2;
+		const impact = (ballCenterY - paddleCenterY) / (paddleHeight / 2);
+		const angle = getImpactAngle(gameState, impact);
+		gameState.ballVel.x = -Math.sqrt(1 - angle ** 2) * gameState.speed;
+		if (!wallCollision) {
+			gameState.ballVel.y = angle * gameState.speed;
+		}
+	}
+	//AI Game
+	if (gameState.aiGame)
+		aiMove(gameState, handleInput);
+}
+
+
+function updateBall4Players(gameState) {
+	gameState.ball.x += gameState.ballVel.x;
+	gameState.ball.y += gameState.ballVel.y;
+
 	// Wall collision
 	if (gameState.ball.y <= 0 || gameState.ball.y + ballSizeY >= 100) {
 		gameState.ballVel.y *= -1;
@@ -106,8 +186,6 @@ function updateBall(gameState) {
 			gameState.score.p1 += 1;
 		gameState.numbrBalls -= 1;
 		resetBall(gameState);
-		console.log(gameState.speed)
-		console.log(gameState.numbrBalls);
 		return;
 	}
 
@@ -122,7 +200,7 @@ function updateBall(gameState) {
 	// Calculate center Y of ball
 	const ballCenterY = gameState.ball.y + ballSizeY / 2;
 
-	// (Player 1) left
+	// (Player 1 and 2) left
 	if (
 		gameState.ball.x <= paddleWidth &&
 		ballCenterY >= gameState.paddles.p1 - HitBoxBuffer &&
@@ -135,24 +213,66 @@ function updateBall(gameState) {
 		gameState.ballVel.y = angle * gameState.speed;
 	}
 
-	// (Player 2) right
 	if (
-		gameState.ball.x + ballSizeX >= 100 - paddleWidth &&
+		gameState.ball.x <= paddleWidth &&
 		ballCenterY >= gameState.paddles.p2 - HitBoxBuffer &&
 		ballCenterY <= gameState.paddles.p2 + paddleHeight
 	) {
 		const paddleCenterY = gameState.paddles.p2 + paddleHeight / 2;
 		const impact = (ballCenterY - paddleCenterY) / (paddleHeight / 2);
 		const angle = getImpactAngle(gameState, impact);
+		gameState.ballVel.x = Math.sqrt(1 - angle ** 2) * gameState.speed;
+		gameState.ballVel.y = angle * gameState.speed;
+	}
+
+	// (Player 3 and 4) right
+	if (
+		gameState.ball.x + ballSizeX >= 100 - paddleWidth &&
+		ballCenterY >= gameState.paddles.p3 - HitBoxBuffer &&
+		ballCenterY <= gameState.paddles.p3 + paddleHeight
+	) {
+		const paddleCenterY = gameState.paddles.p3 + paddleHeight / 2;
+		const impact = (ballCenterY - paddleCenterY) / (paddleHeight / 2);
+		const angle = getImpactAngle(gameState, impact);
 		gameState.ballVel.x = -Math.sqrt(1 - angle ** 2) * gameState.speed;
 		gameState.ballVel.y = angle * gameState.speed;
 	}
+
+	if (
+		gameState.ball.x + ballSizeX >= 100 - paddleWidth &&
+		ballCenterY >= gameState.paddles.p4 - HitBoxBuffer &&
+		ballCenterY <= gameState.paddles.p4 + paddleHeight
+	) {
+		const paddleCenterY = gameState.paddles.p4 + paddleHeight / 2;
+		const impact = (ballCenterY - paddleCenterY) / (paddleHeight / 2);
+		const angle = getImpactAngle(gameState, impact);
+		gameState.ballVel.x = -Math.sqrt(1 - angle ** 2) * gameState.speed;
+		gameState.ballVel.y = angle * gameState.speed;
+	}
+
 }
 
+
+function insertOnDb(gameState, winnerId)
+{
+	// console.log(gameState.playerDbId.p1);
+	// if (!gameState.playerDbId.p1 || !gameState.playerDbId.p2) {
+    //     console.error("❌ Missing player database IDs in gameState");
+    //     return;
+    // }
+	
+	var p1 = getUserIdByNickname(gameState.playerDbId.p1);
+	var p2 = p1;
+	if(!gameState.GamePlayLocal)
+		p2 = getUserIdByNickname(gameState.playerDbId.p2);
+	var pw = getUserIdByNickname(winnerId);
+	insertMatch(p1, p2, pw, gameState.score.p1, gameState.score.p2);
+}
 
 
 module.exports = {
 	updateBall,
+	updateBall4Players,
 	handleInput,
 	createInitialGameState
 };

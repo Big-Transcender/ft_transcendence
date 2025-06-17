@@ -32,8 +32,24 @@ function getUserLeaderboardPosition(nickname) {
 	return position > 0 ? position : null;
 }
 
+
+function getUserIdByNickname(nickname) {
+	try {
+		const stmt = db.prepare('SELECT id FROM users WHERE nickname = ?'); // Use `?` for parameterized queries
+		const result = stmt.get(nickname); // Execute the query and fetch a single row
+		if (result) {
+			return result.id; // Return the user ID
+		}
+		return null; // Return null if no user is found
+	} catch (error) {
+		console.error('❌ Error fetching user ID by nickname:', error);
+		throw error; // Rethrow the error for further handling
+	}
+}
+
 module.exports = {
 	getLeaderboard,
 	getUserLeaderboardPosition,
 	insertMatch,
+	getUserIdByNickname,
 };

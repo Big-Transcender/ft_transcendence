@@ -1,6 +1,6 @@
 const WebSocket = require('ws');
 const { matches, createMatch, startGameLoopForMatch, removeClientFromMatch } = require('./gameLoop');
-const { createInitialGameState, updateBall, handleInput } = require('./gameLogic');
+const { createInitialGameState, updateBall, updateBall4Players, handleInput } = require('./gameLogic');
 
 function setupWebSocket(server) {
 	const wss = new WebSocket.Server({ server });
@@ -21,26 +21,20 @@ function setupWebSocket(server) {
 			if (parsed.type === 'join') {
 				matchId = parsed.matchId;
 				const isLocal = parsed.isLocal || false;
+				const aiGame = parsed.aiGame || false;
+				const nickname = parsed.nickname || null;
+				const team = parsed.teamGame || false;
 
 				if (!matches.has(matchId)) {
 					createMatch(matchId, createInitialGameState);
-					startGameLoopForMatch(matchId, updateBall, isLocal);
+					if (!team)
+						startGameLoopForMatch(matchId, updateBall, isLocal, aiGame);
+					else
+						startGameLoopForMatch(matchId, updateBall4Players, isLocal, aiGame, true);
 				}
 
 				const match = matches.get(matchId);
-				if (!match.clients.has('p1')) {
-					match.clients.set('p1', ws);
-					assignedPlayer = 'p1';
-				} else if (!match.clients.has('p2')) {
-					match.clients.set('p2', ws);
-					assignedPlayer = 'p2';
-				} else {
-					ws.send(JSON.stringify({ type: 'error', message: 'Match is full' }));
-					ws.close();
-					return;
-				}
-				ws.send(JSON.stringify({ type: 'assign', payload: assignedPlayer }));
-				console.log(`🎮 Player ${assignedPlayer} joined match ${matchId}`);
+				assignedPlayer = setPlayers(match, nickname, ws, matchId, team);
 			}
 			else if (parsed.type === 'input' && matchId && matches.has(matchId)) {
 				const match = matches.get(matchId);
@@ -51,12 +45,13 @@ function setupWebSocket(server) {
 		ws.on('close', () => {
 			if (matchId && matches.has(matchId)) {
 				const match = matches.get(matchId);
-				if (assignedPlayer && match.clients.get(assignedPlayer) === ws) {
+				if (assignedPlayer && match.clients.get(assignedPlayer)?.ws === ws) {
 					match.clients.delete(assignedPlayer);
 					console.log(`👋 Player ${assignedPlayer} left match ${matchId}`);
 				}
 
 				if (match.clients.size === 0) {
+					clearInterval(match.intervalId)
 					matches.delete(matchId);
 					console.log(`🗑️ Match ${matchId} removed (no players left)`);
 				}
@@ -65,6 +60,36 @@ function setupWebSocket(server) {
 	});
 
 	return wss;
+}
+
+function setPlayers(match, nickname, ws, matchId, team) {
+
+	if (!match.clients.has('p1')) {
+		match.clients.set('p1', {nickname, ws});
+		assignedPlayer = 'p1';
+	} else if (!match.clients.has('p2')) {
+		match.clients.set('p2', {nickname, ws});
+		assignedPlayer = 'p2';
+	} else {
+		if (!team)
+		{
+			ws.send(JSON.stringify({ type: 'error', message: 'Match is full' }));
+			ws.close();
+			return;
+		}
+		else if (!match.clients.has('p3')) {
+			match.clients.set('p3', {nickname, ws});
+			assignedPlayer = 'p3';
+		}
+		else if (!match.clients.has('p4')) {
+			match.clients.set('p4', {nickname, ws});
+			assignedPlayer = 'p4';
+		}
+	}
+	ws.send(JSON.stringify({ type: 'assign', payload: assignedPlayer }));
+	console.log(`🎮 Player ${assignedPlayer} joined match ${matchId}`);
+	return assignedPlayer;
+
 }
 
 module.exports = setupWebSocket;
