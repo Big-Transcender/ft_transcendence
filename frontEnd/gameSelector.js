@@ -60,18 +60,26 @@ document.addEventListener("DOMContentLoaded", () => {
             }
             else {
                 alert("You must enter a match ID to join.");
+                changePageTo(gameSelectorPongMultiplayerPage, gameSelectorPongPage);
             }
         }
         else {
             alert("Invalid action. Please type 'create' or 'join'.");
             changePageTo(gameSelectorPongMultiplayerPage, gameSelectorPongPage);
         }
-        // changePageTo(gameSelectorPongPage, pongGamePage);
     });
     //Change to Multiplayer Local
     buttonLocalMP.addEventListener("click", () => {
-        // changePageTo(gameSelectorPongPage, gameSelectorPage);
-        updatePageHash(`#pong/pongLocalMP`);
+        if (checkIfLogged()) {
+            changePageTo(gameSelectorPongMultiplayerPage, pongGamePage);
+            const matchId = "match-" + Date.now() + "-" + Math.floor(Math.random() * 10000);
+            updatePageHash(`#pong/${matchId}`);
+            startPongWebSocket(matchId, true); // true = local mode
+            resetEmotions();
+        }
+        else {
+            displayWarning("You need to log in.");
+        }
     });
     //Back button of Multiplayer type Selector
     backButtonMP.addEventListener("click", () => {
