@@ -5,7 +5,8 @@ let pageProfile = document.getElementById("loginId");
 let bubbleTextNewUser = document.getElementById("thinkingBubbleTextNewUser");
 let bubbleTextLogin = document.getElementById("thinkingBubbleTextLogin");
 let stopSpeechFlag = false;
-const API_USERS = "http://127.0.0.1:3000/users";
+//const API = "http://localhost:3000/";
+const API = "http://10.11.3.4:3000/";
 function errorCatcher(data, bubbleText) {
     // Empty Field
     if (data.error.search("All fields are required") != -1) {
@@ -65,7 +66,7 @@ const registerNewUser = async () => {
     const email = document.getElementById("inputEmailNew").value.trim();
     const password = document.getElementById("inputPassNew").value.trim();
     try {
-        const response = await fetch("http://10.11.242.92:3000/register", {
+        const response = await fetch(API + "register", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -92,7 +93,7 @@ async function loginUser() {
     console.log("nickname:", identifier);
     console.log("password:", password);
     try {
-        const response = await fetch("http://10.11.242.92:3000/login", {
+        const response = await fetch(API + "login", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -151,13 +152,13 @@ document.addEventListener("DOMContentLoaded", () => {
     if (checkIfLogged()) {
         changePageTo(loginPage, profilePage);
         putNickOnProfileHeader(getNickOnLocalStorage());
-        flipboardNumberAnimation("23");
+        // flipboardNumberAnimation("23");
     }
     //Login Button
     loginButton.addEventListener("click", async () => {
         if ((await loginUser()) === true) {
             changePageTo(loginPage, profilePage);
-            flipboardNumberAnimation("23");
+            // flipboardNumberAnimation("23");
         }
     });
     //Logout Button

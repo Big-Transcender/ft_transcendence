@@ -2,6 +2,8 @@ let player1Icon = document.getElementById("player1IconId");
 let player2Icon = document.getElementById("player2IconId");
 let player1ScoreText = document.getElementById("player1ScoreId").textContent;
 let player2ScoreText = document.getElementById("player2ScoreId").textContent;
+let player1Nick = document.getElementById("player1NickId");
+let player2Nick = document.getElementById("player2NickId");
 let bigScoreP1 = false;
 let bigScoreP2 = false;
 let turnaroundflag = false;
@@ -83,6 +85,12 @@ function resetEmotions() {
     bigScoreP1 = false;
     bigScoreP2 = false;
     turnaroundflag = false;
+    changeEmotion(player1Icon, "happy");
+    changeEmotion(player2Icon, "happy");
+}
+function setGameScore(name1, name2 = "Bot") {
+    player1Nick.textContent = name1;
+    player2Nick.textContent = name2;
 }
 let state2;
 window.addEventListener("gameStateUpdate", (event) => {

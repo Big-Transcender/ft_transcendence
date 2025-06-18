@@ -7,7 +7,7 @@ let bubbleTextLogin = document.getElementById("thinkingBubbleTextLogin") as HTML
 let stopSpeechFlag = false;
 
 //const API = "http://localhost:3000/";
-const API = "http://10.11.3.2:3000/";
+const API = "http://10.11.3.4:3000/";
 
 function errorCatcher(data, bubbleText) {
 	// Empty Field
