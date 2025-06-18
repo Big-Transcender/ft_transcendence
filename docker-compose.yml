@@ -1,18 +1,13 @@
 version: "3.8"
 services:
-  # frontend:
-  #   container_name: "frontend"
-  #   build: ./frontEnd
-  #   ports:
-  #     - "8080:80"
   frontend:
-    build:
-      context: ./frontEnd
+    container_name: "frontend"
+    build: ./frontEnd
+    # volumes:
+    #   - ./frontEnd:/app
+    #   - /app/node_modules
     ports:
-      - "5173:3000"  # frontend: host 5173 → container 3000
-    volumes:
-      - ./frontEnd:/app
-      - /app/node_modules
+      - "8080:80"
 
   backend:
     container_name: "backend"
