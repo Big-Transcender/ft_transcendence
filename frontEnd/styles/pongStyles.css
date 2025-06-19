@@ -3,14 +3,12 @@
 	right: 50%;
 	left: 50%;
 	top: 55%;
-	/* bottom: 50%; */
 	width: calc(1230px / 1.5);
 	height: calc(780px / 1.5);
 	translate: -50% -50%;
 	outline: 5px solid #f1e26f;
 	outline-offset: 0px;
 	box-shadow: 0px 0px 50px black;
-	/* background-color: black; */
 }
 
 .gameScore {
@@ -26,8 +24,7 @@
 	position: absolute;
 	width: 100%;
 	height: 100%;
-	/* background-color: rgb(238, 131, 8); */
-	background-image: url(/frontEnd/images/pongGame/gameScoreBG.png);
+	background-image: url(/images/pongGame/gameScoreBG.png);
 	background-size: 100%;
 }
 
@@ -38,7 +35,6 @@
 	top: 55%;
 	left: 40px;
 	translate: 0 -50%;
-	/* background-color: red; */
 }
 
 .player2 {
@@ -48,7 +44,6 @@
 	top: 55%;
 	right: 40px;
 	translate: 0 -50%;
-	/* background-color: red; */
 }
 
 .player1Icon {
@@ -59,8 +54,6 @@
 	background-size: 50%;
 	background-repeat: no-repeat;
 	left: 5px;
-
-	/* translate: -50%; */
 }
 
 .player2Icon {
@@ -79,8 +72,7 @@
 	font-family: animalCrossingSystem;
 	left: 75px;
 	top: 10px;
-	/* background-color: rgb(255, 255, 255); */
-	background-image: url(/frontEnd/images/generic3BG.png);
+	background-image: url(/images/generic3BG.png);
 	background-size: 80px;
 	border-radius: 5px;
 	box-shadow: -0.5px 3px 2px rgba(0, 0, 0, 0.623);
@@ -89,7 +81,6 @@
 	text-align: center;
 	align-content: center;
 	overflow: hidden;
-	/* text-shadow: 0px 3px 3px rgba(0, 0, 0, 0.267); */
 }
 
 .player2Nick {
@@ -98,8 +89,7 @@
 	font-family: animalCrossingSystem;
 	right: 75px;
 	top: 10px;
-	/* background-color: red; */
-	background-image: url(/frontEnd/images/generic3BG.png);
+	background-image: url(/images/generic3BG.png);
 	background-size: 80px;
 
 	border-radius: 5px;
@@ -117,7 +107,6 @@
 	left: 62%;
 	top: 70%;
 	translate: -50% -50%;
-	/* background-color: red; */
 }
 
 .player2Score {
@@ -134,7 +123,7 @@
 	height: 100%;
 	width: 100%;
 	background-color: black;
-	background-image: url(/frontEnd/images/pongGame/pongGameBG3.png);
+	background-image: url(/images/pongGame/pongGameBG3.png);
 	background-size: contain;
 	background-repeat: no-repeat;
 	box-shadow: inset 0px 0px 150px;
@@ -145,7 +134,7 @@
 	position: absolute;
 	height: 100px;
 	width: 100px;
-	background-image: url(/frontEnd/images/bgPattern2.jpg);
+	background-image: url(/images/bgPattern2.jpg);
 	background-size: 350px;
 	background-position: center;
 	left: 50%;
@@ -160,8 +149,6 @@
 .timer p {
 	position: absolute;
 	color: #f1e26f;
-	/* background-color: black; */
-	/* text-align: center; */
 	left: 50%;
 	top: 50%;
 	translate: -50% -50%;
@@ -197,17 +184,12 @@
 	position: absolute;
 	height: 75px;
 	width: 20px;
-	/* border-radius: 10%; */
 	background-color: #98d2e3;
-	/* background-image: url(/frontEnd/images/grassBg.png); */
 	background-size: 40px;
-	/* outline: 3px solid black;
-	outline-offset: -5px; */
 }
 
 .paddleHitBox {
 	position: absolute;
-	/* background-color: red; */
 	opacity: 50%;
 	width: 20px;
 	height: 75px;

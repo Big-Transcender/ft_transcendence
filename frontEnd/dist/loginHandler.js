@@ -5,8 +5,8 @@ let pageProfile = document.getElementById("loginId");
 let bubbleTextNewUser = document.getElementById("thinkingBubbleTextNewUser");
 let bubbleTextLogin = document.getElementById("thinkingBubbleTextLogin");
 let stopSpeechFlag = false;
-//const API = "http://localhost:3000/";
-const API = "http://10.11.3.4:3000/";
+const API = "http://localhost:3000/";
+// const API = "http://10.11.3.4:3000/";
 function errorCatcher(data, bubbleText) {
     // Empty Field
     if (data.error.search("All fields are required") != -1) {

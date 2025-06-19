@@ -13,6 +13,7 @@ const startGameTimerBox = document.getElementById("timerBoxId");
 import { startPongWebSocket } from "./gamePong.js";
 async function animateTimer() {
     startGameTimerBox.style.opacity = "1";
+    startGameTimer.textContent = "1";
     for (let i = 1; i <= 3; i++) {
         startGameTimer.textContent = i.toString();
         await new Promise((resolve) => setTimeout(resolve, 1000));
@@ -63,6 +64,9 @@ document.addEventListener("DOMContentLoaded", () => {
             history.replaceState(undefined, "", `#pong/${matchId}`);
             startPongWebSocket(matchId, false, false); // Start as host
             changePageTo(gameSelectorPongMultiplayerPage, pongGamePage);
+            backGamePongButton.classList.add("active");
+            animateTimer();
+            resetEmotions();
         }
         else if (action === "join") {
             // Join an existing match
@@ -71,6 +75,10 @@ document.addEventListener("DOMContentLoaded", () => {
                 history.replaceState(undefined, "", `#pong/${matchId}`);
                 startPongWebSocket(matchId, false, false); // Join as client
                 changePageTo(gameSelectorPongMultiplayerPage, pongGamePage);
+                backGamePongButton.classList.add("active");
+                animateTimer();
+                resetEmotions();
+                setGameScore("Player 1", getNickOnLocalStorage());
             }
             else {
                 alert("You must enter a match ID to join.");
@@ -90,6 +98,9 @@ document.addEventListener("DOMContentLoaded", () => {
             updatePageHash(`#pong/${matchId}`);
             startPongWebSocket(matchId, true); // true = local mode
             resetEmotions();
+            animateTimer();
+            setGameScore(getNickOnLocalStorage(), "Player 2");
+            backGamePongButton.classList.add("active");
         }
         else {
             displayWarning("You need to log in.");
