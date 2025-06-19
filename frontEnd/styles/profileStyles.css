@@ -64,12 +64,10 @@
 
 .thinkingBubble {
 	position: absolute;
-	/* background-color: red; */
 	right: -50%;
 	top: 40%;
 	width: 350px;
 	height: 190px;
-	/* background-repeat: no-repeat; */
 }
 
 .thinkingBubbleBG {
@@ -83,8 +81,6 @@
 
 .thinkingBubbleName {
 	position: absolute;
-	/* color: red; */
-	/* background-color: red; */
 	transform: rotate(-21deg);
 	text-align: center;
 	align-content: center;
@@ -98,7 +94,6 @@
 .thinkingBubbleText {
 	position: absolute;
 	color: #3b372d;
-	/* background-color: red; */
 	left: 51%;
 	top: 55%;
 	translate: -50% -50%;
@@ -106,27 +101,20 @@
 	height: 60%;
 	text-align: left;
 	line-height: 1.7;
-	/* align-content: center; */
 	font-size: 20px;
 	font-family: animalCrossingSystem;
-	/* background-color: rebeccapurple; */
 }
 
 .decoration1 {
 	position: absolute;
 	bottom: -1px;
 	left: -5px;
-	/* background-color: red; */
 	background-image: url(/images/decoration1.svg);
 	background-repeat: repeat-x;
 	background-size: 120%;
 	background-position: bottom;
-	/* bakc */
 	width: 740px;
 	height: 50%;
-	/* bottom: -55px;
-	width: 800px;
-	height: 180px; */
 }
 
 .loginBoxBG {
@@ -135,7 +123,6 @@
 	width: 100%;
 	background-color: #f8eebb;
 	border-radius: 18px;
-	/* opacity: 50%; */
 	overflow: hidden;
 }
 
@@ -151,8 +138,6 @@
 	position: absolute;
 	width: 100%;
 	height: 120px;
-
-	/* background-color: red; */
 	filter: drop-shadow(0px 5px 1px rgba(0, 0, 0, 0.452));
 	background-image: url(/images/topCover.png);
 	background-size: 120%;
@@ -169,12 +154,8 @@
 	text-align: center;
 	align-content: center;
 	top: 15px;
-	/* background-image: url(/frontEnd/images/musicMenuBG.png); */
 	background-size: 50%;
 	height: 60px;
-	/* background-image: url(/frontEnd/images/ribbonRed.svg); */
-	/* text-shadow: 0px 5px 3px #000000d0; */
-	/* background-image: url(/frontEnd/images/grassBg.png); */
 }
 
 .inputPass {
@@ -201,8 +182,6 @@
 .defaultButtonText {
 	position: absolute;
 	color: #3a2d29;
-	/* text-shadow: 0px 3px 3px #2e2c2381; */
-	/* background-color: red; */
 	transition: 0.3s ease-in-out;
 	top: 50%;
 	left: 50%;
@@ -353,15 +332,11 @@
 	text-align: center;
 	color: #f8eebb;
 	font-family: animalCrossingSystem;
-
-	/* background-color: black; */
 }
 
 .smallInput {
 	position: relative;
-	/* top: 50%; */
 	width: 50% !important;
-	/* background-color: azure; */
 }
 
 .email {
@@ -388,7 +363,6 @@
 
 .inputText:focus {
 	background-color: #66b893;
-	/* outline: 1px; */
 	animation: expandOutline 0.1s forwards;
 }
 
@@ -428,11 +402,6 @@
 	border: solid 1px #ffffff;
 	background-color: #fff;
 }
-.profileImg {
-}
-
-.profileBackground {
-}
 
 .profileName {
 	position: relative;
@@ -453,14 +422,12 @@
 
 .statusBox {
 	position: relative;
-	/* background-color: black; */
 	height: 100px;
 	width: 100px;
 	transition: 0.8s ease;
 }
 
 .statusBoxBg {
-	/* z-index: 1; */
 	position: absolute;
 	height: 100%;
 	width: 100%;
@@ -481,13 +448,6 @@
 
 .statusBox:hover {
 	transform: scale(1.1);
-}
-
-.statusBoxText {
-	/* position: absolute; */
-	/* padding-top: 5px;
-	padding-bottom: 20px; */
-	/* justify-items: center; */
 }
 
 .statusBox > p {

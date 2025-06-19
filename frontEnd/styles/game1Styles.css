@@ -1,14 +1,11 @@
 .game1 {
 	position: relative;
-	/* background-color: blueviolet; */
 	height: 82%;
 	width: 95%;
 	left: 50%;
 	top: 150px;
 	translate: -50%;
 	font-size: 50px;
-
-	/* background-color: red; */
 }
 
 .gameSelector {
@@ -22,7 +19,6 @@
 	outline: 10px solid #f1e26f;
 	border-radius: 20px;
 	overflow: hidden;
-	/* cursor: pointer; */
 }
 
 .gameSelectorBG {
@@ -40,13 +36,11 @@
 	height: 60px;
 	text-align: center;
 	align-content: center;
-	/* background-color: red; */
 	left: 50%;
 	top: 7.5%;
 	translate: -50%;
 	font-family: animalCrossing;
 	color: #00171f;
-	/* background-color: red; */
 }
 
 .gameSelectorButton {
@@ -54,7 +48,6 @@
 	width: 30%;
 	height: 30%;
 	cursor: pointer;
-	/* background-color: red; */
 	left: 30%;
 	top: 50%;
 	translate: -50% -50%;
@@ -68,8 +61,6 @@
 	height: 100%;
 	background-color: #0bc7b9;
 	border-radius: 50px;
-
-	/* background-color: red; */
 }
 
 .gameSelectorButton:hover .gameSelectorButtonBG {
@@ -117,20 +108,14 @@
 	transform: scale(0.9);
 }
 
-/* .ButtonBG2 {
-	background-color: #0bc7b9;
-} */
-
 .snakeGamePlace {
 	position: absolute;
 	right: 50%;
 	left: 50%;
 	top: 45%;
-	/* bottom: 50%; */
 	width: 900px;
 	height: 500px;
 	translate: -50% -50%;
-	/* background-color: black; */
 }
 
 .snakeBackground {
