@@ -147,7 +147,7 @@
 	pointer-events: none;
 }
 
-.genericIcon:hover .genericImage {
+.genericIcon:hover .pongImage {
 	animation: profileIconAnimation 0.25s infinite alternate;
 	pointer-events: none;
 }
@@ -282,26 +282,107 @@
 	} */
 }
 
-.homePageWelcomeBG {
-	position: absolute;
-	width: 100%;
-	height: 100%;
-	/* background-color: purple; */
-	background-image: url(/images/quote1.png);
-	background-size: contain;
-	background-repeat: no-repeat;
-	filter: drop-shadow(0px 15px 0px #a7a7a1);
+.rankIcon {
+	top: 35%;
 }
 
-.homePageWelcome p {
-	position: absolute;
-	font-family: animalCrossing;
-	width: 100%;
-	text-align: center;
-	font-size: 50px;
-	top: 50%;
-	translate: 0 -50%;
+.rankIconBG {
+	background-color: #f98e62;
 }
+
+.rankImage1 {
+	position: absolute;
+	background-image: url(/images/icons/rankIcon1.png);
+	background-repeat: no-repeat;
+	background-position: center;
+	left: 70%;
+	top: 35%;
+	transform: scale(0.65);
+}
+
+.rankImage2 {
+	background-image: url(/images/icons/rankIcon2.png);
+	background-repeat: no-repeat;
+	background-position: center;
+	left: 30%;
+	top: 70%;
+	transform: scale(0.6);
+}
+
+.rankImage3 {
+	opacity: 0;
+	background-image: url(/images/icons/animation2.gif);
+	background-repeat: no-repeat;
+	background-position: center;
+	transform: rotate(-50deg) scale(0.7);
+	left: 25px;
+	top: 30px;
+}
+.rankImage4 {
+	opacity: 0;
+
+	background-image: url(/images/icons/animation2.gif);
+	background-repeat: no-repeat;
+	background-position: center;
+	transform: rotate(140deg) scale(0.7);
+	left: 95px;
+	top: 100px;
+}
+
+.rankIcon:hover {
+	transform: scale(1.17);
+}
+
+.rankIcon:hover .rankImage1 {
+	left: 75%;
+	animation: rankIconAnimation 1s infinite;
+}
+.rankIcon:hover .rankImage2 {
+	left: 25%;
+	animation: rankIconAnimation 1s infinite;
+}
+
+.rankIcon:hover .rankImage3 {
+	/* left: 25%; */
+	opacity: 1;
+	/* animation: spark1Animation 0.5s infinite; */
+}
+
+.rankIcon:hover .rankImage4 {
+	/* left: 25%; */
+	opacity: 1;
+	/* animation: spark1Animation 1s; */
+	animation-delay: 1s;
+}
+
+@keyframes spark1Animation {
+	0% {
+		opacity: 1;
+	}
+	20% {
+		opacity: 1;
+	}
+	21% {
+		opacity: 0;
+	}
+	100% {
+		opacity: 0;
+	}
+}
+
+@keyframes rankIconAnimation {
+	0% {
+		transform: scale(0.8) rotate(-5deg);
+	}
+	50% {
+		transform: scale(0.8) rotate(5deg);
+	}
+	100% {
+		transform: scale(0.8) rotate(-5deg);
+	}
+}
+
+/* ----------------------------------- */
 
 .homePlayersRank {
 	position: absolute;
