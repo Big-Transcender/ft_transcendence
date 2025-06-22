@@ -8,22 +8,6 @@
 	/* background-color: rgba(255, 0, 0, 0.363); */
 }
 
-.homePageWelcome {
-	position: absolute;
-	/* text-align: center; */
-	top: 50px;
-	left: -2%;
-	width: 700px;
-	height: 180px;
-	transform: rotate(-15deg) scale(0.8);
-	cursor: pointer;
-}
-
-.homePageWelcome:hover {
-	top: 65px;
-	/* left: -1%; */
-}
-
 .homePageWelcome:hover .homePageWelcomeBG {
 	filter: drop-shadow(0px 0px 0px rgba(167, 167, 161, 0));
 }
@@ -113,6 +97,7 @@
 	width: 128px;
 	height: 128px;
 	cursor: pointer;
+	/* z-index: 99; */
 }
 
 .genericIconBG {
@@ -134,21 +119,50 @@
 	background-size: contain;
 }
 
-.pongIcon:hover {
+.genericIcon:hover {
 	transform: scale(1.17);
 	transition: ease-in-out 0.1s;
 }
 
-.pongIcon.expand-animating .pongIconBG {
+.genericIcon.expand-animating {
+	z-index: 50;
+	position: absolute;
+}
+
+.genericIcon.expand-animating .pongIconBG {
 	position: absolute;
 	animation: expand 1s forwards;
 	pointer-events: none;
-	z-index: 999;
 }
 
-.pongIcon.expand-animating .pongImage {
-	z-index: 999;
+.genericIcon.expand-animating .contestIconBG {
+	position: absolute;
+	animation: expand 1s forwards;
+	pointer-events: none;
+}
+
+.genericIcon.expand-animating .profileIconBG {
+	position: absolute;
+	animation: expand 1s forwards;
+	pointer-events: none;
+}
+
+.genericIcon:hover .genericImage {
 	animation: profileIconAnimation 0.25s infinite alternate;
+	pointer-events: none;
+}
+
+.genericIcon.expand-animating .pongImage {
+	/* z-index: 10; */
+	animation: profileIconAnimation 0.25s infinite alternate;
+}
+
+.genericIcon.expand-animating .contestImage {
+	background-image: url(/images/icons/animation1.gif);
+	transform: scale(1.5);
+	top: 75%;
+	left: 45%;
+	animation: walkUpDown 0.25s infinite alternate;
 }
 
 @keyframes expand {
@@ -161,10 +175,6 @@
 	100% {
 		transform: scale(20) translateY(-10px);
 	}
-}
-
-.pongIcon:hover .genericImage {
-	animation: profileIconAnimation 0.25s infinite alternate;
 }
 
 .contestIcon {
@@ -389,6 +399,7 @@ td {
 .loadingGif {
 	position: absolute;
 	height: 250px;
+	/* z-index: 99; */
 
 	bottom: 1vw;
 	right: 0vw;

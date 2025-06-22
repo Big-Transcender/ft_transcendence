@@ -13,7 +13,7 @@
 .mainBodyHeader {
 	width: 50vw;
 	height: 60px;
-	z-index: 2;
+	z-index: 0;
 	overflow: hidden;
 	background-color: #f1e26f;
 	background-size: 150px;

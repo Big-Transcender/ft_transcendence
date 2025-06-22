@@ -20,123 +20,89 @@
 
 	<body>
 		<div class="mainBody">
-			<div class="header">
-				<div class="musicPlayer">
-					<!-- <div class="musicPlayerHitBox"> </div> -->
-					<div class="musicPlayerBg">
-						<div class="musicPlayerTextBox">
-							<img src="images/kkSliderQuote.png" alt="" class="kkSliderQuote" />
-							<img src="images/kkIcon.png" alt="" class="kkSlider" />
-							<img src="images/kkGuitarIcon.png" alt="" class="kkGuitar" />
-							<p>Now Playing:</p>
-							<p id="musicTitle">Music Title</p>
-							<p id="musicDate">Music Date</p>
-							<div class="playButtons">
-								<button class="buttonPlay musicButtons">
-									<div class="musicButtonBG">
-										<img src="images/icons/playIcon.png" alt="" class="playIcon" />
-									</div>
-									play
-								</button>
-								<button class="buttonPrev musicButtons">
-									<div class="musicButtonBG">
-										<img src="images/icons/nextIcon.png" alt="" class="prevIcon" />
-									</div>
-									prev
-								</button>
-								<button class="buttonNext musicButtons">
-									<div class="musicButtonBG">
-										<img src="images/icons/nextIcon.png" alt="" class="nextIcon" />
-									</div>
-									next
-								</button>
-								<button class="buttonStop musicButtons">
-									<div class="musicButtonBG">
-										<img src="images/icons/stopIcon.png" alt="" class="stopIcon" />
-									</div>
-									stop
-								</button>
-							</div>
-						</div>
-						<div class="footer"></div>
-					</div>
-				</div>
-				<div class="ribbonLeft">
-					<img src="/images/ribbon.svg" class="leftRibbon" />
-				</div>
-				<div class="mainBodyHeader">
-					<h1 class="headerTitle">Animal Ponging</h1>
-					<div class="headerButtons">
-						<div class="leftButtons">
-							<a onclick="navigate('home')" class="button">
-								<div class="buttonBG"></div>
-								Home
-								<div class="buttonHitBox"></div>
-							</a>
-							<a onclick="navigate('game1')" class="button">
-								<div class="buttonBG"></div>
-								Pong
-								<div class="buttonHitBox"></div>
-							</a>
-						</div>
-						<div class="rightButtons">
-							<a onclick="navigate('contest')" class="button">
-								<div class="buttonBG"></div>
-								Contest
-								<div class="buttonHitBox"></div>
-							</a>
-							<a onclick="navigate('profile')" class="button">
-								<div class="buttonBG"></div>
-								Profile
-								<div class="buttonHitBox"></div>
-							</a>
-						</div>
-					</div>
-				</div>
-				<div class="ribbonRight">
-					<img src="/images/ribbon.svg" class="rightRibbon" />
-				</div>
-			</div>
 			<div class="mainBodyBackground">
 				<div class="backgroudCenterBg"></div>
 				<div class="backgroundCenter">
+					<!-- HEADER -->
+					<div class="header">
+						<!-- MUSIC PLAYER -->
+						<div class="musicPlayer">
+							<div class="musicPlayerBg">
+								<div class="musicPlayerTextBox">
+									<img src="images/kkSliderQuote.png" alt="" class="kkSliderQuote" />
+									<img src="images/kkIcon.png" alt="" class="kkSlider" />
+									<img src="images/kkGuitarIcon.png" alt="" class="kkGuitar" />
+									<p>Now Playing:</p>
+									<p id="musicTitle">Music Title</p>
+									<p id="musicDate">Music Date</p>
+									<div class="playButtons">
+										<button class="buttonPlay musicButtons">
+											<div class="musicButtonBG">
+												<img src="images/icons/playIcon.png" alt="" class="playIcon" />
+											</div>
+											play
+										</button>
+										<button class="buttonPrev musicButtons">
+											<div class="musicButtonBG">
+												<img src="images/icons/nextIcon.png" alt="" class="prevIcon" />
+											</div>
+											prev
+										</button>
+										<button class="buttonNext musicButtons">
+											<div class="musicButtonBG">
+												<img src="images/icons/nextIcon.png" alt="" class="nextIcon" />
+											</div>
+											next
+										</button>
+										<button class="buttonStop musicButtons">
+											<div class="musicButtonBG">
+												<img src="images/icons/stopIcon.png" alt="" class="stopIcon" />
+											</div>
+											stop
+										</button>
+									</div>
+								</div>
+								<div class="footer"></div>
+							</div>
+						</div>
+						<div class="ribbonLeft">
+							<img src="/images/ribbon.svg" class="leftRibbon" />
+						</div>
+						<div class="mainBodyHeader">
+							<h1 class="headerTitle">Animal Ponging</h1>
+							<div class="headerButtons">
+								<div class="leftButtons">
+									<a onclick="navigate('home')" class="button">
+										<div class="buttonBG"></div>
+										Home
+										<div class="buttonHitBox"></div>
+									</a>
+									<a onclick="navigate('game1')" class="button">
+										<div class="buttonBG"></div>
+										Pong
+										<div class="buttonHitBox"></div>
+									</a>
+								</div>
+								<div class="rightButtons">
+									<a onclick="navigate('contest')" class="button">
+										<div class="buttonBG"></div>
+										Contest
+										<div class="buttonHitBox"></div>
+									</a>
+									<a onclick="navigate('profile')" class="button">
+										<div class="buttonBG"></div>
+										Profile
+										<div class="buttonHitBox"></div>
+									</a>
+								</div>
+							</div>
+						</div>
+						<div class="ribbonRight">
+							<img src="/images/ribbon.svg" class="rightRibbon" />
+						</div>
+					</div>
 					<!-- HOME PAGE -->
 					<div id="home" class="home page active">
-						<div class="homePageWelcome">
-							<div class="homePageWelcomeBG"></div>
-							<p>Welcome to the Animal Ponging</p>
-						</div>
-						<!-- NOOK PHONE -->
-						<div class="nookPhone">
-							<div class="nookPhoneBG"></div>
-							<div class="phoneTitle">Welcome to the Animal Ponging!</div>
-							<div class="phoneHeader">
-								<div class="phoneIcon1"></div>
-								<div class="phoneIcon2"></div>
-								<div class="phoneTime" id="phoneTimeId"></div>
-							</div>
-							<div class="iconsLocation">
-								<!-- PONG ICON -->
-								<div class="genericIcon pongIcon" id="pongIconId">
-									<div class="genericIconBG pongIconBG"></div>
-									<div class="genericImage pongImage"></div>
-								</div>
-								<!-- CONTEST ICON -->
-								<div class="genericIcon contestIcon" id="contestIconId">
-									<div class="genericIconBG contestIconBG">
-										<div class="genericImage contestImage2"></div>
-									</div>
-									<div class="genericImage contestImage"></div>
-								</div>
-								<!-- PROFILE ICON -->
-								<div class="genericIcon profileIcon" id="profileIconId">
-									<div class="genericIconBG profileIconBG">
-										<div class="genericImage profileImage"></div>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div></div>
 						<!-- PLAYER LEADERBOARD -->
 						<div class="homePlayersRank">
 							<div class="homePlayersRankBG"></div>
@@ -179,6 +145,41 @@
 							</div>
 						</div>
 						<img src="/images/loading.gif" alt="" class="loadingGif drop-shadow-xl/50" />
+						<!-- NOOK PHONE -->
+						<div class="nookPhone">
+							<div class="nookPhoneBG"></div>
+							<div class="phoneTitle">Welcome to the Animal Ponging!</div>
+							<div class="phoneHeader">
+								<div class="phoneIcon1"></div>
+								<div class="phoneIcon2"></div>
+								<div class="phoneTime" id="phoneTimeId"></div>
+							</div>
+							<div class="iconsLocation">
+								<!-- PONG ICON -->
+								<div class="genericIcon pongIcon" id="pongIconId">
+									<div class="genericIconBG pongIconBG"></div>
+									<div class="genericImage pongImage"></div>
+								</div>
+								<!-- CONTEST ICON -->
+								<div class="genericIcon contestIcon" id="contestIconId">
+									<div class="genericIconBG contestIconBG">
+										<div class="genericImage contestImage2"></div>
+									</div>
+									<div class="genericImage contestImage"></div>
+								</div>
+								<!-- PROFILE ICON -->
+								<div class="genericIcon profileIcon" id="profileIconId">
+									<div class="genericIconBG profileIconBG"></div>
+									<div class="genericImage profileImage"></div>
+								</div>
+								<!-- RANK ICON
+								<div class="genericIcon rankIcon" id="profileIconId">
+									<div class="genericIconBG profileIconBG"></div>
+									<div class="genericImage profileImage"></div>
+								</div> -->
+							</div>
+						</div>
+						<div></div>
 					</div>
 					<!-- GAME PAGE -->
 					<div id="game1" class="game1 page">
