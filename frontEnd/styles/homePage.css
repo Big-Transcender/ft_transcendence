@@ -28,6 +28,250 @@
 	filter: drop-shadow(0px 0px 0px rgba(167, 167, 161, 0));
 }
 
+.nookPhone {
+	position: absolute;
+	left: 50%;
+	top: 130px;
+	translate: -50%;
+	width: 500px;
+	height: 600px;
+}
+
+.nookPhoneBG {
+	position: absolute;
+	background-color: #f5f2e4;
+	height: 100%;
+	width: 100%;
+	border-radius: 100px;
+}
+
+.phoneTitle {
+	position: absolute;
+	top: 100px;
+	width: 100%;
+	text-align: center;
+	font-family: animalcrossingSystem;
+	font-size: 25px;
+	color: #756a57;
+	/* background-color: red; */
+	left: 50%;
+	translate: -50%;
+}
+
+.phoneHeader {
+	position: absolute;
+	width: 100%;
+	height: 50px;
+	/* background-color: aqua; */
+	top: 25px;
+}
+
+.phoneIcon1 {
+	position: absolute;
+	width: 36px;
+	height: 36px;
+	top: 50%;
+	right: 50px;
+	translate: -50% -50%;
+	/* background-color: rebeccapurple; */
+	background-image: url(/images/icons/phoneIcon1.png);
+}
+
+.phoneIcon2 {
+	position: absolute;
+	width: 80px;
+	height: 28px;
+	top: 50%;
+	left: 50px;
+	translate: 0% -50%;
+	background-image: url(/images/icons/phoneIcon2.png);
+}
+
+.phoneTime {
+	position: absolute;
+	font-family: animalcrossingSystem;
+	font-size: 20px;
+	text-align: center;
+	color: #ded8c7;
+	top: 50%;
+	left: 50%;
+	translate: -50% -50%;
+}
+
+.iconsLocation {
+	position: absolute;
+	width: 90%;
+	height: 70%;
+	/* background-color: red; */
+	left: 50%;
+	top: 60%;
+	translate: -50% -50%;
+}
+
+.genericIcon {
+	position: absolute;
+	width: 128px;
+	height: 128px;
+	cursor: pointer;
+}
+
+.genericIconBG {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	background-color: #c28ff4;
+	border-radius: 45px;
+}
+
+.genericImage {
+	position: absolute;
+	width: 80%;
+	height: 80%;
+	left: 50%;
+	top: 50%;
+	translate: -50% -50%;
+	background-image: url(/images/icons/pongIcon.png);
+	background-size: contain;
+}
+
+.pongIcon:hover {
+	transform: scale(1.17);
+	transition: ease-in-out 0.1s;
+}
+
+.pongIcon.expand-animating .pongIconBG {
+	position: absolute;
+	animation: expand 1s forwards;
+	pointer-events: none;
+	z-index: 999;
+}
+
+.pongIcon.expand-animating .pongImage {
+	z-index: 999;
+	animation: profileIconAnimation 0.25s infinite alternate;
+}
+
+@keyframes expand {
+	0% {
+		transform: scale(1) translateY(0);
+	}
+	50% {
+		transform: scale(2) translateY(0);
+	}
+	100% {
+		transform: scale(20) translateY(-10px);
+	}
+}
+
+.pongIcon:hover .genericImage {
+	animation: profileIconAnimation 0.25s infinite alternate;
+}
+
+.contestIcon {
+	left: 35%;
+	transition: ease-in-out 0.1s;
+}
+
+.contestIconBG {
+	background-color: #8c9cf4;
+	overflow: hidden;
+}
+.contestImage {
+	background-image: url(/images/icons/contestIcon1.png);
+	background-size: contain;
+	background-repeat: no-repeat;
+	transform-origin: 50% 50%;
+}
+
+.contestImage2 {
+	position: absolute;
+	background-image: url(/images/icons/contestIcon2.png);
+	background-size: contain;
+	background-repeat: no-repeat;
+	top: 100%;
+	width: 80%;
+	height: 80%;
+	/* background-color: red; */
+}
+
+.contestIcon:hover {
+	transform: scale(1.17);
+}
+
+.contestIcon:hover .contestImage2 {
+	animation: rotateImage2 15s linear infinite;
+}
+
+.contestIcon:hover .contestImage {
+	background-image: url(/images/icons/animation1.gif);
+	transform: scale(1.5);
+	top: 75%;
+	left: 45%;
+	animation: walkUpDown 0.25s infinite alternate;
+}
+
+@keyframes walkUpDown {
+	0% {
+		transform: scale(1.5) translateY(0);
+	}
+	50% {
+		transform: scale(1.5) translateY(-10px);
+	}
+	100% {
+		transform: scale(1.5) translateY(-10px);
+	}
+}
+
+@keyframes rotateImage2 {
+	from {
+		transform: rotate(0deg);
+	}
+	to {
+		transform: rotate(-360deg);
+	}
+}
+
+.profileIcon {
+	left: 70%;
+	top: 0;
+	transition: ease-in-out 0.1s;
+}
+
+.profileIconBG {
+	background-color: #89c68a;
+}
+
+.profileImage {
+	position: absolute;
+	background-image: url(/images/icons/profileIcon.png);
+	background-repeat: no-repeat;
+	background-position: center;
+	/* left: %; */
+	/* background-color: red; */
+	/* translate: 0%; */
+}
+
+.profileIcon:hover {
+	transform: scale(1.17);
+}
+
+.profileIcon:hover .profileImage {
+	animation: profileIconAnimation 0.25s infinite alternate;
+	/* animation-timing-function: ease-in-out; */
+}
+
+@keyframes profileIconAnimation {
+	0% {
+		transform: scale(1.2) translateY(0) rotate(-5deg);
+	}
+	100% {
+		transform: scale(1.2) translateY(-10px) rotate(-5deg);
+	}
+	/* 100% {
+		transform: scale(1.2) translateY(0px) rotate(-10deg);
+	} */
+}
+
 .homePageWelcomeBG {
 	position: absolute;
 	width: 100%;

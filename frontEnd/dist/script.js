@@ -64,17 +64,3 @@ musicMenu.addEventListener("mouseleave", () => {
         musicIn = false;
     }
 });
-// console.log(bgMusic.title);
-// botao.addEventListener('mouseenter', () => {
-// 	jaPassou = true;
-// });
-// botao.addEventListener('mouseleave', () => {
-// 	if (jaPassou) {
-// 		div.classList.add('animar');
-// 		console.log("entrou");
-// 		// Se quiser remover depois de um tempo:
-// 		// setTimeout(() => {
-// 		//   div.classList.remove('animar');
-// 		// }, 1000);
-// 	}
-// });
