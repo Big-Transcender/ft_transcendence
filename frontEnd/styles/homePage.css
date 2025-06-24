@@ -106,6 +106,7 @@
 	height: 100%;
 	background-color: #c28ff4;
 	border-radius: 45px;
+	overflow: hidden;
 }
 
 .genericImage {
@@ -173,7 +174,7 @@
 		transform: scale(2) translateY(0);
 	}
 	100% {
-		transform: scale(20) translateY(-10px);
+		transform: scale(20) translateY(0);
 	}
 }
 
@@ -333,13 +334,19 @@
 	transform: scale(1.17);
 }
 
+.rankIcon:hover .rankBG1,
+.rankIcon:hover .rankBG2,
+.rankIcon:hover .rankBG3 {
+	opacity: 1;
+}
+
 .rankIcon:hover .rankImage1 {
 	left: 75%;
-	animation: rankIconAnimation 1s infinite;
+	animation: rankIconAnimation 0.79s infinite;
 }
 .rankIcon:hover .rankImage2 {
 	left: 25%;
-	animation: rankIconAnimation 1s infinite;
+	animation: rankIconAnimation 0.79s infinite;
 }
 
 .rankIcon:hover .rankImage3 {
@@ -382,14 +389,204 @@
 	}
 }
 
+.credits {
+	position: absolute;
+	left: 20%;
+	top: 50%;
+	translate: 0% -50%;
+	width: 350px;
+	height: 450px;
+	overflow: hidden;
+	border-radius: 0 50px 50px 0;
+
+	outline: 5px solid #f5f2e4;
+}
+
+.creditsBG {
+	position: absolute;
+	background-color: rgb(0, 0, 0);
+	width: 100%;
+	height: 100%;
+	background-image: url(/images/creditsBg.jpg);
+	background-size: 80%;
+	background-repeat: no-repeat;
+	background-position: bottom right;
+}
+
+.creditsIcon {
+	left: 70%;
+	top: 35%;
+}
+
+.creditsText {
+	position: absolute;
+	color: #cfc3b7;
+	font-size: 30px;
+	font-family: animalcrossingSystem;
+	line-height: 35px;
+	width: 100%;
+	height: 100%;
+	top: 100%;
+	left: 4%;
+	margin-top: 5px;
+	/* background-color: gray; */
+}
+
+.creditsImage1 {
+	position: absolute;
+	background-image: url(/images/icons/creditsIcon1.png);
+	background-repeat: no-repeat;
+	background-position: center;
+	left: 50%;
+	top: 55%;
+	/* translate: -50% -50%; */
+	transform: scale(0.7);
+}
+
+.creditsImage2 {
+	position: absolute;
+	background-image: url(/images/icons/creditsIcon2.png);
+	background-repeat: no-repeat;
+	background-position: center;
+	left: 50%;
+	top: 30%;
+	transform: scale(0.6);
+}
+
+.creditsIcon:hover .creditsImage1 {
+	animation: walkUpDown2 0.25s infinite alternate;
+}
+
+.creditsIcon:hover .creditsImage2 {
+	animation: hatAnimation 0.25s infinite alternate;
+	top: 20%;
+}
+
+.credits.openCredits-animation {
+	position: absolute;
+	animation: openCreditsAnimation 1s forwards;
+}
+
+.creditsText.playCredits-animation {
+	position: absolute;
+	animation: playCreditsAnimation 10s linear forwards;
+	animation-delay: 2s;
+}
+
+@keyframes openCreditsAnimation {
+	0% {
+		left: 30%;
+		/* transform: scale(0.8) rotate(-5deg); */
+	}
+	50% {
+		/* transform: scale(0.8) rotate(5deg); */
+	}
+	100% {
+		/* transform: scale(0.8) rotate(-5deg); */
+
+		left: 99%;
+	}
+}
+
+@keyframes playCreditsAnimation {
+	0% {
+		top: 100%;
+		/* transform: scale(0.8) rotate(-5deg); */
+	}
+	50% {
+		/* transform: scale(0.8) rotate(5deg); */
+	}
+	100% {
+		/* transform: scale(0.8) rotate(-5deg); */
+
+		top: 0%;
+	}
+}
+
+@keyframes walkUpDown2 {
+	0% {
+		transform: scale(0.8) translateY(0);
+	}
+	50% {
+		transform: scale(0.8) translateY(-10px);
+	}
+	100% {
+		transform: scale(0.8) translateY(-10px);
+	}
+}
+
+@keyframes hatAnimation {
+	0% {
+		transform: scale(0.8) translateY(0px);
+		/* left: 45%; */
+	}
+	50% {
+		transform: scale(0.8) translateY(-5px);
+	}
+	100% {
+		transform: scale(0.8) translateY(-5px);
+	}
+}
+
 /* ----------------------------------- */
 
 .homePlayersRank {
 	position: absolute;
 	height: 400px;
 	width: 400px;
-	top: 150px;
-	right: 0;
+	top: 220px;
+	left: 50%;
+	translate: -50%;
+	opacity: 0;
+	/* right: 0; */
+}
+
+.homePlayersRank.openLeft-animation {
+	position: absolute;
+	animation: openLeftAnimation 1.5s forwards;
+}
+
+.homePlayersRank.closeLeft-animation {
+	position: absolute;
+	animation: closeLeftAnimation 1s forwards;
+}
+
+@keyframes openLeftAnimation {
+	0% {
+		opacity: 1;
+		left: 50%;
+		/* transform: scale(0.8) rotate(-5deg); */
+	}
+	50% {
+		/* transform: scale(0.8) rotate(5deg); */
+	}
+	100% {
+		/* transform: scale(0.8) rotate(-5deg); */
+		opacity: 1;
+
+		left: 20%;
+	}
+}
+
+@keyframes closeLeftAnimation {
+	0% {
+		opacity: 1;
+		left: 20%;
+		/* transform: scale(0.8) rotate(-5deg); */
+	}
+	50% {
+		/* transform: scale(0.8) rotate(5deg); */
+	}
+	99% {
+		opacity: 1;
+
+		left: 50%;
+	}
+	100% {
+		/* transform: scale(0.8) rotate(-5deg); */
+		opacity: 0;
+		left: 50%;
+	}
 }
 
 .homePlayersRank p {

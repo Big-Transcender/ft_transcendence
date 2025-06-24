@@ -4,9 +4,19 @@ const genericIcon = document.querySelectorAll(".genericIcon");
 const phonetitle = document.querySelector(".phoneTitle");
 const headerSucker = document.querySelector(".header") as HTMLElement;
 const contestBgIcon = document.querySelector(".contestImage2") as HTMLElement;
+const creditsText = document.getElementById("creditsTextId") as HTMLElement;
+const creditsBox = document.getElementById("creditsId") as HTMLElement;
 
-const openIconSound = new Audio("audios/openIcon.wav");
+const homePlayersRank = document.querySelector(".homePlayersRank") as HTMLElement;
+
+const hoverIconSound = new Audio("audios/openIcon.wav");
 const selectIconSound = new Audio("audios/selectIcon.wav");
+const openSound = new Audio("audios/openMenu.wav");
+const closeSound = new Audio("audios/closeMenu.wav");
+const decide = new Audio("audios/decide.wav");
+
+let rankOpen = false;
+let creditsOpen = false;
 
 getTimeForPhone();
 
@@ -20,6 +30,12 @@ genericIcon.forEach((button) => {
 			selectIconSound.play();
 		} else if (button.classList.contains("profileIcon")) {
 			phonetitle.textContent = "Profile Page";
+			selectIconSound.play();
+		} else if (button.classList.contains("rankIcon")) {
+			phonetitle.textContent = "Players Rank";
+			selectIconSound.play();
+		} else if (button.classList.contains("creditsIcon")) {
+			phonetitle.textContent = "Credits!";
 			selectIconSound.play();
 		}
 	});
@@ -36,14 +52,60 @@ genericIcon.forEach((button) => {
 		} else if (button.classList.contains("profileIcon")) {
 			await playExpandingAnimation(button);
 			navigate("profile");
+		} else if (button.classList.contains("rankIcon")) {
+			console.log("rankOpen:" + rankOpen);
+			if (!rankOpen) {
+				rankOpen = true;
+				openSound.play();
+				homePlayersRank.classList.remove("closeLeft-animation");
+				homePlayersRank.classList.add("openLeft-animation");
+				await betterWait(1500);
+				homePlayersRank.style.left = "20%";
+				homePlayersRank.style.opacity = "1";
+				homePlayersRank.classList.remove("openLeft-animation");
+			} else {
+				rankOpen = false;
+				closeSound.play();
+				homePlayersRank.classList.remove("openLeft-animation");
+				homePlayersRank.classList.add("closeLeft-animation");
+				await betterWait(1000);
+				homePlayersRank.style.left = "50%";
+				homePlayersRank.style.opacity = "none";
+				homePlayersRank.classList.remove("closeLeft-animation");
+			}
+		} else if (button.classList.contains("creditsIcon")) {
+			creditsPlay();
 		}
 	});
 });
 
+function creditsPlay() {
+	//&emsp; JUMP LINE
+	//<span style="color: #ff6b6b;"> </span> CHANGE COLOR
+
+	if (!creditsOpen) {
+		creditsText.classList.add("playCredits-animation");
+		creditsBox.classList.add("openCredits-animation");
+		creditsText.innerHTML = `FrontEnd Developer<br>
+			&emsp;<span style="color: #FFFFFD;">Brendon Vianna</span>
+			<br>
+			<br>BackEnd Developer<br>
+			&emsp;<span style="color: #FFFFFD;">Diogo San</span>
+			<br>
+			<br>DataBase Developer<br>
+			&emsp;<span style="color: #FFFFFD;">Bruno Sousa</span>
+			<br>
+			<br>DevOps Developer<br>
+			&emsp;<span style="color: #FFFFFD;">Diogo Tintas</span>
+			`;
+	}
+}
+
 async function playExpandingAnimation(button: any) {
 	headerSucker.style.zIndex = "0";
+	decide.play();
 	await betterWait(50);
-	openIconSound.play();
+	hoverIconSound.play();
 	button.classList.add("expand-animating");
 	await betterWait(1000);
 	button.classList.remove("expand-animating");
