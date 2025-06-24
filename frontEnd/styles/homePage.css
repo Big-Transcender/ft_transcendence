@@ -413,11 +413,6 @@
 	background-position: bottom right;
 }
 
-.creditsIcon {
-	left: 70%;
-	top: 35%;
-}
-
 .creditsText {
 	position: absolute;
 	color: #cfc3b7;
@@ -430,6 +425,15 @@
 	left: 4%;
 	margin-top: 5px;
 	/* background-color: gray; */
+}
+
+.creditsIcon {
+	left: 70%;
+	top: 35%;
+}
+
+.creditsIconBG {
+	background-color: #9b704a;
 }
 
 .creditsImage1 {
