@@ -52,7 +52,7 @@ function setupWebSocket(server) {
 					console.log(`👋 Player ${assignedPlayer} left match ${matchId}`);
 				}
 
-				if (!match.gameState.finished && (match.clients.size === 1 || match.clients.size === 3)) {
+				if (!match.gameState.finished && match.clients.size === 1 ) {
 					const remainingPlayer = Array.from(match.clients.keys())[0];
 					const winnerNickname = match.clients.get(remainingPlayer)?.nickname;
 		
@@ -63,7 +63,7 @@ function setupWebSocket(server) {
 					const loserId = gameState.playerDbId[assignedPlayer];
 					insertMatch( winnerId, loserId, winnerId, gameState.score[remainingPlayer] , gameState.score[assignedPlayer] );
 					cleanupMatch(matchId, "opponentLeft", winnerId);
-				} else if (!match.gameState.finished && match.clients.size === 0) {
+				} else if (match.clients.size === 0) {
 					cleanupMatch(matchId, "noPlayersLeft");
 				}
 			}
@@ -104,3 +104,48 @@ function setPlayers(match, nickname, ws, matchId, team)
 
 
 module.exports = setupWebSocket;
+
+
+/*
+
+if (!match.gameState.finished) {
+    const team1Players = ['p1', 'p3']; // Team 1 players
+    const team2Players = ['p2', 'p4']; // Team 2 players
+
+    // Check if all players from a team have disconnected
+    const team1Remaining = team1Players.filter(player => match.clients.has(player));
+    const team2Remaining = team2Players.filter(player => match.clients.has(player));
+
+    if (team1Remaining.length === 0) {
+        // Team 2 wins by default
+        const winnerId = gameState.playerDbId[team2Players[0]]; // Any player from Team 2
+        console.log(`🏆 Team 2 wins match ${matchId} by default!`);
+
+        insertMatch(
+            gameState.playerDbId[team2Players[0]],
+            gameState.playerDbId[team2Players[1]],
+            winnerId,
+            gameState.score.p2,
+            gameState.score.p1
+        );
+
+        cleanupMatch(matchId, "team1Disconnected", winnerId);
+    } else if (team2Remaining.length === 0) {
+        // Team 1 wins by default
+        const winnerId = gameState.playerDbId[team1Players[0]]; // Any player from Team 1
+        console.log(`🏆 Team 1 wins match ${matchId} by default!`);
+
+        insertMatch(
+            gameState.playerDbId[team1Players[0]],
+            gameState.playerDbId[team1Players[1]],
+            winnerId,
+            gameState.score.p1,
+            gameState.score.p2
+        );
+
+        cleanupMatch(matchId, "team2Disconnected", winnerId);
+    }
+}
+
+
+*/
