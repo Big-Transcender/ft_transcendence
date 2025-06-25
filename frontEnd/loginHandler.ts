@@ -253,7 +253,7 @@ async function checkGoogleLogin() {
 			setNickOnLocalStorage(data.user.nickname);
 			putNickOnProfileHeader(data.user.nickname);
 			changePageTo(document.getElementById("loginId"), document.getElementById("profileId"));
-			flipboardNumberAnimation("23");
+			// flipboardNumberAnimation("23");
 		}
 	} catch (err) {
 		console.error("Error checking Google login:", err);

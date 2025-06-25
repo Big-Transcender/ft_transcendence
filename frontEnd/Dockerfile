@@ -11,13 +11,13 @@ RUN npm install
 COPY . .
 
 # Expose port for live-server
-EXPOSE 3000
+EXPOSE 5173
 
 # Install live-server globally (optional if used via npx)
 RUN npm install -g live-server concurrently
 
 # Default command: run tsc in watch mode + serve
-CMD ["concurrently", "npx tsc -w", "live-server --host=0.0.0.0 --port=3000 --open=./index.html"]
+CMD ["concurrently", "npx tsc -w", "live-server --host=0.0.0.0 --port=5173 --open=./index.html"]
 
 
 # RUN npx tsc
