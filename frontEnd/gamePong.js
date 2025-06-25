@@ -114,7 +114,6 @@ export function startPongWebSocket(matchId, isLocal, aiGame = false, teamGame = 
                         console.log(`Game Over! Reason: ${reason}`);
                         alert(`Game Over! Reason: ${reason}`);
                     }
-                    window.location.hash = "#gameSelector";
                     break;
                 }
             }
