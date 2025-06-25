@@ -12,7 +12,9 @@ const homePlayersRank = document.querySelector(".homePlayersRank") as HTMLElemen
 const hoverIconSound = new Audio("audios/openIcon.wav");
 const selectIconSound = new Audio("audios/selectIcon.wav");
 const openSound = new Audio("audios/openMenu.wav");
+const openSound2 = new Audio("audios/openMenu.wav");
 const closeSound = new Audio("audios/closeMenu.wav");
+const closeSound2 = new Audio("audios/closeMenu.wav");
 const decide = new Audio("audios/decide.wav");
 
 let rankOpen = false;
@@ -53,9 +55,7 @@ genericIcon.forEach((button) => {
 			await playExpandingAnimation(button);
 			navigate("profile");
 		} else if (button.classList.contains("rankIcon")) {
-			console.log("rankOpen:" + rankOpen);
 			if (!rankOpen) {
-				rankOpen = true;
 				openSound.play();
 				homePlayersRank.classList.remove("closeLeft-animation");
 				homePlayersRank.classList.add("openLeft-animation");
@@ -63,8 +63,9 @@ genericIcon.forEach((button) => {
 				homePlayersRank.style.left = "20%";
 				homePlayersRank.style.opacity = "1";
 				homePlayersRank.classList.remove("openLeft-animation");
+				await betterWait(100);
+				rankOpen = true;
 			} else {
-				rankOpen = false;
 				closeSound.play();
 				homePlayersRank.classList.remove("openLeft-animation");
 				homePlayersRank.classList.add("closeLeft-animation");
@@ -72,6 +73,9 @@ genericIcon.forEach((button) => {
 				homePlayersRank.style.left = "50%";
 				homePlayersRank.style.opacity = "none";
 				homePlayersRank.classList.remove("closeLeft-animation");
+				await betterWait(100);
+
+				rankOpen = false;
 			}
 		} else if (button.classList.contains("creditsIcon")) {
 			creditsPlay();
@@ -79,11 +83,13 @@ genericIcon.forEach((button) => {
 	});
 });
 
-function creditsPlay() {
+async function creditsPlay() {
 	//&emsp; JUMP LINE
 	//<span style="color: #ff6b6b;"> </span> CHANGE COLOR
 
 	if (!creditsOpen) {
+		openSound2.play();
+		creditsBox.classList.remove("closeCredits-animation");
 		creditsText.classList.add("playCredits-animation");
 		creditsBox.classList.add("openCredits-animation");
 		creditsText.innerHTML = `FrontEnd Developer<br>
@@ -98,6 +104,19 @@ function creditsPlay() {
 			<br>DevOps Developer<br>
 			&emsp;<span style="color: #FFFFFD;">Diogo Tintas</span>
 			`;
+		await betterWait(1000);
+		creditsBox.classList.remove("openCredits-animation");
+		creditsBox.style.left = "99%";
+		creditsOpen = true;
+	} else {
+		closeSound2.play();
+		creditsBox.classList.add("closeCredits-animation");
+		creditsBox.classList.remove("openCredits-animation");
+		creditsOpen = false;
+		await betterWait(1000);
+		creditsText.classList.remove("playCredits-animation");
+		creditsBox.classList.remove("closeCredits-animation");
+		creditsBox.style.left = "25%";
 	}
 }
 
@@ -121,10 +140,8 @@ fetch("http://localhost:3000/leaderBoard")
 		while (table.rows.length > 1) {
 			table.deleteRow(1);
 		}
-
 		console.log(data);
 		const topPlayers = data.sort((a, b) => b.wins - a.wins).slice(0, 5);
-
 		// Insert new rows
 		topPlayers.forEach((player, index) => {
 			const row = table.insertRow();

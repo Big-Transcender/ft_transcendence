@@ -15,10 +15,10 @@
 .nookPhone {
 	position: absolute;
 	left: 50%;
-	top: 130px;
+	top: 50px;
 	translate: -50%;
 	width: 500px;
-	height: 600px;
+	height: 700px;
 }
 
 .nookPhoneBG {
@@ -27,6 +27,10 @@
 	height: 100%;
 	width: 100%;
 	border-radius: 100px;
+	background-image: url(/images/decoration1.svg);
+	background-repeat: no-repeat;
+	background-position: right bottom -5px;
+	background-size: 1500px;
 }
 
 .phoneTitle {
@@ -471,6 +475,11 @@
 	animation: openCreditsAnimation 1s forwards;
 }
 
+.credits.closeCredits-animation {
+	position: absolute;
+	animation: closeCreditsAnimation 1s forwards;
+}
+
 .creditsText.playCredits-animation {
 	position: absolute;
 	animation: playCreditsAnimation 10s linear forwards;
@@ -489,6 +498,21 @@
 		/* transform: scale(0.8) rotate(-5deg); */
 
 		left: 99%;
+	}
+}
+
+@keyframes closeCreditsAnimation {
+	0% {
+		left: 99%;
+		/* transform: scale(0.8) rotate(-5deg); */
+	}
+	50% {
+		/* transform: scale(0.8) rotate(5deg); */
+	}
+	100% {
+		/* transform: scale(0.8) rotate(-5deg); */
+
+		left: 25%;
 	}
 }
 
