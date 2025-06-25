@@ -52,7 +52,7 @@ function setupWebSocket(server) {
 					console.log(`👋 Player ${assignedPlayer} left match ${matchId}`);
 				}
 
-				if (match.clients.size === 1 || match.clients.size === 3) {
+				if (!match.gameState.finished && (match.clients.size === 1 || match.clients.size === 3)) {
 					const remainingPlayer = Array.from(match.clients.keys())[0];
 					const winnerNickname = match.clients.get(remainingPlayer)?.nickname;
 		
@@ -62,9 +62,8 @@ function setupWebSocket(server) {
 					const winnerId = gameState.playerDbId[remainingPlayer];
 					const loserId = gameState.playerDbId[assignedPlayer];
 					insertMatch( winnerId, loserId, winnerId, gameState.score[remainingPlayer] , gameState.score[assignedPlayer] );
-		
 					cleanupMatch(matchId, "opponentLeft", winnerId);
-				} else if (match.clients.size === 0) {
+				} else if (!match.gameState.finished && match.clients.size === 0) {
 					cleanupMatch(matchId, "noPlayersLeft");
 				}
 			}

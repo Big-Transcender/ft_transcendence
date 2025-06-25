@@ -66,15 +66,15 @@ function handleInput(gameState, playerId, keys, isAI = false) {
 function handleInputLocal(gameState, key, isAI) {
 
 	if (key === 'w')
-		movePaddle(gameState, 'p1', 'up');
+		movePaddle(gameState, 'p3', 'up');
 	else if (key === 's')
-		movePaddle(gameState, 'p1', 'down');
+		movePaddle(gameState, 'p3', 'down');
 
 	if (isAI || !gameState.aiGame) {
 		if (key === 'ArrowUp')
-			movePaddle(gameState, 'p2', 'up');
+			movePaddle(gameState, 'p4', 'up');
 		else if (key === 'ArrowDown')
-			movePaddle(gameState, 'p2', 'down');
+			movePaddle(gameState, 'p4', 'down');
 	}
 
 }
@@ -197,11 +197,12 @@ function updateBall4Players(gameState) {
 	}
 
 	if ((gameState.score.p2 === 10 || gameState.score.p1 === 10) && gameState.onGoing ) {
-		let winnerId = gameState.playerId.p1;
+		gameState.winnerId = gameState.playerId.p1;
 		if (gameState.score.p1 < gameState.score.p2)
-			winnerId = gameState.playerId.p2;
-		insertMatch(gameState.playerId.p1, gameState.playerId.p2, winnerId, gameState.score.p1, gameState.score.p2); //TODO talk to bruno to see the best way to and the teams matchs to DB
+			gameState.winnerId = gameState.playerId.p2;
+		insertOnDb(gameState);
 		gameState.onGoing = false;
+		gameState.finished= true;
 	}
 
 	// Calculate center Y of ball
@@ -223,7 +224,8 @@ function updateBall4Players(gameState) {
 	// (Player 3) left
 	if (
 		gameState.ballVel.x < 0 &&
-		gameState.ball.x <= paddle3X + paddleWidth + 1 &&
+		gameState.ball.x + ballSizeX >= paddle3X &&  // ball right >= paddle left
+		gameState.ball.x <= paddle3X + paddleWidth && // ball left <= paddle right
 		ballCenterY >= gameState.paddles.p3 - HitBoxBuffer &&
 		ballCenterY <= gameState.paddles.p3 + paddleHeight
 		
@@ -251,7 +253,8 @@ function updateBall4Players(gameState) {
 	// (Player4) right
 	if (
 		gameState.ballVel.x > 0 &&
-		gameState.ball.x + ballSizeX >= paddle4X - 1 &&
+		gameState.ball.x <= paddle4X + paddleWidth && // ball left <= paddle right
+		gameState.ball.x + ballSizeX >= paddle4X &&   // ball right >= paddle left
 		ballCenterY >= gameState.paddles.p4 - HitBoxBuffer &&
 		ballCenterY <= gameState.paddles.p4 + paddleHeight
 	) {
@@ -272,6 +275,14 @@ function insertOnDb(gameState)
 	if (gameState.GamePlayLocal || gameState.aiGame)
 		return ;
 	insertMatch(gameState.playerDbId.p1, gameState.playerDbId.p2, gameState.winnerId, gameState.score.p1, gameState.score.p2);
+	if (gameState.playerDbId.p3 != 0)
+	{
+		if (gameState.score.p1 > gameState.score.p2)
+			insertMatch(gameState.playerDbId.p3, gameState.playerDbId.p4, gameState.playerDbId.p3, gameState.score.p1, gameState.score.p2);
+		else
+			insertMatch(gameState.playerDbId.p3, gameState.playerDbId.p4, gameState.playerDbId.p4, gameState.score.p1, gameState.score.p2);
+	}
+		
 }
 
 
