@@ -98,9 +98,8 @@ const registerNewUser = async () => {
 	return 0;
 };
 
-async function loginUser() {
-	const identifier = (document.getElementById("inputNick") as HTMLInputElement).value.trim();
-	const password = (document.getElementById("inputPass") as HTMLInputElement).value.trim();
+async function loginUser() { const identifier = (document.getElementById("inputNick") as HTMLInputElement).value.trim(); const password = (document.getElementById("inputPass") as HTMLInputElement).value.trim();
+
 
 	console.log("nickname:", identifier);
 	console.log("password:", password);
@@ -129,7 +128,6 @@ async function loginUser() {
 		alert("Something went wrong! " + err);
 	}
 }
-
 function clickButton(button) {
 	button.addEventListener("click", () => {
 		if (button.className.search("loginUser") != -1) {
@@ -164,6 +162,7 @@ document.addEventListener("DOMContentLoaded", () => {
 	const newUserPage = document.getElementById("newUserId");
 	const loginPage = document.getElementById("loginId");
 
+	checkGoogleLogin();
 	if (checkIfLogged()) {
 		changePageTo(loginPage, profilePage);
 		putNickOnProfileHeader(getNickOnLocalStorage());
@@ -237,4 +236,26 @@ function putNickOnProfileHeader(nick: string) {
 function changePageTo(remove, activate) {
 	remove.classList.remove("active");
 	activate.classList.add("active");
+}
+
+async function checkGoogleLogin() {
+	try {
+		const res = await fetch("http://localhost:3000/me", {
+			credentials: "include"
+		});
+		const data = await res.json();
+
+		if (res.ok && data.user) {
+			// ✅ User is logged in via Google
+			console.log("Google login detected:", data.user.nickname);
+
+			setToLogged();
+			setNickOnLocalStorage(data.user.nickname);
+			putNickOnProfileHeader(data.user.nickname);
+			changePageTo(document.getElementById("loginId"), document.getElementById("profileId"));
+			flipboardNumberAnimation("23");
+		}
+	} catch (err) {
+		console.error("Error checking Google login:", err);
+	}
 }

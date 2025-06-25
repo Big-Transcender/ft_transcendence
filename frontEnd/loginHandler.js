@@ -148,6 +148,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const profilePage = document.getElementById("profileId");
     const newUserPage = document.getElementById("newUserId");
     const loginPage = document.getElementById("loginId");
+    checkGoogleLogin();
     if (checkIfLogged()) {
         changePageTo(loginPage, profilePage);
         putNickOnProfileHeader(getNickOnLocalStorage());
@@ -211,4 +212,24 @@ function putNickOnProfileHeader(nick) {
 function changePageTo(remove, activate) {
     remove.classList.remove("active");
     activate.classList.add("active");
+}
+async function checkGoogleLogin() {
+    try {
+        const res = await fetch("http://localhost:3000/me", {
+            credentials: "include"
+        });
+        const data = await res.json();
+        if (res.ok && data.user) {
+            // ✅ User is logged in via Google
+            console.log("Google login detected:", data.user.nickname);
+            setToLogged();
+            setNickOnLocalStorage(data.user.nickname);
+            putNickOnProfileHeader(data.user.nickname);
+            changePageTo(document.getElementById("loginId"), document.getElementById("profileId"));
+            flipboardNumberAnimation("23");
+        }
+    }
+    catch (err) {
+        console.error("Error checking Google login:", err);
+    }
 }

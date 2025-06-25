@@ -60,7 +60,7 @@ fastify.get('/auth/google/callback',
 	{
 		preValidation: fastifyPassport.authenticate('google', {scope:['profile', 'email']})},
 	async (req, res) => {
-	res.redirect('/')
+	res.redirect('http://localhost:3000/#profile')
 	})
 fastify.get('/logingoogle', fastifyPassport.authenticate('google', {scope: ['profile', 'email']}))
 
@@ -72,13 +72,14 @@ fastify.get('/logout',
 	})
 
 fastify.get('/me', async (req, res) => {
-    if (req.isAuthenticated && req.isAuthenticated()) {
-        return { user: req.user };
-    } else {
-        res.code(401);
-        return { error: 'Not authenticated' };
-    }
+	if (req.isAuthenticated()) {
+		const { id, nickname, email } = req.user;
+		return { user: { id, nickname, email } }; // 👈 No password here
+	} else {
+		return res.status(401).send({ error: "Not authenticated" });
+	}
 });
+
 
 async function registerRoutes() {
 	const routesDir = path.join(__dirname, 'routes');
@@ -92,7 +93,10 @@ async function registerRoutes() {
 
 async function start() {
 	try {
-		await fastify.register(cors, { origin: '*' });
+		await fastify.register(cors, {
+			origin: "http://localhost:3000",
+			credentials: true
+		});
 
 		// Setup WebSocket connection
 		setupWebSocket(fastify.server);
