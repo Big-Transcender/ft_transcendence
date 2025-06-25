@@ -18,8 +18,9 @@ logs/
 *.log
 
 # Environment variables
-.env
+BackEnd/.env
 .env.*
+BackEnd/src/not-so-secret-key
 
 # Build directories
 dist/
