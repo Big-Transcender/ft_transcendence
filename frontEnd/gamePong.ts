@@ -32,7 +32,7 @@ export function startPongWebSocket(matchId: string, isLocal: boolean, aiGame: bo
 
 	socket.addEventListener("close", () => {
 		console.log("❌ WebSocket connection closed");
-		cancelAnimationFrame(animationFrameId); // Stop sending inputs
+		cancelAnimationFrame(animationFrameId);
 	});
 
 	socket.addEventListener("error", (event: Event) => {
@@ -124,6 +124,21 @@ export function startPongWebSocket(matchId: string, isLocal: boolean, aiGame: bo
 				case "assign": {
 					playerId = data.payload;
 					console.log(`👤 You are assigned as ${playerId}`);
+					break;
+				}
+				case "gameOver": {
+					const { winner, reason } = data.payload;
+					//console.log(`Game Over! Winner: ${winner}, Reason: ${reason}`);
+	
+					if (winner) {
+						console.log(`Game Over! The winner is ${winner}. Reason: ${reason}`);
+						alert(`Game Over! The winner is ${winner}. Reason: ${reason}`);
+					} else {
+						console.log(`Game Over! Reason: ${reason}`)
+						alert(`Game Over! Reason: ${reason}`);
+					}
+
+					window.location.hash = "#gameSelector";
 					break;
 				}
 			}

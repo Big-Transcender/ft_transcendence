@@ -1,3 +1,4 @@
+const { getNicknameByUserId } = require('./dataQuerys');
 
 const matches = new Map(); // matchId -> { gameState, clients, intervalId }
 
@@ -39,8 +40,7 @@ function startGameLoopForMatch(matchId, updateBall, isLocal = false, aiGame = fa
 				updateBall(gameState);
 				if (gameState.finished) {
 					console.log("🏁 Game over! Cleaning up match...");
-					clearInterval(match.intervalId);
-					matches.delete(matchId);
+					cleanupMatch(matchId, "gameFinished");
 					return;
 				}
 			}
@@ -64,8 +64,7 @@ function removeClientFromMatch(matchId, ws) {
 		return;
 	match.clients.delete(ws);
 	if (match.clients.size === 0) {
-		clearInterval(match.intervalId);
-		matches.delete(matchId);
+		cleanupMatch(matchId, "noPlayersLeft");
 	}
 }
 
@@ -77,10 +76,33 @@ function startTimer(time, gameState) {
 	}, time);
 }
 
+function cleanupMatch(matchId, reason = "unknown", nick = null)
+{
+	const match = matches.get(matchId);
+	if (!match) return;
+
+	// Notify all clients about the match cleanup
+	match.clients.forEach((client) => {
+		const message = JSON.stringify({
+			type: 'gameOver',
+			payload: { winner: getNicknameByUserId(match.gameState.winnerId) || getNicknameByUserId(nick), reason },
+		});
+		if (client.ws.readyState === 1) {
+			client.ws.send(message);
+			client.ws.close();
+		}
+	});
+
+	clearInterval(match.intervalId);
+	matches.delete(matchId);
+
+	console.log(`🗑️ Match ${matchId} removed (reason: ${reason})`);
+}
+
 module.exports = {
 	matches,
 	createMatch,
 	startGameLoopForMatch,
 	removeClientFromMatch,
-	startTimer
+	cleanupMatch
 };

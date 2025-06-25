@@ -1,6 +1,7 @@
 const WebSocket = require('ws');
-const { matches, createMatch, startGameLoopForMatch, removeClientFromMatch } = require('./gameLoop');
+const { matches, createMatch, startGameLoopForMatch, cleanupMatch } = require('./gameLoop');
 const { createInitialGameState, updateBall, updateBall4Players, handleInput } = require('./gameLogic');
+const { insertMatch, getUserIdByNickname } = require('./dataQuerys.js');
 
 function setupWebSocket(server) {
 	const wss = new WebSocket.Server({ server });
@@ -45,15 +46,26 @@ function setupWebSocket(server) {
 		ws.on('close', () => {
 			if (matchId && matches.has(matchId)) {
 				const match = matches.get(matchId);
+		
 				if (assignedPlayer && match.clients.get(assignedPlayer)?.ws === ws) {
 					match.clients.delete(assignedPlayer);
 					console.log(`👋 Player ${assignedPlayer} left match ${matchId}`);
 				}
 
-				if (match.clients.size === 0) {
-					clearInterval(match.intervalId)
-					matches.delete(matchId);
-					console.log(`🗑️ Match ${matchId} removed (no players left)`);
+				if (match.clients.size === 1 || match.clients.size === 3) {
+					const remainingPlayer = Array.from(match.clients.keys())[0];
+					const winnerNickname = match.clients.get(remainingPlayer)?.nickname;
+		
+					console.log(`🏆 Player ${remainingPlayer} (${winnerNickname}) wins match ${matchId} by default!`);
+		
+					const gameState = match.gameState;
+					const winnerId = gameState.playerDbId[remainingPlayer];
+					const loserId = gameState.playerDbId[assignedPlayer];
+					insertMatch( winnerId, loserId, winnerId, gameState.score[remainingPlayer] , gameState.score[assignedPlayer] );
+		
+					cleanupMatch(matchId, "opponentLeft", winnerId);
+				} else if (match.clients.size === 0) {
+					cleanupMatch(matchId, "noPlayersLeft");
 				}
 			}
 		});
@@ -62,38 +74,34 @@ function setupWebSocket(server) {
 	return wss;
 }
 
-function setPlayers(match, nickname, ws, matchId, team) {
+function setPlayers(match, nickname, ws, matchId, team)
+{
+	const maxPlayers = team ? 4 : 2;
+	let assignedPlayer = null;
 
-	if (!match.clients.has('p1')) {
-		match.clients.set('p1', {nickname, ws});
-		match.gameState.playerDbId.p1 = nickname;
-		assignedPlayer = 'p1';
-	} else if (!match.clients.has('p2')) {
-		match.clients.set('p2', {nickname, ws});
-		match.gameState.playerDbId.p2 = nickname;
-		assignedPlayer = 'p2';
-	} else {
-		if (!team)
-		{
-			ws.send(JSON.stringify({ type: 'error', message: 'Match is full' }));
-			ws.close();
-			return;
-		}
-		else if (!match.clients.has('p3')) {
-			match.clients.set('p3', {nickname, ws});
-			match.gameState.playerDbId.p3 = nickname;
-			assignedPlayer = 'p3';
-		}
-		else if (!match.clients.has('p4')) {
-			match.clients.set('p4', {nickname, ws});
-			match.gameState.playerDbId.p4 = nickname;
-			assignedPlayer = 'p4';
+	for (let i = 1; i <= maxPlayers; i++) {
+		const playerKey = `p${i}`;
+		if (!match.clients.has(playerKey)) {
+			match.clients.set(playerKey, { nickname, ws });
+			match.gameState.playerDbId[playerKey] = getUserIdByNickname(nickname);
+			assignedPlayer = playerKey;
+			break;
 		}
 	}
+
+	if (!assignedPlayer) {
+		ws.send(JSON.stringify({ type: 'error', message: 'Match is full' }));
+		ws.close();
+		return null;
+	}
+
 	ws.send(JSON.stringify({ type: 'assign', payload: assignedPlayer }));
 	console.log(`🎮 Player ${assignedPlayer} joined match ${matchId}`);
 	return assignedPlayer;
-
 }
+
+
+
+
 
 module.exports = setupWebSocket;
