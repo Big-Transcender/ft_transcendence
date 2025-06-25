@@ -99,8 +99,9 @@ const registerNewUser = async () => {
 	return 0;
 };
 
-async function loginUser() { const identifier = (document.getElementById("inputNick") as HTMLInputElement).value.trim(); const password = (document.getElementById("inputPass") as HTMLInputElement).value.trim();
-
+async function loginUser() {
+	const identifier = (document.getElementById("inputNick") as HTMLInputElement).value.trim();
+	const password = (document.getElementById("inputPass") as HTMLInputElement).value.trim();
 
 	console.log("nickname:", identifier);
 	console.log("password:", password);
@@ -242,14 +243,12 @@ function changePageTo(remove, activate) {
 async function checkGoogleLogin() {
 	try {
 		const res = await fetch("http://localhost:3000/me", {
-			credentials: "include"
+			credentials: "include",
 		});
 		const data = await res.json();
-
 		if (res.ok && data.user) {
 			// ✅ User is logged in via Google
 			console.log("Google login detected:", data.user.nickname);
-
 			setToLogged();
 			setNickOnLocalStorage(data.user.nickname);
 			putNickOnProfileHeader(data.user.nickname);
