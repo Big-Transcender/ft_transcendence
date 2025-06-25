@@ -66,7 +66,7 @@ fastify.get(
 		preValidation: fastifyPassport.authenticate("google", { scope: ["profile", "email"] }),
 	},
 	async (req, res) => {
-		res.redirect("http://localhost:3000/#profile");
+		res.redirect("http://localhost:5173/#profile");
 	}
 );
 fastify.get("/logingoogle", fastifyPassport.authenticate("google", { scope: ["profile", "email"] }));

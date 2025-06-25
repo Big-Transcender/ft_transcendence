@@ -164,7 +164,7 @@ document.addEventListener("DOMContentLoaded", () => {
 	const newUserPage = document.getElementById("newUserId");
 	const loginPage = document.getElementById("loginId");
 
-	checkGoogleLogin();
+	// await checkGoogleLogin();
 	if (checkIfLogged()) {
 		changePageTo(loginPage, profilePage);
 		putNickOnProfileHeader(getNickOnLocalStorage());
@@ -253,6 +253,7 @@ async function checkGoogleLogin() {
 			setNickOnLocalStorage(data.user.nickname);
 			putNickOnProfileHeader(data.user.nickname);
 			changePageTo(document.getElementById("loginId"), document.getElementById("profileId"));
+			console.log("iss loged: " + checkIfLogged());
 			// flipboardNumberAnimation("23");
 		}
 	} catch (err) {
