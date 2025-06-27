@@ -66,15 +66,15 @@ function handleInput(gameState, playerId, keys, isAI = false) {
 function handleInputLocal(gameState, key, isAI) {
 
 	if (key === 'w')
-		movePaddle(gameState, 'p3', 'up');
+		movePaddle(gameState, 'p1', 'up');
 	else if (key === 's')
-		movePaddle(gameState, 'p3', 'down');
+		movePaddle(gameState, 'p1', 'down');
 
 	if (isAI || !gameState.aiGame) {
 		if (key === 'ArrowUp')
-			movePaddle(gameState, 'p4', 'up');
+			movePaddle(gameState, 'p2', 'up');
 		else if (key === 'ArrowDown')
-			movePaddle(gameState, 'p4', 'down');
+			movePaddle(gameState, 'p2', 'down');
 	}
 
 }
