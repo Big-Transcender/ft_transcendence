@@ -181,7 +181,16 @@ document.addEventListener("DOMContentLoaded", async () => {
 	});
 
 	//Logout Button
-	logoutButton.addEventListener("click", () => {
+	logoutButton.addEventListener("click", async () => {
+		try {
+			await fetch("http://localhost:3000/logout", {
+				method: "GET",
+				credentials: "include", // ✅ needed to include the session cookie
+			});
+		} catch (err) {
+			console.error("Logout failed:", err);
+		}
+
 		setToUnLogged();
 		changePageTo(profilePage, loginPage);
 		stopSpech();

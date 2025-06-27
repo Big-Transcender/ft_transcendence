@@ -23,37 +23,33 @@ fastify.register(fastifySecureSesion, {
 fastify.register(fastifyPassport.initialize());
 fastify.register(fastifyPassport.secureSession());
 
-fastifyPassport.use(
-	"google",
-	new GoogleStrategy(
-		{
-			clientID: process.env.GOOGLE_CLIENT_ID,
-			clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-			callbackURL: "http://localhost:3000/auth/google/callback",
-		},
-		async function (accessToken, refreshToken, profile, done) {
-			try {
-				const email = profile.email;
+fastifyPassport.use('google', new GoogleStrategy({
+	clientID: process.env.GOOGLE_CLIENT_ID,
+	clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+	callbackURL: "http://localhost:3000/auth/google/callback"
+}, (accessToken, refreshToken, profile, done) => {
+	try {
+		const email = profile.email;
+		const nickname = profile.displayName || profile.given_name;
 
-				// Look for existing user in your DB
-				const user = db.prepare("SELECT * FROM users WHERE email = ?").get(email);
+		let user = db.prepare(`SELECT * FROM users WHERE email = ?`).get(email);
 
-				console.log("📧 Google profile email:", profile.email);
-				if (user) {
-					// ✅ User exists — continue
-					console.log("User exist")
-					done(null, user);
-				} else {
-					// ❌ User not found — reject login
-					console.log("user not found")
-					done(null, false, { message: "User not found in database" });
-				}
-			} catch (err) {
-				done(err);
-			}
+		if (!user) {
+			// Create user if not exists
+			const stmt = db.prepare(`
+				INSERT INTO users (nickname, password, email) VALUES (?, ?, ?)
+			`);
+			const defaultPassword = 'google_oauth'; // or random string
+			const result = stmt.run(nickname, defaultPassword, email);
+			user = db.prepare(`SELECT * FROM users WHERE id = ?`).get(result.lastInsertRowid);
 		}
-	)
-);
+
+		done(null, user);
+	} catch (err) {
+		console.error("Google login error:", err);
+		done(err);
+	}
+}));
 
 fastifyPassport.registerUserDeserializer(async (user, req) => {
 	return user;
@@ -73,11 +69,11 @@ fastify.get(
 );
 fastify.get("/logingoogle", fastifyPassport.authenticate("google", { scope: ["profile", "email"] }));
 
-fastify.get("/logout", async (req, res) => {
-	req.logout();
-	return { success: true };
+fastify.get('/logout', async (req, res) => {
+	req.logout(); // Passport function
+	req.session = null; // Optional: clear session manually
+	res.send({ success: true });
 });
-
 fastify.get('/me', async (req, res) => {
 	if (req.user) {
 		return { user: req.user };
