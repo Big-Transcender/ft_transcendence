@@ -185,13 +185,14 @@ document.addEventListener("DOMContentLoaded", async () => {
 		try {
 			await fetch("http://localhost:3000/logout", {
 				method: "GET",
-				credentials: "include", // ✅ needed to include the session cookie
+				credentials: "include",
 			});
 		} catch (err) {
 			console.error("Logout failed:", err);
 		}
 
 		setToUnLogged();
+		localStorage.clear();
 		changePageTo(profilePage, loginPage);
 		stopSpech();
 		typeText(bubbleTextLogin, "Welcome back!", 60);

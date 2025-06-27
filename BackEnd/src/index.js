@@ -3,7 +3,7 @@ const cors = require("@fastify/cors");
 const path = require("path");
 const fs = require("fs");
 const fastifyPassport = require("@fastify/passport");
-const fastifySecureSesion = require("@fastify/secure-session");
+const fastifySecureSession = require("@fastify/secure-session");
 const fastifyStatic = require("@fastify/static");
 const setupWebSocket = require("./socketConnection");
 const GoogleStrategy = require("passport-google-oauth2").Strategy;
@@ -13,12 +13,17 @@ const db = require("./database");
 
 dotenv.config();
 
-fastify.register(fastifySecureSesion, {
-	key: fs.readFileSync(path.join(__dirname, "not-so-secret-key")),
+fastify.register(fastifySecureSession, {
+	key: fs.readFileSync(path.join(__dirname, 'not-so-secret-key')),
 	cookie: {
-		path: "/",
-	},
+		path: '/',       // Make sure path is set
+		httpOnly: true,
+		secure: false,   // true if using HTTPS; false if local dev with HTTP
+		sameSite: 'lax', // or 'strict' depending on your setup
+	}
 });
+
+
 
 fastify.register(fastifyPassport.initialize());
 fastify.register(fastifyPassport.secureSession());
@@ -67,12 +72,20 @@ fastify.get(
 		res.redirect("http://localhost:5173/#profile");
 	}
 );
-fastify.get("/logingoogle", fastifyPassport.authenticate("google", { scope: ["profile", "email"] }));
+
+fastify.get('/logingoogle',
+	fastifyPassport.authenticate('google', {
+		scope: ['profile', 'email'],
+		prompt: 'select_account' // <-- force prompt every time
+	})
+);
 
 fastify.get('/logout', async (req, res) => {
-	req.logout(); // Passport function
-	req.session = null; // Optional: clear session manually
-	res.send({ success: true });
+	req.logout();
+	req.session.delete();
+	res.clearCookie('session', { path: '/' });
+
+	return res.send({ success: true });
 });
 fastify.get('/me', async (req, res) => {
 	if (req.user) {
