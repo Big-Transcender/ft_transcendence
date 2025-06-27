@@ -41,9 +41,11 @@ fastifyPassport.use(
 				console.log("📧 Google profile email:", profile.email);
 				if (user) {
 					// ✅ User exists — continue
+					console.log("User exist")
 					done(null, user);
 				} else {
 					// ❌ User not found — reject login
+					console.log("user not found")
 					done(null, false, { message: "User not found in database" });
 				}
 			} catch (err) {
@@ -76,14 +78,14 @@ fastify.get("/logout", async (req, res) => {
 	return { success: true };
 });
 
-fastify.get("/me", async (req, res) => {
-	if (req.isAuthenticated()) {
-		const { id, nickname, email } = req.user;
-		return { user: { id, nickname, email } }; // 👈 No password here
+fastify.get('/me', async (req, res) => {
+	if (req.user) {
+		return { user: req.user };
 	} else {
-		return res.status(401).send({ error: "Not authenticated" });
+		return res.status(401).send({ error: 'Not logged in' });
 	}
 });
+
 
 async function registerRoutes() {
 	const routesDir = path.join(__dirname, "routes");
@@ -97,9 +99,9 @@ async function registerRoutes() {
 
 async function start() {
 	try {
-		await fastify.register(cors, {
-			origin: "*",
-			credentials: true,
+		await fastify.register(require('@fastify/cors'), {
+			origin: 'http://localhost:5173',  // ✅ add the missing slashes
+			credentials: true
 		});
 
 		// Setup WebSocket connection
