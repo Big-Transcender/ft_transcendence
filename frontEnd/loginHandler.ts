@@ -154,7 +154,7 @@ clickButton(createUserButton);
 
 // clickButton(forgotButton);
 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
 	const newUserButton = document.querySelector(".newUser");
 	const loginButton = document.getElementById("loginUserButton");
 	const backButton = document.getElementById("backButtonNewUser");
@@ -164,6 +164,7 @@ document.addEventListener("DOMContentLoaded", () => {
 	const newUserPage = document.getElementById("newUserId");
 	const loginPage = document.getElementById("loginId");
 
+	await checkGoogleLogin();
 	// await checkGoogleLogin();
 	if (checkIfLogged()) {
 		changePageTo(loginPage, profilePage);
@@ -180,8 +181,18 @@ document.addEventListener("DOMContentLoaded", () => {
 	});
 
 	//Logout Button
-	logoutButton.addEventListener("click", () => {
+	logoutButton.addEventListener("click", async () => {
+		try {
+			await fetch("http://localhost:3000/logout", {
+				method: "GET",
+				credentials: "include",
+			});
+		} catch (err) {
+			console.error("Logout failed:", err);
+		}
+
 		setToUnLogged();
+		localStorage.clear();
 		changePageTo(profilePage, loginPage);
 		stopSpech();
 		typeText(bubbleTextLogin, "Welcome back!", 60);
@@ -243,20 +254,17 @@ function changePageTo(remove, activate) {
 async function checkGoogleLogin() {
 	try {
 		const res = await fetch("http://localhost:3000/me", {
-			credentials: "include",
+			credentials: "include", // ✅ must include to send session cookie
 		});
 		const data = await res.json();
 		if (res.ok && data.user) {
-			// ✅ User is logged in via Google
-			console.log("Google login detected:", data.user.nickname);
 			setToLogged();
 			setNickOnLocalStorage(data.user.nickname);
 			putNickOnProfileHeader(data.user.nickname);
 			changePageTo(document.getElementById("loginId"), document.getElementById("profileId"));
-			console.log("iss loged: " + checkIfLogged());
-			// flipboardNumberAnimation("23");
 		}
 	} catch (err) {
 		console.error("Error checking Google login:", err);
 	}
 }
+
