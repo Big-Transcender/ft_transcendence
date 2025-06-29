@@ -154,6 +154,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (checkIfLogged()) {
         changePageTo(loginPage, profilePage);
         putNickOnProfileHeader(getNickOnLocalStorage());
+        getUserStats(getNickOnLocalStorage());
         // flipboardNumberAnimation("23");
     }
     //Login Button
@@ -179,6 +180,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         changePageTo(profilePage, loginPage);
         stopSpech();
         typeText(bubbleTextLogin, "Welcome back!", 60);
+        getUserStats(getNickOnLocalStorage());
     });
     //NewUser Button
     newUserButton.addEventListener("click", () => {

@@ -169,6 +169,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 	if (checkIfLogged()) {
 		changePageTo(loginPage, profilePage);
 		putNickOnProfileHeader(getNickOnLocalStorage());
+		getUserStats(getNickOnLocalStorage());
 		// flipboardNumberAnimation("23");
 	}
 
@@ -196,6 +197,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 		changePageTo(profilePage, loginPage);
 		stopSpech();
 		typeText(bubbleTextLogin, "Welcome back!", 60);
+		getUserStats(getNickOnLocalStorage());
 	});
 
 	//NewUser Button
@@ -267,4 +269,3 @@ async function checkGoogleLogin() {
 		console.error("Error checking Google login:", err);
 	}
 }
-

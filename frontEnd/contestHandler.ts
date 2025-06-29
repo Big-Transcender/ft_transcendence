@@ -159,7 +159,7 @@ async function createNewContest() {
 			return null;
 		} else {
 			changePageTo(createContestPage, joinedContestPage);
-			getInfoFromContest(data.tournamentId);
+			getInfoFromContest(data.code);
 			console.log("HERE: " + JSON.stringify(data));
 		}
 
@@ -192,7 +192,7 @@ async function getInfoFromContest(pin: string) {
 				break;
 			}
 		}
-		pinNumber.textContent = data.id;
+		pinNumber.textContent = data.code;
 		name.textContent = data.name;
 		return true;
 	} catch (err) {
