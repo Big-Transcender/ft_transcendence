@@ -132,7 +132,7 @@ async function playExpandingAnimation(button: any) {
 	phonetitle.textContent = "Welcome to the Animal Ponging";
 }
 
-fetch("http://localhost:3000/leaderBoard")
+fetch("http://localhost:3000/leaderboard")
 	.then((response) => response.json())
 	.then((data) => {
 		const table = document.getElementById("playerRankListId") as HTMLTableElement;

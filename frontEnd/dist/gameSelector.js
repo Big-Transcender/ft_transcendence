@@ -11,6 +11,21 @@ const gameSelectorPongMultiplayerPage = document.getElementById("gameSelectorPon
 const startGameTimer = document.getElementById("timerId");
 const startGameTimerBox = document.getElementById("timerBoxId");
 import { startPongWebSocket } from "./gamePong.js";
+function setRandomBackground() {
+    const bgNumber = Math.floor(Math.random() * 3) + 1;
+    const board = document.querySelector(".board");
+    switch (bgNumber) {
+        case 1:
+            board.style.backgroundImage = "url('/images/pongGame/pongGameBG1.png')";
+            break;
+        case 2:
+            board.style.backgroundImage = "url('/images/pongGame/pongGameBG2.png')";
+            break;
+        case 3:
+            board.style.backgroundImage = "url('/images/pongGame/pongGameBG3.png')";
+            break;
+    }
+}
 async function animateTimer() {
     startGameTimerBox.style.opacity = "1";
     startGameTimer.textContent = "1";
@@ -38,6 +53,7 @@ document.addEventListener("DOMContentLoaded", () => {
             updatePageHash(`#pong/${matchId}`);
             startPongWebSocket(matchId, true, true); // true = local mode
             animateTimer();
+            setRandomBackground();
             resetEmotions();
             setGameScore(getNickOnLocalStorage());
             backGamePongButton.classList.add("active");

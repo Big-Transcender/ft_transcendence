@@ -81,7 +81,6 @@ document.addEventListener("DOMContentLoaded", () => {
         else {
             await betterWait(100);
             createNewContest();
-            // changePageTo(createContestPage, joinedContestPage);
         }
     });
     genericBackButton.forEach((button) => {
@@ -142,7 +141,11 @@ async function createNewContest() {
             displayWarning(data.error);
             return null;
         }
-        console.log("Torneio criado com sucesso:", data);
+        else {
+            changePageTo(createContestPage, joinedContestPage);
+            getInfoFromContest(data.tournamentId);
+            console.log("HERE: " + JSON.stringify(data));
+        }
         return data;
     }
     catch (err) {

@@ -224,8 +224,8 @@
 .footer {
 	position: absolute;
 	height: 5px;
-	width: 15vh;
-	bottom: 1vw;
+	width: 150px;
+	bottom: 15px;
 	left: 50%;
 	translate: -50%;
 	background-color: #ffffff;

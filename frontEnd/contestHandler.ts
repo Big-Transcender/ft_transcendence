@@ -88,7 +88,6 @@ document.addEventListener("DOMContentLoaded", () => {
 		} else {
 			await betterWait(100);
 			createNewContest();
-			// changePageTo(createContestPage, joinedContestPage);
 		}
 	});
 
@@ -158,9 +157,12 @@ async function createNewContest() {
 			console.error("Erro:", data.error);
 			displayWarning(data.error);
 			return null;
+		} else {
+			changePageTo(createContestPage, joinedContestPage);
+			getInfoFromContest(data.tournamentId);
+			console.log("HERE: " + JSON.stringify(data));
 		}
 
-		console.log("Torneio criado com sucesso:", data);
 		return data;
 	} catch (err) {
 		console.error("Erro na requisição:", err);

@@ -3,16 +3,11 @@ let losesNumber = document.getElementById("boxLosesNumber");
 let gamesNumber = document.getElementById("boxGamesNumber");
 let positionNumber = document.getElementById("positionId");
 let winRateText = document.getElementById("winRateTextId");
-// winsNumber.textContent = "0";
-getUserPosition();
-getUserWinrate();
-//getUserStatus();
-flipboardNumberAnimation("23", winsNumber);
+getUserStats(getNickOnLocalStorage());
 async function flipboardNumberAnimation(target, targetBox) {
     targetBox.textContent = "";
     let flips = 50;
     let delay = 100;
-    console.log("Teste final");
     // Inicializa todos os dígitos como "0"
     const spans = [];
     for (let i = 0; i < target.length; i++) {
@@ -65,52 +60,24 @@ function getUserPosition() {
         console.error("Failed to fetch leaderboard position:", error.message);
     });
 }
-function getUserWinrate() {
-    //calulate win-rate percentage
-    // let winPercentage = wins / games
-    let winPercentage = 1 / 50;
-    winRateText.textContent = "Current Winrate: " + (winPercentage * 100).toString() + " %";
+async function getUserStats(nickname) {
+    fetch(`http://localhost:3000/player-stats/${nickname}`)
+        .then((response) => {
+        if (!response.ok) {
+            return response.json().then((err) => {
+                throw new Error(err.error || "Unknown error");
+            });
+        }
+        return response.json();
+    })
+        .then((stats) => {
+        flipboardNumberAnimation(stats.wins.toString(), winsNumber);
+        flipboardNumberAnimation(stats.defeats.toString(), losesNumber);
+        flipboardNumberAnimation(stats.games_played.toString(), gamesNumber);
+        winRateText.textContent = "Current Winrate: " + stats.win_percentage;
+        getUserPosition();
+    })
+        .catch((error) => {
+        console.error("Failed to fetch player stats:", error.message);
+    });
 }
-// runNumberAnimation("23");
-// const API_URL = "http://127.0.0.1:3000/users";
-// let users = [];
-// fetch(API_URL)
-// 	.then((res) => res.json())
-// 	.then((data) => {
-// 		users = data;
-// 		data.forEach((user) => {
-// 			console.log(user.email);
-// 		});
-// 		updateWins();
-// 		updateLoses();
-// 		updatePlays();
-// 		updateNick();
-// 	});
-// function updateWins() {
-// 	document.getElementById("winNumberId").innerText = getWins();
-// }
-// function updateLoses() {
-// 	document.getElementById("loseNumberId").innerText = getLoses();
-// }
-// function updatePlays() {
-// 	document.getElementById("playNumberId").innerText = getPlays();
-// }
-// function updateNick() {
-// 	document.getElementById("profileNickId").innerText = getNick();
-// }
-// function getNick() {
-// 	if (users[0] === undefined) return "DEAD";
-// 	return users[0].nickname;
-// }
-// function getWins() {
-// 	if (users[0] === undefined) return "DEAD";
-// 	return users[0].id;
-// }
-// function getLoses() {
-// 	if (users[0] === undefined) return "DEAD";
-// 	return users[0].loses;
-// }
-// function getPlays() {
-// 	if (users[0] === undefined) return "DEAD";
-// 	return users[0].plays;
-// }
