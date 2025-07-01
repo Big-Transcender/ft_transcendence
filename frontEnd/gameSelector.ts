@@ -96,7 +96,7 @@ document.addEventListener("DOMContentLoaded", () => {
 			const matchId = generateMatchId()
 			alert(`Match created! Share this ID with your friend: ${matchId}`);
 			history.replaceState(undefined, "", `#pong/${matchId}`);
-			startPongWebSocket(matchId, false, false, true); // Start as host
+			startPongWebSocket(matchId, false, false); // Start as host
 			changePageTo(gameSelectorPongMultiplayerPage, pongGamePage);
 			backGamePongButton.classList.add("active");
 			animateTimer();
@@ -106,7 +106,7 @@ document.addEventListener("DOMContentLoaded", () => {
 			const matchId = prompt("Enter the match ID:");
 			if (matchId) {
 				history.replaceState(undefined, "", `#pong/${matchId}`);
-				startPongWebSocket(matchId, false, false, true); // Join as client
+				startPongWebSocket(matchId, false, false); // Join as client
 				changePageTo(gameSelectorPongMultiplayerPage, pongGamePage);
 				backGamePongButton.classList.add("active");
 				animateTimer();

@@ -10,6 +10,9 @@ const gameSelectorPongPage = document.getElementById("gameSelectorPongId");
 const gameSelectorPongMultiplayerPage = document.getElementById("gameSelectorPongMultiplayerId");
 const startGameTimer = document.getElementById("timerId");
 const startGameTimerBox = document.getElementById("timerBoxId");
+function generateMatchId() {
+    return "match-" + Date.now() + "-" + Math.floor(Math.random() * 10000);
+}
 import { startPongWebSocket } from "./gamePong.js";
 function setRandomBackground() {
     const bgNumber = Math.floor(Math.random() * 3) + 1;
@@ -49,7 +52,7 @@ document.addEventListener("DOMContentLoaded", () => {
     buttonSinglePong.addEventListener("click", () => {
         if (checkIfLogged()) {
             changePageTo(gameSelectorPongPage, pongGamePage);
-            const matchId = "match-" + Date.now() + "-" + Math.floor(Math.random() * 10000);
+            const matchId = generateMatchId();
             updatePageHash(`#pong/${matchId}`);
             startPongWebSocket(matchId, true, true); // true = local mode
             animateTimer();
@@ -75,7 +78,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const action = prompt("Do you want to create a new match or join an existing one? (Type 'create' or 'join')");
         if (action === "create") {
             // Create a new match
-            const matchId = "match-" + Date.now() + "-" + Math.floor(Math.random() * 10000);
+            const matchId = generateMatchId();
             alert(`Match created! Share this ID with your friend: ${matchId}`);
             history.replaceState(undefined, "", `#pong/${matchId}`);
             startPongWebSocket(matchId, false, false); // Start as host
@@ -110,7 +113,7 @@ document.addEventListener("DOMContentLoaded", () => {
     buttonLocalMP.addEventListener("click", () => {
         if (checkIfLogged()) {
             changePageTo(gameSelectorPongMultiplayerPage, pongGamePage);
-            const matchId = "match-" + Date.now() + "-" + Math.floor(Math.random() * 10000);
+            const matchId = generateMatchId();
             updatePageHash(`#pong/${matchId}`);
             startPongWebSocket(matchId, true); // true = local mode
             resetEmotions();
