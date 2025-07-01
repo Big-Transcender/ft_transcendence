@@ -16,7 +16,11 @@ function genericBackFunctionContest() {
             contestMainPage.classList.add("active");
         }
         else if (currentActive.id === "contestJoinedSelectorId") {
-            joinContestPage.classList.add("active");
+            contestMainPage.classList.add("active");
+            stopContestPolling();
+        }
+        else if (currentActive.id === "contestCreateId") {
+            contestMainPage.classList.add("active");
         }
     }
 }
@@ -61,7 +65,7 @@ document.addEventListener("DOMContentLoaded", () => {
             changePageTo(contestMainPage, createContestPage);
         }
     });
-    //Enter Contest Players Page
+    //JOIN THE CONTEST BUTTON
     enterContestButton.addEventListener("click", async () => {
         const inputPin = document.getElementById("inputPin").value.trim();
         if (!inputPin.length) {
@@ -69,11 +73,14 @@ document.addEventListener("DOMContentLoaded", () => {
         }
         else if (await checkIsValidPin(inputPin)) {
             await betterWait(100);
-            changePageTo(joinContestPage, joinedContestPage);
-            getInfoFromContest(inputPin);
+            if (await joinTournament(getNickOnLocalStorage(), inputPin)) {
+                changePageTo(joinContestPage, joinedContestPage);
+                getInfoFromContest(inputPin);
+                startContestPolling(inputPin);
+            }
         }
     });
-    // Create new Contest, join the contest created
+    // CREATE NEW CONTEST BUTTON
     createNewContestButton.addEventListener("click", async () => {
         if (!checkIfLogged()) {
             displayWarning("You need to log in.");
@@ -121,6 +128,21 @@ if (pinBox) {
         }
     });
 }
+let contestPollingInterval = null;
+function startContestPolling(pin, intervalMs = 2000) {
+    getInfoFromContest(pin);
+    if (contestPollingInterval)
+        clearInterval(contestPollingInterval);
+    contestPollingInterval = window.setInterval(() => {
+        getInfoFromContest(pin);
+    }, intervalMs);
+}
+function stopContestPolling() {
+    if (contestPollingInterval) {
+        clearInterval(contestPollingInterval);
+        contestPollingInterval = null;
+    }
+}
 async function createNewContest() {
     //Create Contest here
     const tournamentName = document.getElementById("inputContestNameId").value.trim();
@@ -143,8 +165,8 @@ async function createNewContest() {
         }
         else {
             changePageTo(createContestPage, joinedContestPage);
-            getInfoFromContest(data.code);
-            console.log("HERE: " + JSON.stringify(data));
+            // getInfoFromContest(data.code);
+            startContestPolling(data.code);
         }
         return data;
     }
@@ -160,17 +182,15 @@ async function getInfoFromContest(pin) {
         const playerPlaces = document.querySelectorAll(".playerContestPlace");
         let pinNumber = document.getElementById("contestPinBoxNumberId");
         let name = document.getElementById("contestNameId");
-        // console.log(data.matches);
-        let matches = data.matches;
-        for (let i = 0; i < playerPlaces.length; i++) {
-            if (playerPlaces[i].classList.contains("noplayer")) {
-                const playerName = playerPlaces[i].querySelector(".playerContestPlaceName");
-                const playerBG = playerPlaces[i].querySelector(".playerContestPlaceBG");
-                playerName.textContent = getNickOnLocalStorage();
-                playerPlaces[i].classList.remove("noplayer");
-                playerBG.classList.remove("noGame");
-                break;
-            }
+        console.log("info from matches:", data.players);
+        let players = data.players;
+        for (let i = 0; i < players.length; i++) {
+            const playerName = playerPlaces[i].querySelector(".playerContestPlaceName");
+            const playerBG = playerPlaces[i].querySelector(".playerContestPlaceBG");
+            playerName.textContent = players[i].nickname;
+            // playerPlaces[i].classList.remove("noplayer");
+            playerBG.classList.remove("noGame");
+            console.log("Position " + i + ": " + players[i].nickname);
         }
         pinNumber.textContent = data.code;
         name.textContent = data.name;
@@ -179,6 +199,30 @@ async function getInfoFromContest(pin) {
     catch (err) {
         console.error("Failed to check pin:", err);
         return false;
+    }
+}
+async function joinTournament(nick, code) {
+    try {
+        const response = await fetch("http://localhost:3000/join-tournament", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ nick, code }),
+        });
+        const data = await response.json();
+        if (response.ok) {
+            console.log("Joined tournament:", data);
+            return true;
+            // handle success (e.g., update UI)
+        }
+        else {
+            console.error("Failed to join:", data.error);
+            displayWarning(data.error);
+            return false;
+            // handle error (e.g., show warning)
+        }
+    }
+    catch (err) {
+        console.error("Request error:", err);
     }
 }
 async function checkIsValidPin(pin) {
