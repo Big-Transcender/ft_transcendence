@@ -120,6 +120,12 @@ function createTournament(name, code, createdById, createdAt) {
 	return stmt.run(name, code, createdById, createdAt);
 }
 
+function deleteTournament(code)
+{
+	const stmt = db.prepare('DELETE from tournaments WHERE code = ?');
+	return stmt.run(code);
+}
+
 function addUserToTournament(tournamentId, userId) {
 	const stmt = db.prepare(`
 		INSERT INTO tournament_players (tournament_id, user_id)

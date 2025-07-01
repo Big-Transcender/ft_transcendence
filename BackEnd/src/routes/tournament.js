@@ -6,7 +6,9 @@ const {
     getTournamentPlayers,
     hasUserJoinedTournament,
     startTournament,
+    deleteTournament,
 } = require('../dataQuerys');
+const repl = require("node:repl");
 
 module.exports = async function (fastify) {
     fastify.post('/create-tournament', async (request, reply) => {
@@ -52,18 +54,21 @@ module.exports = async function (fastify) {
     fastify.post('/join-tournament', async (request, reply) => {
         const { nick, code } = request.body;
 
-        if (!nick) return reply.code(400).send({ error: "Nick is required" });
-        if (!code) return reply.code(400).send({ error: "Tournament code is required" });
+        if (!nick)
+            return reply.code(400).send({ error: "Nick is required" });
+        if (!code)
+            return reply.code(400).send({ error: "Tournament code is required" });
 
         const user = getUserIdByNickname(nick);
-        if (!user) return reply.code(404).send({ error: "User not found" });
+        if (!user)
+            return reply.code(404).send({ error: "User not found" });
 
         const tournament = getTournamentByCode(code);
-        if (!tournament) return reply.code(404).send({ error: "Tournament not found" });
+        if (!tournament)
+            return reply.code(404).send({ error: "Tournament not found" });
 
-        if (hasUserJoinedTournament(tournament.id, user.id)) {
+        if (hasUserJoinedTournament(tournament.id, user.id))
             return reply.code(400).send({ error: "User already joined this tournament" });
-        }
 
         addUserToTournament(tournament.id, user.id);
 
@@ -77,15 +82,34 @@ module.exports = async function (fastify) {
     fastify.post('/start-tournament', async (request, reply) => {
         const { code } = request.body;
 
-        if (!code) return reply.code(400).send({ error: "Tournament code is required" });
+        if (!code)
+            return reply.code(400).send({ error: "Tournament code is required" });
 
         const tournament = getTournamentByCode(code);
-        if (!tournament) return reply.code(404).send({ error: "Tournament not found" });
+        if (!tournament)
+            return reply.code(404).send({ error: "Tournament not found" });
 
-        if (tournament.started) return reply.code(400).send({ error: "Tournament already started" });
-
+        if (tournament.started)
+            return reply.code(400).send({ error: "Tournament already started" });
         startTournament(code);
-
         reply.code(200).send({ message: "Tournament started successfully" });
     });
+
+    fastify.post('/delete-tournament', async (request, reply) =>
+    {
+        const {code } = request.body;
+
+        if(!code)
+            return reply.code(400).send({error: "Tournament code is required"});
+
+        const tournament = getTournamentByCode(code);
+        if(!tournament)
+            return reply.code(404).send({error: "Tournament doest not exist"});
+
+        if(tournament.started)
+            return reply.code(400).send({error: "Cant delete tournament that is active"});
+
+        deleteTournament(code);
+        return reply.code(200).send({ message: "Tournament deleted!"})
+    })
 };
