@@ -3,9 +3,6 @@ services:
   frontend:
     container_name: "frontend"
     build: ./frontEnd
-    # volumes:
-    #   - ./frontEnd:/app
-    #   - /app/node_modules
     ports:
       - "5173:5173" # frontend: host 5173 → container 3000
     volumes:
