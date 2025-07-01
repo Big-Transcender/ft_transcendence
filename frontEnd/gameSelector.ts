@@ -12,6 +12,13 @@ const gameSelectorPongMultiplayerPage = document.getElementById("gameSelectorPon
 const startGameTimer = document.getElementById("timerId");
 const startGameTimerBox = document.getElementById("timerBoxId");
 
+
+function generateMatchId()
+{
+	return "match-" + Date.now() + "-" + Math.floor(Math.random() * 10000);
+}
+
+
 import { startPongWebSocket } from "./gamePong.js";
 
 function setRandomBackground() {
@@ -57,7 +64,7 @@ document.addEventListener("DOMContentLoaded", () => {
 	buttonSinglePong.addEventListener("click", () => {
 		if (checkIfLogged()) {
 			changePageTo(gameSelectorPongPage, pongGamePage);
-			const matchId = "match-" + Date.now() + "-" + Math.floor(Math.random() * 10000);
+			const matchId = generateMatchId()
 			updatePageHash(`#pong/${matchId}`);
 			startPongWebSocket(matchId, true, true); // true = local mode
 			animateTimer();
@@ -77,7 +84,7 @@ document.addEventListener("DOMContentLoaded", () => {
 	});
 
 	//Change to Multiplayer Versus
-	buttonVersusMP.addEventListener("click", () => {
+	buttonVersusMP.addEventListener("click", () => { // testing the teams games
 		// changePageTo(gameSelectorPongPage, gameSelectorPage);
 		updatePageHash(`#pong/pongVersusMP`);
 
@@ -86,10 +93,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
 		if (action === "create") {
 			// Create a new match
-			const matchId = "match-" + Date.now() + "-" + Math.floor(Math.random() * 10000);
+			const matchId = generateMatchId()
 			alert(`Match created! Share this ID with your friend: ${matchId}`);
 			history.replaceState(undefined, "", `#pong/${matchId}`);
-			startPongWebSocket(matchId, false, false); // Start as host
+			startPongWebSocket(matchId, false, false, true); // Start as host
 			changePageTo(gameSelectorPongMultiplayerPage, pongGamePage);
 			backGamePongButton.classList.add("active");
 			animateTimer();
@@ -99,7 +106,7 @@ document.addEventListener("DOMContentLoaded", () => {
 			const matchId = prompt("Enter the match ID:");
 			if (matchId) {
 				history.replaceState(undefined, "", `#pong/${matchId}`);
-				startPongWebSocket(matchId, false, false); // Join as client
+				startPongWebSocket(matchId, false, false, true); // Join as client
 				changePageTo(gameSelectorPongMultiplayerPage, pongGamePage);
 				backGamePongButton.classList.add("active");
 				animateTimer();
@@ -119,7 +126,7 @@ document.addEventListener("DOMContentLoaded", () => {
 	buttonLocalMP.addEventListener("click", () => {
 		if (checkIfLogged()) {
 			changePageTo(gameSelectorPongMultiplayerPage, pongGamePage);
-			const matchId = "match-" + Date.now() + "-" + Math.floor(Math.random() * 10000);
+			const matchId = generateMatchId()
 			updatePageHash(`#pong/${matchId}`);
 			startPongWebSocket(matchId, true); // true = local mode
 			resetEmotions();
@@ -130,6 +137,7 @@ document.addEventListener("DOMContentLoaded", () => {
 			displayWarning("You need to log in.");
 		}
 	});
+
 
 	//Back button of Multiplayer type Selector
 	backButtonMP.addEventListener("click", () => {

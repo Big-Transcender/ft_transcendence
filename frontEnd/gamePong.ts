@@ -10,7 +10,7 @@ export function startPongWebSocket(matchId: string, isLocal: boolean, aiGame: bo
 	currentIsLocal = isLocal;
 
 	let animationFrameId: number;
-	let playerId: "p1" | "p2" = "p1";
+	let playerId: "p1" | "p2" | "p3" | "p4" = "p1";
 	const keysPressed = new Set<string>();
 
 	// --- WebSocket Setup
@@ -32,7 +32,7 @@ export function startPongWebSocket(matchId: string, isLocal: boolean, aiGame: bo
 
 	socket.addEventListener("close", () => {
 		console.log("❌ WebSocket connection closed");
-		cancelAnimationFrame(animationFrameId); // Stop sending inputs
+		cancelAnimationFrame(animationFrameId);
 	});
 
 	socket.addEventListener("error", (event: Event) => {
@@ -42,8 +42,8 @@ export function startPongWebSocket(matchId: string, isLocal: boolean, aiGame: bo
 	// --- Game Elements
 	const paddle1 = document.querySelector(".paddle1") as HTMLElement;
 	const paddle2 = document.querySelector(".paddle2") as HTMLElement;
-	//const paddle3 = document.querySelector(".paddle2") as HTMLElement;
-	//const paddle4 = document.querySelector(".paddle2") as HTMLElement;
+	const paddle3 = document.querySelector(".paddle3") as HTMLElement;
+	const paddle4 = document.querySelector(".paddle4") as HTMLElement;
 	const ball = document.querySelector(".ball") as HTMLElement;
 
 	// --- Input Handling
@@ -78,6 +78,18 @@ export function startPongWebSocket(matchId: string, isLocal: boolean, aiGame: bo
 	sendInputLoop();
 
 	// ---- Receiving Server updated positions
+
+	if (!teamGame)
+	{
+		paddle3.classList.add('offPaddle');
+		paddle4.classList.add('offPaddle');
+	}
+	else
+	{
+		paddle3.classList.remove('offPaddle');
+		paddle4.classList.remove('offPaddle');
+	}
+
 	socket.addEventListener("message", (event: MessageEvent) => {
 		try {
 			const data = JSON.parse(event.data);
@@ -95,13 +107,13 @@ export function startPongWebSocket(matchId: string, isLocal: boolean, aiGame: bo
 						paddle2.style.top = `${state.paddles.p2}%`;
 					}
 
-					/*if (paddle3) {
-						paddle2.style.top = `${state.paddles.p2}%`;
+					if (paddle3 && teamGame) {
+						paddle3.style.top = `${state.paddles.p3}%`;
 					}
 
-					if (paddle4) {
-						paddle2.style.top = `${state.paddles.p2}%`;
-					}*/
+					if (paddle4 && teamGame) {
+						paddle4.style.top = `${state.paddles.p4}%`;
+					}
 
 					if (ball) {
 						ball.style.left = `${state.ball.x}%`;
@@ -112,6 +124,19 @@ export function startPongWebSocket(matchId: string, isLocal: boolean, aiGame: bo
 				case "assign": {
 					playerId = data.payload;
 					console.log(`👤 You are assigned as ${playerId}`);
+					break;
+				}
+				case "gameOver": {
+					const { winner, reason } = data.payload;
+					//console.log(`Game Over! Winner: ${winner}, Reason: ${reason}`);
+	
+					if (winner) {
+						console.log(`Game Over! The winner is ${winner}. Reason: ${reason}`);
+						alert(`Game Over! The winner is ${winner}. Reason: ${reason}`);
+					} else {
+						console.log(`Game Over! Reason: ${reason}`)
+						alert(`Game Over! Reason: ${reason}`);
+					}
 					break;
 				}
 			}

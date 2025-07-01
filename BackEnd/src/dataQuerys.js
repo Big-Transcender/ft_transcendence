@@ -161,6 +161,34 @@ function startTournament(code) {
 		.run(code);
 }
 
+function getNicknameByUserId(userId) {
+    try {
+        const stmt = db.prepare('SELECT nickname FROM users WHERE id = ?'); // Use `?` for parameterized queries
+        const result = stmt.get(userId); // Execute the query and fetch a single row
+        if (result) {
+            return result.nickname; // Return the nickname
+        }
+        return null; // Return null if no user is found
+    } catch (error) {
+        console.error('❌ Error fetching nickname by user ID:', error);
+        throw error; // Rethrow the error for further handling
+    }
+}
+
+function getNicknameByUserId(userId) {
+    try {
+        const stmt = db.prepare('SELECT nickname FROM users WHERE id = ?'); // Use `?` for parameterized queries
+        const result = stmt.get(userId); // Execute the query and fetch a single row
+        if (result) {
+            return result.nickname; // Return the nickname
+        }
+        return null; // Return null if no user is found
+    } catch (error) {
+        console.error('❌ Error fetching nickname by user ID:', error);
+        throw error; // Rethrow the error for further handling
+    }
+}
+
 module.exports = {
 	isNicknameTaken,
 	isEmailTaken,
@@ -173,6 +201,7 @@ module.exports = {
 	getWins,
 	getPlayerStats,
 	getUserIdByNickname,
+	getNicknameByUserId,
 	getTournamentByCode,
 	createTournament,
 	addUserToTournament,
