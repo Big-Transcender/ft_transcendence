@@ -141,22 +141,9 @@ function seeTeamMatchDisconection(match){
 		const gameState = match.gameState;
 		const winnerId = gameState.playerDbId.p1; // Any player from Team 1
 
-
 		// Log the match results for both teams
-		insertMatch(
-			gameState.playerDbId.p1,
-			gameState.playerDbId.p2,
-			winnerId,
-			gameState.score.p1,
-			gameState.score.p2
-		);
-		insertMatch(
-			gameState.playerDbId.p3,
-			gameState.playerDbId.p4,
-			gameState.playerDbId.p3,
-			gameState.score.p1,
-			gameState.score.p2
-		);
+		insertMatch( gameState.playerDbId.p1, gameState.playerDbId.p2, winnerId, gameState.score.p1, gameState.score.p2);
+		insertMatch( gameState.playerDbId.p3, gameState.playerDbId.p4, gameState.playerDbId.p3, gameState.score.p1, gameState.score.p2);
 
 		// Notify remaining players in Team 1
 		const message = JSON.stringify({
