@@ -120,10 +120,17 @@ function createTournament(name, code, createdById, createdAt) {
 	return stmt.run(name, code, createdById, createdAt);
 }
 
-function deleteTournament(code)
-{
-	const stmt = db.prepare('DELETE from tournaments WHERE code = ?');
-	return stmt.run(code);
+function deleteTournament(code) {
+	const tournament = db.prepare('SELECT id FROM tournaments WHERE code = ?').get(code);
+	if (!tournament)
+		return { changes: 0 };
+
+	const tournamentId = tournament.id;
+	const deletePlayers = db.prepare('DELETE FROM tournament_players WHERE tournament_id = ?');
+	deletePlayers.run(tournamentId);
+
+	const deleteTournamentStmt = db.prepare('DELETE FROM tournaments WHERE code = ?');
+	return deleteTournamentStmt.run(code);
 }
 
 function addUserToTournament(tournamentId, userId) {
@@ -138,11 +145,12 @@ function getTournamentPlayers(tournamentId) {
 	return db
 		.prepare(
 			`
-		SELECT u.id, u.nickname
-		FROM tournament_players tp
-		JOIN users u ON tp.user_id = u.id
-		WHERE tp.tournament_id = ?
-	`
+				SELECT u.id, u.nickname
+				FROM tournament_players tp
+						 JOIN users u ON tp.user_id = u.id
+				WHERE tp.tournament_id = ?
+				ORDER BY tp.joined_at ASC
+			`
 		)
 		.all(tournamentId);
 }
@@ -195,6 +203,15 @@ function getNicknameByUserId(userId) {
     }
 }
 
+function insertMatch2(tournament_id, player1_id, player2_id, winner_id, score_p1, score_p2)
+{
+	const stmt = db.prepare(`
+		INSERT INTO matches (tournament_id, player1_id, player2_id, winner_id, score_p1, score_p2)
+		VALUES (?, ?, ?, ?, ?, ?)
+	`);
+	return stmt.run(tournament_id, player1_id, player2_id, winner_id, score_p1, score_p2);
+}
+
 module.exports = {
 	isNicknameTaken,
 	isEmailTaken,
@@ -214,4 +231,5 @@ module.exports = {
 	getTournamentPlayers,
 	hasUserJoinedTournament,
 	startTournament,
+	deleteTournament,
 };
