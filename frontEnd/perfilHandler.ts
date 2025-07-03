@@ -3,6 +3,7 @@ let losesNumber = document.getElementById("boxLosesNumber");
 let gamesNumber = document.getElementById("boxGamesNumber");
 let positionNumber = document.getElementById("positionId");
 let winRateText = document.getElementById("winRateTextId");
+const backendUrl = `http://${window.location.hostname}:3000`;
 
 getUserStats(getNickOnLocalStorage());
 
@@ -49,7 +50,7 @@ async function flipboardNumberAnimation(target: string, targetBox) {
 
 function getUserPosition() {
 	const userNick = localStorage.getItem("nickname");
-	fetch(`http://localhost:3000/leaderboard/position/${userNick}`)
+	fetch(`${backendUrl}/leaderboard/position/${userNick}`)
 		.then((response) => {
 			if (!response.ok) {
 				return response.json().then((err) => {
@@ -66,9 +67,8 @@ function getUserPosition() {
 			console.error("Failed to fetch leaderboard position:", error.message);
 		});
 }
-
 async function getUserStats(nickname: string) {
-	fetch(`http://localhost:3000/player-stats/${nickname}`)
+	fetch(`${backendUrl}/player-stats/${nickname}`)
 		.then((response) => {
 			if (!response.ok) {
 				return response.json().then((err) => {

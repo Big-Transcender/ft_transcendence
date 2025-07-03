@@ -31,7 +31,7 @@ fastify.register(fastifyPassport.secureSession());
 fastifyPassport.use('google', new GoogleStrategy({
 	clientID: process.env.GOOGLE_CLIENT_ID,
 	clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-	callbackURL: "http://localhost:3000/auth/google/callback"
+	callbackURL: "http://c1r3s1.42porto.com:3000/auth/google/callback"
 }, (accessToken, refreshToken, profile, done) => {
 	try {
 		const email = profile.email;
@@ -69,14 +69,14 @@ fastify.get(
 		preValidation: fastifyPassport.authenticate("google", { scope: ["profile", "email"] }),
 	},
 	async (req, res) => {
-		res.redirect("http://localhost:5173/#profile");
+		console.log(req.hostname);
+		res.redirect(`http://c1r3s1.42porto.com:5173/#profile`);
 	}
 );
 
 fastify.get('/logingoogle',
 	fastifyPassport.authenticate('google', {
-		scope: ['profile', 'email'],
-		prompt: 'select_account' // <-- force prompt every time
+		scope: ['profile', 'email']
 	})
 );
 
@@ -109,9 +109,16 @@ async function registerRoutes() {
 async function start() {
 	try {
 		await fastify.register(require('@fastify/cors'), {
-			origin: 'http://localhost:5173',  // ✅ add the missing slashes
-			credentials: true
-		});
+			origin: (origin, cb) => {
+			  console.log('Incoming Origin:', origin);
+			  if (!origin) return cb(null, true); // Allow non-browser requests like curl
+			  const allowedPattern = /^http:\/\/(10\.11\.\d+\.\d+|c\d+r\d+s\d+\.42porto\.com)(:\d+)?$/;
+
+			  if (allowedPattern.test(origin)) cb(null, origin);
+			  else cb(null, false);
+			},
+			credentials: true,
+		  });		  
 
 		// Setup WebSocket connection
 		setupWebSocket(fastify.server);
@@ -126,7 +133,7 @@ async function start() {
 		});
 
 		await fastify.listen({ port: 3000, host: "0.0.0.0" });
-		console.log("✅ Server started at http://localhost:3000");
+		// console.log("✅ Server started at http://localhost:3000");
 	} catch (error) {
 		console.error("❌ Failed to start:", error);
 		process.exit(1);
