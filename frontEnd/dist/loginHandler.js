@@ -67,7 +67,7 @@ const registerNewUser = async () => {
     const email = document.getElementById("inputEmailNew").value.trim();
     const password = document.getElementById("inputPassNew").value.trim();
     try {
-        const response = await fetch(API + "register", {
+        const response = await fetch(`${backendUrl}/register`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -94,7 +94,7 @@ async function loginUser() {
     console.log("nickname:", identifier);
     console.log("password:", password);
     try {
-        const response = await fetch(API + "login", {
+        const response = await fetch(`${backendUrl}/login`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -121,7 +121,7 @@ async function loginUser() {
 function clickButton(button) {
     button.addEventListener("click", () => {
         if (button.className.search("loginUser") != -1) {
-            // loginUser();
+            loginUser();
         }
         else if (button.className.search("newUser") != -1) {
             // pageProfile = document.getElementById("newUserId");
@@ -168,7 +168,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     //Logout Button
     logoutButton.addEventListener("click", async () => {
         try {
-            await fetch("http://localhost:3000/logout", {
+            await fetch("${backendUrl}/logout", {
                 method: "GET",
                 credentials: "include",
             });
@@ -230,15 +230,24 @@ function changePageTo(remove, activate) {
 }
 async function checkGoogleLogin() {
     try {
-        const res = await fetch("http://localhost:3000/me", {
-            credentials: "include", // ✅ must include to send session cookie
+        const res = await fetch(`${backendUrl}/me`, {
+            credentials: "include"
         });
-        const data = await res.json();
-        if (res.ok && data.user) {
-            setToLogged();
-            setNickOnLocalStorage(data.user.nickname);
-            putNickOnProfileHeader(data.user.nickname);
-            changePageTo(document.getElementById("loginId"), document.getElementById("profileId"));
+        const text = await res.text();
+        if (res.ok) {
+            const data = JSON.parse(text);
+            if (data.user) {
+                setToLogged();
+                setNickOnLocalStorage(data.user.nickname);
+                putNickOnProfileHeader(data.user.nickname);
+                changePageTo(document.getElementById("loginId"), document.getElementById("profileId"));
+            }
+            else {
+                console.warn("No user found in response");
+            }
+        }
+        else {
+            console.warn("Response not OK");
         }
     }
     catch (err) {
