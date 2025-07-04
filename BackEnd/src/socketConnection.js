@@ -60,9 +60,7 @@ function setupWebSocket(server) {
 		
 					const gameState = match.gameState;
 					const winnerId = gameState.playerDbId[remainingPlayer];
-					console.log(gameState.playerDbId.p1);
-					console.log(gameState.playerDbId.p2);
-					console.log(winnerId);
+
 					insertMatch( gameState.playerDbId.p1, gameState.playerDbId.p2, winnerId, gameState.score[remainingPlayer] , gameState.score[assignedPlayer] );
 					cleanupMatch(matchId, "opponentLeft", winnerId);
 				}
