@@ -109,7 +109,7 @@ async function registerRoutes() {
 async function start() {
 	try {
 		await fastify.register(require('@fastify/cors'), {
-			origin: 'http://localhost:5173',  // ✅ add the missing slashes
+			origin: '*',  // ✅ add the missing slashes
 			credentials: true
 		});
 

@@ -111,7 +111,7 @@ function updateBall(gameState) {
 	const ballCenterY = gameState.ball.y + ballSizeY / 2;
 
 	// Wall collision
-	let wallCollision = false; //TODO testing this change
+	let wallCollision = false;
 	if (gameState.ball.y <= 0 || gameState.ball.y + ballSizeY >= 100) {
 		gameState.ballVel.y *= -1;
 		wallCollision = true;
@@ -266,9 +266,6 @@ function updateBall4Players(gameState) {
 	}
 
 }
-
-//TODO gameState.ball.x + ballSizeX <= paddle4X + paddleWidth && for testing 
-
 
 function insertOnDb(gameState)
 {

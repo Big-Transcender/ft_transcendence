@@ -95,8 +95,22 @@ function getUserLeaderboardPosition(nickname) {
 	return position > 0 ? position : null;
 }
 
+//function getUserIdByNickname(nickname) { TODO falar com bruno
+//	return db.prepare("SELECT id FROM users WHERE nickname = ?").get(nickname);
+//}
+
 function getUserIdByNickname(nickname) {
-	return db.prepare("SELECT id FROM users WHERE nickname = ?").get(nickname);
+	try {
+		const stmt = db.prepare('SELECT id FROM users WHERE nickname = ?'); // Use `?` for parameterized queries
+		const result = stmt.get(nickname); // Execute the query and fetch a single row
+		if (result) {
+			return result.id; // Return the user ID
+		}
+		return null; // Return null if no user is found
+	} catch (error) {
+		console.error('❌ Error fetching user ID by nickname:', error);
+		throw error; // Rethrow the error for further handling
+	}
 }
 
 function getTournamentByCode(code) {
@@ -159,20 +173,6 @@ function startTournament(code) {
 	`
 		)
 		.run(code);
-}
-
-function getNicknameByUserId(userId) {
-    try {
-        const stmt = db.prepare('SELECT nickname FROM users WHERE id = ?'); // Use `?` for parameterized queries
-        const result = stmt.get(userId); // Execute the query and fetch a single row
-        if (result) {
-            return result.nickname; // Return the nickname
-        }
-        return null; // Return null if no user is found
-    } catch (error) {
-        console.error('❌ Error fetching nickname by user ID:', error);
-        throw error; // Rethrow the error for further handling
-    }
 }
 
 function getNicknameByUserId(userId) {
