@@ -3,6 +3,7 @@ const createContesButton = document.getElementById("createContestId");
 const enterContestButton = document.getElementById("enterContestButtonId");
 const genericBackButton = document.querySelectorAll(".genericBackButton");
 const createNewContestButton = document.getElementById("createNewContestButtonId");
+const startContestButton = document.getElementById("startContestButtonId");
 const contestMainPage = document.getElementById("contestSelectorId");
 const joinContestPage = document.getElementById("contestJoinSelectorId");
 const joinedContestPage = document.getElementById("contestJoinedSelectorId");
@@ -90,31 +91,19 @@ document.addEventListener("DOMContentLoaded", () => {
             createNewContest();
         }
     });
+    // START THE CONTEST
+    startContestButton.addEventListener("click", async () => {
+        // Hi Diogo-San, this is the button you asked for.
+        // The function, "displayWarning", well... display a text in the display to show some errors if you want.
+        // It has a 5 seconds cooldown.
+        // Arigato gozaimasu.
+        displayWarning("This start the contest");
+    });
     genericBackButton.forEach((button) => {
         button.addEventListener("click", () => {
             genericBackFunctionContest();
         });
     });
-    //BackButton in Pong
-    // backGamePongButton.addEventListener("click", () => {
-    // 	changePageTo(pongGamePage, gameSelectorPage);
-    // 	history.replaceState(undefined, "", "#game1");
-    // });
-    // //BackButton in GameSelector
-    // backGameSelectorPongId.addEventListener("click", () => {
-    // 	changePageTo(gameSelectorPongPage, gameSelectorPage);
-    // });
-    // //Singleplayer Pong
-    // buttonSinglePong.addEventListener("click", () => {
-    // 	changePageTo(gameSelectorPongPage, pongGamePage);
-    // 	history.replaceState(undefined, "", "#pongSingle");
-    // 	resetEmotions();
-    // });
-    // //Multiplayer Pong
-    // buttonMultiplayerPong.addEventListener("click", () => {
-    // 	changePageTo(gameSelectorPongPage, pongGamePage);
-    // 	history.replaceState(undefined, "", "#pongMulti");
-    // });
 });
 if (pinBox) {
     pinBox.addEventListener("click", () => {
@@ -190,7 +179,6 @@ async function getInfoFromContest(pin) {
             playerName.textContent = players[i].nickname;
             // playerPlaces[i].classList.remove("noplayer");
             playerBG.classList.remove("noGame");
-            console.log("Position " + i + ": " + players[i].nickname);
         }
         pinNumber.textContent = data.code;
         name.textContent = data.name;

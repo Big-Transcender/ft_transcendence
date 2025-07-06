@@ -203,7 +203,15 @@
 .contestInBackButton {
 	position: absolute;
 	bottom: 25px;
-	left: 50%;
+	left: 20%;
+	transform: scale(0.8);
+	translate: -50%;
+}
+
+.startContestButton {
+	position: absolute;
+	bottom: 25px;
+	left: 80%;
 	transform: scale(0.8);
 	translate: -50%;
 }

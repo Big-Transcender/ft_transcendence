@@ -19,6 +19,8 @@ const decide = new Audio("audios/decide.wav");
 
 let rankOpen = false;
 let creditsOpen = false;
+let isPlayingSoundRank = false;
+let isPlayingSoundCredits = false;
 
 getTimeForPhone();
 
@@ -55,28 +57,7 @@ genericIcon.forEach((button) => {
 			await playExpandingAnimation(button);
 			navigate("profile");
 		} else if (button.classList.contains("rankIcon")) {
-			if (!rankOpen) {
-				openSound.play();
-				homePlayersRank.classList.remove("closeLeft-animation");
-				homePlayersRank.classList.add("openLeft-animation");
-				await betterWait(1500);
-				homePlayersRank.style.left = "20%";
-				homePlayersRank.style.opacity = "1";
-				homePlayersRank.classList.remove("openLeft-animation");
-				await betterWait(100);
-				rankOpen = true;
-			} else {
-				closeSound.play();
-				homePlayersRank.classList.remove("openLeft-animation");
-				homePlayersRank.classList.add("closeLeft-animation");
-				await betterWait(1000);
-				homePlayersRank.style.left = "50%";
-				homePlayersRank.style.opacity = "none";
-				homePlayersRank.classList.remove("closeLeft-animation");
-				await betterWait(100);
-
-				rankOpen = false;
-			}
+			rankAnimationHandler();
 		} else if (button.classList.contains("creditsIcon")) {
 			creditsPlay();
 		}
@@ -87,7 +68,8 @@ async function creditsPlay() {
 	//&emsp; JUMP LINE
 	//<span style="color: #ff6b6b;"> </span> CHANGE COLOR
 
-	if (!creditsOpen) {
+	if (!creditsOpen && !isPlayingSoundCredits) {
+		isPlayingSoundCredits = true;
 		openSound2.play();
 		creditsBox.classList.remove("closeCredits-animation");
 		creditsText.classList.add("playCredits-animation");
@@ -108,7 +90,9 @@ async function creditsPlay() {
 		creditsBox.classList.remove("openCredits-animation");
 		creditsBox.style.left = "99%";
 		creditsOpen = true;
-	} else {
+		isPlayingSoundCredits = false;
+	} else if (creditsOpen && !isPlayingSoundCredits) {
+		isPlayingSoundCredits = true;
 		closeSound2.play();
 		creditsBox.classList.add("closeCredits-animation");
 		creditsBox.classList.remove("openCredits-animation");
@@ -117,6 +101,7 @@ async function creditsPlay() {
 		creditsText.classList.remove("playCredits-animation");
 		creditsBox.classList.remove("closeCredits-animation");
 		creditsBox.style.left = "25%";
+		isPlayingSoundCredits = false;
 	}
 }
 
@@ -161,4 +146,32 @@ function getTimeForPhone() {
 			phoneTime.textContent = now.getHours().toString().padStart(2, "0") + ":" + now.getMinutes().toString().padStart(2, "0");
 		}
 	}, 5);
+}
+
+async function rankAnimationHandler() {
+	if (!rankOpen && !isPlayingSoundRank) {
+		isPlayingSoundRank = true;
+		openSound.play();
+		homePlayersRank.classList.remove("closeLeft-animation");
+		homePlayersRank.classList.add("openLeft-animation");
+		await betterWait(1500);
+		homePlayersRank.style.left = "-35%";
+		homePlayersRank.style.opacity = "1";
+		homePlayersRank.classList.remove("openLeft-animation");
+		await betterWait(100);
+		rankOpen = true;
+		isPlayingSoundRank = false;
+	} else if (rankOpen && !isPlayingSoundRank) {
+		closeSound.play();
+		isPlayingSoundRank = true;
+		homePlayersRank.classList.remove("openLeft-animation");
+		homePlayersRank.classList.add("closeLeft-animation");
+		await betterWait(1000);
+		homePlayersRank.style.left = "50%";
+		homePlayersRank.style.opacity = "none";
+		homePlayersRank.classList.remove("closeLeft-animation");
+		await betterWait(100);
+		rankOpen = false;
+		isPlayingSoundRank = false;
+	}
 }
