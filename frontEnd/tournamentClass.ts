@@ -1,7 +1,8 @@
 import { startPongWebSocket } from './gamePong';
-import {  generateMatchId   } from './gameSelector';
+import {  generateMatchId} from './gameSelector';
 import {  activeTournaments } from './tournamentEventHandler';
 
+const pongGamePage = document.getElementById("pongGameId");
 
 class Tournament {
 
@@ -25,7 +26,7 @@ class Tournament {
 	}
 
 
-	startMatches() {
+	startMatches(fromPage: HTMLElement) {
 		if (this.players.length < 4) {
 			throw new Error("Not enough players to start the tournament. At least 4 players are required.");
 		}
@@ -36,11 +37,13 @@ class Tournament {
 		if (this.players[0] === currentNickname || this.players[1] === currentNickname) {
 			console.log("I'm in Semifinal 1!");
 			startPongWebSocket(this.matchesID[0]);
+			changePageTo(fromPage, pongGamePage);
 		}
 		// Check if I'm in semifinal 2 (players 2 and 3)
 		else if (this.players[2] === currentNickname || this.players[3] === currentNickname) {
 			console.log("I'm in Semifinal 2!");
 			startPongWebSocket(this.matchesID[1]);
+			changePageTo(fromPage, pongGamePage);
 		}
 	}
 
@@ -80,14 +83,16 @@ class Tournament {
 		{
 			console.log("🎮 I'm in the Final!");
 			startPongWebSocket(finalMatchId);
+			changePageTo(pongGamePage, pongGamePage);
 		}
 	}
 
 }
 
 
-export function startTournament(players: string[], tournamentId: string)
+export function startTournament(players: string[], tournamentId: string, fromPage: HTMLElement)
 {
 	const tournament = new Tournament(players, tournamentId);
-	tournament.startMatches();
+	tournament.startMatches(fromPage);
+
 }

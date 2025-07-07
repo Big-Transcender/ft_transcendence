@@ -132,7 +132,7 @@ export function startPongWebSocket(matchId: string, isLocal: boolean = false, ai
 					console.log(`Game Over! The winner is ${winner}. Reason: ${reason}`);
 					alert(`Game Over! The winner is ${winner}. Reason: ${reason}`);
 					
-					// Tournament logic -> this is event driven, check the states.js file
+					// Tournament logic -> this is event driven, check the event handler
 					if (currentMatchId) {
 						window.dispatchEvent(new CustomEvent('tournamentMatchEnd', {
 							detail: { matchId: currentMatchId, winner: winner }
