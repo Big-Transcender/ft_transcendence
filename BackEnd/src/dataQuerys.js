@@ -212,6 +212,18 @@ function insertMatch2(tournament_id, player1_id, player2_id, winner_id, score_p1
 	return stmt.run(tournament_id, player1_id, player2_id, winner_id, score_p1, score_p2);
 }
 
+function saveSecret(userId, secret)
+{
+	const stmt = db.prepare('UPDATE users SET secret = ? WHERE id = ?');
+	return stmt.run(secret, userId);
+}
+
+function getSecret(userId)
+{
+	const stmt = db.prepare('SELECT id FROM users WHERE id = ?');
+	const result = stmt.get(userId);
+}
+
 module.exports = {
 	isNicknameTaken,
 	isEmailTaken,
@@ -232,4 +244,5 @@ module.exports = {
 	hasUserJoinedTournament,
 	startTournament,
 	deleteTournament,
+	saveSecret
 };
