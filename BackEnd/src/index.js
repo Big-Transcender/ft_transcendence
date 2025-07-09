@@ -118,7 +118,7 @@ async function start() {
 			  else cb(null, false);
 			},
 			credentials: true,
-		  });		  
+		  });
 
 		// Setup WebSocket connection
 		setupWebSocket(fastify.server);
@@ -133,7 +133,7 @@ async function start() {
 		});
 
 		await fastify.listen({ port: 3000, host: "0.0.0.0" });
-		// console.log("✅ Server started at http://localhost:3000");
+		console.log("✅ Server started at http://localhost:3000");
 	} catch (error) {
 		console.error("❌ Failed to start:", error);
 		process.exit(1);

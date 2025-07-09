@@ -3,7 +3,7 @@ let socketInitialized = false;
 let currentMatchId: string | null = null;
 let currentIsLocal: boolean = true;
 
-export function startPongWebSocket(matchId: string, isLocal: boolean, aiGame: boolean = false, teamGame: boolean = false) {
+export function startPongWebSocket(matchId: string, isLocal: boolean = false, aiGame: boolean = false, teamGame: boolean = false) {
 	if (socketInitialized) return;
 	socketInitialized = true;
 	currentMatchId = matchId;
@@ -128,16 +128,18 @@ export function startPongWebSocket(matchId: string, isLocal: boolean, aiGame: bo
 				}
 				case "gameOver": {
 					const { winner, reason } = data.payload;
-					//console.log(`Game Over! Winner: ${winner}, Reason: ${reason}`);
-	
-					if (winner) {
-						console.log(`Game Over! The winner is ${winner}. Reason: ${reason}`);
-						alert(`Game Over! The winner is ${winner}. Reason: ${reason}`);
-					} else {
-						console.log(`Game Over! Reason: ${reason}`)
-						alert(`Game Over! Reason: ${reason}`);
+
+					console.log(`Game Over! The winner is ${winner}. Reason: ${reason}`);
+					alert(`Game Over! The winner is ${winner}. Reason: ${reason}`);
+					
+					// Tournament logic -> this is event driven, check the event handler
+					if (currentMatchId) {
+						window.dispatchEvent(new CustomEvent('tournamentMatchEnd', {
+							detail: { matchId: currentMatchId, winner: winner }
+						}));
 					}
-					break;
+
+
 				}
 			}
 		} catch (err) {
@@ -167,3 +169,5 @@ setInterval(() => {
 		stopPongWebSocket();
 	}
 }, 100);
+
+

@@ -3,6 +3,7 @@ const createContesButton = document.getElementById("createContestId");
 const enterContestButton = document.getElementById("enterContestButtonId");
 const genericBackButton = document.querySelectorAll(".genericBackButton");
 const createNewContestButton = document.getElementById("createNewContestButtonId");
+const startContestButton = document.getElementById("startContestButtonId");
 
 const contestMainPage = document.getElementById("contestSelectorId");
 const joinContestPage = document.getElementById("contestJoinSelectorId");
@@ -19,7 +20,10 @@ function genericBackFunctionContest() {
 		if (currentActive.id === "contestJoinSelectorId") {
 			contestMainPage.classList.add("active");
 		} else if (currentActive.id === "contestJoinedSelectorId") {
-			joinContestPage.classList.add("active");
+			contestMainPage.classList.add("active");
+			stopContestPolling();
+		} else if (currentActive.id === "contestCreateId") {
+			contestMainPage.classList.add("active");
 		}
 	}
 }
@@ -69,19 +73,22 @@ document.addEventListener("DOMContentLoaded", () => {
 		}
 	});
 
-	//Enter Contest Players Page
+	//JOIN THE CONTEST BUTTON
 	enterContestButton.addEventListener("click", async () => {
 		const inputPin = (document.getElementById("inputPin") as HTMLInputElement).value.trim();
 		if (!inputPin.length) {
 			displayWarning("Invalid pin.");
 		} else if (await checkIsValidPin(inputPin)) {
 			await betterWait(100);
-			changePageTo(joinContestPage, joinedContestPage);
-			getInfoFromContest(inputPin);
+			if (await joinTournament(getNickOnLocalStorage(), inputPin)) {
+				changePageTo(joinContestPage, joinedContestPage);
+				getInfoFromContest(inputPin);
+				startContestPolling(inputPin);
+			}
 		}
 	});
 
-	// Create new Contest, join the contest created
+	// CREATE NEW CONTEST BUTTON
 	createNewContestButton.addEventListener("click", async () => {
 		if (!checkIfLogged()) {
 			displayWarning("You need to log in.");
@@ -91,35 +98,20 @@ document.addEventListener("DOMContentLoaded", () => {
 		}
 	});
 
+	// START THE CONTEST
+	startContestButton.addEventListener("click", async () => {
+		// Hi Diogo-San, this is the button you asked for.
+		// The function, "displayWarning", well... display a text in the display to show some errors if you want.
+		// It has a 5 seconds cooldown.
+		// Arigato gozaimasu.
+		displayWarning("This start the contest");
+	});
+
 	genericBackButton.forEach((button) => {
 		button.addEventListener("click", () => {
 			genericBackFunctionContest();
 		});
 	});
-
-	//BackButton in Pong
-	// backGamePongButton.addEventListener("click", () => {
-	// 	changePageTo(pongGamePage, gameSelectorPage);
-	// 	history.replaceState(undefined, "", "#game1");
-	// });
-
-	// //BackButton in GameSelector
-	// backGameSelectorPongId.addEventListener("click", () => {
-	// 	changePageTo(gameSelectorPongPage, gameSelectorPage);
-	// });
-
-	// //Singleplayer Pong
-	// buttonSinglePong.addEventListener("click", () => {
-	// 	changePageTo(gameSelectorPongPage, pongGamePage);
-	// 	history.replaceState(undefined, "", "#pongSingle");
-	// 	resetEmotions();
-	// });
-
-	// //Multiplayer Pong
-	// buttonMultiplayerPong.addEventListener("click", () => {
-	// 	changePageTo(gameSelectorPongPage, pongGamePage);
-	// 	history.replaceState(undefined, "", "#pongMulti");
-	// });
 });
 
 if (pinBox) {
@@ -133,6 +125,23 @@ if (pinBox) {
 			selection.addRange(range);
 		}
 	});
+}
+
+let contestPollingInterval: number | null = null;
+
+function startContestPolling(pin: string, intervalMs = 2000) {
+	getInfoFromContest(pin);
+	if (contestPollingInterval) clearInterval(contestPollingInterval);
+	contestPollingInterval = window.setInterval(() => {
+		getInfoFromContest(pin);
+	}, intervalMs);
+}
+
+function stopContestPolling() {
+	if (contestPollingInterval) {
+		clearInterval(contestPollingInterval);
+		contestPollingInterval = null;
+	}
 }
 
 async function createNewContest() {
@@ -159,8 +168,8 @@ async function createNewContest() {
 			return null;
 		} else {
 			changePageTo(createContestPage, joinedContestPage);
-			getInfoFromContest(data.code);
-			console.log("HERE: " + JSON.stringify(data));
+			// getInfoFromContest(data.code);
+			startContestPolling(data.code);
 		}
 
 		return data;
@@ -178,19 +187,15 @@ async function getInfoFromContest(pin: string) {
 		let pinNumber = document.getElementById("contestPinBoxNumberId") as HTMLElement;
 		let name = document.getElementById("contestNameId") as HTMLElement;
 
-		// console.log(data.matches);
-		let matches = data.matches;
+		console.log("info from matches:", data.players);
+		let players = data.players;
 
-		for (let i = 0; i < playerPlaces.length; i++) {
-			if (playerPlaces[i].classList.contains("noplayer")) {
-				const playerName = playerPlaces[i].querySelector(".playerContestPlaceName");
-				const playerBG = playerPlaces[i].querySelector(".playerContestPlaceBG");
-				playerName.textContent = getNickOnLocalStorage();
-
-				playerPlaces[i].classList.remove("noplayer");
-				playerBG.classList.remove("noGame");
-				break;
-			}
+		for (let i = 0; i < players.length; i++) {
+			const playerName = playerPlaces[i].querySelector(".playerContestPlaceName");
+			const playerBG = playerPlaces[i].querySelector(".playerContestPlaceBG");
+			playerName.textContent = players[i].nickname;
+			// playerPlaces[i].classList.remove("noplayer");
+			playerBG.classList.remove("noGame");
 		}
 		pinNumber.textContent = data.code;
 		name.textContent = data.name;
@@ -198,6 +203,29 @@ async function getInfoFromContest(pin: string) {
 	} catch (err) {
 		console.error("Failed to check pin:", err);
 		return false;
+	}
+}
+
+async function joinTournament(nick: string, code: string) {
+	try {
+		const response = await fetch("http://localhost:3000/join-tournament", {
+			method: "POST",
+			headers: { "Content-Type": "application/json" },
+			body: JSON.stringify({ nick, code }),
+		});
+		const data = await response.json();
+		if (response.ok) {
+			console.log("Joined tournament:", data);
+			return true;
+			// handle success (e.g., update UI)
+		} else {
+			console.error("Failed to join:", data.error);
+			displayWarning(data.error);
+			return false;
+			// handle error (e.g., show warning)
+		}
+	} catch (err) {
+		console.error("Request error:", err);
 	}
 }
 

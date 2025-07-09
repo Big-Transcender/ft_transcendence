@@ -23,8 +23,6 @@ function startGameLoopForMatch(matchId, updateBall, isLocal = false, aiGame = fa
 		requiredPlayers = 4
 
 	match.intervalId = setInterval(() => {
-
-		//TODO removed what is in line 17 -> 22, needs testing
 		
 		if (clients.size === requiredPlayers) { //requiredPlayers
 

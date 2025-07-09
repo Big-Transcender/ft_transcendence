@@ -60,8 +60,8 @@ function setupWebSocket(server) {
 		
 					const gameState = match.gameState;
 					const winnerId = gameState.playerDbId[remainingPlayer];
-					const loserId = gameState.playerDbId[assignedPlayer];
-					insertMatch( winnerId, loserId, winnerId, gameState.score[remainingPlayer] , gameState.score[assignedPlayer] );
+
+					insertMatch( gameState.playerDbId.p1, gameState.playerDbId.p2, winnerId, gameState.score[remainingPlayer] , gameState.score[assignedPlayer] );
 					cleanupMatch(matchId, "opponentLeft", winnerId);
 				}
 				else if (match.clients.size === 0)

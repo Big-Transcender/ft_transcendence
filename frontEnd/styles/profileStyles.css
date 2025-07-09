@@ -127,6 +127,15 @@
 }
 
 .profileId {
+	position: absolute;
+	height: 600px;
+	width: 700px;
+	left: 50%;
+	top: 30vh;
+	translate: -50% -50%;
+}
+
+.profileId {
 	display: none;
 }
 

@@ -1,6 +1,6 @@
 .musicPlayerBg {
 	position: absolute;
-	width: 40vh;
+	width: 400px;
 	height: 70px;
 	left: 50%;
 	top: 50%;
@@ -254,8 +254,8 @@
 .kkSlider {
 	position: absolute;
 	width: 90px;
-	left: 1vh;
-	top: 5vw;
+	left: 2%;
+	top: 110%;
 	animation: kkDance 1s steps(2) infinite;
 	opacity: 0%;
 	filter: drop-shadow(0px 7px 1px #00000063);
@@ -265,8 +265,8 @@
 .kkGuitar {
 	position: absolute;
 	width: 100px;
-	right: 0vh;
-	top: 5vw;
+	right: -10px;
+	top: 100%;
 	animation: kkDance 1s steps(2) infinite;
 	opacity: 0%;
 	filter: drop-shadow(0px 7px 1px #00000063);
