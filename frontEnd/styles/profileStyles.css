@@ -285,6 +285,18 @@
 	translate: -50%;
 }
 
+.showQr {
+	bottom: 5%;
+	left: 25%;
+	translate: -50%;
+}
+
+.twoFactor{
+	  bottom: 5%;
+	  left: 75%;
+	  translate: -50%;
+  }
+
 .loginButton {
 	position: absolute;
 	text-align: center;

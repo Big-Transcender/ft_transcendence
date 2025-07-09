@@ -147,6 +147,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     const loginButton = document.getElementById("loginUserButton");
     const backButton = document.getElementById("backButtonNewUser");
     const logoutButton = document.getElementById("logoutButton");
+    const qrButton = document.getElementById("showQrButtonID");
+    const factor = document.getElementById("twoFactorButtonID");
     const profilePage = document.getElementById("profileId");
     const newUserPage = document.getElementById("newUserId");
     const loginPage = document.getElementById("loginId");
@@ -183,6 +185,9 @@ document.addEventListener("DOMContentLoaded", async () => {
         stopSpech();
         typeText(bubbleTextLogin, "Welcome back!", 60);
         getUserStats(getNickOnLocalStorage());
+    });
+    //Qr Button
+    qrButton.addEventListener("click", () => {
     });
     //NewUser Button
     newUserButton.addEventListener("click", () => {
