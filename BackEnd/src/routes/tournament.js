@@ -25,9 +25,9 @@ module.exports = async function (fastify) {
             code = Math.floor(1000 + Math.random() * 9000).toString();
         } while (getTournamentByCode(code));
 
-        const result = createTournament(tournamentName, code, user.id, createdAt);
+        const result = createTournament(tournamentName, code, user, createdAt);
 
-        addUserToTournament(result.lastInsertRowid, user.id);
+        addUserToTournament(result.lastInsertRowid, user);
 
         reply.code(201).send({
             tournamentId: result.lastInsertRowid,
