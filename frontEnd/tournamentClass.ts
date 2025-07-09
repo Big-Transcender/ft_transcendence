@@ -53,7 +53,7 @@ class Tournament {
 			console.error("⚠️ Winner not found in player list.");
 			return;
 		}
-
+		const currentNickname = getNickOnLocalStorage();
 		if (matchIndex === 0) {
 			this.semifinal1Winner = winner;
 			console.log("✅ Semifinal 1 winner recorded:", winner);
@@ -61,28 +61,23 @@ class Tournament {
 			this.semifinal2Winner = winner;
 			console.log("✅ Semifinal 2 winner recorded:", winner);
 		}
+		if (currentNickname != this.semifinal1Winner 
+			|| currentNickname != this.semifinal2Winner)
+			return;
 
-		// Check if both semifinals are done to start the final
-		if (this.semifinal1Winner && this.semifinal2Winner) {
-			this.startFinalMatch();
-		}
+		this.startFinalMatch();
 	}
 
 	startFinalMatch() {
 		console.log("🏁 Starting Final Match!");
 
-		const finalMatchId = this.matchesID[2];
-
 		const finalPlayers = [this.semifinal1Winner, this.semifinal2Winner];
-		if (!finalPlayers[0] || !finalPlayers[1])
-			return;
-
 		const currentNickname = getNickOnLocalStorage();
 
 		if (currentNickname === finalPlayers[0] || currentNickname === finalPlayers[1])
 		{
 			console.log("🎮 I'm in the Final!");
-			startPongWebSocket(finalMatchId);
+			startPongWebSocket(this.matchesID[2]);
 			changePageTo(pongGamePage, pongGamePage);
 		}
 	}
