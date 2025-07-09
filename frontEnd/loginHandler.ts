@@ -2,11 +2,12 @@ const loginButton = document.querySelector(".loginUser");
 const newUserButton = document.querySelector(".newUser");
 const createUserButton = document.getElementById("loginButtonNewUser");
 let pageProfile = document.getElementById("loginId");
+let QrCode = document.getElementById("QrCodeId");
 let bubbleTextNewUser = document.getElementById("thinkingBubbleTextNewUser") as HTMLInputElement;
 let bubbleTextLogin = document.getElementById("thinkingBubbleTextLogin") as HTMLInputElement;
 let stopSpeechFlag = false;
 
-const API = "http://localhost:3000/";
+// const API = "http://localhost:3000/";
 // const API = "http://10.11.3.4:3000/";
 // const API = "http://10.11.3.2:3000/"; //diogo machine
 
@@ -159,12 +160,16 @@ document.addEventListener("DOMContentLoaded", async () => {
 	const newUserButton = document.querySelector(".newUser");
 	const loginButton = document.getElementById("loginUserButton");
 	const backButton = document.getElementById("backButtonNewUser");
+	const gLoginButton = document.getElementById("gLoginId");
+	const backButton2F = document.getElementById("back2FId");
 	const logoutButton = document.getElementById("logoutButton");
 	const qrButton = document.getElementById("showQrButtonID");
-	const factor = document.getElementById("twoFactorButtonID");
+	const twoFactorButton = document.getElementById("twoFactorButtonID");
+	const switchNickButton = document.getElementById("switchNickButtonID");
 
 	const profilePage = document.getElementById("profileId");
 	const newUserPage = document.getElementById("newUserId");
+	const twoFactorPage = document.getElementById("twoFactorId");
 	const loginPage = document.getElementById("loginId");
 
 	await checkGoogleLogin();
@@ -183,6 +188,19 @@ document.addEventListener("DOMContentLoaded", async () => {
 			getUserStats(getNickOnLocalStorage());
 			// flipboardNumberAnimation("23");
 		}
+	});
+
+	// LOGIN GOOGLE
+	gLoginButton.addEventListener("click", async () => {
+		// changePageTo(loginPage, twoFactorPage);
+		window.location.href = `${backendUrl}/logingoogle`;
+	});
+
+	switchNickButton.addEventListener("click", async () => {
+		let person = prompt("new nickname");
+		console.log("Fodese: " + person);
+		// changePageTo(loginPage, twoFactorPage);
+		// window.location.href = `${backendUrl}/logingoogle`;
 	});
 
 	//Logout Button
@@ -206,7 +224,60 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 	//Qr Button
 	qrButton.addEventListener("click", () => {
+		let QrCodeBox = document.getElementById("QrCodeBoxId") as HTMLInputElement;
 
+		fetch(`${backendUrl}/2fa/setup`, {
+			method: "GET",
+			credentials: "include", // Important if using cookies/session
+			headers: {
+				Accept: "application/json",
+			},
+		})
+			.then((response) => {
+				if (!response.ok) throw new Error("Network response was not ok");
+				return response.json();
+			})
+			.then((data) => {
+				// data.qr is the QR code data URL, data.secret is the base32 secret
+				console.log("QR Code URL:", data.qr);
+				console.log("Secret:", data.secret);
+				// Example: show QR code in an <img>
+				QrCodeBox.style.backgroundImage = "url(" + data.qr + ")";
+				// (document.getElementById("qr-img") as HTMLImageElement).src = data.qr;
+			})
+			.catch((error) => {
+				console.error("Error fetching 2FA setup:", error);
+			});
+	});
+
+	// TWO FACTTOR BUTTON
+	twoFactorButton.addEventListener("click", () => {
+		const twoFactorInput = (document.getElementById("twoFactorPass") as HTMLInputElement).value.trim();
+
+		console.log("2F input: " + twoFactorInput);
+		fetch("/2fa/verify", {
+			method: "POST",
+			credentials: "include", // Needed if using session/cookies
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify({
+				token: twoFactorInput, // Replace with the actual token from user input
+			}),
+		})
+			.then((response) => response.json())
+			.then((data) => {
+				if (data.success) {
+					console.log("2FA verified!");
+					// Handle success (e.g., redirect or show message)
+				} else {
+					console.error("2FA failed:", data.message);
+					// Handle failure (e.g., show error to user)
+				}
+			})
+			.catch((error) => {
+				console.error("Error verifying 2FA:", error);
+			});
 	});
 
 	//NewUser Button
@@ -225,6 +296,15 @@ document.addEventListener("DOMContentLoaded", async () => {
 		if (!checkIfLogged()) {
 			typeText(bubbleTextLogin, "Welcome back!", 60);
 		}
+	});
+
+	//BACK BUTTON 2F
+	backButton2F.addEventListener("click", () => {
+		changePageTo(twoFactorPage, loginPage);
+		// stopSpech();
+		// if (!checkIfLogged()) {
+		// 	typeText(bubbleTextLogin, "Welcome back!", 60);
+		// }
 	});
 });
 
@@ -265,7 +345,7 @@ function changePageTo(remove, activate) {
 async function checkGoogleLogin() {
 	try {
 		const res = await fetch(`${backendUrl}/me`, {
-			credentials: "include"
+			credentials: "include",
 		});
 		const text = await res.text();
 		if (res.ok) {

@@ -267,6 +267,12 @@
 	translate: -50%;
 }
 
+.googleLogin {
+	bottom: 10%;
+	left: 50%;
+	translate: -50%;
+}
+
 .createNew {
 	bottom: 10%;
 	left: 75%;
@@ -291,11 +297,38 @@
 	translate: -50%;
 }
 
-.twoFactor{
-	  bottom: 5%;
-	  left: 75%;
-	  translate: -50%;
-  }
+.changeNick {
+	bottom: 5%;
+	left: 75%;
+	translate: -50%;
+}
+
+.twoFactor {
+	bottom: 5%;
+	left: 75%;
+	translate: -50%;
+}
+
+.QrCode {
+	position: absolute;
+	width: 200px;
+	height: 200px;
+	background-color: #7ec9d6;
+	/* opacity: 0; */
+}
+
+.QrCodeBox {
+	position: absolute;
+	/* background-image: url(https://images.squarespace-cdn.com/content/v1/5d3f241fa4e0350001fa20d5/1636491460338-AIZAXV2978MGIDQE0GT7/qr-code.png); */
+	background-size: contain;
+
+	width: 100px;
+	height: 100px;
+	background-color: red;
+	left: 50%;
+	top: 50%;
+	translate: -50% -50%;
+}
 
 .loginButton {
 	position: absolute;
@@ -331,6 +364,26 @@
 	border-radius: 10px;
 	background-image: url(/images/bgPattern2.jpg);
 	animation: bgAnimation 20s infinite linear;
+}
+
+.twoFactorPage {
+	/* background-color: red; */
+}
+
+.twoFactorInput {
+	top: 40%;
+	/* translate: ; */
+}
+
+.twoFactor {
+	position: absolute;
+}
+
+.back2F {
+	position: absolute;
+	bottom: 5%;
+	left: 25%;
+	translate: -50%;
 }
 
 @keyframes bgAnimation {

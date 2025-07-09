@@ -464,6 +464,14 @@
 										<div class="defaultButtonBGWave wave2"></div>
 									</div>
 								</button>
+
+								<button class="defaultButton googleLogin" id="gLoginId">
+									<p class="defaultButtonText">G Login</p>
+									<div class="defaultButtonBG">
+										<div class="defaultButtonBGWave"></div>
+										<div class="defaultButtonBGWave wave2"></div>
+									</div>
+								</button>
 							</div>
 							<!-- NEW USER PAGE -->
 							<div class="newUserPage profileId" id="newUserId">
@@ -550,6 +558,10 @@
 									</div>
 								</div>
 
+								<div class="QrCode" id="QrCodeId">
+									<div class="QrCodeBox" id="QrCodeBoxId"></div>
+								</div>
+
 								<button class="defaultButton logoutButton" id="logoutButton">
 									<p class="defaultButtonText">Logout</p>
 									<div class="defaultButtonBG">
@@ -565,10 +577,38 @@
 										<div class="defaultButtonBGWave wave2"></div>
 									</div>
 								</button>
-								
+								<button class="defaultButton changeNick" id="switchNickButtonID">
+									<p class="defaultButtonText">Switch Nick</p>
+									<div class="defaultButtonBG">
+										<div class="defaultButtonBGWave"></div>
+										<div class="defaultButtonBGWave wave2"></div>
+									</div>
+								</button>
+							</div>
+
+							<!-- twoFactorPage -->
+							<div class="twoFactorPage profileId" id="twoFactorId">
+								<div class="loginBoxBG">
+									<div class="decoration1"></div>
+								</div>
+								<div class="topCover"></div>
+								<!-- <img src="images/avatar3.png" alt="" class="avatar3" /> -->
+								<div class="inputBox twoFactorInput">
+									<label for="inputPass">Enter your TwoFactor</label>
+									<input type="text" id="twoFactorPass" class="inputText smallInput" placeholder="2F" autocomplete="off" />
+								</div>
 
 								<button class="defaultButton twoFactor" id="twoFactorButtonID">
-									<p class="defaultButtonText">2F</p>
+									<p class="defaultButtonText">Verify</p>
+									<div class="defaultButtonBG">
+										<div class="defaultButtonBGWave"></div>
+										<div class="defaultButtonBGWave wave2"></div>
+									</div>
+								</button>
+
+								<!-- BACK BUTTON 2F -->
+								<button class="defaultButton back2F" id="back2FId">
+									<p class="defaultButtonText">Back</p>
 									<div class="defaultButtonBG">
 										<div class="defaultButtonBGWave"></div>
 										<div class="defaultButtonBGWave wave2"></div>
