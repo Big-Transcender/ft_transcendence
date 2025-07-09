@@ -10,10 +10,10 @@ const gameSelectorPongPage = document.getElementById("gameSelectorPongId");
 const gameSelectorPongMultiplayerPage = document.getElementById("gameSelectorPongMultiplayerId");
 const startGameTimer = document.getElementById("timerId");
 const startGameTimerBox = document.getElementById("timerBoxId");
-export function generateMatchId() {
+import { startPongWebSocket } from "./gamePong.js";
+function generateMatchId() {
     return "match-" + Date.now() + "-" + Math.floor(Math.random() * 10000);
 }
-import { startPongWebSocket } from "./gamePong.js";
 function setRandomBackground() {
     const bgNumber = Math.floor(Math.random() * 3) + 1;
     const board = document.querySelector(".board");

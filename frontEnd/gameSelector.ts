@@ -12,12 +12,13 @@ const gameSelectorPongMultiplayerPage = document.getElementById("gameSelectorPon
 const startGameTimer = document.getElementById("timerId");
 const startGameTimerBox = document.getElementById("timerBoxId");
 
+import { startPongWebSocket } from "./gamePong.js";
 
-export function generateMatchId(){
+function generateMatchId(){
 	return "match-" + Date.now() + "-" + Math.floor(Math.random() * 10000);
 }
 
-import { startPongWebSocket } from "./gamePong.js";
+
 
 function setRandomBackground() {
 	const bgNumber = Math.floor(Math.random() * 3) + 1;

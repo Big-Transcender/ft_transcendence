@@ -104,6 +104,9 @@ document.addEventListener("DOMContentLoaded", () => {
 		// The function, "displayWarning", well... display a text in the display to show some errors if you want.
 		// It has a 5 seconds cooldown.
 		// Arigato gozaimasu.
+		const id = "1324"
+		const players: string[] = []
+		
 		displayWarning("This start the contest");
 	});
 
