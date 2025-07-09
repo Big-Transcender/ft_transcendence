@@ -34,7 +34,9 @@ module.exports = async function (fastify) {
                                                  id INTEGER PRIMARY KEY AUTOINCREMENT,
                                                  nickname TEXT NOT NULL UNIQUE,
                                                  password TEXT NOT NULL,
-                                                 email TEXT NOT NULL UNIQUE
+                                                 email TEXT NOT NULL UNIQUE,
+                                                 two_factor_enable BOOLEAN DEFAULT false,
+                                                 two_factor_secret TEXT
             )
         `).run();
 
@@ -98,7 +100,7 @@ module.exports = async function (fastify) {
         insertTournament.run('42 Tournament', "1111", '1', '0', new Date().toISOString());
         insertTournament.run('42 Tournament', "2222", '1', '0', new Date().toISOString());
         insertTournament.run('42 Tournament', "3333", '1', '0', new Date().toISOString());
-        insertTournament.run('42 Tournament', "4444 ", '1', '0', new Date().toISOString());
+        insertTournament.run('42 Tournament', "4444", '1', '0', new Date().toISOString());
 
         const insertMatch = db.prepare('INSERT INTO matches (tournament_id, player1_id, player2_id, winner_id, score_p1, score_p2) VALUES (?, ?, ?, ?, ?, ?)');
         insertMatch.run(1, 1,2,1, 10, 8);
