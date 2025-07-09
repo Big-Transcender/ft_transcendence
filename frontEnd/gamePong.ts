@@ -3,7 +3,7 @@ let socketInitialized = false;
 let currentMatchId: string | null = null;
 let currentIsLocal: boolean = true;
 
-export function startPongWebSocket(matchId: string, isLocal: boolean = false, aiGame: boolean = false, teamGame: boolean = false) {
+function startPongWebSocket(matchId: string, isLocal: boolean = false, aiGame: boolean = false, teamGame: boolean = false) {
 	if (socketInitialized) return;
 	socketInitialized = true;
 	currentMatchId = matchId;

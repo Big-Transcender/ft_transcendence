@@ -12,7 +12,6 @@ const gameSelectorPongMultiplayerPage = document.getElementById("gameSelectorPon
 const startGameTimer = document.getElementById("timerId");
 const startGameTimerBox = document.getElementById("timerBoxId");
 
-import { startPongWebSocket } from "./gamePong.js";
 
 function generateMatchId(){
 	return "match-" + Date.now() + "-" + Math.floor(Math.random() * 10000);

@@ -10,7 +10,6 @@ const gameSelectorPongPage = document.getElementById("gameSelectorPongId");
 const gameSelectorPongMultiplayerPage = document.getElementById("gameSelectorPongMultiplayerId");
 const startGameTimer = document.getElementById("timerId");
 const startGameTimerBox = document.getElementById("timerBoxId");
-import { startPongWebSocket } from "./gamePong.js";
 function generateMatchId() {
     return "match-" + Date.now() + "-" + Math.floor(Math.random() * 10000);
 }
