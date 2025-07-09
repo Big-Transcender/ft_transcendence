@@ -118,7 +118,7 @@ async function playExpandingAnimation(button: any) {
 	phonetitle.textContent = "Welcome to the Animal Ponging";
 }
 
-fetch("${backendUrl}/leaderboard")
+fetch(`${backendUrl}/leaderboard`)
 	.then((response) => response.json())
 	.then((data) => {
 		const table = document.getElementById("playerRankListId") as HTMLTableElement;
@@ -126,6 +126,7 @@ fetch("${backendUrl}/leaderboard")
 		while (table.rows.length > 1) {
 			table.deleteRow(1);
 		}
+		console.log("Hello");
 		console.log(data);
 		const topPlayers = data.sort((a, b) => b.wins - a.wins).slice(0, 5);
 		// Insert new rows

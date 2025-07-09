@@ -169,7 +169,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     //Logout Button
     logoutButton.addEventListener("click", async () => {
         try {
-            await fetch("${backendUrl}/logout", {
+            await fetch(`${backendUrl}/logout`, {
                 method: "GET",
                 credentials: "include",
             });

@@ -4,6 +4,7 @@ let gamesNumber = document.getElementById("boxGamesNumber");
 let positionNumber = document.getElementById("positionId");
 let winRateText = document.getElementById("winRateTextId");
 const backendUrl = `http://${window.location.hostname}:3000`;
+const frontendUrl = `http://${window.location.hostname}:5173`;
 
 getUserStats(getNickOnLocalStorage());
 
