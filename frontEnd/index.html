@@ -103,54 +103,53 @@
 					</div>
 					<!-- HOME PAGE -->
 					<div id="home" class="home page active">
-						<!-- PLAYER LEADERBOARD -->
-						<div class="homePlayersRank">
-							<div class="homePlayersRankBG"></div>
-							<p class="playersRankTitle">Current Players Rank</p>
-							<div class="playersRankList">
-								<div class="playersRankListBG"></div>
-								<!-- RANK LIST -->
-								<table id="playerRankListId" class="playerRankTable">
-									<tr>
-										<th>Position</th>
-										<th>Nick</th>
-										<th>Wins</th>
-									</tr>
-									<tr>
-										<td>1</td>
-										<td>Loading</td>
-										<td>0</td>
-									</tr>
-									<tr>
-										<td>2</td>
-										<td>Loading</td>
-										<td>0</td>
-									</tr>
-									<tr>
-										<td>3</td>
-										<td>Loading</td>
-										<td>0</td>
-									</tr>
-									<tr>
-										<td>4</td>
-										<td>Loading</td>
-										<td>0</td>
-									</tr>
-									<tr>
-										<td>5</td>
-										<td>Loading</td>
-										<td>0</td>
-									</tr>
-								</table>
-							</div>
-						</div>
-						<img src="/images/loading.gif" alt="" class="loadingGif drop-shadow-xl/50" />
 						<!-- NOOK PHONE -->
 						<div class="nookPhone">
 							<!-- CREDITS -->
 							<div class="credits" id="creditsId">
 								<div class="creditsBG"></div>
 								<div class="creditsText" id="creditsTextId">test</div>
+							</div>
+							<!-- PLAYER LEADERBOARD -->
+							<div class="homePlayersRank">
+								<div class="homePlayersRankBG"></div>
+								<p class="playersRankTitle">Current Players Rank</p>
+								<div class="playersRankList">
+									<div class="playersRankListBG"></div>
+									<!-- RANK LIST -->
+									<table id="playerRankListId" class="playerRankTable">
+										<tr>
+											<th>Position</th>
+											<th>Nick</th>
+											<th>Wins</th>
+										</tr>
+										<tr>
+											<td>1</td>
+											<td>Loading</td>
+											<td>0</td>
+										</tr>
+										<tr>
+											<td>2</td>
+											<td>Loading</td>
+											<td>0</td>
+										</tr>
+										<tr>
+											<td>3</td>
+											<td>Loading</td>
+											<td>0</td>
+										</tr>
+										<tr>
+											<td>4</td>
+											<td>Loading</td>
+											<td>0</td>
+										</tr>
+										<tr>
+											<td>5</td>
+											<td>Loading</td>
+											<td>0</td>
+										</tr>
+									</table>
+								</div>
 							</div>
 							<div class="nookPhoneBG"></div>
 							<div class="phoneTitle">Welcome to the Animal Ponging!</div>
@@ -212,8 +211,9 @@
 								</div>
 							</div>
 						</div>
-						<div></div>
 					</div>
+					<img src="/images/loading.gif" alt="" class="loadingGif drop-shadow-xl/50" />
+
 					<!-- GAME PAGE -->
 					<div id="game1" class="game1 page">
 						<!-- SELECT GAMEMODE -->
@@ -373,8 +373,17 @@
 									<p class="playerContestPlaceName" id="player7">waiting</p>
 								</div>
 							</div>
+							<!-- BACK BUTTON -->
 							<button class="defaultButton contestInBackButton genericBackButton">
 								<p class="defaultButtonText">Back</p>
+								<div class="defaultButtonBG">
+									<div class="defaultButtonBGWave"></div>
+									<div class="defaultButtonBGWave wave2"></div>
+								</div>
+							</button>
+							<!-- START BUTTON -->
+							<button class="defaultButton startContestButton" id="startContestButtonId">
+								<p class="defaultButtonText">Start!</p>
 								<div class="defaultButtonBG">
 									<div class="defaultButtonBGWave"></div>
 									<div class="defaultButtonBGWave wave2"></div>
@@ -401,6 +410,14 @@
 							</div>
 							<button class="defaultButton contestNewCreateButton" id="createNewContestButtonId">
 								<p class="defaultButtonText">Create</p>
+								<div class="defaultButtonBG">
+									<div class="defaultButtonBGWave"></div>
+									<div class="defaultButtonBGWave wave2"></div>
+								</div>
+							</button>
+
+							<button class="defaultButton genericBackButton contestNewCreateBackButton" id="contestNewCreateBackButtonId">
+								<p class="defaultButtonText">Back</p>
 								<div class="defaultButtonBG">
 									<div class="defaultButtonBGWave"></div>
 									<div class="defaultButtonBGWave wave2"></div>
