@@ -100,6 +100,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const id = "1324";
         const players = [];
         displayWarning("This start the contest");
+        startTournament(players, id, joinedContestPage);
     });
     genericBackButton.forEach((button) => {
         button.addEventListener("click", () => {

@@ -99,7 +99,6 @@ function getImpactAngle(gameState, impact) {
 	let extra = 0.2;
 	if (angle < 0)
 		extra = -0.2;
-	console.log(gameState.speed);
 	return angle + extra;
 }
 
@@ -132,7 +131,6 @@ function updateBall(gameState) {
 		gameState.winnerId = gameState.playerDbId.p1;
 		if (gameState.score.p1 < gameState.score.p2)
 			gameState.winnerId = gameState.playerDbId.p2;
-		console.log(gameState.playerDbId);
 		insertOnDb(gameState);
 		
 		gameState.onGoing = false;

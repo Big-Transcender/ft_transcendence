@@ -1,12 +1,6 @@
 
 
-
-const pongGamePage = document.getElementById("pongGameId");
 const activeTournaments = new Map();
-
-function generateMatchId(){
-	return "match-" + Date.now() + "-" + Math.floor(Math.random() * 10000);
-}
 
 class Tournament {
 
@@ -89,7 +83,7 @@ class Tournament {
 }
 
 
-export function startTournament(players: string[], tournamentId: string, fromPage: HTMLElement)
+function startTournament(players: string[], tournamentId: string, fromPage: HTMLElement)
 {
 	const tournament = new Tournament(players, tournamentId);
 	tournament.startMatches(fromPage);

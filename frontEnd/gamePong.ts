@@ -171,3 +171,6 @@ setInterval(() => {
 }, 100);
 
 
+function generateMatchId(){
+	return "match-" + Date.now() + "-" + Math.floor(Math.random() * 10000);
+}
