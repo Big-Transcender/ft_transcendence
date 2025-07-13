@@ -713,6 +713,7 @@ td {
 
 .loadingGif {
 	position: absolute;
+	z-index: -1;
 	height: 250px;
 	/* z-index: 99; */
 

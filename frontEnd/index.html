@@ -21,6 +21,39 @@
 	<body>
 		<div class="mainBody">
 			<div class="mainBodyBackground">
+				<!-- WARNING POPUP -->
+				<div class="defaultWarning">
+					<div class="defaultWarningBG"></div>
+					<p class="defaultWarningText" id="warningContest">Generic Error</p>
+				</div>
+				<!-- POPUP -->
+				<div id="popupContainer" class="popup-overlay">
+					<div class="popup">
+						<div class="popupBG"></div>
+						<div class="popupText">Switch your Nick!</div>
+
+						<div class="inputBox popupNewNick">
+							<label for="inputPass">Enter new Nick</label>
+							<input type="text" id="inputPass" class="inputText smallInput" placeholder="NICK" autocomplete="off" />
+						</div>
+
+						<button onclick="fecharPopup()" class="defaultButton pupupBackButton">
+							<p class="defaultButtonText">Close</p>
+							<div class="defaultButtonBG">
+								<div class="defaultButtonBGWave"></div>
+								<div class="defaultButtonBGWave wave2"></div>
+							</div>
+						</button>
+
+						<button onclick="displayWarning('test')" class="defaultButton pupupSwitchButton">
+							<p class="defaultButtonText">Switch!</p>
+							<div class="defaultButtonBG">
+								<div class="defaultButtonBGWave"></div>
+								<div class="defaultButtonBGWave wave2"></div>
+							</div>
+						</button>
+					</div>
+				</div>
 				<div class="backgroudCenterBg"></div>
 				<div class="backgroundCenter">
 					<!-- HEADER -->
@@ -616,11 +649,6 @@
 								</button>
 							</div>
 						</div>
-					</div>
-					<!-- WARNING POPUP -->
-					<div class="defaultWarning">
-						<div class="defaultWarningBG"></div>
-						<p class="defaultWarningText" id="warningContest">Generic Error</p>
 					</div>
 				</div>
 			</div>

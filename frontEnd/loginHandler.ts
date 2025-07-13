@@ -7,6 +7,9 @@ let bubbleTextNewUser = document.getElementById("thinkingBubbleTextNewUser") as 
 let bubbleTextLogin = document.getElementById("thinkingBubbleTextLogin") as HTMLInputElement;
 let stopSpeechFlag = false;
 
+let currentNickName;
+let userIsLogged;
+
 // const API = "http://localhost:3000/";
 // const API = "http://10.11.3.4:3000/";
 // const API = "http://10.11.3.2:3000/"; //diogo machine
@@ -154,8 +157,6 @@ clickButton(loginButton);
 clickButton(newUserButton);
 clickButton(createUserButton);
 
-// clickButton(forgotButton);
-
 document.addEventListener("DOMContentLoaded", async () => {
 	const newUserButton = document.querySelector(".newUser");
 	const loginButton = document.getElementById("loginUserButton");
@@ -197,8 +198,9 @@ document.addEventListener("DOMContentLoaded", async () => {
 	});
 
 	switchNickButton.addEventListener("click", async () => {
-		let person = prompt("new nickname");
-		console.log("Fodese: " + person);
+		// let person = prompt("new nickname");
+		// console.log("Fodese: " + person);
+		abrirPopup();
 		// changePageTo(loginPage, twoFactorPage);
 		// window.location.href = `${backendUrl}/logingoogle`;
 	});
@@ -364,4 +366,12 @@ async function checkGoogleLogin() {
 	} catch (err) {
 		console.error("Error checking Google login:", err);
 	}
+}
+
+function abrirPopup() {
+	document.getElementById("popupContainer").style.display = "flex";
+}
+
+function fecharPopup() {
+	document.getElementById("popupContainer").style.display = "none";
 }
