@@ -62,7 +62,6 @@ function getUserPosition() {
 		})
 		.then((data) => {
 			positionNumber.textContent = data.position + "º";
-			console.log(`User ${userNick} is at position:`, data.position);
 		})
 		.catch((error) => {
 			console.error("Failed to fetch leaderboard position:", error.message);
@@ -89,3 +88,13 @@ async function getUserStats(nickname: string) {
 			console.error("Failed to fetch player stats:", error.message);
 		});
 }
+
+document.addEventListener("DOMContentLoaded", async () => {
+	const switchNick = document.querySelector(".pupupSwitchButton");
+
+	// SWITCH NICK FUNCTION
+	switchNick.addEventListener("click", () => {
+		const nickInput = (document.getElementById("popupNewNick") as HTMLInputElement).value.trim();
+		displayWarning(nickInput);
+	});
+});

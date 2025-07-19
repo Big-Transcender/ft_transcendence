@@ -230,3 +230,9 @@ async function checkIsValidPin(pin) {
         return false;
     }
 }
+function resetContestPage() {
+    let contestPageAll = document.querySelectorAll(".gameSelector");
+    let contestSelectorPage = document.getElementById("contestSelectorId");
+    contestPageAll.forEach((el) => el.classList.remove("active"));
+    contestSelectorPage.classList.add("active");
+}

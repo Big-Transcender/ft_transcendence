@@ -26,7 +26,7 @@
 					<div class="defaultWarningBG"></div>
 					<p class="defaultWarningText" id="warningContest">Generic Error</p>
 				</div>
-				<!-- POPUP -->
+				<!-- POPUP FROM SWITCH NICK-->
 				<div id="popupContainer" class="popup-overlay">
 					<div class="popup">
 						<div class="popupBG"></div>
@@ -34,7 +34,7 @@
 
 						<div class="inputBox popupNewNick">
 							<label for="popupNewNick">Enter new Nick</label>
-							<input type="text" id="popupNewNickId" class="inputText smallInput" placeholder="NICK" autocomplete="off" />
+							<input type="text" id="popupNewNick" class="inputText smallInput" placeholder="NEW NICK" autocomplete="off" />
 						</div>
 
 						<button onclick="fecharPopup()" class="defaultButton pupupBackButton">
@@ -45,7 +45,7 @@
 							</div>
 						</button>
 
-						<button onclick="displayWarning('test')" class="defaultButton pupupSwitchButton">
+						<button class="defaultButton pupupSwitchButton">
 							<p class="defaultButtonText">Switch!</p>
 							<div class="defaultButtonBG">
 								<div class="defaultButtonBGWave"></div>
@@ -110,14 +110,14 @@
 										Home
 										<div class="buttonHitBox"></div>
 									</a>
-									<a onclick="navigate('game1')" class="button">
+									<a onclick="navigate('game1'); resetGamePage()" class="button">
 										<div class="buttonBG"></div>
 										Pong
 										<div class="buttonHitBox"></div>
 									</a>
 								</div>
 								<div class="rightButtons">
-									<a onclick="navigate('contest')" class="button">
+									<a onclick="navigate('contest'); resetContestPage()" class="button">
 										<div class="buttonBG"></div>
 										Contest
 										<div class="buttonHitBox"></div>
