@@ -182,7 +182,9 @@ async function rankAnimationHandler() {
 function resetGamePage() {
 	let gamePageAll = document.querySelectorAll(".gameId");
 	let gameSelectorPage = document.querySelector(".gameSelector");
+	let backButtom = document.querySelector(".backGamePong");
 
 	gamePageAll.forEach((el) => el.classList.remove("active"));
+	backButtom.classList.remove("active");
 	gameSelectorPage.classList.add("active");
 }
