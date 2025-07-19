@@ -4,6 +4,9 @@ const buttonSinglePong = document.getElementById("buttonSinglePong");
 const buttonMultiplayerPong = document.getElementById("buttonMultiplayerPong");
 const buttonVersusMP = document.getElementById("buttonVersusMPId");
 const buttonLocalMP = document.getElementById("buttonLocalMP");
+const closePopupPongButtom = document.querySelector(".pongPopupBackButton");
+const joinPopupButton = document.querySelector(".joinPopupButton");
+const createPopupButton = document.querySelector(".createPopupButton");
 const backButtonMP = document.getElementById("backButtonMPId");
 const pongGamePage = document.getElementById("pongGameId");
 const gameSelectorPongPage = document.getElementById("gameSelectorPongId");
@@ -72,42 +75,42 @@ document.addEventListener("DOMContentLoaded", () => {
     });
     //Change to Multiplayer Versus
     buttonVersusMP.addEventListener("click", () => {
+        // testing the teams games
         // changePageTo(gameSelectorPongPage, gameSelectorPage);
-        updatePageHash(`#pong/pongVersusMP`);
+        // updatePageHash(`#pong/pongVersusMP`);
+        //#TODO Check this Hash update, it realy update over here?
         // // Prompt user to create or join a match
-        const action = prompt("Do you want to create a new match or join an existing one? (Type 'create' or 'join')");
-        if (action === "create") {
-            // Create a new match
-            const matchId = generateMatchId();
-            alert(`Match created! Share this ID with your friend: ${matchId}`);
-            history.replaceState(undefined, "", `#pong/${matchId}`);
-            startPongWebSocket(matchId, false, false); // Start as host
-            changePageTo(gameSelectorPongMultiplayerPage, pongGamePage);
-            backGamePongButton.classList.add("active");
-            animateTimer();
-            resetEmotions();
-        }
-        else if (action === "join") {
-            // Join an existing match
-            const matchId = prompt("Enter the match ID:");
-            if (matchId) {
-                history.replaceState(undefined, "", `#pong/${matchId}`);
-                startPongWebSocket(matchId, false, false); // Join as client
-                changePageTo(gameSelectorPongMultiplayerPage, pongGamePage);
-                backGamePongButton.classList.add("active");
-                animateTimer();
-                resetEmotions();
-                setGameScore("Player 1", getNickOnLocalStorage());
-            }
-            else {
-                alert("You must enter a match ID to join.");
-                changePageTo(gameSelectorPongMultiplayerPage, gameSelectorPongPage);
-            }
-        }
-        else {
-            alert("Invalid action. Please type 'create' or 'join'.");
-            changePageTo(gameSelectorPongMultiplayerPage, gameSelectorPongPage);
-        }
+        // const action = prompt("Do you want to create a new match or join an existing one? (Type 'create' or 'join')");
+        openPopupPong();
+        // if (action === "create") {
+        // 	// Create a new match
+        // 	const matchId = generateMatchId();
+        // 	alert(`Match created! Share this ID with your friend: ${matchId}`);
+        // 	history.replaceState(undefined, "", `#pong/${matchId}`);
+        // 	startPongWebSocket(matchId, false, false); // Start as host
+        // 	changePageTo(gameSelectorPongMultiplayerPage, pongGamePage);
+        // 	backGamePongButton.classList.add("active");
+        // 	animateTimer();
+        // 	resetEmotions();
+        // } else if (action === "join") {
+        // 	// Join an existing match
+        // 	const matchId = prompt("Enter the match ID:");
+        // 	if (matchId) {
+        // 		history.replaceState(undefined, "", `#pong/${matchId}`);
+        // 		startPongWebSocket(matchId, false, false); // Join as client
+        // 		changePageTo(gameSelectorPongMultiplayerPage, pongGamePage);
+        // 		backGamePongButton.classList.add("active");
+        // 		animateTimer();
+        // 		resetEmotions();
+        // 		setGameScore("Player 1", getNickOnLocalStorage());
+        // 	} else {
+        // 		alert("You must enter a match ID to join.");
+        // 		changePageTo(gameSelectorPongMultiplayerPage, gameSelectorPongPage);
+        // 	}
+        // } else {
+        // 	alert("Invalid action. Please type 'create' or 'join'.");
+        // 	changePageTo(gameSelectorPongMultiplayerPage, gameSelectorPongPage);
+        // }
     });
     //Change to Multiplayer Local
     buttonLocalMP.addEventListener("click", () => {
@@ -130,4 +133,43 @@ document.addEventListener("DOMContentLoaded", () => {
         changePageTo(gameSelectorPongMultiplayerPage, gameSelectorPongPage);
         updatePageHash(`#pong`);
     });
+    // CLOSE POPUP BUTTOM
+    closePopupPongButtom.addEventListener("click", () => {
+        closePopupPong();
+    });
 });
+function showMatchId(matchIdText) {
+    document.querySelector(".gameIdBoxTextID").textContent = matchIdText;
+    document.querySelector(".gameIdBox").style.opacity = "1";
+}
+function openPopupPong() {
+    document.getElementById("popupContainerPong").style.display = "flex";
+    document.addEventListener("DOMContentLoaded", () => {
+        //BackButton in Pong
+        // backGamePongButton.addEventListener("click", () => {
+        // 	changePageTo(pongGamePage, gameSelectorPongPage);
+        // 	updatePageHash("#game1");
+        // 	backGamePongButton.classList.remove("active");
+        // });
+    });
+    createPopupButton.addEventListener("click", () => {
+        // #TODO This match ID >NEEDS< to be smaller
+        // 4 characters should be more than enough
+        const matchId = generateMatchId();
+        showMatchId(matchId);
+        // alert(`Match created! Share this ID with your friend: ${matchId}`);
+        history.replaceState(undefined, "", `#pong/${matchId}`);
+        startPongWebSocket(matchId, false, false); // Start as host
+        changePageTo(gameSelectorPongMultiplayerPage, pongGamePage);
+        backGamePongButton.classList.add("active");
+        // animateTimer();
+        resetEmotions();
+        closePopupPong();
+        // changePageTo(pongGamePage, gameSelectorPongPage);
+        // updatePageHash("#game1");
+        // backGamePongButton.classList.remove("active");
+    });
+}
+function closePopupPong() {
+    document.getElementById("popupContainerPong").style.display = "none";
+}

@@ -54,6 +54,42 @@
 						</button>
 					</div>
 				</div>
+				<!-- POPUP FROM MULTIPLAYER PONG-->
+				<div id="popupContainerPong" class="popup-overlay">
+					<div class="popup">
+						<div class="popupBG"></div>
+						<div class="popupText pongPopup">Create a new match or <br />join an existing one?</div>
+
+						<div class="inputBox popupNewNick">
+							<label for="popupNewNick">Enter match ID</label>
+							<input type="text" id="popupNewNick" class="inputText smallInput" placeholder="MATCH ID" autocomplete="off" />
+						</div>
+
+						<button class="defaultButton pongPopupBackButton">
+							<p class="defaultButtonText">Close</p>
+							<div class="defaultButtonBG">
+								<div class="defaultButtonBGWave"></div>
+								<div class="defaultButtonBGWave wave2"></div>
+							</div>
+						</button>
+
+						<button class="defaultButton joinPopupButton">
+							<p class="defaultButtonText">Join!</p>
+							<div class="defaultButtonBG">
+								<div class="defaultButtonBGWave"></div>
+								<div class="defaultButtonBGWave wave2"></div>
+							</div>
+						</button>
+
+						<button class="defaultButton createPopupButton">
+							<p class="defaultButtonText">Create!</p>
+							<div class="defaultButtonBG">
+								<div class="defaultButtonBGWave"></div>
+								<div class="defaultButtonBGWave wave2"></div>
+							</div>
+						</button>
+					</div>
+				</div>
 				<div class="backgroudCenterBg"></div>
 				<div class="backgroundCenter">
 					<!-- HEADER -->
@@ -314,6 +350,12 @@
 									<div class="paddleHitBox"></div>
 								</div>
 								<div class="timer" id="timerBoxId"><p id="timerId">1</p></div>
+							</div>
+							<!-- BOX OF MATCH ID -->
+							<div class="gameIdBox">
+								<div class="gameidBoxBG"></div>
+								<div class="gameIdBoxText">Match ID:</div>
+								<div class="gameIdBoxTextID">NONE</div>
 							</div>
 						</div>
 						<!-- BACK BUTTOM -->
