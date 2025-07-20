@@ -33,13 +33,16 @@ function setRandomBackground() {
     }
 }
 async function animateTimer() {
-    startGameTimerBox.style.opacity = "1";
-    startGameTimer.textContent = "1";
-    for (let i = 1; i <= 3; i++) {
-        startGameTimer.textContent = i.toString();
-        await new Promise((resolve) => setTimeout(resolve, 1000));
-    }
-    startGameTimerBox.style.opacity = "0";
+    const timer = document.querySelector(".timer");
+    if (!timer)
+        return;
+    timer.style.opacity = "1";
+    timer.style.animation = "timerAnimation 3s";
+    // Remove a animação após terminar para poder reutilizar depois
+    setTimeout(() => {
+        timer.style.animation = "";
+        timer.style.opacity = "0";
+    }, 3000);
 }
 function updatePageHash(hash) {
     history.replaceState(undefined, "", hash);
@@ -63,6 +66,7 @@ document.addEventListener("DOMContentLoaded", () => {
             resetEmotions();
             setGameScore(getNickOnLocalStorage());
             backGamePongButton.classList.add("active");
+            showMatchId("NONE");
         }
         else {
             displayWarning("You need to log in.");
@@ -123,6 +127,7 @@ document.addEventListener("DOMContentLoaded", () => {
             animateTimer();
             setGameScore(getNickOnLocalStorage(), "Player 2");
             backGamePongButton.classList.add("active");
+            showMatchId("NONE");
         }
         else {
             displayWarning("You need to log in.");
@@ -144,20 +149,12 @@ function showMatchId(matchIdText) {
 }
 function openPopupPong() {
     document.getElementById("popupContainerPong").style.display = "flex";
-    document.addEventListener("DOMContentLoaded", () => {
-        //BackButton in Pong
-        // backGamePongButton.addEventListener("click", () => {
-        // 	changePageTo(pongGamePage, gameSelectorPongPage);
-        // 	updatePageHash("#game1");
-        // 	backGamePongButton.classList.remove("active");
-        // });
-    });
+    // CREATE A MP MATCH
     createPopupButton.addEventListener("click", () => {
         // #TODO This match ID >NEEDS< to be smaller
         // 4 characters should be more than enough
         const matchId = generateMatchId();
         showMatchId(matchId);
-        // alert(`Match created! Share this ID with your friend: ${matchId}`);
         history.replaceState(undefined, "", `#pong/${matchId}`);
         startPongWebSocket(matchId, false, false); // Start as host
         changePageTo(gameSelectorPongMultiplayerPage, pongGamePage);
@@ -165,9 +162,32 @@ function openPopupPong() {
         // animateTimer();
         resetEmotions();
         closePopupPong();
+        setGameScore(getNickOnLocalStorage(), "Player 2");
         // changePageTo(pongGamePage, gameSelectorPongPage);
         // updatePageHash("#game1");
         // backGamePongButton.classList.remove("active");
+    });
+    // JOIN A MP MATCH
+    joinPopupButton.addEventListener("click", () => {
+        // Join an existing match
+        const matchId = document.getElementById("popupMatchID").value.trim();
+        // #TODO If it's an incorrect MatchID, nothing will happen, but an error should be displayed.
+        if (matchId) {
+            history.replaceState(undefined, "", `#pong/${matchId}`);
+            startPongWebSocket(matchId, false, false); // Join as client
+            changePageTo(gameSelectorPongMultiplayerPage, pongGamePage);
+            backGamePongButton.classList.add("active");
+            animateTimer();
+            resetEmotions();
+            setGameScore("Player 1", getNickOnLocalStorage());
+            showMatchId(matchId);
+            closePopupPong();
+        }
+        else {
+            displayWarning("You must enter a match ID to join.");
+            // alert("You must enter a match ID to join.");
+            // changePageTo(gameSelectorPongMultiplayerPage, gameSelectorPongPage);
+        }
     });
 }
 function closePopupPong() {
