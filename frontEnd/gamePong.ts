@@ -3,6 +3,11 @@ let socketInitialized = false;
 let currentMatchId: string | null = null;
 let currentIsLocal: boolean = true;
 
+interface MatchCheckResponse {
+	exists: boolean;
+	playerCount: number;
+}
+
 function startPongWebSocket(matchId: string, isLocal: boolean = false, aiGame: boolean = false, teamGame: boolean = false) {
 	if (socketInitialized) return;
 	socketInitialized = true;
