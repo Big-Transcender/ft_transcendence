@@ -60,7 +60,7 @@ class Tournament {
 			console.log("✅ Semifinal 2 winner recorded:", winner);
 		}
 		if (currentNickname != this.semifinal1Winner 
-			|| currentNickname != this.semifinal2Winner)
+			&& currentNickname != this.semifinal2Winner)
 			return;
 
 		this.startFinalMatch();

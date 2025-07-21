@@ -13,4 +13,18 @@ module.exports = async function (fastify) {
 		};
 	});
 
+	fastify.get('/pongGame/activeMatches', async (request, reply) => {
+		// Convert the matches Map to an array of match info
+		const activeMatches = Array.from(matches.entries()).map(([matchId, match]) => ({
+			matchId: matchId,
+			playerCount: match.clients.size,
+			gameState: match.gameState.started ? 'running' : 'waiting'
+		}));
+
+		return { 
+			activeMatches,
+			totalMatches: matches.size
+		};
+	});
+
 }
