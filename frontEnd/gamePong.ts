@@ -61,7 +61,6 @@ function startPongWebSocket(matchId: string, isLocal: boolean = false, aiGame: b
 		}
 	});
 
-	// ---- Sending player inputs to server
 	function sendInputLoop() {
 		if (keysPressed.size > 0 && socket && socket.readyState === WebSocket.OPEN && currentMatchId) {
 			socket.send(
@@ -76,8 +75,6 @@ function startPongWebSocket(matchId: string, isLocal: boolean = false, aiGame: b
 		animationFrameId = requestAnimationFrame(sendInputLoop);
 	}
 	sendInputLoop();
-
-	// ---- Receiving Server updated positions
 
 	if (!teamGame)
 	{
@@ -174,3 +171,4 @@ setInterval(() => {
 function generateMatchId(){
 	return "match-" + Date.now() + "-" + Math.floor(Math.random() * 10000);
 }
+
