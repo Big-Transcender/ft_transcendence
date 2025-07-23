@@ -108,18 +108,16 @@ async function registerRoutes() {
 
 async function start() {
 	try {
-		await fastify.register(require('@fastify/cors'), {
-			// origin: (origin, cb) => {
-			//   console.log('Incoming Origin:', origin);
-			//   if (!origin) return cb(null, true);
-			//   const allowedPattern = /^http:\/\/(10\.12\.\d+\.\d+|c\d+r\d+s\d+\.42porto\.com)(:\d+)?$/;
-
-			//   if (allowedPattern.test(origin)) cb(null, origin);
-			//   else cb(null, false);
-			// },
-			origin: '*',
+		await fastify.register(require("@fastify/cors"), {
+			origin: (origin, cb) => {
+				console.log("Incoming Origin:", origin);
+				if (!origin) return cb(null, true);
+				const allowedPattern = /^http:\/\/(10\.11\.\d+\.\d+|c\d+r\d+s\d+\.42porto\.com|localhost:5173|172\.30\.94\.112:5173)(:\d+)?$/;
+				if (allowedPattern.test(origin)) cb(null, origin);
+				else cb(null, false);
+			},
 			credentials: true,
-		  });
+		});
 
 		// Setup WebSocket connection
 		setupWebSocket(fastify.server);

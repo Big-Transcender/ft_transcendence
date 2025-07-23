@@ -1,27 +1,7 @@
 
-const { tournaments, saveTournament, getTournament, updateTournamentWinner } = require('../tournamentClass.js');
+const 	{ getTournament} = require('../tournamentClass.js');
 
 module.exports = async function (fastify) {
-
-	fastify.post('/tournament', async (req, res) => {
-		const { tournamentId, players, matches } = req.body;
-	
-		if (!tournamentId || !players || players.length < 4) {
-			return res.status(400).send({ error: 'Invalid tournament data' });
-		}
-	
-		saveTournament(tournamentId, {
-			players,
-			currentMatchIndex: 0,
-			matches,
-			semifinal1Winner: null,
-			semifinal2Winner: null,
-			finalWinner: null,
-			isCompleted: false
-		});
-	
-		res.send({ success: true, message: `Tournament ${tournamentId} created` });
-	});
 
 
 	fastify.post('/isTournamentMatch/:id', async (req, res) => {
@@ -34,10 +14,44 @@ module.exports = async function (fastify) {
 		const tournamentId = getTournamentIdByMatchId(matchId);
 	
 		if (tournamentId) {
-			res.send({ exists: true, tournamentId });
+			const tournamentObject = getTournament(tournamentId);
+			res.send({ exists: true, tournamentObject});
 		} else {
 			res.send({ exists: false });
 		}
+	});
+
+	fastify.patch('/updateTournamentWinner', async (req, res) => {
+		const { winner: nickName, id: tournamentId} = req.params;
+	
+		if (!nickName || !tournamentId ) {
+			return res.status(400).send({ error: 'Nickname and TournamentID is required' });
+		}
+	
+		const tournamentObject = getTournament(tournamentId);
+	
+		if (tournamentObject) {
+			tournamentObject.recordMatchWinner(nickName);
+		}
+	});
+
+	fastify.get('/tornamentSemiFinals', async (req, res) => {
+		const { id: tournamentId} = req.query;
+	
+		if (!tournamentId ) {
+			return res.status(400).send({ error: 'TournamentID is required' });
+		}
+	
+		const tournamentObject = getTournament(tournamentId);
+
+		if (!tournamentObject) {
+			return res.status(404).send({ error: 'Tournament not found' });
+		}
+	
+		return res.send({
+			semifinal1Winner: tournamentObject.semifinal1Winner,
+			semifinal2Winner: tournamentObject.semifinal2Winner,
+		});
 	});
 
 

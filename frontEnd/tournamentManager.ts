@@ -18,20 +18,17 @@ window.addEventListener('tournamentMatchEnd', (event: CustomEvent) => {
 	handleMatchEnd(matchId, winner);
 });
 
-function handleMatchEnd(currentMatchId: string, winner: string) {
-	// check in the tournaments to see the match
-	//if (activeTournaments.size === 0)
-	//	return;
+async function handleMatchEnd(currentMatchId: string, winner: string) {
+
 	
 	console.log('Handling match end...');
-	/* TODO check in the tournaments to see the match
+	const response = await fetch(`${backendUrl}/isTournamentMatch/${currentMatchId}`);
+	const tournament = await response.json();
+	if (!tournament.exist)
+		return;
+
+
+
+
 	
-	for (const [tournamentId, tournament] of activeTournaments.entries()) {
-		const matchIndex = tournament.matchesID.indexOf(currentMatchId);
-		if (matchIndex !== -1) {
-			tournament.recordMatchWinner(matchIndex, winner);
-			break;
-		}
-	}
-	*/
 }
