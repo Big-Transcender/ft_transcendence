@@ -1,18 +1,21 @@
 
 const { getTournament, Tournament} = require('../tournamentClass.js');
+const { getTournamentPlayers} = require('../dataQuerys');
 
 module.exports = async function (fastify) {
 
 
 	fastify.post('/constructTournament', async (req, res) => {
-		const { id: tournamentId, players } = req.body;
+		const { id: tournamentId } = req.body;
 	
 		if (!tournamentId) {
 			return res.status(400).send({ error: 'Match ID is required' });
 		}
 
 		const tournament = new Tournament(tournamentId);
-		tournament.players = players;
+		const players = getTournamentPlayers(tournamentId);
+		tournament.players = [players[0].nickname, players[1].nickname, players[2].nickname, players[3].nickname];
+
 
 		res.send({     
 			tournament: {
@@ -94,8 +97,8 @@ module.exports = async function (fastify) {
 function getTournamentIdByMatchId(matchId) {
 	for (const [tournamentId, tournamentData] of tournaments.entries()) {
 		if (tournamentData.matches.includes(matchId)) {
-			return tournamentId; // Return the tournament ID if the match exists
+			return tournamentId;
 		}
 	}
-	return null; // Return null if no tournament contains the match
+	return null;
 }

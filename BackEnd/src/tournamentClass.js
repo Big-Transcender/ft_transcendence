@@ -55,7 +55,7 @@ function getTournament(tournamentId) {
 }
 
 function generateMatchId(){
-	return "match-" + Date.now() + "-" + Math.floor(Math.random() * 10000);
+	return Math.floor(1000 + Math.random() * 90000).toString();
 }
 
 

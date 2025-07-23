@@ -106,9 +106,8 @@ document.addEventListener("DOMContentLoaded", () => {
 		// It has a 5 seconds cooldown.
 		// Arigato gozaimasu.
 		const id = pin
-		const players = null
-		displayWarning("This start the contest");
-		startTournament( id, players);
+		//displayWarning("This start the contest");
+		startTournament( id );
 	});
 
 	genericBackButton.forEach((button) => {
@@ -249,4 +248,48 @@ async function checkIsValidPin(pin: string): Promise<boolean> {
 		console.error("Failed to check pin:", err);
 		return false;
 	}
+}
+
+async function startTournament(tournamentId: string)
+{
+	console.log("aqui vai a response");
+	const response = await fetch(`${backendUrl}/constructTournament`, {
+		method: 'POST',
+		headers: { 'Content-Type': 'application/json' },
+		body: JSON.stringify({ id: tournamentId }),
+
+	});
+
+	if (!response.ok) {
+		const errorData = await response.json();
+		console.error("Error starting tournament:", errorData.error);
+		displayWarning(errorData.error);
+		return;
+	}
+
+	const data = await response.json();
+	if (!data || !data.tournament) {
+		console.error("Invalid tournament data received");
+		displayWarning("Invalid tournament data received");
+		return;
+	}
+
+	console.log(data);
+	const nick = getNickOnLocalStorage();
+
+	console.log(nick);
+	console.log(data.tournament.players[0]);
+
+	if (nick === data.tournament.players[0] || nick === data.tournament.players[1]) {
+		navigate('game1');
+		history.replaceState(undefined, "", `#pong/${data.tournament.matches[0]}`);
+		changePageTo(joinedContestPage, pongGamePage);
+		startPongWebSocket(data.tournament.matches[0]);
+	}
+	else if (nick === data.tournament.players[2] || nick === data.tournament.players[3]) {
+		history.replaceState(undefined, "", `#pong/${data.tournament.matches[1]}`);
+		changePageTo(joinedContestPage, pongGamePage);
+		startPongWebSocket(data.tournament.matches[1]);
+	}
+
 }

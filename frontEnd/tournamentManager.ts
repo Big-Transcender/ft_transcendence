@@ -1,20 +1,6 @@
 
 
-async function startTournament(tournamentId: string, players: string[])
-{
-	console.log("aqui vai a response");
-	const response = await fetch(`${backendUrl}/constructTournament`, {
-		method: 'POST',
-		headers: { 'Content-Type': 'application/json' },
-		body: JSON.stringify({ id: tournamentId, players }),
 
-	});
-
-	const data = await response.json()
-
-	console.log(data);
-
-}
 
 window.addEventListener('TournamentMatch', (event: CustomEvent) => {
 	const { TournamentId } = event.detail;
@@ -26,7 +12,7 @@ window.addEventListener('TournamentMatch', (event: CustomEvent) => {
 
 async function handleNextFase(nick: string, Tournament: any) {
 	try {
-		// Validate Tournament object
+
 		if (Tournament.currentMatchIndex === 2)
 		{
 			alert(`The Winner of the Tournament is ${Tournament.winner}`)
@@ -37,10 +23,10 @@ async function handleNextFase(nick: string, Tournament: any) {
 			throw new Error("Invalid Tournament object");
 		}
 
-		// Check if the user is in the semifinals
+
 		const tournamentPlayers = [Tournament.semifinal1Winner, Tournament.semifinal2Winner];
 		if (nick === tournamentPlayers[0] || nick === tournamentPlayers[1]) {
-			// Change page and start WebSocket
+
 			changePageTo(joinedContestPage, pongGamePage);
 			startPongWebSocket(Tournament.matches[2]);
 		} else {

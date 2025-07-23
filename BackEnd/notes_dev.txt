@@ -23,6 +23,7 @@ curl -X POST http://localhost:3000/tournament \
   -H "Content-Type: application/json" \
   -d '{"name": "Diogo'\''s Epic Clash", "players": ["Diogo", "Ana", "Rui", "Joana"]}'
 
+curl -X POST http://localhost:3000/test/reset-database
 
 node src/index.js
 

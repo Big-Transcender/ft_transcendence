@@ -60,23 +60,23 @@ module.exports = async function (fastify) {
         if (!code)
             return reply.code(400).send({ error: "Tournament code is required" });
 
-        const user = getUserIdByNickname(nick);
-        if (!user)
+        const userId = getUserIdByNickname(nick);
+        if (!userId)
             return reply.code(404).send({ error: "User not found" });
 
         const tournament = getTournamentByCode(code);
         if (!tournament)
             return reply.code(404).send({ error: "Tournament not found" });
 
-        if (hasUserJoinedTournament(tournament.id, user.id))
+        if (hasUserJoinedTournament(tournament.id, userId))
             return reply.code(400).send({ error: "User already joined this tournament" });
 
-        addUserToTournament(tournament.id, user.id);
+        addUserToTournament(tournament.id, userId);
 
         reply.code(200).send({
             message: "User successfully joined the tournament",
             tournamentId: tournament.id,
-            userId: user.id,
+            userId: userId,
         });
     });
 
