@@ -1,11 +1,45 @@
 
-const 	{ getTournament} = require('../tournamentClass.js');
+const { getTournament, Tournament} = require('../tournamentClass.js');
 
 module.exports = async function (fastify) {
 
 
-	fastify.post('/isTournamentMatch/:id', async (req, res) => {
-		const { id: matchId } = req.params;
+	fastify.post('/constructTournament', async (req, res) => {
+		const { id: tournamentId, players } = req.body;
+	
+		if (!tournamentId) {
+			return res.status(400).send({ error: 'Match ID is required' });
+		}
+
+		const tournament = new Tournament(tournamentId);
+		tournament.players = players;
+
+		res.send({     
+			tournament: {
+				id: tournamentId,
+				players: tournament.players,
+				matches: tournament.matches,
+        	},
+		});
+	
+	});
+
+	fastify.get('/tournamentPlayers/:id', async (req, res) => {
+		const { id: tournamentId } = req.params;
+	
+		if (!tournamentId) {
+			return res.status(400).send({ error: 'Tournament ID is required' });
+		}
+	
+		const tournamentObject = getTournament(tournamentId);
+		if (!tournamentObject)
+			return res.status(404).send({ error: 'No tournament found' });
+	
+		res.send(tournamentObject.players);
+	});
+
+	fastify.get('/isTournamentMatch/:id', async (req, res) => {
+		const { id: matchId } = req.query;
 	
 		if (!matchId) {
 			return res.status(400).send({ error: 'Match ID is required' });
@@ -22,7 +56,7 @@ module.exports = async function (fastify) {
 	});
 
 	fastify.patch('/updateTournamentWinner', async (req, res) => {
-		const { winner: nickName, id: tournamentId} = req.params;
+		const { winner: nickName, id: tournamentId} = req.body;
 	
 		if (!nickName || !tournamentId ) {
 			return res.status(400).send({ error: 'Nickname and TournamentID is required' });
@@ -36,7 +70,7 @@ module.exports = async function (fastify) {
 	});
 
 	fastify.get('/tornamentSemiFinals', async (req, res) => {
-		const { id: tournamentId} = req.query;
+		const { id: tournamentId} = req.params;
 	
 		if (!tournamentId ) {
 			return res.status(400).send({ error: 'TournamentID is required' });

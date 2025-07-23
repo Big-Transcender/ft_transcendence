@@ -134,9 +134,8 @@ function startPongWebSocket(matchId: string, isLocal: boolean = false, aiGame: b
 					console.log(`Game Over! The winner is ${winner}. Reason: ${reason}`);
 					alert(`Game Over! The winner is ${winner}. Reason: ${reason}`);
 					
-					// Tournament logic -> this is event driven, check the event handler
 					if (currentMatchId) {
-						window.dispatchEvent(new CustomEvent('tournamentMatchEnd', {
+						window.dispatchEvent(new CustomEvent('MatchEnd', {
 							detail: { matchId: currentMatchId, winner: winner }
 						}));
 					}

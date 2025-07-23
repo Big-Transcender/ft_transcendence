@@ -99,8 +99,9 @@ document.addEventListener("DOMContentLoaded", () => {
         // It has a 5 seconds cooldown.
         // Arigato gozaimasu.
         const id = pin;
+        const players = null;
         displayWarning("This start the contest");
-        startTournament(id, joinedContestPage);
+        startTournament(id, players);
     });
     genericBackButton.forEach((button) => {
         button.addEventListener("click", () => {

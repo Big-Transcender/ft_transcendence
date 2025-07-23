@@ -7,7 +7,7 @@ class Tournament {
 
 	players;
 	tournamentID;
-	matchesID;
+	matches;
 
 	currentMatchIndex
 	semifinal1Winner;
@@ -21,20 +21,9 @@ class Tournament {
 		this.semifinal1Winner = null;
 		this.semifinal2Winner = null;
 		this.Winner = null;
-		this.matchesID = [ generateMatchId(), generateMatchId(), generateMatchId()];
+		this.matches = [ generateMatchId(), generateMatchId(), generateMatchId()];
 
 		tournaments.set(tournamentId, this);
-	}
-
-	setPlayer(nick) {
-	
-		for (let i = 0; i < this.players.length; i++) {
-			if (this.players[i] === null) {
-				this.players[i] = nick;
-				console.log(`✅ Player ${nick} added to position ${i}`);
-				return;
-			}
-		}
 	}
 
 	recordMatchWinner(winnerNickname) {
