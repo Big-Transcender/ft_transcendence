@@ -160,7 +160,7 @@ async function createNewContest() {
             changePageTo(createContestPage, joinedContestPage);
             // getInfoFromContest(data.code);
             startContestPolling(data.code);
-            pin = data.code;
+            pin = data.tournamentId;
         }
         return data;
     }

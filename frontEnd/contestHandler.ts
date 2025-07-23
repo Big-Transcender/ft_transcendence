@@ -107,7 +107,6 @@ document.addEventListener("DOMContentLoaded", () => {
 		// Arigato gozaimasu.
 		const id = pin
 		const players = null
-		
 		displayWarning("This start the contest");
 		startTournament( id, players);
 	});
@@ -175,7 +174,7 @@ async function createNewContest() {
 			changePageTo(createContestPage, joinedContestPage);
 			// getInfoFromContest(data.code);
 			startContestPolling(data.code);
-			pin = data.code
+			pin = data.tournamentId
 		}
 
 		return data;
