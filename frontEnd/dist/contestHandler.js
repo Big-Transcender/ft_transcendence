@@ -9,6 +9,7 @@ const joinContestPage = document.getElementById("contestJoinSelectorId");
 const joinedContestPage = document.getElementById("contestJoinedSelectorId");
 const createContestPage = document.getElementById("contestCreateId");
 const pinBox = document.querySelector(".contestPinBox");
+var pin;
 function genericBackFunctionContest() {
     const currentActive = document.querySelector(".contestId.active");
     if (currentActive) {
@@ -97,10 +98,9 @@ document.addEventListener("DOMContentLoaded", () => {
         // The function, "displayWarning", well... display a text in the display to show some errors if you want.
         // It has a 5 seconds cooldown.
         // Arigato gozaimasu.
-        const id = "1324";
-        const players = [];
+        const id = pin;
         displayWarning("This start the contest");
-        startTournament(players, id, joinedContestPage);
+        startTournament(id, joinedContestPage);
     });
     genericBackButton.forEach((button) => {
         button.addEventListener("click", () => {
@@ -142,7 +142,7 @@ async function createNewContest() {
     console.log("tournamentName:", tournamentName);
     console.log("nick:", nick);
     try {
-        const response = await fetch("http://localhost:3000/create-tournament", {
+        const response = await fetch(`${backendUrl}/create-tournament`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -159,6 +159,7 @@ async function createNewContest() {
             changePageTo(createContestPage, joinedContestPage);
             // getInfoFromContest(data.code);
             startContestPolling(data.code);
+            pin = data.code;
         }
         return data;
     }
@@ -169,7 +170,7 @@ async function createNewContest() {
 }
 async function getInfoFromContest(pin) {
     try {
-        const response = await fetch(`http://localhost:3000/tournament/${pin}`);
+        const response = await fetch(`${backendUrl}/tournament/${pin}`);
         const data = await response.json();
         const playerPlaces = document.querySelectorAll(".playerContestPlace");
         let pinNumber = document.getElementById("contestPinBoxNumberId");
@@ -194,7 +195,7 @@ async function getInfoFromContest(pin) {
 }
 async function joinTournament(nick, code) {
     try {
-        const response = await fetch("http://localhost:3000/join-tournament", {
+        const response = await fetch(`${backendUrl}/join-tournament`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ nick, code }),
@@ -218,7 +219,7 @@ async function joinTournament(nick, code) {
 }
 async function checkIsValidPin(pin) {
     try {
-        const response = await fetch(`http://localhost:3000/tournament/${pin}`);
+        const response = await fetch(`${backendUrl}/tournament/${pin}`);
         const data = await response.json();
         if (response.ok) {
             return true;

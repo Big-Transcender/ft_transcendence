@@ -94,10 +94,9 @@ document.addEventListener("DOMContentLoaded", () => {
 				showErrorAndReturn("Please enter a valid match ID.");
 				return;
 			}
-
 			try {
-				const matchData = await checkMatchExists(matchId);
 				
+				const matchData = await checkMatchExists(matchId);
 				if (matchData.exists) {
 					joinExistingMatch(matchId);
 				} else {

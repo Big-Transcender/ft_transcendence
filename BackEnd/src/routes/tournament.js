@@ -8,6 +8,9 @@ const {
     startTournament,
     deleteTournament,
 } = require('../dataQuerys');
+
+const { tournaments, saveTournament, getTournament, updateTournamentWinner, generateMatchId } = require('../tournamentClass.js');
+
 const repl = require("node:repl");
 
 module.exports = async function (fastify) {
@@ -37,6 +40,7 @@ module.exports = async function (fastify) {
             code,
             message: "Tournament created and user joined",
         });
+		saveTournament(code, matches[generateMatchId,generateMatchId,generateMatchId]);
     });
 
     fastify.get('/tournament/:code', async (request, reply) => {
