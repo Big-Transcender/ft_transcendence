@@ -3,10 +3,12 @@
 
 
 window.addEventListener('TournamentMatch', (event: CustomEvent) => {
-	const { TournamentId } = event.detail;
+	const { Tournament } = event.detail;
 
 	const nick = getNickOnLocalStorage();
-	handleNextFase(nick, TournamentId);
+	console.log("lets see the last stage");
+	console.log(Tournament);
+	handleNextFase(nick, Tournament);
 
 });
 
@@ -19,16 +21,14 @@ async function handleNextFase(nick: string, Tournament: any) {
 			return;
 		}
 		
-		if (!Tournament || !Tournament.semifinal1Winner || !Tournament.semifinal2Winner || !Tournament.matches) {
-			throw new Error("Invalid Tournament object");
-		}
-
 
 		const tournamentPlayers = [Tournament.semifinal1Winner, Tournament.semifinal2Winner];
 		if (nick === tournamentPlayers[0] || nick === tournamentPlayers[1]) {
-
-			changePageTo(joinedContestPage, pongGamePage);
-			startPongWebSocket(Tournament.matches[2]);
+			changePageTo(pongGamePage, joinedContestPage);
+			setTimeout(() => { //TODO just to do some testing
+				changePageTo(joinedContestPage, pongGamePage);
+				startPongWebSocket(Tournament.matches[2]);
+			}, 3000);
 		} else {
 			console.log(`${nick} is not in the semifinals.`);
 		}
@@ -55,20 +55,30 @@ async function handleMatchEnd(currentMatchId: string, winner: string) {
 		const tournament = await response.json();
 		if (!tournament.exists)
 			return;
+
+		console.log(tournament.tournamentObject.tournamentID)
+		console.log(winner)
 		
 		const updateResponse = await fetch(`${backendUrl}/updateTournamentWinner`, {
 			method: 'PATCH',
 			headers: { 'Content-Type': 'application/json' },
-			body: JSON.stringify({ id: tournament.tournamentObject.tournamentId, winner }),
+			body: JSON.stringify({ id: tournament.tournamentObject.tournamentID, winner }),
 		});
 
 		if (!updateResponse.ok) {
 			throw new Error(`Failed to update tournament winner: ${updateResponse.statusText}`);
 		}
 
+		const updatedResponse = await fetch(`${backendUrl}/isTournamentMatch/${currentMatchId}`);
+		if (!updatedResponse.ok) {
+			throw new Error(`Failed to get updated tournament: ${updatedResponse.statusText}`);
+		}
+
+		const updatedTournament = await updatedResponse.json();
+
 		console.log('Tournament winner updated successfully');
 		window.dispatchEvent(new CustomEvent('TournamentMatch', {
-			detail: { Tournament: tournament.tournamentObject }
+			detail: { Tournament: updatedTournament.tournamentObject }
 		}));
 	} catch (error) {
 		console.error('Error handling match end:', error);

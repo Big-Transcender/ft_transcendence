@@ -1,5 +1,5 @@
 
-const { getTournament, Tournament} = require('../tournamentClass.js');
+const { tournaments, getTournament, Tournament} = require('../tournamentClass.js');
 const { getTournamentPlayers} = require('../dataQuerys');
 
 module.exports = async function (fastify) {
@@ -12,7 +12,19 @@ module.exports = async function (fastify) {
 			return res.status(400).send({ error: 'Match ID is required' });
 		}
 
-		const tournament = new Tournament(tournamentId);
+		var tournament = getTournament(tournamentId);
+		if (tournament)
+		{
+			return res.send({     
+				tournament: {
+				id: tournamentId,
+				players: tournament.players,
+				matches: tournament.matches,
+				},
+			});
+		}
+
+		tournament = new Tournament(tournamentId);
 		const players = getTournamentPlayers(tournamentId);
 		tournament.players = [players[0].nickname, players[1].nickname, players[2].nickname, players[3].nickname];
 
@@ -22,7 +34,7 @@ module.exports = async function (fastify) {
 				id: tournamentId,
 				players: tournament.players,
 				matches: tournament.matches,
-        	},
+			},
 		});
 	
 	});
@@ -42,7 +54,7 @@ module.exports = async function (fastify) {
 	});
 
 	fastify.get('/isTournamentMatch/:id', async (req, res) => {
-		const { id: matchId } = req.query;
+		const { id: matchId } = req.params;
 	
 		if (!matchId) {
 			return res.status(400).send({ error: 'Match ID is required' });
@@ -59,7 +71,7 @@ module.exports = async function (fastify) {
 	});
 
 	fastify.patch('/updateTournamentWinner', async (req, res) => {
-		const { winner: nickName, id: tournamentId} = req.body;
+		const {  id: tournamentId, winner: nickName} = req.body;
 	
 		if (!nickName || !tournamentId ) {
 			return res.status(400).send({ error: 'Nickname and TournamentID is required' });

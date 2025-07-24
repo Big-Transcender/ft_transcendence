@@ -117,6 +117,7 @@ async function start() {
 				else cb(null, false);
 			},
 			credentials: true,
+			methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
 		});
 
 		// Setup WebSocket connection

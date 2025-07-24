@@ -220,6 +220,7 @@ async function joinTournament(nick: string, code: string) {
 		const data = await response.json();
 		if (response.ok) {
 			console.log("Joined tournament:", data);
+			pin = data.tournamentId;
 			return true;
 			// handle success (e.g., update UI)
 		} else {

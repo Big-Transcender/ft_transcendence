@@ -61,6 +61,7 @@ function generateMatchId(){
 
 module.exports = {
 	Tournament,
+	tournaments,
 	getTournament,
 	generateMatchId
 };
