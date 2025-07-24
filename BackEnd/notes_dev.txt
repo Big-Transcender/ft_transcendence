@@ -34,12 +34,12 @@ page 175 index.html
 
 curl -X POST http://localhost:3000/join-tournament \
   -H "Content-Type: application/json" \
-  -d '{"nick": "bousa", "code": "3026"}'
+  -d '{"nick": "bousa", "code": "1055"}'
 
 curl -X POST http://localhost:3000/join-tournament \
   -H "Content-Type: application/json" \
-  -d '{"nick": "diodos-s", "code": "1524"}'
+  -d '{"nick": "diodos-s", "code": "1055"}'
 
 curl -X POST http://localhost:3000/join-tournament \
   -H "Content-Type: application/json" \
-  -d '{"nick": "bde", "code": "1524"}'
+  -d '{"nick": "bde", "code": "1055"}'

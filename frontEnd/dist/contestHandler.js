@@ -261,12 +261,12 @@ async function startTournament(tournamentId) {
     if (nick === data.tournament.players[0] || nick === data.tournament.players[1]) {
         navigate('game1');
         history.replaceState(undefined, "", `#pong/${data.tournament.matches[0]}`);
-        changePageTo(joinedContestPage, pongGamePage);
+        changePageTo(gameSelectorPongPage, pongGamePage);
         startPongWebSocket(data.tournament.matches[0]);
     }
     else if (nick === data.tournament.players[2] || nick === data.tournament.players[3]) {
         history.replaceState(undefined, "", `#pong/${data.tournament.matches[1]}`);
-        changePageTo(joinedContestPage, pongGamePage);
+        changePageTo(gameSelectorPongPage, pongGamePage);
         startPongWebSocket(data.tournament.matches[1]);
     }
 }
