@@ -12,12 +12,15 @@ const repl = require("node:repl");
 
 module.exports = async function (fastify) {
     fastify.post('/create-tournament', async (request, reply) => {
-        const { nick, tournamentName } = request.body;
+        const { tournamentName } = request.body;
+
+        // Get user info from session
+        const sessionUser = request.session.get('user');
+        if (!sessionUser) return reply.code(401).send({ error: "Not authenticated" });
 
         if (!tournamentName) return reply.code(400).send({ error: "Name is empty" });
-        if (!nick) return reply.code(400).send({ error: "Nick is empty" });
 
-        const user = getUserIdByNickname(nick);
+        const user = getUserIdByNickname(sessionUser.nickname);
         if (!user) return reply.code(404).send({ error: "User not found" });
 
         const createdAt = new Date().toISOString();
@@ -52,14 +55,17 @@ module.exports = async function (fastify) {
     });
 
     fastify.post('/join-tournament', async (request, reply) => {
-        const { nick, code } = request.body;
+        const { code } = request.body;
 
-        if (!nick)
-            return reply.code(400).send({ error: "Nick is required" });
+        // Get user info from session
+        const sessionUser = request.session.get('user');
+        if (!sessionUser)
+            return reply.code(401).send({ error: "Not authenticated" });
+
         if (!code)
             return reply.code(400).send({ error: "Tournament code is required" });
 
-        const user = getUserIdByNickname(nick);
+        const user = getUserIdByNickname(sessionUser.nickname);
         if (!user)
             return reply.code(404).send({ error: "User not found" });
 
@@ -97,7 +103,7 @@ module.exports = async function (fastify) {
 
     fastify.post('/delete-tournament', async (request, reply) =>
     {
-        const {code } = request.body;
+        const { code } = request.body;
 
         if(!code)
             return reply.code(400).send({error: "Tournament code is required"});

@@ -24,6 +24,9 @@ module.exports = async function (fastify) {
                 .code(401)
                 .send({ error: 'Wrong password', details: 'Wrong password' });
 
+        // Store user info in the session
+        request.session.set('user', { id: user.id, nickname: user.nickname });
+
         reply.send({ message: 'Login successful', user: { id: user.id, name: user.nickname } });
     });
 };
