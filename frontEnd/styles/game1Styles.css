@@ -177,7 +177,7 @@
 .pongPopupBackButton {
 	position: absolute;
 	bottom: 10%;
-	left: 25%;
+	left: 20%;
 	translate: -50%;
 }
 
@@ -192,7 +192,14 @@
 .createPopupButton {
 	position: absolute;
 	bottom: 10%;
-	left: 75%;
+	left: 80%;
+	translate: -50%;
+}
+
+.createV2PopupButton {
+	position: absolute;
+	bottom: 10%;
+	left: 50%;
 	translate: -50%;
 }
 

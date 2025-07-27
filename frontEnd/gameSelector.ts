@@ -7,6 +7,7 @@ const buttonLocalMP = document.getElementById("buttonLocalMP");
 const closePopupPongButtom = document.querySelector(".pongPopupBackButton");
 const joinPopupButton = document.querySelector(".joinPopupButton");
 const createPopupButton = document.querySelector(".createPopupButton");
+const create2V2PopupButton = document.querySelector(".createV2PopupButton");
 const backButtonMP = document.getElementById("backButtonMPId");
 
 const pongGamePage = document.getElementById("pongGameId");
@@ -184,6 +185,13 @@ function openPopupPong() {
 		// changePageTo(pongGamePage, gameSelectorPongPage);
 		// updatePageHash("#game1");
 		// backGamePongButton.classList.remove("active");
+	});
+
+	// CREATE 2v2 MATCH
+	create2V2PopupButton.addEventListener("click", () => {
+		//#TODO This is the 2v2 match buttom. Do what you wish
+		//Remember to use "closePopupPong()" to close the popup!
+		displayWarning("This start the 2v2 match!");
 	});
 
 	// JOIN A MP MATCH
