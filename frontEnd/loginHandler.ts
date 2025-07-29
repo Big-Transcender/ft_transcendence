@@ -231,7 +231,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 		let QrCodeBox = document.getElementById("QrCodeBoxId") as HTMLInputElement;
 
 		fetch(`${backendUrl}/2fa/setup`, {
-			method: "GET",
+			method: "POST",
 			credentials: "include", // Important if using cookies/session
 			headers: {
 				Accept: "application/json",

@@ -182,7 +182,7 @@ async function createNewContest() {
 
 async function getInfoFromContest(pin: string) {
 	try {
-		const response = await fetch(`http://localhost:3000/tournament/${pin}`);
+		const response = await fetch(`${backendUrl}/tournament/${pin}`);
 		const data = await response.json();
 		const playerPlaces = document.querySelectorAll(".playerContestPlace");
 		let pinNumber = document.getElementById("contestPinBoxNumberId") as HTMLElement;
@@ -209,7 +209,7 @@ async function getInfoFromContest(pin: string) {
 
 async function joinTournament(nick: string, code: string) {
 	try {
-		const response = await fetch("http://localhost:3000/join-tournament", {
+		const response = await fetch(`${backendUrl}/join-tournament`, {
 			method: "POST",
 			headers: { "Content-Type": "application/json" },
 			body: JSON.stringify({ nick, code }),
@@ -232,7 +232,7 @@ async function joinTournament(nick: string, code: string) {
 
 async function checkIsValidPin(pin: string): Promise<boolean> {
 	try {
-		const response = await fetch(`http://localhost:3000/tournament/${pin}`);
+		const response = await fetch(`${backendUrl}/tournament/${pin}`);
 		const data = await response.json();
 
 		if (response.ok) {

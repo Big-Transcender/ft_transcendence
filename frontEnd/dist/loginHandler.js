@@ -210,7 +210,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     qrButton.addEventListener("click", () => {
         let QrCodeBox = document.getElementById("QrCodeBoxId");
         fetch(`${backendUrl}/2fa/setup`, {
-            method: "GET",
+            method: "POST",
             credentials: "include", // Important if using cookies/session
             headers: {
                 Accept: "application/json",
