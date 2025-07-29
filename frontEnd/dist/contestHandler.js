@@ -139,12 +139,13 @@ async function createNewContest() {
     console.log("tournamentName:", tournamentName);
     console.log("nick:", nick);
     try {
-        const response = await fetch("http://localhost:3000/create-tournament", {
+        const response = await fetch(`${backendUrl}/create-tournament`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
             },
-            body: JSON.stringify({ nick, tournamentName }),
+            credentials: "include",
+            body: JSON.stringify({ tournamentName }),
         });
         const data = await response.json();
         if (!response.ok) {

@@ -75,6 +75,7 @@ const registerNewUser = async () => {
             headers: {
                 "Content-Type": "application/json",
             },
+            credentials: "include",
             body: JSON.stringify({ password, email, nickname }),
         });
         const data = await response.json();
@@ -102,6 +103,7 @@ async function loginUser() {
             headers: {
                 "Content-Type": "application/json",
             },
+            credentials: "include",
             body: JSON.stringify({ identifier, password }),
         });
         const data = await response.json();
