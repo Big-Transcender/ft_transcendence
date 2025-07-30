@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!DOCTYP`` E html>
 <html lang="pt">
 	<head>
 		<meta charset="UTF-8" />
@@ -21,6 +21,83 @@
 	<body>
 		<div class="mainBody">
 			<div class="mainBodyBackground">
+				<!-- WARNING POPUP -->
+				<div class="defaultWarning">
+					<div class="defaultWarningBG"></div>
+					<p class="defaultWarningText" id="warningContest">Generic Error</p>
+				</div>
+				<!-- POPUP FROM SWITCH NICK-->
+				<div id="popupContainer" class="popup-overlay">
+					<div class="popup">
+						<div class="popupBG"></div>
+						<div class="popupText">Switch your Nick!</div>
+
+						<div class="inputBox popupNewNick">
+							<label for="popupNewNick">Enter new Nick</label>
+							<input type="text" id="popupNewNick" class="inputText smallInput" placeholder="NEW NICK" autocomplete="off" />
+						</div>
+
+						<button onclick="fecharPopup()" class="defaultButton pupupBackButton">
+							<p class="defaultButtonText">Close</p>
+							<div class="defaultButtonBG">
+								<div class="defaultButtonBGWave"></div>
+								<div class="defaultButtonBGWave wave2"></div>
+							</div>
+						</button>
+
+						<button class="defaultButton pupupSwitchButton">
+							<p class="defaultButtonText">Switch!</p>
+							<div class="defaultButtonBG">
+								<div class="defaultButtonBGWave"></div>
+								<div class="defaultButtonBGWave wave2"></div>
+							</div>
+						</button>
+					</div>
+				</div>
+				<!-- POPUP FROM MULTIPLAYER PONG-->
+				<div id="popupContainerPong" class="popup-overlay">
+					<div class="popup">
+						<div class="popupBG"></div>
+						<div class="popupText pongPopup">Create a new match or <br />join an existing one?</div>
+
+						<div class="inputBox popupNewNick">
+							<label for="popupNewNick">Enter match ID</label>
+							<input type="text" id="popupMatchID" class="inputText smallInput" placeholder="MATCH ID" autocomplete="off" />
+						</div>
+
+						<button class="defaultButton pongPopupBackButton">
+							<p class="defaultButtonText">Close</p>
+							<div class="defaultButtonBG">
+								<div class="defaultButtonBGWave"></div>
+								<div class="defaultButtonBGWave wave2"></div>
+							</div>
+						</button>
+
+						<button class="defaultButton joinPopupButton">
+							<p class="defaultButtonText">Join!</p>
+							<div class="defaultButtonBG">
+								<div class="defaultButtonBGWave"></div>
+								<div class="defaultButtonBGWave wave2"></div>
+							</div>
+						</button>
+
+						<button class="defaultButton createPopupButton">
+							<p class="defaultButtonText">Create!</p>
+							<div class="defaultButtonBG">
+								<div class="defaultButtonBGWave"></div>
+								<div class="defaultButtonBGWave wave2"></div>
+							</div>
+						</button>
+
+						<button class="defaultButton createV2PopupButton">
+							<p class="defaultButtonText v2Text">2v2!</p>
+							<div class="defaultButtonBG">
+								<div class="defaultButtonBGWave"></div>
+								<div class="defaultButtonBGWave wave2"></div>
+							</div>
+						</button>
+					</div>
+				</div>
 				<div class="backgroudCenterBg"></div>
 				<div class="backgroundCenter">
 					<!-- HEADER -->
@@ -77,14 +154,14 @@
 										Home
 										<div class="buttonHitBox"></div>
 									</a>
-									<a onclick="navigate('game1')" class="button">
+									<a onclick="navigate('game1'); resetGamePage()" class="button">
 										<div class="buttonBG"></div>
 										Pong
 										<div class="buttonHitBox"></div>
 									</a>
 								</div>
 								<div class="rightButtons">
-									<a onclick="navigate('contest')" class="button">
+									<a onclick="navigate('contest'); resetContestPage()" class="button">
 										<div class="buttonBG"></div>
 										Contest
 										<div class="buttonHitBox"></div>
@@ -280,7 +357,15 @@
 								<div class="paddle4 paddle offPaddle">
 									<div class="paddleHitBox"></div>
 								</div>
-								<div class="timer" id="timerBoxId"><p id="timerId">1</p></div>
+								<div class="timer" id="timerBoxId">
+									<p id="timerId">Get<br />Ready!</p>
+								</div>
+							</div>
+							<!-- BOX OF MATCH ID -->
+							<div class="gameIdBox">
+								<div class="gameidBoxBG"></div>
+								<div class="gameIdBoxText">Match ID:</div>
+								<div class="gameIdBoxTextID">NONE</div>
 							</div>
 						</div>
 						<!-- BACK BUTTOM -->
@@ -464,6 +549,14 @@
 										<div class="defaultButtonBGWave wave2"></div>
 									</div>
 								</button>
+
+								<button class="defaultButton googleLogin" id="gLoginId">
+									<p class="defaultButtonText">G Login</p>
+									<div class="defaultButtonBG">
+										<div class="defaultButtonBGWave"></div>
+										<div class="defaultButtonBGWave wave2"></div>
+									</div>
+								</button>
 							</div>
 							<!-- NEW USER PAGE -->
 							<div class="newUserPage profileId" id="newUserId">
@@ -550,6 +643,10 @@
 									</div>
 								</div>
 
+								<div class="QrCode" id="QrCodeId">
+									<div class="QrCodeBox" id="QrCodeBoxId"></div>
+								</div>
+
 								<button class="defaultButton logoutButton" id="logoutButton">
 									<p class="defaultButtonText">Logout</p>
 									<div class="defaultButtonBG">
@@ -557,13 +654,53 @@
 										<div class="defaultButtonBGWave wave2"></div>
 									</div>
 								</button>
+
+								<button class="defaultButton showQr" id="showQrButtonID">
+									<p class="defaultButtonText">Show Qr</p>
+									<div class="defaultButtonBG">
+										<div class="defaultButtonBGWave"></div>
+										<div class="defaultButtonBGWave wave2"></div>
+									</div>
+								</button>
+								<button class="defaultButton changeNick" id="switchNickButtonID">
+									<p class="defaultButtonText">Switch Nick</p>
+									<div class="defaultButtonBG">
+										<div class="defaultButtonBGWave"></div>
+										<div class="defaultButtonBGWave wave2"></div>
+									</div>
+								</button>
+							</div>
+
+							<!-- twoFactorPage -->
+							<div class="twoFactorPage profileId" id="twoFactorId">
+								<div class="loginBoxBG">
+									<div class="decoration1"></div>
+								</div>
+								<div class="topCover"></div>
+								<!-- <img src="images/avatar3.png" alt="" class="avatar3" /> -->
+								<div class="inputBox twoFactorInput">
+									<label for="twoFactorInput">Enter your TwoFactor</label>
+									<input type="text" id="twoFactorPass" class="inputText smallInput" placeholder="2F" autocomplete="off" />
+								</div>
+
+								<button class="defaultButton twoFactor" id="twoFactorButtonID">
+									<p class="defaultButtonText">Verify</p>
+									<div class="defaultButtonBG">
+										<div class="defaultButtonBGWave"></div>
+										<div class="defaultButtonBGWave wave2"></div>
+									</div>
+								</button>
+
+								<!-- BACK BUTTON 2F -->
+								<button class="defaultButton back2F" id="back2FId">
+									<p class="defaultButtonText">Back</p>
+									<div class="defaultButtonBG">
+										<div class="defaultButtonBGWave"></div>
+										<div class="defaultButtonBGWave wave2"></div>
+									</div>
+								</button>
 							</div>
 						</div>
-					</div>
-					<!-- WARNING POPUP -->
-					<div class="defaultWarning">
-						<div class="defaultWarningBG"></div>
-						<p class="defaultWarningText" id="warningContest">Generic Error</p>
 					</div>
 				</div>
 			</div>

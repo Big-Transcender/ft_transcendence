@@ -24,6 +24,13 @@ module.exports = async function (fastify) {
                 .code(401)
                 .send({ error: 'Wrong password', details: 'Wrong password' });
 
+        if(user.two_factor_enabled)
+        {
+            request.session.set('temp_user', {id: user.id, nickname: user.nickname })
+            return reply.send({message: 'Two-Factor Enable'});
+        }
+        request.session.set('user', { id: user.id, nickname: user.nickname });
+
         reply.send({ message: 'Login successful', user: { id: user.id, name: user.nickname } });
     });
 };

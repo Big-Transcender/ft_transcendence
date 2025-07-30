@@ -160,7 +160,8 @@ async function createNewContest() {
 			headers: {
 				"Content-Type": "application/json",
 			},
-			body: JSON.stringify({ nick, tournamentName }),
+			credentials: "include",
+			body: JSON.stringify({ tournamentName }),
 		});
 
 		const data = await response.json();
@@ -249,6 +250,14 @@ async function checkIsValidPin(pin: string): Promise<boolean> {
 		console.error("Failed to check pin:", err);
 		return false;
 	}
+}
+
+function resetContestPage() {
+	let contestPageAll = document.querySelectorAll(".gameSelector");
+	let contestSelectorPage = document.getElementById("contestSelectorId");
+
+	contestPageAll.forEach((el) => el.classList.remove("active"));
+	contestSelectorPage.classList.add("active");
 }
 
 async function startTournament(tournamentId: string)

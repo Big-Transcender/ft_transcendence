@@ -14,47 +14,51 @@ const db = require("./database");
 dotenv.config();
 
 fastify.register(fastifySecureSession, {
-	key: fs.readFileSync(path.join(__dirname, 'not-so-secret-key')),
+	key: fs.readFileSync(path.join(__dirname, "not-so-secret-key")),
 	cookie: {
-		path: '/',       // Make sure path is set
+		path: "/", // Make sure path is set
 		httpOnly: true,
-		secure: false,   // true if using HTTPS; false if local dev with HTTP
-		sameSite: 'lax', // or 'strict' depending on your setup
-	}
+		secure: false, // true if using HTTPS; false if local dev with HTTP
+		sameSite: "lax", // or 'strict' depending on your setup
+	},
 });
-
-
 
 fastify.register(fastifyPassport.initialize());
 fastify.register(fastifyPassport.secureSession());
 
-fastifyPassport.use('google', new GoogleStrategy({
-	clientID: process.env.GOOGLE_CLIENT_ID,
-	clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-	callbackURL: "http://c1r3s1.42porto.com:3000/auth/google/callback"
-}, (accessToken, refreshToken, profile, done) => {
-	try {
-		const email = profile.email;
-		const nickname = profile.displayName || profile.given_name;
+fastifyPassport.use(
+	"google",
+	new GoogleStrategy(
+		{
+			clientID: process.env.GOOGLE_CLIENT_ID,
+			clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+			callbackURL: "http://c1r3s1.42porto.com:3000/auth/google/callback",
+		},
+		(accessToken, refreshToken, profile, done) => {
+			try {
+				const email = profile.email;
+				const nickname = profile.displayName || profile.given_name;
 
-		let user = db.prepare(`SELECT * FROM users WHERE email = ?`).get(email);
+				let user = db.prepare(`SELECT * FROM users WHERE email = ?`).get(email);
 
-		if (!user) {
-			// Create user if not exists
-			const stmt = db.prepare(`
+				if (!user) {
+					// Create user if not exists
+					const stmt = db.prepare(`
 				INSERT INTO users (nickname, password, email) VALUES (?, ?, ?)
 			`);
-			const defaultPassword = 'google_oauth'; // or random string
-			const result = stmt.run(nickname, defaultPassword, email);
-			user = db.prepare(`SELECT * FROM users WHERE id = ?`).get(result.lastInsertRowid);
-		}
+					const defaultPassword = "google_oauth"; // or random string
+					const result = stmt.run(nickname, defaultPassword, email);
+					user = db.prepare(`SELECT * FROM users WHERE id = ?`).get(result.lastInsertRowid);
+				}
 
-		done(null, user);
-	} catch (err) {
-		console.error("Google login error:", err);
-		done(err);
-	}
-}));
+				done(null, user);
+			} catch (err) {
+				console.error("Google login error:", err);
+				done(err);
+			}
+		}
+	)
+);
 
 fastifyPassport.registerUserDeserializer(async (user, req) => {
 	return user;
@@ -74,27 +78,27 @@ fastify.get(
 	}
 );
 
-fastify.get('/logingoogle',
-	fastifyPassport.authenticate('google', {
-		scope: ['profile', 'email']
+fastify.get(
+	"/logingoogle",
+	fastifyPassport.authenticate("google", {
+		scope: ["profile", "email"],
 	})
 );
 
-fastify.get('/logout', async (req, res) => {
+fastify.get("/logout", async (req, res) => {
 	req.logout();
 	req.session.delete();
-	res.clearCookie('session', { path: '/' });
+	res.clearCookie("session", { path: "/" });
 
 	return res.send({ success: true });
 });
-fastify.get('/me', async (req, res) => {
+fastify.get("/me", async (req, res) => {
 	if (req.user) {
 		return { user: req.user };
 	} else {
-		return res.status(401).send({ error: 'Not logged in' });
+		return res.status(401).send({ error: "Not logged in" });
 	}
 });
-
 
 async function registerRoutes() {
 	const routesDir = path.join(__dirname, "routes");

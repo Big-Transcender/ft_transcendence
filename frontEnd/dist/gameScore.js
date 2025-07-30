@@ -87,6 +87,8 @@ function resetEmotions() {
     turnaroundflag = false;
     changeEmotion(player1Icon, "happy");
     changeEmotion(player2Icon, "happy");
+    document.getElementById("player1ScoreId").textContent = "0";
+    document.getElementById("player2ScoreId").textContent = "0";
 }
 function setGameScore(name1, name2 = "Bot") {
     player1Nick.textContent = name1;

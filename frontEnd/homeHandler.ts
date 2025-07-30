@@ -22,7 +22,6 @@ let creditsOpen = false;
 let isPlayingSoundRank = false;
 let isPlayingSoundCredits = false;
 
-
 getTimeForPhone();
 
 genericIcon.forEach((button) => {
@@ -49,11 +48,13 @@ genericIcon.forEach((button) => {
 		if (button.classList.contains("pongIcon")) {
 			await playExpandingAnimation(button);
 			navigate("game1");
+			resetGamePage();
 		} else if (button.classList.contains("contestIcon")) {
 			contestBgIcon.style.backgroundImage = "none";
 			await playExpandingAnimation(button);
 			contestBgIcon.style.backgroundImage = 'url("/images/icons/contestIcon2.png")';
 			navigate("contest");
+			resetContestPage();
 		} else if (button.classList.contains("profileIcon")) {
 			await playExpandingAnimation(button);
 			navigate("profile");
@@ -176,4 +177,14 @@ async function rankAnimationHandler() {
 		rankOpen = false;
 		isPlayingSoundRank = false;
 	}
+}
+
+function resetGamePage() {
+	let gamePageAll = document.querySelectorAll(".gameId");
+	let gameSelectorPage = document.querySelector(".gameSelector");
+	let backButtom = document.querySelector(".backGamePong");
+
+	gamePageAll.forEach((el) => el.classList.remove("active"));
+	backButtom.classList.remove("active");
+	gameSelectorPage.classList.add("active");
 }

@@ -267,6 +267,12 @@
 	translate: -50%;
 }
 
+.googleLogin {
+	bottom: 10%;
+	left: 50%;
+	translate: -50%;
+}
+
 .createNew {
 	bottom: 10%;
 	left: 75%;
@@ -283,6 +289,45 @@
 	bottom: 5%;
 	left: 50%;
 	translate: -50%;
+}
+
+.showQr {
+	bottom: 5%;
+	left: 25%;
+	translate: -50%;
+}
+
+.changeNick {
+	bottom: 5%;
+	left: 75%;
+	translate: -50%;
+}
+
+.twoFactor {
+	bottom: 5%;
+	left: 75%;
+	translate: -50%;
+}
+
+.QrCode {
+	position: absolute;
+	width: 200px;
+	height: 200px;
+	background-color: #7ec9d6;
+	/* opacity: 0; */
+}
+
+.QrCodeBox {
+	position: absolute;
+	/* background-image: url(https://images.squarespace-cdn.com/content/v1/5d3f241fa4e0350001fa20d5/1636491460338-AIZAXV2978MGIDQE0GT7/qr-code.png); */
+	background-size: contain;
+
+	width: 100px;
+	height: 100px;
+	background-color: red;
+	left: 50%;
+	top: 50%;
+	translate: -50% -50%;
 }
 
 .loginButton {
@@ -319,6 +364,26 @@
 	border-radius: 10px;
 	background-image: url(/images/bgPattern2.jpg);
 	animation: bgAnimation 20s infinite linear;
+}
+
+.twoFactorPage {
+	/* background-color: red; */
+}
+
+.twoFactorInput {
+	top: 40%;
+	/* translate: ; */
+}
+
+.twoFactor {
+	position: absolute;
+}
+
+.back2F {
+	position: absolute;
+	bottom: 5%;
+	left: 25%;
+	translate: -50%;
 }
 
 @keyframes bgAnimation {
@@ -462,4 +527,82 @@
 .statusBox > p {
 	position: relative;
 	z-index: 1;
+}
+
+.popup-overlay {
+	position: absolute;
+	width: 100vw;
+	height: 100vh;
+	background: rgba(0, 0, 0, 0.671);
+	z-index: 100;
+	display: none;
+}
+
+/* Estilo da caixa do popup */
+.popup {
+	position: absolute;
+	width: 500px;
+	height: 500px;
+	border-radius: 10px;
+	text-align: center;
+	left: 50%;
+	top: 25%;
+	translate: -50%;
+	filter: drop-shadow(0px 1px 20px black);
+	border-radius: 50px;
+}
+
+.popupBG {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	background: #534137;
+	background-image: url(/images/green-waves-3-dark_orig.png);
+	background-position: bottom;
+	background-size: 500px;
+	background-repeat: no-repeat;
+	border-radius: 50px;
+
+	outline: 5px solid #f5f2e4;
+	outline-offset: -10px;
+}
+
+/* .popup button {
+	margin-top: 10px;
+	padding: 8px 12px;
+} */
+
+.pupupBackButton {
+	position: absolute;
+	bottom: 10%;
+	left: 25%;
+	translate: -50%;
+}
+
+.pupupSwitchButton {
+	position: absolute;
+	bottom: 10%;
+	left: 75%;
+	translate: -50%;
+}
+
+.popupNewNick {
+	left: 50%;
+	top: 40%;
+	translate: -50% -50%;
+}
+.popupText {
+	position: absolute;
+	width: 100%;
+	height: 77px;
+	top: 5%;
+	font-family: animalcrossingquotes;
+	font-size: 30px;
+	align-content: center;
+	/* color: #f8eebb; */
+	/* background-color: red; */
+	background-image: url(/images/quote1.png);
+	background-position: top;
+	background-size: 300px;
+	background-repeat: no-repeat;
 }
