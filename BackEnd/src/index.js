@@ -1,4 +1,4 @@
-const fastify = require("fastify")({ logger: true });
+const fastify = require("fastify")({ logger: false});
 const cors = require("@fastify/cors");
 const path = require("path");
 const fs = require("fs");
@@ -121,7 +121,7 @@ async function start() {
 				else cb(null, false);
 			},
 			credentials: true,
-			methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+			methods: ['GET', 'POST', 'PUT', 'PATCH', 'UPDATE', 'DELETE', 'OPTIONS'],
 		});
 
 		// Setup WebSocket connection

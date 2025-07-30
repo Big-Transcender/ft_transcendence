@@ -85,72 +85,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
 	//Change to Multiplayer Versus
 	buttonVersusMP.addEventListener("click", async () => {
-		// changePageTo(gameSelectorPongPage, gameSelectorPage);
-		// updatePageHash(`#pong/pongVersusMP`);
-		//#TODO Check this Hash update, it realy update over here?
 
-		// // Prompt user to create or join a match
-		// const action = prompt("Do you want to create a new match or join an existing one? (Type 'create' or 'join')");
-
-		/*if (action === "create") {
-			createNewMatch()
-		}
-
-		else if (action === "join") {
-			const matchId = prompt("Enter the match ID:");
-			
-			if (!matchId?.trim()) {
-				showErrorAndReturn("Please enter a valid match ID.");
-				return;
-			}
-			try {
-				
-				const matchData = await checkMatchExists(matchId);
-				if (matchData.exists) {
-					joinExistingMatch(matchId);
-				} else {
-					showErrorAndReturn("Match not found or is full.");
-				}
-			} catch (error) {
-				const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-				showErrorAndReturn(`Error checking match: ${errorMessage}`);
-			}
-		}
-		 else {
-			alert("Invalid action. Please type 'create' or 'join'.");
-			changePageTo(gameSelectorPongMultiplayerPage, gameSelectorPongPage);
-		}*/
 		openPopupPong();
 
-		// if (action === "create") {
-		// 	// Create a new match
-		// 	const matchId = generateMatchId();
-		// 	alert(`Match created! Share this ID with your friend: ${matchId}`);
-		// 	history.replaceState(undefined, "", `#pong/${matchId}`);
-		// 	startPongWebSocket(matchId, false, false); // Start as host
-		// 	changePageTo(gameSelectorPongMultiplayerPage, pongGamePage);
-		// 	backGamePongButton.classList.add("active");
-		// 	animateTimer();
-		// 	resetEmotions();
-		// } else if (action === "join") {
-		// 	// Join an existing match
-		// 	const matchId = prompt("Enter the match ID:");
-		// 	if (matchId) {
-		// 		history.replaceState(undefined, "", `#pong/${matchId}`);
-		// 		startPongWebSocket(matchId, false, false); // Join as client
-		// 		changePageTo(gameSelectorPongMultiplayerPage, pongGamePage);
-		// 		backGamePongButton.classList.add("active");
-		// 		animateTimer();
-		// 		resetEmotions();
-		// 		setGameScore("Player 1", getNickOnLocalStorage());
-		// 	} else {
-		// 		alert("You must enter a match ID to join.");
-		// 		changePageTo(gameSelectorPongMultiplayerPage, gameSelectorPongPage);
-		// 	}
-		// } else {
-		// 	alert("Invalid action. Please type 'create' or 'join'.");
-		// 	changePageTo(gameSelectorPongMultiplayerPage, gameSelectorPongPage);
-		// }
 	});
 
 	//Change to Multiplayer Local
@@ -208,13 +145,14 @@ function joinExistingMatch(matchId: string): void {
 function createNewMatch(isLocal: boolean = false, aiGame: boolean = false, teamGame: boolean = false): void
 {
 	const matchId = generateMatchId()
-	alert(`Match created! Share this ID with your friend: ${matchId}`);
 	history.replaceState(undefined, "", `#pong/${matchId}`);
 	startPongWebSocket(matchId, isLocal, aiGame, teamGame); // Start as host
 	changePageTo(gameSelectorPongMultiplayerPage, pongGamePage);
 	backGamePongButton.classList.add("active");
 	animateTimer();
 	resetEmotions();
+	showMatchId(matchId);
+	setGameScore(getNickOnLocalStorage(), "Player 1");
 }
 
 function showErrorAndReturn(message: string): void {
@@ -230,22 +168,9 @@ function openPopupPong() {
 	document.getElementById("popupContainerPong").style.display = "flex";
 
 	// CREATE A MP MATCH
-	createPopupButton.addEventListener("click", () => {
-		// #TODO This match ID >NEEDS< to be smaller
-		// 4 characters should be more than enough
-		const matchId = generateMatchId();
-		showMatchId(matchId);
-		history.replaceState(undefined, "", `#pong/${matchId}`);
-		startPongWebSocket(matchId, false, false); // Start as host
-		changePageTo(gameSelectorPongMultiplayerPage, pongGamePage);
-		backGamePongButton.classList.add("active");
-		// animateTimer();
-		resetEmotions();
+	createPopupButton.addEventListener("click", async () => {
+		createNewMatch();
 		closePopupPong();
-		setGameScore(getNickOnLocalStorage(), "Player 2");
-		// changePageTo(pongGamePage, gameSelectorPongPage);
-		// updatePageHash("#game1");
-		// backGamePongButton.classList.remove("active");
 	});
 
 	// CREATE 2v2 MATCH
@@ -256,25 +181,23 @@ function openPopupPong() {
 	});
 
 	// JOIN A MP MATCH
-	joinPopupButton.addEventListener("click", () => {
-		// Join an existing match
+	joinPopupButton.addEventListener("click", async () => {
 		const matchId = (document.getElementById("popupMatchID") as HTMLInputElement).value.trim();
-		// #TODO If it's an incorrect MatchID, nothing will happen, but an error should be displayed.
-		if (matchId) {
-			history.replaceState(undefined, "", `#pong/${matchId}`);
-			startPongWebSocket(matchId, false, false); // Join as client
-			changePageTo(gameSelectorPongMultiplayerPage, pongGamePage);
-			backGamePongButton.classList.add("active");
-			animateTimer();
-			resetEmotions();
-			setGameScore("Player 1", getNickOnLocalStorage());
-			showMatchId(matchId);
-			closePopupPong();
-		} else {
-			displayWarning("You must enter a match ID to join.");
-			// alert("You must enter a match ID to join.");
-			// changePageTo(gameSelectorPongMultiplayerPage, gameSelectorPongPage);
+		try {
+				
+			const matchData = await checkMatchExists(matchId);
+			if (matchData.exists) {
+				joinExistingMatch(matchId);
+				showMatchId(matchId);
+				closePopupPong();
+			} else {
+				showErrorAndReturn("Match not found or is full.");
+			}
+		} catch (error) {
+			const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+			showErrorAndReturn(`Error checking match: ${errorMessage}`);
 		}
+
 	});
 }
 

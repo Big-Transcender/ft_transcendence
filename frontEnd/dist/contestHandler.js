@@ -199,7 +199,8 @@ async function joinTournament(nick, code) {
         const response = await fetch(`${backendUrl}/join-tournament`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ nick, code }),
+            body: JSON.stringify({ code }),
+            credentials: "include",
         });
         const data = await response.json();
         if (response.ok) {
