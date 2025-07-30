@@ -38,7 +38,7 @@ module.exports = async function (fastify) {
 		if (!verified)
 			return reply.code(400).send({ error: 'Invalid token' });
 
-		await db.prepare('UPDATE users SET two_factor_enabled = 1 WHERE id = ?').run(user.id);
+		await db.prepare('UPDATE users SET two_factor_enable = 1 WHERE id = ?').run(user.id);
 
 		return reply.send({ success: true });
 	});
