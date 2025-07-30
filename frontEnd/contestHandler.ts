@@ -151,6 +151,7 @@ async function createNewContest() {
 	//Create Contest here
 	const tournamentName = (document.getElementById("inputContestNameId") as HTMLInputElement).value.trim();
 	const nick = getNickOnLocalStorage();
+	const token = localStorage.getItem("token");
 
 	console.log("tournamentName:", tournamentName);
 	console.log("nick:", nick);
@@ -159,6 +160,7 @@ async function createNewContest() {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json",
+				"Authorization": `Bearer ${token}`,
 			},
 			credentials: "include",
 			body: JSON.stringify({ tournamentName }),

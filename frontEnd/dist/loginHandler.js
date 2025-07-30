@@ -111,6 +111,7 @@ async function loginUser() {
             putNickOnProfileHeader(data.user.name);
             setToLogged();
             setNickOnLocalStorage(data.user.name);
+            localStorage.setItem("token", data.token);
             return true;
         }
         else {

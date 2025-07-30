@@ -8,6 +8,7 @@ const fastifyStatic = require("@fastify/static");
 const setupWebSocket = require("./socketConnection");
 const GoogleStrategy = require("passport-google-oauth2").Strategy;
 const dotenv = require("dotenv");
+const jwt = require('jsonwebtoken')
 
 const db = require("./database");
 
@@ -84,6 +85,27 @@ fastify.get(
 		scope: ["profile", "email"],
 	})
 );
+
+fastify.decorate("authenticate", async function (request, reply) {
+	try {
+		console.log("bitch");
+		const authHeader = request.headers.authorization;
+		console.log("double bitch");
+		if (!authHeader) {
+			return reply.code(401).send({ error: "Access denied" });
+		}
+		const token = authHeader.split(' ')[1]; // if using "Bearer <token>"
+
+		console.log("triple bitch");
+		const decoded = jwt.verify(token, 'your-secret-key');
+		console.log("quad bitch");
+		request.userId = decoded.userId;
+		console.log("fifth bitch");
+	} catch (err) {
+		reply.code(401).send({ error: "Invalid token" });
+	}
+});
+
 
 fastify.get("/logout", async (req, res) => {
 	req.logout();

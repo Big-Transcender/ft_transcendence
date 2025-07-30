@@ -1,5 +1,6 @@
 const db = require('../database');  // adjust path as needed
 const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 
 module.exports = async function (fastify) {
     fastify.post('/login', async (request, reply) => {
@@ -30,7 +31,11 @@ module.exports = async function (fastify) {
             return reply.send({message: 'Two-Factor Enable'});
         }
         request.session.set('user', { id: user.id, nickname: user.nickname });
+        const token = jwt.sign({ userId: user.id }, 'your-secret-key', {
+            expiresIn: '1h',
+        });
 
-        reply.send({ message: 'Login successful', user: { id: user.id, name: user.nickname } });
+        reply.code(200).send({ message: 'Login Successful', token, user: {id: user.id, name: user.nickname} });
+        // reply.status(200).send({ message: 'Login successful', user: { id: user.id, name: user.nickname } });
     });
 };

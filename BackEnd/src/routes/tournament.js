@@ -12,10 +12,11 @@ const {
 const repl = require("node:repl");
 
 module.exports = async function (fastify) {
-    fastify.post('/create-tournament', async (request, reply) => {
+    fastify.post('/create-tournament', { preHandler: [fastify.authenticate]}, async (request, reply) => {
         const { tournamentName } = request.body;
 
         // Get user info from session
+        console.log("teste");
         const sessionUser = request.session.get('user');
         if (!sessionUser) return reply.code(401).send({ error: "Not authenticated" });
 
@@ -43,7 +44,7 @@ module.exports = async function (fastify) {
         });
     });
 
-    fastify.get('/tournament/:code', async (request, reply) => {
+    fastify.get('/tournament/:code', { preHandler: [fastify.authenticate]}, async (request, reply) => {
         const { code } = request.params;
         if (!code) return reply.code(400).send({ error: "Tournament code is required" });
 
@@ -55,7 +56,7 @@ module.exports = async function (fastify) {
         reply.code(200).send({ ...tournament, players });
     });
 
-    fastify.post('/join-tournament', async (request, reply) => {
+    fastify.post('/join-tournament', { preHandler: [fastify.authenticate]}, async (request, reply) => {
         const { code } = request.body;
 
         // Get user info from session
@@ -86,7 +87,7 @@ module.exports = async function (fastify) {
         });
     });
 
-    fastify.post('/start-tournament', async (request, reply) => {
+    fastify.post('/start-tournament', { preHandler: [fastify.authenticate]}, async (request, reply) => {
         const { code } = request.body;
 
         if (!code)
@@ -102,7 +103,7 @@ module.exports = async function (fastify) {
         reply.code(200).send({ message: "Tournament started successfully" });
     });
 
-    fastify.post('/delete-tournament', async (request, reply) =>
+    fastify.post('/delete-tournament', { preHandler: [fastify.authenticate]}, async (request, reply) =>
     {
         const { code } = request.body;
 
