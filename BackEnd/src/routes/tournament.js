@@ -74,15 +74,15 @@ module.exports = async function (fastify) {
         if (!tournament)
             return reply.code(404).send({ error: "Tournament not found" });
 
-        if (hasUserJoinedTournament(tournament.id, userId))
+        if (hasUserJoinedTournament(tournament.id, user))
             return reply.code(400).send({ error: "User already joined this tournament" });
 
-        addUserToTournament(tournament.id, userId);
+        addUserToTournament(tournament.id, user);
 
         reply.code(200).send({
             message: "User successfully joined the tournament",
             tournamentId: tournament.id,
-            userId: userId,
+            userId: user,
         });
     });
 
