@@ -26,6 +26,8 @@ async function handleNextFase(nick: string, Tournament: any) {
 		if (nick === tournamentPlayers[0] || nick === tournamentPlayers[1]) {
 			changePageTo(pongGamePage, joinedContestPage);
 			setTimeout(() => { //TODO just to do some testing
+				navigate('game1');
+				history.replaceState(undefined, "", `#pong/${Tournament.matches[2]}`);
 				changePageTo(joinedContestPage, pongGamePage);
 				startPongWebSocket(Tournament.matches[2]);
 			}, 3000);
