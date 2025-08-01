@@ -68,25 +68,27 @@ function getUserPosition() {
 		});
 }
 async function getUserStats(nickname: string) {
-	fetch(`${backendUrl}/player-stats/${nickname}`)
-		.then((response) => {
-			if (!response.ok) {
-				return response.json().then((err) => {
-					throw new Error(err.error || "Unknown error");
-				});
-			}
-			return response.json();
-		})
-		.then((stats) => {
-			flipboardNumberAnimation(stats.wins.toString(), winsNumber);
-			flipboardNumberAnimation(stats.defeats.toString(), losesNumber);
-			flipboardNumberAnimation(stats.games_played.toString(), gamesNumber);
-			winRateText.textContent = "Current Winrate: " + stats.win_percentage;
-			getUserPosition();
-		})
-		.catch((error) => {
-			console.error("Failed to fetch player stats:", error.message);
-		});
+	if (checkIfLogged()) {
+		fetch(`${backendUrl}/player-stats/${nickname}`)
+			.then((response) => {
+				if (!response.ok) {
+					return response.json().then((err) => {
+						throw new Error(err.error || "Unknown error");
+					});
+				}
+				return response.json();
+			})
+			.then((stats) => {
+				flipboardNumberAnimation(stats.wins.toString(), winsNumber);
+				flipboardNumberAnimation(stats.defeats.toString(), losesNumber);
+				flipboardNumberAnimation(stats.games_played.toString(), gamesNumber);
+				winRateText.textContent = "Current Winrate: " + stats.win_percentage;
+				getUserPosition();
+			})
+			.catch((error) => {
+				console.error("Failed to fetch player stats:", error.message);
+			});
+	}
 }
 
 document.addEventListener("DOMContentLoaded", async () => {

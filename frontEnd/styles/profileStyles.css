@@ -287,13 +287,19 @@
 
 .logoutButton {
 	bottom: 5%;
+	left: 25%;
+	translate: -50%;
+}
+
+.showTwoAF {
+	bottom: 5%;
 	left: 50%;
 	translate: -50%;
 }
 
 .showQr {
 	bottom: 5%;
-	left: 25%;
+	left: 50%;
 	translate: -50%;
 }
 
@@ -313,21 +319,24 @@
 	position: absolute;
 	width: 200px;
 	height: 200px;
+	left: 50%;
+	top: 60%;
+	translate: -50% -50%;
 	background-color: #7ec9d6;
-	/* opacity: 0; */
+	border-radius: 25px;
+	opacity: 0;
 }
 
 .QrCodeBox {
 	position: absolute;
-	/* background-image: url(https://images.squarespace-cdn.com/content/v1/5d3f241fa4e0350001fa20d5/1636491460338-AIZAXV2978MGIDQE0GT7/qr-code.png); */
 	background-size: contain;
-
-	width: 100px;
-	height: 100px;
-	background-color: red;
+	width: 180px;
+	height: 180px;
+	/* background-color: red; */
 	left: 50%;
 	top: 50%;
 	translate: -50% -50%;
+	border-radius: 25px;
 }
 
 .loginButton {
@@ -371,7 +380,7 @@
 }
 
 .twoFactorInput {
-	top: 40%;
+	top: 30%;
 	/* translate: ; */
 }
 

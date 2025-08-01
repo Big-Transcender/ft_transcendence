@@ -643,10 +643,6 @@
 									</div>
 								</div>
 
-								<div class="QrCode" id="QrCodeId">
-									<div class="QrCodeBox" id="QrCodeBoxId"></div>
-								</div>
-
 								<button class="defaultButton logoutButton" id="logoutButton">
 									<p class="defaultButtonText">Logout</p>
 									<div class="defaultButtonBG">
@@ -655,8 +651,8 @@
 									</div>
 								</button>
 
-								<button class="defaultButton showQr" id="showQrButtonID">
-									<p class="defaultButtonText">Show Qr</p>
+								<button class="defaultButton showTwoAF" id="twoFactorButtonID">
+									<p class="defaultButtonText">2AF</p>
 									<div class="defaultButtonBG">
 										<div class="defaultButtonBGWave"></div>
 										<div class="defaultButtonBGWave wave2"></div>
@@ -683,7 +679,20 @@
 									<input type="text" id="twoFactorPass" class="inputText smallInput" placeholder="2F" autocomplete="off" />
 								</div>
 
-								<button class="defaultButton twoFactor" id="twoFactorButtonID">
+								<div class="QrCode" id="QrCodeId">
+									<div class="QrCodeBox" id="QrCodeBoxId"></div>
+								</div>
+
+								<button class="defaultButton showQr" id="showQrButtonID">
+									<p class="defaultButtonText">Show Qr</p>
+									<div class="defaultButtonBG">
+										<div class="defaultButtonBGWave"></div>
+										<div class="defaultButtonBGWave wave2"></div>
+									</div>
+								</button>
+
+								<!-- VERIFY TWO FACTOR CODE BUTTOM -->
+								<button class="defaultButton twoFactor" id="verifyTwoFactorButtonID">
 									<p class="defaultButtonText">Verify</p>
 									<div class="defaultButtonBG">
 										<div class="defaultButtonBGWave"></div>

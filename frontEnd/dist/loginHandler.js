@@ -154,8 +154,9 @@ document.addEventListener("DOMContentLoaded", async () => {
     const gLoginButton = document.getElementById("gLoginId");
     const backButton2F = document.getElementById("back2FId");
     const logoutButton = document.getElementById("logoutButton");
-    const qrButton = document.getElementById("showQrButtonID");
-    const twoFactorButton = document.getElementById("twoFactorButtonID");
+    const twoAFButton = document.getElementById("twoFactorButtonID");
+    const showQrCodeButton = document.getElementById("showQrButtonID");
+    const twoFactorButton = document.getElementById("verifyTwoFactorButtonID");
     const switchNickButton = document.getElementById("switchNickButtonID");
     const profilePage = document.getElementById("profileId");
     const newUserPage = document.getElementById("newUserId");
@@ -207,9 +208,12 @@ document.addEventListener("DOMContentLoaded", async () => {
         typeText(bubbleTextLogin, "Welcome back!", 60);
         getUserStats(getNickOnLocalStorage());
     });
-    //Qr Button
-    qrButton.addEventListener("click", () => {
+    // GENERATE QR CODE
+    showQrCodeButton.addEventListener("click", () => {
         let QrCodeBox = document.getElementById("QrCodeBoxId");
+        let QrCodePlace = document.getElementById("QrCodeId");
+        //#TODO MAKE A API TO CHECK IF THE QR WAS GENERATED FOR THIS USER
+        // IF SO, DO LET IT GENERATE AGAIN, IF NOT, GENERATE
         fetch(`${backendUrl}/2fa/setup`, {
             method: "POST",
             credentials: "include", // Important if using cookies/session
@@ -223,22 +227,22 @@ document.addEventListener("DOMContentLoaded", async () => {
             return response.json();
         })
             .then((data) => {
-            // data.qr is the QR code data URL, data.secret is the base32 secret
-            console.log("QR Code URL:", data.qr);
-            console.log("Secret:", data.secret);
-            // Example: show QR code in an <img>
             QrCodeBox.style.backgroundImage = "url(" + data.qr + ")";
-            // (document.getElementById("qr-img") as HTMLImageElement).src = data.qr;
+            QrCodePlace.style.opacity = "1";
         })
             .catch((error) => {
             console.error("Error fetching 2FA setup:", error);
         });
     });
+    //2AF Button
+    twoAFButton.addEventListener("click", () => {
+        changePageTo(profilePage, twoFactorPage);
+    });
     // TWO FACTTOR BUTTON
     twoFactorButton.addEventListener("click", () => {
         const twoFactorInput = document.getElementById("twoFactorPass").value.trim();
         console.log("2F input: " + twoFactorInput);
-        fetch("/2fa/verify", {
+        fetch(`${backendUrl}/2fa/verify`, {
             method: "POST",
             credentials: "include", // Needed if using session/cookies
             headers: {
@@ -255,11 +259,13 @@ document.addEventListener("DOMContentLoaded", async () => {
                 // Handle success (e.g., redirect or show message)
             }
             else {
-                console.error("2FA failed:", data.message);
+                displayWarning(data.error);
+                console.error("2FA failed:", data.error);
                 // Handle failure (e.g., show error to user)
             }
         })
             .catch((error) => {
+            // displayWarning(error);
             console.error("Error verifying 2FA:", error);
         });
     });
@@ -281,7 +287,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
     //BACK BUTTON 2F
     backButton2F.addEventListener("click", () => {
-        changePageTo(twoFactorPage, loginPage);
+        changePageTo(twoFactorPage, profilePage);
         // stopSpech();
         // if (!checkIfLogged()) {
         // 	typeText(bubbleTextLogin, "Welcome back!", 60);

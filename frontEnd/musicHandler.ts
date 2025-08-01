@@ -41,8 +41,6 @@ const bgMusic = dayMusic[formattedHour];
 bgMusic.loop = true;
 bgMusic.title = (currentHour % 12 || 12) + " " + period;
 // bgMusic.play();
-console.log(bgMusic.title);
-console.log(today.getHours());
 
 const musicTitle = document.getElementById("musicTitle");
 const musicDate = document.getElementById("musicDate");
