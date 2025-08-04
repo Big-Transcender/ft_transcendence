@@ -43,6 +43,7 @@ class Tournament {
 			console.log("✅ Semifinal 2 winner recorded: ", winner);
 		} else if (this.currentMatchIndex === 2) {
 			this.Winner = winnerNickname;
+			this.currentMatchIndex = 3;
 			console.log("✅ The winner is: ", winner);
 		}
 	}
