@@ -5,7 +5,7 @@ const { saveSecret, getSecret, setUser2FAStatus } = require("../dataQuerys");
 
 //route for setting up 2FA
 module.exports = async function (fastify) {
-	fastify.post('/2fa/setup', async (request, reply) => {
+	fastify.post('/2fa/setup', { preHandler: [fastify.authenticate]}, async (request, reply) => {
 		const user = request.session.get('user');
 		console.log("hello");
 		if (!user)
@@ -23,7 +23,7 @@ module.exports = async function (fastify) {
 	});
 
 //route for verifying 2FA token
-	fastify.post('/2fa/verify', async (request, reply) => {
+	fastify.post('/2fa/verify', { preHandler: [fastify.authenticate]}, async (request, reply) => {
 		const { token } = request.body;
 		const user = request.session.get('user');
 
@@ -43,7 +43,7 @@ module.exports = async function (fastify) {
 		return reply.send({ success: true });
 	});
 
-	fastify.get('/2fa/status', async (request, reply) => {
+	fastify.get('/2fa/status', { preHandler: [fastify.authenticate]},  async (request, reply) => {
 		const user = request.session.get('user');
 		if (!user)
 			return reply.code(401).send({ error: 'Not authenticated' });
