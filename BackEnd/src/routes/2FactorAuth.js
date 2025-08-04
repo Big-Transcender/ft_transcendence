@@ -42,4 +42,14 @@ module.exports = async function (fastify) {
 
 		return reply.send({ success: true });
 	});
+
+	fastify.get('/2fa/status', async (request, reply) => {
+		const user = request.session.get('user');
+		if (!user)
+			return reply.code(401).send({ error: 'Not authenticated' });
+
+		const row = await db.prepare('SELECT two_factor_enable FROM users WHERE id = ?').get(user.id);
+		const enabled = row && row.two_factor_enable === 1;
+		return reply.send({ enabled });
+	});
 };
