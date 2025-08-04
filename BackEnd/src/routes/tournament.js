@@ -16,7 +16,6 @@ module.exports = async function (fastify) {
         const { tournamentName } = request.body;
 
         // Get user info from session
-        console.log("teste");
         const sessionUser = request.session.get('user');
         if (!sessionUser) return reply.code(401).send({ error: "Not authenticated" });
 
