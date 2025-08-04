@@ -133,8 +133,11 @@ function startPongWebSocket(matchId: string, isLocal: boolean = false, aiGame: b
 					break;
 				}
 				case "PlayerBoard": {
-					const players = data.payload.players;
-					setGameScore(players[0], players[1]);
+					const players = data.payload;
+					if (isLocal && !aiGame)
+						setGameScore(players[0], players[0]);
+					else
+						setGameScore(players[0], players[1]);
 					return ;
 				}
 				case "gameOver": {
@@ -146,6 +149,7 @@ function startPongWebSocket(matchId: string, isLocal: boolean = false, aiGame: b
 							detail: { matchId: currentMatchId, winner: winner }
 						}));
 					}
+					setGameScore("Player 1", "Player 2");
 					stopPongWebSocket()
 					break;
 				}
@@ -180,7 +184,7 @@ setInterval(() => {
 
 
 function generateMatchId(){
-	return  "" + Math.floor(Math.random() * 10000);
+	return  Math.floor(1000 + Math.random() * 90000).toString();
 }
 
 

@@ -19,9 +19,9 @@ const BALLS = 19;
 function createInitialGameState() {
 
 	return {
-		paddles: { p1: 50, p2: 50 , p3: 50, p4: 50 },
+		paddles: { p1: 45, p2: 45 , p3: 50, p4: 50 },
 		ball: { x: 50, y: 50 },
-		ballVel: { x: 0.5, y: 0.5 },
+		ballVel: { x: 0.5, y: 0 },
 		score: { p1: 0, p2: 0 },
 		playerId: { p1: 1, p2: 2, p3: 3, p4: 4 },
 		playerDbId: { p1: 0, p2: 0, p3: 0, p4: 0},
@@ -40,10 +40,10 @@ function createInitialGameState() {
 function resetBall(gameState) {
 	gameState.ball.x = 50;
 	gameState.ball.y = 50;
-	gameState.paddles.p1 = 43;
-	gameState.paddles.p2 = 43;
-	gameState.paddles.p3 = 43;
-	gameState.paddles.p4 = 43;
+	gameState.paddles.p1 = 45;
+	gameState.paddles.p2 = 45;
+	gameState.paddles.p3 = 45;
+	gameState.paddles.p4 = 45;
 
 	const direction = Math.random() < 0.5 ? 1 : -1;
 	gameState.speed = SPEED;
