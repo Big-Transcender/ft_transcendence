@@ -119,28 +119,37 @@ async function playExpandingAnimation(button: any) {
 	phonetitle.textContent = "Welcome to the Animal Ponging";
 }
 
-fetch(`${backendUrl}/leaderboard`)
-	.then((response) => response.json())
-	.then((data) => {
-		const table = document.getElementById("playerRankListId") as HTMLTableElement;
+async function updateLeaderboard() {
+	fetch(`${backendUrl}/leaderboard`)
+		.then((response) => response.json())
+		.then((data) => {
+			const table = document.getElementById("playerRankListId") as HTMLTableElement;
 
-		while (table.rows.length > 1) {
-			table.deleteRow(1);
-		}
-		console.log("Hello");
-		console.log(data);
-		const topPlayers = data.sort((a, b) => b.wins - a.wins).slice(0, 5);
-		// Insert new rows
-		topPlayers.forEach((player, index) => {
-			const row = table.insertRow();
-			row.insertCell().textContent = index + 1; // Position
-			row.insertCell().textContent = player.nickname; // Nick
-			row.insertCell().textContent = player.wins; // Wins
+			while (table.rows.length > 1) {
+				table.deleteRow(1);
+			}
+			console.log("Hello");
+			console.log(data);
+			const topPlayers = data.sort((a, b) => b.wins - a.wins).slice(0, 5);
+			// Insert new rows
+			topPlayers.forEach((player, index) => {
+				const row = table.insertRow();
+				row.insertCell().textContent = index + 1; // Position
+				row.insertCell().textContent = player.nickname; // Nick
+				row.insertCell().textContent = player.wins; // Wins
+			});
+
+			for (let i = topPlayers.length; i < 5; i++) {
+				const row = table.insertRow();
+				row.insertCell().textContent = (i + 1).toString(); // Position
+				row.insertCell().textContent = "-----"; // Nick default
+				row.insertCell().textContent = "0"; // Wins default
+			}
+		})
+		.catch((error) => {
+			console.error("Failed to load leaderboard:", error);
 		});
-	})
-	.catch((error) => {
-		console.error("Failed to load leaderboard:", error);
-	});
+}
 
 function getTimeForPhone() {
 	setInterval(() => {
@@ -153,6 +162,7 @@ function getTimeForPhone() {
 
 async function rankAnimationHandler() {
 	if (!rankOpen && !isPlayingSoundRank) {
+		updateLeaderboard();
 		isPlayingSoundRank = true;
 		openSound.play();
 		homePlayersRank.classList.remove("closeLeft-animation");

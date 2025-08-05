@@ -237,6 +237,7 @@
 	top: 160px;
 	translate: -50%;
 	opacity: 0%;
+	pointer-events: none;
 }
 
 .defaultWarningBG {
