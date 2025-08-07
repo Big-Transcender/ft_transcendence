@@ -15,17 +15,20 @@ window.addEventListener('TournamentMatch', (event: CustomEvent) => {
 async function handleNextFase(nick: string, Tournament: any) {
 	try {
 
-		if (Tournament.currentMatchIndex === 2)
-		{
-			alert(`The Winner of the Tournament is ${Tournament.winner}`)
-			return;
+		console.log(Tournament);
+
+		if (Tournament.currentMatchIndex === 3) {
+			alert(`You win the Tournament! The Great ${Tournament.Winner}!`);
+			return ;
 		}
-		
 
 		const tournamentPlayers = [Tournament.semifinal1Winner, Tournament.semifinal2Winner];
 		if (nick === tournamentPlayers[0] || nick === tournamentPlayers[1]) {
+
 			changePageTo(pongGamePage, joinedContestPage);
-			setTimeout(() => { //TODO just to do some testing
+			setTimeout(() => {
+				navigate('game1');
+				history.replaceState(undefined, "", `#pong/${Tournament.matches[2]}`);
 				changePageTo(joinedContestPage, pongGamePage);
 				startPongWebSocket(Tournament.matches[2]);
 			}, 3000);
@@ -47,18 +50,21 @@ window.addEventListener('MatchEnd', (event: CustomEvent) => {
 async function handleMatchEnd(currentMatchId: string, winner: string) {
 	try {
 		console.log('Handling match end...');
+		const nick = getNickOnLocalStorage();
+
+
 		const response = await fetch(`${backendUrl}/isTournamentMatch/${currentMatchId}`);
 		if (!response.ok) {
 			throw new Error(`Failed to check tournament match: ${response.statusText}`);
 		}
 
+		if (nick != winner)
+			return
+
 		const tournament = await response.json();
 		if (!tournament.exists)
 			return;
 
-		console.log(tournament.tournamentObject.tournamentID)
-		console.log(winner)
-		
 		const updateResponse = await fetch(`${backendUrl}/updateTournamentWinner`, {
 			method: 'PATCH',
 			headers: { 'Content-Type': 'application/json' },
@@ -75,8 +81,6 @@ async function handleMatchEnd(currentMatchId: string, winner: string) {
 		}
 
 		const updatedTournament = await updatedResponse.json();
-
-		console.log('Tournament winner updated successfully');
 		window.dispatchEvent(new CustomEvent('TournamentMatch', {
 			detail: { Tournament: updatedTournament.tournamentObject }
 		}));

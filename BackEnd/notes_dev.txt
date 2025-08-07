@@ -38,7 +38,7 @@ curl -X POST http://localhost:3000/join-tournament \
 
 curl -X POST http://localhost:3000/join-tournament \
   -H "Content-Type: application/json" \
-  -d '{"nick": "diodos-s", "code": "1055"}'
+  -d '{"nick": "diodos-s", "code": "5515"}'
 
 curl -X POST http://localhost:3000/join-tournament \
   -H "Content-Type: application/json" \

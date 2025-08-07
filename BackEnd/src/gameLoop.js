@@ -26,9 +26,20 @@ function startGameLoopForMatch(matchId, updateBall, isLocal = false, aiGame = fa
 		
 		if (clients.size === requiredPlayers) { //requiredPlayers
 
-
 			if (!gameState.onGoing && !gameState.started) {
 				gameState.started = true;
+
+				match.clients.forEach((client) => {
+					const message = JSON.stringify({ 
+						type: 'PlayerBoard', 
+						payload: [getNicknameByUserId(match.gameState.playerDbId.p1), getNicknameByUserId(match.gameState.playerDbId.p2)]
+					});
+					if (client.ws.readyState === 1) {
+						client.ws.send(message);
+					}
+				});
+				
+
 				console.log("⏳ Starting game in 3 seconds...");
 				startTimer(3000, gameState);
 			}

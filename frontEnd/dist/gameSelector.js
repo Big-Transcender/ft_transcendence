@@ -57,11 +57,11 @@ document.addEventListener("DOMContentLoaded", () => {
             changePageTo(gameSelectorPongPage, pongGamePage);
             const matchId = generateMatchId();
             updatePageHash(`#pong/${matchId}`);
-            startPongWebSocket(matchId, true, true); // true = local mode
+            startPongWebSocket(matchId, true, true);
             animateTimer();
             setRandomBackground();
             resetEmotions();
-            setGameScore(getNickOnLocalStorage());
+            //setGameScore(getNickOnLocalStorage());
             backGamePongButton.classList.add("active");
             showMatchId("NONE");
         }
@@ -87,7 +87,7 @@ document.addEventListener("DOMContentLoaded", () => {
             startPongWebSocket(matchId, true); // true = local mode
             resetEmotions();
             animateTimer();
-            setGameScore(getNickOnLocalStorage(), "Player 2");
+            //setGameScore(getNickOnLocalStorage(), "Player 2");
             backGamePongButton.classList.add("active");
             showMatchId("NONE");
         }
@@ -119,7 +119,7 @@ function joinExistingMatch(matchId) {
     backGamePongButton.classList.add("active");
     animateTimer();
     resetEmotions();
-    setGameScore("Player 1", getNickOnLocalStorage());
+    //setGameScore("Player 1", getNickOnLocalStorage());
 }
 function createNewMatch(isLocal = false, aiGame = false, teamGame = false) {
     const matchId = generateMatchId();
@@ -130,7 +130,7 @@ function createNewMatch(isLocal = false, aiGame = false, teamGame = false) {
     animateTimer();
     resetEmotions();
     showMatchId(matchId);
-    setGameScore(getNickOnLocalStorage(), "Player 1");
+    //setGameScore(getNickOnLocalStorage(), "Player 1");
 }
 function showErrorAndReturn(message) {
     alert(message);

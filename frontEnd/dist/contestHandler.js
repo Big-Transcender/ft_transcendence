@@ -275,6 +275,7 @@ async function startTournament(tournamentId) {
         startPongWebSocket(data.tournament.matches[0]);
     }
     else if (nick === data.tournament.players[2] || nick === data.tournament.players[3]) {
+        navigate('game1');
         history.replaceState(undefined, "", `#pong/${data.tournament.matches[1]}`);
         changePageTo(gameSelectorPongPage, pongGamePage);
         startPongWebSocket(data.tournament.matches[1]);

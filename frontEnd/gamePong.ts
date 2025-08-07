@@ -9,7 +9,10 @@ interface MatchCheckResponse {
 }
 
 function startPongWebSocket(matchId: string, isLocal: boolean = false, aiGame: boolean = false, teamGame: boolean = false) {
-	if (socketInitialized) return;
+	if (socketInitialized){
+		console.log("game already in Progress");
+		return;
+	}
 	socketInitialized = true;
 	currentMatchId = matchId;
 	currentIsLocal = isLocal;
@@ -125,13 +128,20 @@ function startPongWebSocket(matchId: string, isLocal: boolean = false, aiGame: b
 				}
 				case "assign": {
 					playerId = data.payload;
-					console.log(`👤 You are assigned as ${playerId}`);
+					if (playerId === "p1")
+						setGameScore(getNickOnLocalStorage(), "Player 2");
 					break;
+				}
+				case "PlayerBoard": {
+					const players = data.payload;
+					if (isLocal && !aiGame)
+						setGameScore(players[0], players[0]);
+					else
+						setGameScore(players[0], players[1]);
+					return ;
 				}
 				case "gameOver": {
 					const { winner, reason } = data.payload;
-
-					console.log(`Game Over! The winner is ${winner}. Reason: ${reason}`);
 					alert(`Game Over! The winner is ${winner}. Reason: ${reason}`);
 					
 					if (currentMatchId) {
@@ -139,8 +149,9 @@ function startPongWebSocket(matchId: string, isLocal: boolean = false, aiGame: b
 							detail: { matchId: currentMatchId, winner: winner }
 						}));
 					}
-
-
+					setGameScore("Player 1", "Player 2");
+					stopPongWebSocket()
+					break;
 				}
 			}
 		} catch (err) {
@@ -173,6 +184,7 @@ setInterval(() => {
 
 
 function generateMatchId(){
-	return  "" + Math.floor(Math.random() * 10000);
+	return  Math.floor(1000 + Math.random() * 90000).toString();
 }
+
 
