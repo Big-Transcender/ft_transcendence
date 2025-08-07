@@ -134,7 +134,7 @@ async function checkMatchExists(matchId: string): Promise<MatchCheckResponse> {
 
 function joinExistingMatch(matchId: string): void {
 	history.replaceState(undefined, "", `#pong/${matchId}`);
-	startPongWebSocket(matchId, false, false, true);
+	startPongWebSocket(matchId);
 	changePageTo(gameSelectorPongMultiplayerPage, pongGamePage);
 	backGamePongButton.classList.add("active");
 	animateTimer();
@@ -174,7 +174,7 @@ function openPopupPong() {
 	});
 
 	// CREATE 2v2 MATCH
-	create2V2PopupButton.addEventListener("click", async () => {
+	create2V2PopupButton.addEventListener("click", async () => { //TODO fix this
 		const action = prompt("Type 'create' to start a new 2v2 match or 'join' to join one:");
 
 		if (!action) return;
