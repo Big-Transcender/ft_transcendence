@@ -114,7 +114,7 @@ async function checkMatchExists(matchId) {
 }
 function joinExistingMatch(matchId) {
     history.replaceState(undefined, "", `#pong/${matchId}`);
-    startPongWebSocket(matchId, false, false, true);
+    startPongWebSocket(matchId);
     changePageTo(gameSelectorPongMultiplayerPage, pongGamePage);
     backGamePongButton.classList.add("active");
     animateTimer();

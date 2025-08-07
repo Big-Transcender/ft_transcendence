@@ -5,6 +5,12 @@ let positionNumber = document.getElementById("positionId");
 let winRateText = document.getElementById("winRateTextId");
 const backendUrl = `http://${window.location.hostname}:3000`;
 const frontendUrl = `http://${window.location.hostname}:5173`;
+const matchesProfile = document.querySelector(".matchesProfile");
+const friendsProfile = document.querySelector(".friendsProfile");
+let matchOpen = false;
+let friendsOpen = false;
+let isPlayingSoundMatch = false;
+let isPlayingSoundFriends = false;
 getUserStats(getNickOnLocalStorage());
 async function flipboardNumberAnimation(target, targetBox) {
     targetBox.textContent = "";
@@ -86,9 +92,72 @@ async function getUserStats(nickname) {
 }
 document.addEventListener("DOMContentLoaded", async () => {
     const switchNick = document.querySelector(".pupupSwitchButton");
+    const matchesButton = document.getElementById("matchesButtonID");
+    const friendsButton = document.getElementById("friendsButtonID");
     // SWITCH NICK FUNCTION
     switchNick.addEventListener("click", () => {
         const nickInput = document.getElementById("popupNewNick").value.trim();
         displayWarning(nickInput);
     });
+    // OPEN MATCH HISTORY
+    matchesButton.addEventListener("click", () => {
+        matchesAnimationHandler();
+    });
+    // OPEN FRIEND LIST
+    friendsButton.addEventListener("click", () => {
+        friendsAnimationHandler();
+    });
 });
+async function matchesAnimationHandler() {
+    if (!matchOpen && !isPlayingSoundMatch) {
+        updateLeaderboard();
+        isPlayingSoundMatch = true;
+        openSound.play();
+        matchesProfile.classList.remove("closeMatchAnimation");
+        matchesProfile.classList.add("openMatchAnimation");
+        await betterWait(1500);
+        matchesProfile.style.left = "-22%";
+        matchesProfile.style.opacity = "1";
+        matchesProfile.classList.remove("openMatchAnimation");
+        await betterWait(100);
+        matchOpen = true;
+        isPlayingSoundMatch = false;
+    }
+    else if (matchOpen && !isPlayingSoundMatch) {
+        closeSound.play();
+        isPlayingSoundMatch = true;
+        matchesProfile.classList.remove("openMatchAnimation");
+        matchesProfile.classList.add("closeMatchAnimation");
+        await betterWait(1000);
+        matchesProfile.style.left = "30%";
+        matchesProfile.style.opacity = "none";
+        matchesProfile.classList.remove("closeMatchAnimation");
+        await betterWait(100);
+        matchOpen = false;
+        isPlayingSoundMatch = false;
+    }
+}
+async function friendsAnimationHandler() {
+    if (!friendsOpen && !isPlayingSoundFriends) {
+        isPlayingSoundFriends = true;
+        openSound2.play();
+        friendsProfile.classList.remove("closeFriendsAnimation");
+        friendsProfile.classList.add("openFriendsAnimation");
+        await betterWait(1000);
+        friendsProfile.classList.remove("openFriendsAnimation");
+        friendsProfile.style.left = "122%";
+        friendsOpen = true;
+        isPlayingSoundFriends = false;
+    }
+    else if (friendsOpen && !isPlayingSoundFriends) {
+        isPlayingSoundFriends = true;
+        closeSound2.play();
+        friendsProfile.classList.add("closeFriendsAnimation");
+        friendsProfile.classList.remove("openFriendsAnimation");
+        friendsOpen = false;
+        await betterWait(1000);
+        friendsProfile.classList.remove("closeFriendsAnimation");
+        friendsProfile.style.left = "70%";
+        isPlayingSoundFriends = false;
+    }
+}
