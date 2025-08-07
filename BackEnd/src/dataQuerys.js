@@ -209,12 +209,6 @@ function saveSecret(userId, secret)
 	return stmt.run(secret, userId);
 }
 
-function getSecret(userId)
-{
-	const stmt = db.prepare('SELECT id FROM users WHERE id = ?');
-	const result = stmt.get(userId);
-}
-
 module.exports = {
 	isNicknameTaken,
 	isEmailTaken,

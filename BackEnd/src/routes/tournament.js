@@ -15,10 +15,9 @@ module.exports = async function (fastify) {
 	fastify.post("/create-tournament", { preHandler: [fastify.authenticate] }, async (request, reply) => {
 		const { tournamentName } = request.body;
 
-		// Get user info from session
-		console.log("teste");
-		const sessionUser = request.session.get("user");
-		if (!sessionUser) return reply.code(401).send({ error: "Not authenticated" });
+        // Get user info from session
+        const sessionUser = request.session.get('user');
+        if (!sessionUser) return reply.code(401).send({ error: "Not authenticated" });
 
 		if (!tournamentName) return reply.code(400).send({ error: "Name is empty" });
 

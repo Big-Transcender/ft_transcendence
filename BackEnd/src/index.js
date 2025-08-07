@@ -88,19 +88,14 @@ fastify.get(
 
 fastify.decorate("authenticate", async function (request, reply) {
 	try {
-		console.log("bitch");
 		const authHeader = request.headers.authorization;
-		console.log("double bitch");
 		if (!authHeader) {
 			return reply.code(401).send({ error: "Access denied" });
 		}
 		const token = authHeader.split(' ')[1]; // if using "Bearer <token>"
 
-		console.log("triple bitch");
-		const decoded = jwt.verify(token, 'your-secret-key');
-		console.log("quad bitch");
+		const decoded = jwt.verify(token, 'your-secret-key'); //TODO: key in env
 		request.userId = decoded.userId;
-		console.log("fifth bitch");
 	} catch (err) {
 		reply.code(401).send({ error: "Invalid token" });
 	}
@@ -115,8 +110,9 @@ fastify.get("/logout", async (req, res) => {
 	return res.send({ success: true });
 });
 fastify.get("/me", async (req, res) => {
-	if (req.user) {
-		return { user: req.user };
+	const sessionUser = req.session.get('user');
+	if (sessionUser) {
+		return { user: sessionUser.user };
 	} else {
 		return res.status(401).send({ error: "Not logged in" });
 	}

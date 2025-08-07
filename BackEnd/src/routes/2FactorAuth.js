@@ -5,7 +5,7 @@ const { saveSecret, getSecret, setUser2FAStatus } = require("../dataQuerys");
 
 //route for setting up 2FA
 module.exports = async function (fastify) {
-	fastify.post('/2fa/setup', async (request, reply) => {
+	fastify.post('/2fa/setup', { preHandler: [fastify.authenticate]}, async (request, reply) => {
 		const user = request.session.get('user');
 		console.log("hello");
 		if (!user)
@@ -23,7 +23,7 @@ module.exports = async function (fastify) {
 	});
 
 //route for verifying 2FA token
-	fastify.post('/2fa/verify', async (request, reply) => {
+	fastify.post('/2fa/verify', { preHandler: [fastify.authenticate]}, async (request, reply) => {
 		const { token } = request.body;
 		const user = request.session.get('user');
 
@@ -41,5 +41,15 @@ module.exports = async function (fastify) {
 		await db.prepare('UPDATE users SET two_factor_enable = 1 WHERE id = ?').run(user.id);
 
 		return reply.send({ success: true });
+	});
+
+	fastify.get('/2fa/status', { preHandler: [fastify.authenticate]},  async (request, reply) => {
+		const user = request.session.get('user');
+		if (!user)
+			return reply.code(401).send({ error: 'Not authenticated' });
+
+		const row = await db.prepare('SELECT two_factor_enable FROM users WHERE id = ?').get(user.id);
+		const enabled = row && row.two_factor_enable === 1;
+		return reply.send({ enabled });
 	});
 };
