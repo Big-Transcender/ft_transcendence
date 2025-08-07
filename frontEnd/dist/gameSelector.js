@@ -114,7 +114,7 @@ async function checkMatchExists(matchId) {
 }
 function joinExistingMatch(matchId) {
     history.replaceState(undefined, "", `#pong/${matchId}`);
-    startPongWebSocket(matchId);
+    startPongWebSocket(matchId, false, false, true);
     changePageTo(gameSelectorPongMultiplayerPage, pongGamePage);
     backGamePongButton.classList.add("active");
     animateTimer();
@@ -148,10 +148,37 @@ function openPopupPong() {
         closePopupPong();
     });
     // CREATE 2v2 MATCH
-    create2V2PopupButton.addEventListener("click", () => {
-        //#TODO This is the 2v2 match buttom. Do what you wish
-        //Remember to use "closePopupPong()" to close the popup!
-        displayWarning("This start the 2v2 match!");
+    create2V2PopupButton.addEventListener("click", async () => {
+        const action = prompt("Type 'create' to start a new 2v2 match or 'join' to join one:");
+        if (!action)
+            return;
+        if (action.toLowerCase() === "create") {
+            createNewMatch(false, false, true); // teamGame = true
+            closePopupPong();
+        }
+        else if (action.toLowerCase() === "join") {
+            const matchId = prompt("Enter the 2v2 Match ID:");
+            if (!matchId || !matchId.trim())
+                return;
+            try {
+                const matchData = await checkMatchExists(matchId.trim());
+                if (matchData.exists) {
+                    joinExistingMatch(matchId.trim());
+                    showMatchId(matchId.trim());
+                    closePopupPong();
+                }
+                else {
+                    showErrorAndReturn("2v2 Match not found or is full.");
+                }
+            }
+            catch (error) {
+                const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+                showErrorAndReturn(`Error checking match: ${errorMessage}`);
+            }
+        }
+        else {
+            alert("Invalid input. Type either 'create' or 'join'.");
+        }
     });
     // JOIN A MP MATCH
     joinPopupButton.addEventListener("click", async () => {
