@@ -28,11 +28,13 @@ function startGameLoopForMatch(matchId, updateBall, isLocal = false, aiGame = fa
 
 			if (!gameState.onGoing && !gameState.started) {
 				gameState.started = true;
+				player1 = getNicknameByUserId(match.gameState.playerDbId.p1) || "Player 1"
+				player2 = getNicknameByUserId(match.gameState.playerDbId.p2) || "Player 2"
 
 				match.clients.forEach((client) => {
 					const message = JSON.stringify({ 
 						type: 'PlayerBoard', 
-						payload: [getNicknameByUserId(match.gameState.playerDbId.p1), getNicknameByUserId(match.gameState.playerDbId.p2)]
+						payload: [player1, player2]
 					});
 					if (client.ws.readyState === 1) {
 						client.ws.send(message);

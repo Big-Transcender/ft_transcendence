@@ -263,7 +263,7 @@ function resetContestPage() {
 	contestSelectorPage.classList.add("active");
 }
 
-async function startTournament(tournamentId: string)
+async function startTournament(tournamentId: string, isLocal: boolean = false)
 {
 	console.log("aqui vai a response");
 	const response = await fetch(`${backendUrl}/constructTournament`, {
@@ -297,7 +297,7 @@ async function startTournament(tournamentId: string)
 		navigate('game1');
 		history.replaceState(undefined, "", `#pong/${data.tournament.matches[0]}`);
 		changePageTo(gameSelectorPongPage, pongGamePage);
-		startPongWebSocket(data.tournament.matches[0]);
+		startPongWebSocket(data.tournament.matches[0], isLocal);
 	}
 	else if (nick === data.tournament.players[2] || nick === data.tournament.players[3]) {
 		navigate('game1');

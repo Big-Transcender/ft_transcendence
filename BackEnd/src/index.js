@@ -11,6 +11,7 @@ const dotenv = require("dotenv");
 const jwt = require('jsonwebtoken')
 
 const db = require("./database");
+const { setupPresenceWebSocket } = require("./setupPresenceWebSocket");
 
 dotenv.config();
 
@@ -144,6 +145,8 @@ async function start() {
 
 		// Setup WebSocket connection
 		setupWebSocket(fastify.server);
+
+		//setupPresenceWebSocket(fastify.server);
 
 		// Dynamically register all route files
 		await registerRoutes();

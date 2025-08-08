@@ -272,6 +272,8 @@ function insertOnDb(gameState)
 {
 	if (gameState.GamePlayLocal || gameState.aiGame)
 		return ;
+	if(gameState.playerDbId.p1 === null || gameState.playerDbId.p2 === null)
+		return ;
 	insertMatch(gameState.playerDbId.p1, gameState.playerDbId.p2, gameState.winnerId, gameState.score.p1, gameState.score.p2);
 	if (gameState.playerDbId.p3 != 0)
 	{
