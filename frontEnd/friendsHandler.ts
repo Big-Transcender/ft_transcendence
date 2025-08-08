@@ -21,10 +21,10 @@ function startPresenceSocket() {
         
         if (data.type === 'user_online') {
             onlineUsers.add(data.nickname);
-            updateFriendsDisplay();
+            updateFriends()
         } else if (data.type === 'user_offline') {
             onlineUsers.delete(data.nickname);
-            updateFriendsDisplay();
+            updateFriends()
         }
     };
     
@@ -35,6 +35,21 @@ function startPresenceSocket() {
         }, 3000);
     };
 }
+
+function stopPresenceSocket() {
+    if (presenceSocket) {
+        console.log('🔌 Stopping presence socket...');
+        presenceSocket.close();
+        presenceSocket = null;
+    }
+    
+    // Clear online users when disconnecting
+    onlineUsers.clear();
+    
+    // Update friends display to show all as offline
+
+}
+
 
 // Add friend
 async function addFriend(nickname: string) {
@@ -49,7 +64,7 @@ async function addFriend(nickname: string) {
         const data = await response.json();
         if (response.ok) {
             console.log(`✅ Added ${nickname} as friend`);
-            updateFriendsDisplay();
+
         } else {
             alert(data.error);
         }
@@ -70,43 +85,14 @@ async function removeFriend(nickname: string) {
         
         if (response.ok) {
             console.log(`❌ Removed ${nickname} from friends`);
-            updateFriendsDisplay();
+
         }
     } catch (error) {
         console.error('Error removing friend:', error);
     }
 }
 
-// Update friends display
-async function updateFriendsDisplay() {
-    try {
-        const response = await fetch(`${backendUrl}/friends`, {
-            credentials: 'include'
-        });
-        
-        const data = await response.json();
-        const friendsContainer = document.getElementById('friendsListContainer');
-        
-        if (!friendsContainer) return;
-        
-        friendsContainer.innerHTML = '';
-        
-        data.friends.forEach(friend => {
-            const div = document.createElement('div');
-            div.className = `friend-item ${friend.isOnline ? 'online' : 'offline'}`;
-            div.innerHTML = `
-                <span>${friend.nickname}</span>
-                <span class="${friend.isOnline ? 'online' : 'offline'}">
-                    ${friend.isOnline ? '🟢' : '🔴'}
-                </span>
-                <button onclick="removeFriend('${friend.nickname}')">Remove</button>
-            `;
-            friendsContainer.appendChild(div);
-        });
-    } catch (error) {
-        console.error('Error updating friends:', error);
-    }
-}
+
 
 // Setup add friend input
 function setupAddFriend() {
@@ -137,6 +123,5 @@ function setupAddFriend() {
 // Initialize if logged in
 if (checkIfLogged()) {
     startPresenceSocket();
-    updateFriendsDisplay();
     setupAddFriend();
 }

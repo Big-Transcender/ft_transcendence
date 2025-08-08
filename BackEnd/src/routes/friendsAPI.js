@@ -1,5 +1,5 @@
 const { getFriends, addFriend, removeFriend } = require('../friendsStorage');
-const { getOnlineUsers } = require('../setupPresenceWebSocket');
+const { getOnlineUsers } = require('../wsManager');
 
 module.exports = async function (fastify) {
     
@@ -51,5 +51,22 @@ module.exports = async function (fastify) {
         } else {
             return reply.code(404).send({ error: "Friend not found" });
         }
+    });
+
+    fastify.post('/test/setup-friends', async (request, reply) => {
+        const { addFriend } = require('../friendsStorage');
+        
+        // Add 4 friends for diogosan
+        const testFriends = ['bousa', 'bde', 'cacarval', 'rumachad'];
+        
+        testFriends.forEach(friendNick => {
+            addFriend('diogosan', friendNick);
+            addFriend(friendNick, 'diogosan'); // Make it bidirectional
+        });
+        
+        return reply.send({ 
+            message: `Added ${testFriends.length} friends for diogosan`,
+            friends: testFriends 
+        });
     });
 };

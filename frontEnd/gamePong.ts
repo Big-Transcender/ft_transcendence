@@ -22,7 +22,7 @@ function startPongWebSocket(matchId: string, isLocal: boolean = false, aiGame: b
 	const keysPressed = new Set<string>();
 
 	// --- WebSocket Setup
-	socket = new WebSocket(`ws://${window.location.hostname}:3000`);
+	socket = new WebSocket(`ws://${window.location.hostname}:3000/game`);
 	const nickname = getNickOnLocalStorage();
 	socket.addEventListener("open", () => {
 		console.log("✅ Connected to WebSocket server");

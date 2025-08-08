@@ -5,13 +5,14 @@ const fs = require("fs");
 const fastifyPassport = require("@fastify/passport");
 const fastifySecureSession = require("@fastify/secure-session");
 const fastifyStatic = require("@fastify/static");
-const setupWebSocket = require("./socketConnection");
+
 const GoogleStrategy = require("passport-google-oauth2").Strategy;
 const dotenv = require("dotenv");
 const jwt = require('jsonwebtoken')
 
 const db = require("./database");
-const { setupPresenceWebSocket } = require("./setupPresenceWebSocket");
+
+const { setupUnifiedWebSocket } = require("./wsManager");
 
 dotenv.config();
 
@@ -143,10 +144,6 @@ async function start() {
 			methods: ['GET', 'POST', 'PUT', 'PATCH', 'UPDATE', 'DELETE', 'OPTIONS'],
 		});
 
-		// Setup WebSocket connection
-		setupWebSocket(fastify.server);
-
-		//setupPresenceWebSocket(fastify.server);
 
 		// Dynamically register all route files
 		await registerRoutes();
@@ -159,6 +156,10 @@ async function start() {
 
 		await fastify.listen({ port: 3000, host: "0.0.0.0" });
 		console.log("✅ Server started at http://localhost:3000");
+
+		// Setup Server WebSocket connection
+		setupUnifiedWebSocket(fastify.server);
+
 	} catch (error) {
 		console.error("❌ Failed to start:", error);
 		process.exit(1);

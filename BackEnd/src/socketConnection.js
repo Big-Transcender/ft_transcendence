@@ -4,7 +4,10 @@ const { createInitialGameState, updateBall, updateBall4Players, handleInput } = 
 const { insertMatch, getUserIdByNickname } = require('./dataQuerys.js');
 
 function setupWebSocket(server) {
-	const wss = new WebSocket.Server({ server });
+		const wss = new WebSocket.Server({ 
+			server,
+			path: '/game'  // Add this path
+		});
 
 	wss.on('connection', (ws) => {
 		let matchId = null;

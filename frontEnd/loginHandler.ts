@@ -338,10 +338,14 @@ function checkIfLogged() {
 }
 
 function setToLogged() {
+	setTimeout(() => {
+		startPresenceSocket();
+	}, 500);
 	localStorage.setItem("isLogged", "true");
 }
 
 function setToUnLogged() {
+	stopPresenceSocket();
 	localStorage.setItem("isLogged", "false");
 	localStorage.removeItem(getNickOnLocalStorage());
 }
