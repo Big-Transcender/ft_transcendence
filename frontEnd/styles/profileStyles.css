@@ -118,6 +118,7 @@
 }
 
 .loginBoxBG {
+	/* opacity: 0; */
 	position: absolute;
 	height: 100%;
 	width: 100%;
@@ -312,6 +313,18 @@
 .twoFactor {
 	bottom: 5%;
 	left: 75%;
+	translate: -50%;
+}
+
+.matchesButton {
+	bottom: 20%;
+	left: 23%;
+	translate: -50%;
+}
+
+.friendsButton {
+	bottom: 20%;
+	left: 77%;
 	translate: -50%;
 }
 

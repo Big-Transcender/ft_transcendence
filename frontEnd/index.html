@@ -1,4 +1,4 @@
-<!DOCTYP`` E html>
+<!DOCTYPE html>
 <html lang="pt">
 	<head>
 		<meta charset="UTF-8" />
@@ -513,6 +513,89 @@
 					<!-- PROFILE PAGE -->
 					<div id="profile" class="profile page">
 						<div class="loginBox">
+							<!-- MATCHES  -->
+							<div class="matchesProfile">
+								<div class="homePlayersRankBG"></div>
+								<p class="playersRankTitle">Match History</p>
+								<div class="playersRankList">
+									<div class="playersRankListBG"></div>
+									<!-- MATCH LIST -->
+									<table id="matchListId" class="playerRankTable">
+										<tr>
+											<th>Match</th>
+											<th>Mode</th>
+											<th>Result</th>
+										</tr>
+										<tr>
+											<td>-----</td>
+											<td>-----</td>
+											<td>-----</td>
+										</tr>
+										<tr>
+											<td>-----</td>
+											<td>-----</td>
+											<td>-----</td>
+										</tr>
+										<tr>
+											<td>-----</td>
+											<td>-----</td>
+											<td>-----</td>
+										</tr>
+										<tr>
+											<td>-----</td>
+											<td>-----</td>
+											<td>-----</td>
+										</tr>
+										<tr>
+											<td>-----</td>
+											<td>-----</td>
+											<td>-----</td>
+										</tr>
+									</table>
+								</div>
+							</div>
+
+							<!-- FRIENDS  -->
+							<div class="friendsProfile">
+								<div class="friendsProfileBG"></div>
+								<p class="playersRankTitle">Friends List</p>
+								<div class="playersRankList">
+									<div class="playersRankListBG"></div>
+									<!-- FRIEND LIST -->
+									<table id="friendListId" class="playerRankTable">
+										<tr>
+											<th class="friendTh">Name</th>
+											<th class="friendTh">Status</th>
+											<!-- <th>Result</th> -->
+										</tr>
+										<tr>
+											<td>-----</td>
+											<td>-----</td>
+											<!-- <td>-----</td> -->
+										</tr>
+										<tr>
+											<td>-----</td>
+											<td>-----</td>
+											<!-- <td>-----</td> -->
+										</tr>
+										<tr>
+											<td>-----</td>
+											<td>-----</td>
+											<!-- <td>-----</td> -->
+										</tr>
+										<tr>
+											<td>-----</td>
+											<td>-----</td>
+											<!-- <td>-----</td> -->
+										</tr>
+										<tr>
+											<td>-----</td>
+											<td>-----</td>
+											<!-- <td>-----</td> -->
+										</tr>
+									</table>
+								</div>
+							</div>
 							<!-- LOGIN PAGE -->
 							<div class="loginPage profileId active" id="loginId">
 								<img src="images/avatar4.png" alt="" class="avatar4" />
@@ -600,6 +683,7 @@
 									</div>
 								</button>
 							</div>
+
 							<!-- USER PROFILE PAGE -->
 							<div class="profilePage profileId" id="profileId">
 								<div class="loginBoxBG">
@@ -610,6 +694,7 @@
 									<div class="profileHeaderDecoration"></div>
 									<p class="profileHeaderText">Welcome, zeeeeeee</p>
 								</div>
+
 								<div class="profileMainBody">
 									<div class="profileMainBodyBG"></div>
 									<div class="winsBox">
@@ -642,7 +727,20 @@
 										</div>
 									</div>
 								</div>
-
+								<button class="defaultButton matchesButton" id="matchesButtonID">
+									<p class="defaultButtonText">Matches</p>
+									<div class="defaultButtonBG">
+										<div class="defaultButtonBGWave"></div>
+										<div class="defaultButtonBGWave wave2"></div>
+									</div>
+								</button>
+								<button class="defaultButton friendsButton" id="friendsButtonID">
+									<p class="defaultButtonText">Friends!</p>
+									<div class="defaultButtonBG">
+										<div class="defaultButtonBGWave"></div>
+										<div class="defaultButtonBGWave wave2"></div>
+									</div>
+								</button>
 								<button class="defaultButton logoutButton" id="logoutButton">
 									<p class="defaultButtonText">Logout</p>
 									<div class="defaultButtonBG">
@@ -650,7 +748,6 @@
 										<div class="defaultButtonBGWave wave2"></div>
 									</div>
 								</button>
-
 								<button class="defaultButton showTwoAF" id="twoFactorButtonID">
 									<p class="defaultButtonText">2AF</p>
 									<div class="defaultButtonBG">
