@@ -18,6 +18,7 @@ function navigate(page) {
 	}
 	pageElement.classList.add("active");
 	history.pushState(null, "", `#${page}`);
+
 }
 
 window.addEventListener("popstate", () => {

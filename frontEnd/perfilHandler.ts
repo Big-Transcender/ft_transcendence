@@ -178,88 +178,71 @@ async function friendsAnimationHandler() {
 
 
 async function updateFriends() {
-    try {
-        const response = await fetch(`${backendUrl}/friends`, {
-            credentials: 'include' // Important for session authentication
-        });
-        
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        
-        const data = await response.json();
-        console.log("Friends data:", data);
-        
-        // Get the friends table (not the leaderboard table)
-        const table = document.getElementById("friendListId") as HTMLTableElement;
-        
-        if (!table) {
-            console.error("Friends table not found!");
-            return;
-        }
-        
-        // Clear existing rows (except header)
-        while (table.rows.length > 1) {
-            table.deleteRow(1);
-        }
-        
-        // Check if we have friends data
-        if (data.friends && data.friends.length > 0) {
-            // Insert new rows for each friend
-            data.friends.forEach((friend) => {
-                const row = table.insertRow();
-                
-                // Friend name
-                const nameCell = row.insertCell();
-                nameCell.textContent = friend.nickname;
-                
-                // Online status
-                const statusCell = row.insertCell();
-                if (friend.isOnline) {
-                    statusCell.innerHTML = '<span style="color: #4CAF50;">🟢 Online</span>';
-                    statusCell.className = 'online-status';
-                } else {
-                    statusCell.innerHTML = '<span style="color: #757575;">🔴 Offline</span>';
-                    statusCell.className = 'offline-status';
-                }
-                
-            });
-        } else {
-            // Show "no friends" message
-            const row = table.insertRow();
-            const cell1 = row.insertCell();
-            const cell2 = row.insertCell();
-            cell1.textContent = "No friends yet";
-            cell2.textContent = " yet";
-            cell1.style.fontStyle = "italic";
-            cell1.style.color = "#666";
-        }
-        
-        // Fill remaining rows with placeholders (if you want exactly 5 rows)
-        const currentRows = table.rows.length - 1; // Subtract header row
-        const maxRows = 5;
-        
-        for (let i = currentRows; i < maxRows; i++) {
-            const row = table.insertRow();
-            row.insertCell().textContent = "-----";
-            row.insertCell().textContent = "-----";
-        }
-        
-    } catch (error) {
-        console.error("Failed to load friends:", error);
-        
-        // Show error in table
-        const table = document.getElementById("friendListId") as HTMLTableElement;
-        if (table) {
-            while (table.rows.length > 1) {
-                table.deleteRow(1);
-            }
-            const row = table.insertRow();
-            const cell1 = row.insertCell();
-            const cell2 = row.insertCell();
-            cell1.textContent = "Error loading friends";
-            cell2.textContent = "-----";
-            cell1.style.color = "#ff0000";
-        }
-    }
+	try {
+		const response = await fetch(`${backendUrl}/friends`, {
+			credentials: 'include'
+		});
+		
+		if (!response.ok) {
+			throw new Error(`HTTP error! status: ${response.status}`);
+		}
+		
+		const data = await response.json();
+
+		
+		// Get the friends table (not the leaderboard table)
+		const table = document.getElementById("friendListId") as HTMLTableElement;
+		
+		if (!table) {
+			console.error("Friends table not found!");
+			return;
+		}
+		
+		// Clear existing rows (except header)
+		while (table.rows.length > 1) {
+			table.deleteRow(1);
+		}
+		
+		// Insert new rows for each friend
+		data.friends.forEach((friend) => {
+			const row = table.insertRow();
+			
+			const nameCell = row.insertCell();
+			nameCell.textContent = friend.nickname;
+			
+			const statusCell = row.insertCell();
+			if (friend.isOnline) {
+				statusCell.innerHTML = '<span style="color: #063508ff;">🟢 Online</span>';
+				statusCell.className = 'online-status';
+			} else {
+				statusCell.innerHTML = '<span style="color: #757575;">🔴 Offline</span>';
+				statusCell.className = 'offline-status';
+			}
+		});
+		
+		// Fill remaining rows with placeholders
+		const currentRows = table.rows.length - 1;
+		const maxRows = 5;
+		
+		for (let i = currentRows; i < maxRows; i++) {
+			const row = table.insertRow();
+			row.insertCell().textContent = "-----";
+			row.insertCell().textContent = "-----";
+		}
+		
+	} catch (error) {
+		// Show error in table
+		const table = document.getElementById("friendListId") as HTMLTableElement;
+		if (table) {
+			while (table.rows.length > 1) {
+				table.deleteRow(1);
+			}
+			const row = table.insertRow();
+			const cell1 = row.insertCell();
+			const cell2 = row.insertCell();
+			cell1.textContent = "Error loading friends";
+			cell2.textContent = `${error}`;
+			cell1.style.color = "#ff0000";
+		}
+	}
 }
