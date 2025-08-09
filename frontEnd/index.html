@@ -644,9 +644,9 @@
 									<div class="homePlayersRankBG"></div>
 									<p class="playersRankTitle">Match History</p>
 									<div class="playersRankList">
-										<div class="playersRankListBG"></div>
+										<div class="playersRankListBG matchListBG"></div>
 										<!-- MATCH LIST -->
-										<table id="matchListId" class="playerRankTable">
+										<table id="matchListId" class="playerRankTable matchList">
 											<tr>
 												<th>Match</th>
 												<th>Mode</th>
@@ -678,6 +678,11 @@
 												<td>-----</td>
 											</tr>
 										</table>
+										<!-- REFRESH MATCH BUTTOM -->
+										<div class="gameSelectorButton refreshMatchButton" id="refreshMatchId">
+											<div class="gameSelectorButtonBG"></div>
+											<p class="gameSelectorText refreshMatchButtomText">Refresh!</p>
+										</div>
 									</div>
 								</div>
 								<!-- FRIENDS  -->
@@ -685,9 +690,9 @@
 									<div class="friendsProfileBG"></div>
 									<p class="playersRankTitle">Friends List</p>
 									<div class="playersRankList">
-										<div class="playersRankListBG"></div>
+										<div class="playersRankListBG friendsListBG"></div>
 										<!-- FRIEND LIST -->
-										<table id="friendListId" class="playerRankTable">
+										<table id="friendListId" class="playerRankTable friendList">
 											<tr>
 												<th class="friendTh">Name</th>
 												<th class="friendTh">Status</th>
@@ -720,6 +725,18 @@
 											</tr>
 										</table>
 									</div>
+									<!-- ADD FRIEND -->
+									<div>
+										<!-- ADD FRIEND BUTTOM -->
+										<div class="gameSelectorButton addFriendButton" id="addFriendId">
+											<div class="gameSelectorButtonBG"></div>
+											<p class="gameSelectorText addFriendButtomText">Add!</p>
+										</div>
+									</div>
+									<!-- <div class="inputBox"> -->
+									<!-- <label for="inputNick">Enter your nickname</label> -->
+									<input type="text" id="inputFriend" class="inputText smallInput friendInput" placeholder="FRIEND NICK" autocomplete="off" />
+									<!-- </div> -->
 								</div>
 
 								<div class="loginBoxBG">

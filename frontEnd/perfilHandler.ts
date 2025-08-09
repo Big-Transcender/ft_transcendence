@@ -103,6 +103,8 @@ document.addEventListener("DOMContentLoaded", async () => {
 	const switchNick = document.querySelector(".pupupSwitchButton");
 	const matchesButton = document.getElementById("matchesButtonID");
 	const friendsButton = document.getElementById("friendsButtonID");
+	const addFriendsButton = document.getElementById("addFriendId");
+	const refreshMatchesButton = document.getElementById("refreshMatchId");
 
 	// SWITCH NICK FUNCTION
 	switchNick.addEventListener("click", () => {
@@ -120,7 +122,26 @@ document.addEventListener("DOMContentLoaded", async () => {
 		await updateFriends();
 		friendsAnimationHandler();
 	});
+
+	//ADD FRIEND BUTTOM
+	addFriendsButton.addEventListener("click", async () => {
+		const addFriendInput = (document.getElementById("inputFriend") as HTMLInputElement).value.trim();
+		if (!addFriendInput) {
+			displayWarning("No nick!");
+			return;
+		}
+		addfriendHandler(addFriendInput);
+	});
+
+	// REFRESH MATCHES LIST BUTTOM
+	refreshMatchesButton.addEventListener("click", async () => {
+		displayWarning("THIS REFRESH THE LIST");
+	});
 });
+
+function addfriendHandler(friendNick: string) {
+	//#TODO Make the logic of addfriend here!
+}
 
 async function matchesAnimationHandler() {
 	if (!matchOpen && !isPlayingSoundMatch) {
