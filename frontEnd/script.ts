@@ -14,11 +14,12 @@ function navigate(page) {
 	if (page === "profile") {
 		if (!checkIfLogged()) {
 			typeText(bubbleTextLogin, "Welcome back!", 60);
+		} else {
+			getUserStats(getNickOnLocalStorage());
 		}
 	}
 	pageElement.classList.add("active");
 	history.pushState(null, "", `#${page}`);
-
 }
 
 window.addEventListener("popstate", () => {

@@ -104,20 +104,20 @@ document.addEventListener("DOMContentLoaded", async () => {
         matchesAnimationHandler();
     });
     // OPEN FRIEND LIST
-    friendsButton.addEventListener("click", () => {
-        updateFriends();
+    friendsButton.addEventListener("click", async () => {
+        await updateFriends();
         friendsAnimationHandler();
     });
 });
 async function matchesAnimationHandler() {
     if (!matchOpen && !isPlayingSoundMatch) {
-        updateLeaderboard();
+        // updateLeaderboard();
         isPlayingSoundMatch = true;
         openSound.play();
         matchesProfile.classList.remove("closeMatchAnimation");
         matchesProfile.classList.add("openMatchAnimation");
         await betterWait(1500);
-        matchesProfile.style.left = "-22%";
+        matchesProfile.style.left = "-25%";
         matchesProfile.style.opacity = "1";
         matchesProfile.classList.remove("openMatchAnimation");
         await betterWait(100);
@@ -146,7 +146,7 @@ async function friendsAnimationHandler() {
         friendsProfile.classList.add("openFriendsAnimation");
         await betterWait(1000);
         friendsProfile.classList.remove("openFriendsAnimation");
-        friendsProfile.style.left = "122%";
+        friendsProfile.style.left = "125%";
         friendsOpen = true;
         isPlayingSoundFriends = false;
     }
@@ -165,7 +165,7 @@ async function friendsAnimationHandler() {
 async function updateFriends() {
     try {
         const response = await fetch(`${backendUrl}/friends`, {
-            credentials: 'include'
+            credentials: "include",
         });
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
@@ -189,11 +189,11 @@ async function updateFriends() {
             const statusCell = row.insertCell();
             if (friend.isOnline) {
                 statusCell.innerHTML = '<span style="color: #063508ff;">🟢 Online</span>';
-                statusCell.className = 'online-status';
+                statusCell.className = "online-status";
             }
             else {
                 statusCell.innerHTML = '<span style="color: #757575;">🔴 Offline</span>';
-                statusCell.className = 'offline-status';
+                statusCell.className = "offline-status";
             }
         });
         // Fill remaining rows with placeholders

@@ -112,26 +112,25 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 	// OPEN MATCH HISTORY
 	matchesButton.addEventListener("click", () => {
-
 		matchesAnimationHandler();
 	});
 
 	// OPEN FRIEND LIST
-	friendsButton.addEventListener("click", () => {
-		updateFriends()
+	friendsButton.addEventListener("click", async () => {
+		await updateFriends();
 		friendsAnimationHandler();
 	});
 });
 
 async function matchesAnimationHandler() {
 	if (!matchOpen && !isPlayingSoundMatch) {
-		updateLeaderboard();
+		// updateLeaderboard();
 		isPlayingSoundMatch = true;
 		openSound.play();
 		matchesProfile.classList.remove("closeMatchAnimation");
 		matchesProfile.classList.add("openMatchAnimation");
 		await betterWait(1500);
-		matchesProfile.style.left = "-22%";
+		matchesProfile.style.left = "-25%";
 		matchesProfile.style.opacity = "1";
 		matchesProfile.classList.remove("openMatchAnimation");
 		await betterWait(100);
@@ -160,7 +159,7 @@ async function friendsAnimationHandler() {
 		friendsProfile.classList.add("openFriendsAnimation");
 		await betterWait(1000);
 		friendsProfile.classList.remove("openFriendsAnimation");
-		friendsProfile.style.left = "122%";
+		friendsProfile.style.left = "125%";
 		friendsOpen = true;
 		isPlayingSoundFriends = false;
 	} else if (friendsOpen && !isPlayingSoundFriends) {
@@ -176,60 +175,57 @@ async function friendsAnimationHandler() {
 	}
 }
 
-
 async function updateFriends() {
 	try {
 		const response = await fetch(`${backendUrl}/friends`, {
-			credentials: 'include'
+			credentials: "include",
 		});
-		
+
 		if (!response.ok) {
 			throw new Error(`HTTP error! status: ${response.status}`);
 		}
-		
+
 		const data = await response.json();
 
-		
 		// Get the friends table (not the leaderboard table)
 		const table = document.getElementById("friendListId") as HTMLTableElement;
-		
+
 		if (!table) {
 			console.error("Friends table not found!");
 			return;
 		}
-		
+
 		// Clear existing rows (except header)
 		while (table.rows.length > 1) {
 			table.deleteRow(1);
 		}
-		
+
 		// Insert new rows for each friend
 		data.friends.forEach((friend) => {
 			const row = table.insertRow();
-			
+
 			const nameCell = row.insertCell();
 			nameCell.textContent = friend.nickname;
-			
+
 			const statusCell = row.insertCell();
 			if (friend.isOnline) {
 				statusCell.innerHTML = '<span style="color: #063508ff;">🟢 Online</span>';
-				statusCell.className = 'online-status';
+				statusCell.className = "online-status";
 			} else {
 				statusCell.innerHTML = '<span style="color: #757575;">🔴 Offline</span>';
-				statusCell.className = 'offline-status';
+				statusCell.className = "offline-status";
 			}
 		});
-		
+
 		// Fill remaining rows with placeholders
 		const currentRows = table.rows.length - 1;
 		const maxRows = 5;
-		
+
 		for (let i = currentRows; i < maxRows; i++) {
 			const row = table.insertRow();
 			row.insertCell().textContent = "-----";
 			row.insertCell().textContent = "-----";
 		}
-		
 	} catch (error) {
 		// Show error in table
 		const table = document.getElementById("friendListId") as HTMLTableElement;

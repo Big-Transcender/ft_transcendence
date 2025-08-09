@@ -216,7 +216,7 @@
 	position: absolute;
 	width: 350px;
 	height: 450px;
-	left: 122%;
+	left: 70%;
 	top: 10%;
 	translate: -50%;
 	/* background-color: red; */
@@ -259,14 +259,14 @@
 	}
 	100% {
 		opacity: 1;
-		left: -22%;
+		left: -25%;
 	}
 }
 
 @keyframes closeMatchAnimation {
 	0% {
 		opacity: 1;
-		left: -22%;
+		left: -25%;
 	}
 	99% {
 		opacity: 1;
@@ -299,13 +299,13 @@
 	100% {
 		/* transform: scale(0.8) rotate(-5deg); */
 
-		left: 122%;
+		left: 125%;
 	}
 }
 
 @keyframes closeFriendsAnimation {
 	0% {
-		left: 122%;
+		left: 125%;
 		/* transform: scale(0.8) rotate(-5deg); */
 	}
 	50% {
