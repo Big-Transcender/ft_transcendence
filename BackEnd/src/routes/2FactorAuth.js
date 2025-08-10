@@ -3,23 +3,23 @@ const qrcode = require("qrcode");
 const db = require('../database');
 const { saveSecret, getSecret, setUser2FAStatus } = require("../dataQuerys");
 
-//route for setting up 2FA
 module.exports = async function (fastify) {
 	fastify.post('/2fa/setup', { preHandler: [fastify.authenticate]}, async (request, reply) => {
-		const user = request.session.get('user');
-		console.log("hello");
-		if (!user)
-			return reply.code(401).send({ error: 'Not authenticated' });
+		const userId = request.userId;
+
+		const alreadyEnable = await db.prepare('SELECT two_factor_enable FROM user WHERE id = ?').get(userId);
+		if( alreadyEnable && alreadyEnable.two_factor_enable === 1)
+			return reply.code(400).send({ error: '2FA is already enabled'});
 
 		const secret = speakeasy.generateSecret({
-			name: `Transcendence(${user.nickname})`
+			name: `Transcendence(User ${userId})`
 		});
 
 		await db.prepare('UPDATE users SET two_factor_secret = ? WHERE id = ?')
-			.run(secret.base32, user.id);
+			.run(secret.base32, userId);
 
 		const qrCode = await qrcode.toDataURL(secret.otpauth_url);
-		return reply.send({ qr: qrCode, secret: secret.base32 });
+		return reply.send({ qr: qrCode);
 	});
 
 //route for verifying 2FA token

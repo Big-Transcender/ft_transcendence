@@ -5,7 +5,6 @@ const fs = require("fs");
 const fastifyPassport = require("@fastify/passport");
 const fastifySecureSession = require("@fastify/secure-session");
 const fastifyStatic = require("@fastify/static");
-
 const GoogleStrategy = require("passport-google-oauth2").Strategy;
 const dotenv = require("dotenv");
 const jwt = require('jsonwebtoken')
@@ -21,7 +20,7 @@ fastify.register(fastifySecureSession, {
 	cookie: {
 		path: "/", // Make sure path is set
 		httpOnly: true,
-		secure: false, // true if using HTTPS; false if local dev with HTTP
+		secure: false, // TODO change to true when we start using https
 		sameSite: "lax", // or 'strict' depending on your setup
 	},
 });
@@ -89,7 +88,7 @@ fastify.get(
 );
 
 fastify.decorate("authenticate", async function (request, reply) {
-	/*try {
+	try {
 		const authHeader = request.headers.authorization;
 		if (!authHeader) {
 			return reply.code(401).send({ error: "Access denied" });
@@ -100,7 +99,7 @@ fastify.decorate("authenticate", async function (request, reply) {
 		request.userId = decoded.userId;
 	} catch (err) {
 		reply.code(401).send({ error: "Invalid token" });
-	}*/
+	}
 });
 
 
