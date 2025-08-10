@@ -49,23 +49,21 @@ async function flipboardNumberAnimation(target, targetBox) {
         spans[i].textContent = target[i];
     }
 }
-function getUserPosition() {
+async function getUserPosition() {
     const userNick = localStorage.getItem("nickname");
-    fetch(`${backendUrl}/leaderboard/position/${userNick}`)
-        .then((response) => {
+    try {
+        const response = await fetch(`${backendUrl}/leaderboard/position/${userNick}`);
         if (!response.ok) {
-            return response.json().then((err) => {
-                throw new Error(err.error || "Unknown error");
-            });
+            const err = await response.json();
+            throw new Error(err.error || "Unknown error");
         }
-        return response.json();
-    })
-        .then((data) => {
-        positionNumber.textContent = data.position + "º";
-    })
-        .catch((error) => {
+        const data = await response.json();
+        return data.position.toString();
+    }
+    catch (error) {
         console.error("Failed to fetch leaderboard position:", error.message);
-    });
+        return "";
+    }
 }
 async function getUserStats(nickname) {
     if (checkIfLogged()) {
@@ -78,12 +76,13 @@ async function getUserStats(nickname) {
             }
             return response.json();
         })
-            .then((stats) => {
+            .then(async (stats) => {
+            const positionStr = await getUserPosition();
             flipboardNumberAnimation(stats.wins.toString(), winsNumber);
             flipboardNumberAnimation(stats.defeats.toString(), losesNumber);
             flipboardNumberAnimation(stats.games_played.toString(), gamesNumber);
+            flipboardNumberAnimation(positionStr, positionNumber);
             winRateText.textContent = "Current Winrate: " + stats.win_percentage;
-            getUserPosition();
         })
             .catch((error) => {
             console.error("Failed to fetch player stats:", error.message);
