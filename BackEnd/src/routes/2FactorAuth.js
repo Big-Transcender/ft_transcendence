@@ -52,4 +52,12 @@ module.exports = async function (fastify) {
 		const enabled = row && row.two_factor_enable === 1;
 		return reply.send({ enabled });
 	});
+
+	fastify.post('/2fa/disable', { preHandler: [fastify.authenticate]}, async (request, reply) =>{
+		const user = request.session.get('user');
+		if(!user)
+			return reply.code(401).send({ error: 'Not authenticated' });
+		await db.prepare('UPDATE users SET two_factor_enable = 0, two_factor_secret = NULL where id = ?').run(user.id);
+		return reply.send({ success: true });
+	});
 };
