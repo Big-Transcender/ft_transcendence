@@ -201,13 +201,13 @@ document.addEventListener("DOMContentLoaded", async () => {
 		window.location.href = `${backendUrl}/logingoogle`;
 	});
 
-	switchNickButton.addEventListener("click", async () => {
-		// let person = prompt("new nickname");
-		// console.log("Fodese: " + person);
-		abrirPopup();
-		// changePageTo(loginPage, twoFactorPage);
-		// window.location.href = `${backendUrl}/logingoogle`;
-	});
+	// switchNickButton.addEventListener("click", async () => {
+	// 	// let person = prompt("new nickname");
+	// 	// console.log("Fodese: " + person);
+	// 	abrirPopup();
+	// 	// changePageTo(loginPage, twoFactorPage);
+	// 	// window.location.href = `${backendUrl}/logingoogle`;
+	// });
 
 	//Logout Button
 	logoutButton.addEventListener("click", async () => {
@@ -381,12 +381,4 @@ async function checkGoogleLogin() {
 	} catch (err) {
 		console.error("Error checking Google login:", err);
 	}
-}
-
-function abrirPopup() {
-	document.getElementById("popupContainer").style.display = "flex";
-}
-
-function fecharPopup() {
-	document.getElementById("popupContainer").style.display = "none";
 }

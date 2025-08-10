@@ -657,3 +657,77 @@
 	background-size: 300px;
 	background-repeat: no-repeat;
 }
+
+.profilePopup {
+	position: absolute;
+	width: 700px;
+	height: 700px;
+	top: 50%;
+	translate: -50% -50%;
+}
+
+.popupProfileBG {
+	background-size: contain;
+}
+
+.profileTextPopup {
+	transform: scale(1.4);
+	font-size: 23px;
+	/* align-content: center; */
+}
+
+.popupPhotoButton {
+	position: absolute;
+	left: 30% !important;
+	top: 35% !important;
+	translate: -50% -50% !important;
+	width: 130px !important;
+	height: 130px !important;
+	border-radius: 0px;
+}
+
+.popupNickButton {
+	left: 70% !important;
+	top: 35% !important;
+	translate: -50% -50% !important;
+	width: 130px !important;
+	height: 130px !important;
+	border-radius: 0px;
+}
+
+.popupEmailButton {
+	left: 30% !important;
+	top: 60% !important;
+	translate: -50% -50% !important;
+	width: 130px !important;
+	height: 130px !important;
+	border-radius: 0px;
+}
+
+.popupPasswordButton {
+	left: 70% !important;
+	top: 60% !important;
+	translate: -50% -50% !important;
+	width: 130px !important;
+	height: 130px !important;
+	border-radius: 0px;
+}
+
+.popupPhotoButton .gameSelectorButtonBG,
+.popupNickButton .gameSelectorButtonBG,
+.popupPasswordButton .gameSelectorButtonBG,
+.popupEmailButton .gameSelectorButtonBG {
+	border-radius: 20px;
+}
+
+.displayPagePopup {
+	display: block !important;
+}
+
+.frontpagePopup {
+	display: none;
+}
+
+.nickpagePopup {
+	display: none;
+}

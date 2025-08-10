@@ -98,16 +98,26 @@ async function getUserStats(nickname: string) {
 }
 
 document.addEventListener("DOMContentLoaded", async () => {
-	const switchNick = document.querySelector(".pupupSwitchButton");
+	const profileOptions = document.getElementById("profileOptionsButtonID");
 	const matchesButton = document.getElementById("matchesButtonID");
 	const friendsButton = document.getElementById("friendsButtonID");
 	const addFriendsButton = document.getElementById("addFriendId");
 	const refreshMatchesButton = document.getElementById("refreshMatchId");
 
-	// SWITCH NICK FUNCTION
-	switchNick.addEventListener("click", () => {
-		const nickInput = (document.getElementById("popupNewNick") as HTMLInputElement).value.trim();
-		displayWarning(nickInput);
+	const photoPopupButtom = document.getElementById("popupPhotoButtonID");
+	const popupNickButton = document.getElementById("popupNickButtonID");
+	const popupEmailButton = document.getElementById("popupEmailButtonID");
+	const popupPasswordButton = document.getElementById("popupPasswordButtonID");
+
+	const frontpagePopup = document.querySelector(".frontpagePopup");
+	const nickpagePopup = document.querySelector(".nickpagePopup");
+	// const frontpagePopupPage = document.querySelector(".frontpagePopup");
+
+	// PROFILE OPTIONS
+	profileOptions.addEventListener("click", () => {
+		openPopup();
+		// const nickInput = (document.getElementById("popupNewNick") as HTMLInputElement).value.trim();
+		// displayWarning(nickInput);
 	});
 
 	// OPEN MATCH HISTORY
@@ -135,10 +145,47 @@ document.addEventListener("DOMContentLoaded", async () => {
 	refreshMatchesButton.addEventListener("click", async () => {
 		displayWarning("THIS REFRESH THE LIST");
 	});
+
+	// POPUP PHOTO BUTTOM
+	photoPopupButtom.addEventListener("click", async () => {
+		// changePopupTo()
+	});
+
+	// POPUP NICK BUTTOM
+	popupNickButton.addEventListener("click", async () => {
+		changePopupTo(frontpagePopup, nickpagePopup);
+	});
+
+	// POPUP EMAIL BUTTOM
+	popupEmailButton.addEventListener("click", async () => {
+		// changePopupTo()
+	});
+
+	// POPUP PASSWORK BUTTOM
+	popupPasswordButton.addEventListener("click", async () => {
+		// changePopupTo()
+	});
 });
+
+function changePopupTo(remove, activate) {
+	remove.classList.remove("displayPagePopup");
+	activate.classList.add("displayPagePopup");
+}
 
 function addfriendHandler(friendNick: string) {
 	//#TODO Make the logic of addfriend here!
+}
+
+function openPopup() {
+	document.getElementById("popupContainer").style.display = "flex";
+	document.querySelectorAll(".popupPage").forEach((el) => {
+		el.classList.remove("displayPagePopup");
+	});
+	document.querySelector(".frontpagePopup").classList.add("displayPagePopup");
+}
+
+function closePopup() {
+	document.getElementById("popupContainer").style.display = "none";
 }
 
 async function matchesAnimationHandler() {
