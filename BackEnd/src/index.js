@@ -1,4 +1,4 @@
-const fastify = require("fastify")({ logger: false});
+const fastify = require("fastify")({ logger: true});
 const cors = require("@fastify/cors");
 const path = require("path");
 const fs = require("fs");
@@ -8,6 +8,7 @@ const fastifyStatic = require("@fastify/static");
 const GoogleStrategy = require("passport-google-oauth2").Strategy;
 const dotenv = require("dotenv");
 const jwt = require('jsonwebtoken')
+const fastifyMultipart = require('@fastify/multipart')
 
 const db = require("./database");
 
@@ -27,6 +28,7 @@ fastify.register(fastifySecureSession, {
 
 fastify.register(fastifyPassport.initialize());
 fastify.register(fastifyPassport.secureSession());
+fastify.register(fastifyMultipart);
 
 fastifyPassport.use(
 	"google",
