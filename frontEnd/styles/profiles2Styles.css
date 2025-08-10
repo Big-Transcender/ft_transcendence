@@ -100,7 +100,7 @@
 	width: 100px;
 	height: 100px;
 	left: 68%;
-	top: 12%;
+	top: 10%;
 	translate: -50%;
 	overflow: hidden;
 	filter: drop-shadow(0px 5px 2px rgba(0, 0, 0, 0.562));
@@ -108,7 +108,7 @@
 
 .loses {
 	left: 88%;
-	top: 12%;
+	top: 15%;
 }
 
 .games {
@@ -118,7 +118,7 @@
 
 .position {
 	left: 88%;
-	top: 40%;
+	top: 45%;
 }
 
 .winsBoxBG {
@@ -138,7 +138,7 @@
 	align-content: center;
 	width: 100%;
 	height: 20%;
-	background-color: #f7afb2;
+	/* background-color: #f7afb2; */
 	background-image: url(/images/musicMenuBG.png);
 	background-size: 160px;
 	background-repeat: no-repeat;
@@ -156,11 +156,11 @@
 	align-content: center;
 	width: 100%;
 	height: 50%;
-
 	top: 55%;
 	translate: 0 -50%;
 	font-family: animalCrossingSystem;
-	font-size: 20px;
+	font-size: 25px;
+	filter: drop-shadow(0px 1px 1px rgba(177, 136, 24, 0.815));
 }
 
 .boxNail1 {
@@ -189,9 +189,9 @@
 
 .winRateBox {
 	position: absolute;
-	width: 400px;
+	width: 290px;
 	height: 60px;
-	bottom: 20%;
+	bottom: 0%;
 	left: 50%;
 	translate: -50% -50%;
 	overflow: hidden;
@@ -202,7 +202,6 @@
 	position: absolute;
 	width: 100%;
 	height: 100%;
-	background-color: rebeccapurple;
 	background-image: url(/images/musicMenuBG.png);
 	background-size: 400px;
 	background-repeat: repeat-x;
@@ -212,7 +211,7 @@
 .winRateText {
 	position: absolute;
 	align-content: center;
-	width: 70%;
+	width: 100%;
 	height: 100%;
 	left: 10px;
 	font-family: animalCrossing;

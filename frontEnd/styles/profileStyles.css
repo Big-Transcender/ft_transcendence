@@ -314,15 +314,47 @@
 }
 
 .matchesButton {
-	bottom: 20%;
-	left: 23%;
-	translate: -50%;
+	width: 30px;
+	height: 60px;
+	top: 50%;
+	left: 5%;
+	translate: -50% -50%;
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+	/* gap: 6px; */
+}
+
+.matchesButton .defaultButtonBGWave {
+	top: 120px;
+}
+
+.matchesButton:hover svg {
+	transition: 0.3s ease-in-out;
+	transform: scale(1.5);
 }
 
 .friendsButton {
-	bottom: 20%;
-	left: 77%;
-	translate: -50%;
+	width: 30px;
+	height: 60px;
+	top: 50%;
+	left: 95%;
+	translate: -50% -50%;
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.friendsButton .defaultButtonBGWave {
+	top: 120px;
+}
+
+.friendsButton:hover svg {
+	transition: 0.3s ease-in-out;
+	transform: scale(1.5);
 }
 
 .QrCode {
