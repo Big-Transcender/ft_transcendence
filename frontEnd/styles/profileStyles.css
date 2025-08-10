@@ -6,9 +6,6 @@
 	top: 150px;
 	height: 82%;
 	width: 95%;
-	/* background-color: rgb(131, 108, 155); */
-	/* width: 100v; */
-	/* background-color: rgb(185, 104, 104); */
 }
 
 .loginBox {
@@ -18,7 +15,17 @@
 	left: 50%;
 	top: 50%;
 	translate: -50% -50%;
-	/* background-color: rgb(87, 32, 32); */
+	/* background-color: red; */
+}
+
+.loginBoxBG {
+	/* opacity: 0; */
+	position: absolute;
+	height: 100%;
+	width: 100%;
+	background-color: #f8eebb;
+	border-radius: 18px;
+	overflow: hidden;
 }
 
 .newUserPage {
@@ -115,16 +122,6 @@
 	background-position: bottom;
 	width: 740px;
 	height: 50%;
-}
-
-.loginBoxBG {
-	/* opacity: 0; */
-	position: absolute;
-	height: 100%;
-	width: 100%;
-	background-color: #f8eebb;
-	border-radius: 18px;
-	overflow: hidden;
 }
 
 .profileId {
@@ -317,15 +314,47 @@
 }
 
 .matchesButton {
-	bottom: 20%;
-	left: 23%;
-	translate: -50%;
+	width: 30px;
+	height: 60px;
+	top: 50%;
+	left: 5%;
+	translate: -50% -50%;
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+	/* gap: 6px; */
+}
+
+.matchesButton .defaultButtonBGWave {
+	top: 120px;
+}
+
+.matchesButton:hover svg {
+	transition: 0.3s ease-in-out;
+	transform: scale(1.5);
 }
 
 .friendsButton {
-	bottom: 20%;
-	left: 77%;
-	translate: -50%;
+	width: 30px;
+	height: 60px;
+	top: 50%;
+	left: 95%;
+	translate: -50% -50%;
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.friendsButton .defaultButtonBGWave {
+	top: 120px;
+}
+
+.friendsButton:hover svg {
+	transition: 0.3s ease-in-out;
+	transform: scale(1.5);
 }
 
 .QrCode {
