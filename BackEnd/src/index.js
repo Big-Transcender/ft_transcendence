@@ -112,12 +112,12 @@ fastify.get("/logout", async (req, res) => {
 
 	return res.send({ success: true });
 });
-fastify.get("/me", async (req, res) => {
-	const sessionUser = req.session.get('user');
+fastify.get("/me", async (request, reply) => {
+	const sessionUser = request.session.get('user');
 	if (sessionUser) {
-		return { user: sessionUser.user };
+		return { user: sessionUser.nickname };
 	} else {
-		return res.status(401).send({ error: "Not logged in" });
+		return reply.status(401).send({ error: "Not logged in" });
 	}
 });
 

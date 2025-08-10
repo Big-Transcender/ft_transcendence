@@ -9,7 +9,7 @@ module.exports = async function (fastify) {
     fastify.post('/switch-nickname', async (request, reply) => {
         const newNickname = request.body;
         const userId = request.userId;
-        
+
         await db.prepare('UPDATE users SET nickname = ? WHERE id = ?').run(newNickname, userId);
         return reply.send({ success: true});
     })
