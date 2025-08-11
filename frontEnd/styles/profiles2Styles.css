@@ -66,12 +66,14 @@
 	position: absolute;
 	height: 90%;
 	width: 90%;
-	/* background-color: red; */
 	left: 50%;
 	top: 50%;
 	translate: -50% -50%;
 	background-image: url("/images/pongGame/player1.png");
-	background-size: contain;
+	background-size: cover;
+	background-repeat: no-repeat;
+	background-position: center;
+	border-radius: 30px;
 }
 
 .profileMainBody {
