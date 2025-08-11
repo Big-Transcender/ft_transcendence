@@ -14,7 +14,7 @@ var SPEED = 0.7;
 const ballSizeX = (33 / 900) * 100;
 const ballSizeY = (33 / 500) * 100;
 
-const BALLS = 19;
+const BALLS = 9;
 
 function createInitialGameState() {
 
@@ -40,15 +40,16 @@ function createInitialGameState() {
 function resetBall(gameState) {
 	gameState.ball.x = 50;
 	gameState.ball.y = 50;
-	gameState.paddles.p1 = 45;
-	gameState.paddles.p2 = 45;
-	gameState.paddles.p3 = 45;
-	gameState.paddles.p4 = 45;
 
 	const direction = Math.random() < 0.5 ? 1 : -1;
 	gameState.speed = SPEED;
-	gameState.ballVel.x = direction * gameState.speed;
+
+	gameState.ballVel.x = 0;
 	gameState.ballVel.y = 0;
+
+	setTimeout(() => {
+		gameState.ballVel.x = direction * gameState.speed;
+	}, 750);
 }
 
 function handleInput(gameState, playerId, keys, isAI = false) {
@@ -130,12 +131,11 @@ function updateBall(gameState) {
 		return;
 	}
 
-	if ((gameState.score.p2 === 10 || gameState.score.p1 === 10) && gameState.onGoing ) {
+	if ((gameState.score.p2 === 5 || gameState.score.p1 === 5) && gameState.onGoing ) {
 		gameState.winnerId = gameState.playerDbId.p1;
 		if (gameState.score.p1 < gameState.score.p2)
 			gameState.winnerId = gameState.playerDbId.p2;
 		insertOnDb(gameState);
-		
 		gameState.onGoing = false;
 		gameState.finished= true;
 	}

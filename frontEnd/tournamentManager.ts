@@ -32,6 +32,8 @@ async function handleNextFase(nick: string, Tournament: any) {
 				changePageTo(joinedContestPage, pongGamePage);
 				startPongWebSocket(Tournament.matches[2]);
 			}, 3000);
+			navigate("home");
+
 		} else {
 			console.log(`${nick} is not in the semifinals.`);
 		}
@@ -59,11 +61,18 @@ async function handleMatchEnd(currentMatchId: string, winner: string) {
 		}
 
 		if (nick != winner)
-			return
+		{
+			navigate("home");
+			return;
+		}
+			
 
 		const tournament = await response.json();
 		if (!tournament.exists)
+		{
+			navigate("home");
 			return;
+		}
 
 		const updateResponse = await fetch(`${backendUrl}/updateTournamentWinner`, {
 			method: 'PATCH',
