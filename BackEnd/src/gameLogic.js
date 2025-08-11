@@ -57,7 +57,7 @@ function handleInput(gameState, playerId, keys, isAI = false) {
 	if (!Array.isArray(keys))
 		return;
 	if (gameState.GamePlayLocal)
-		keys.forEach((key) => handleInputLocal(gameState, key, isAI));
+		keys.forEach((key) => handleInputLocal(playerId, gameState, key, isAI));
 	else
 		keys.forEach((key) => {
 			if (key === 'ArrowUp' || key === 'w')
@@ -67,12 +67,21 @@ function handleInput(gameState, playerId, keys, isAI = false) {
 		});
 }
 
-function handleInputLocal(gameState, key, isAI) {
+function handleInputLocal(playerId, gameState, key, isAI) {
 
-	if (key === 'w')
-		movePaddle(gameState, 'p1', 'up');
-	else if (key === 's')
-		movePaddle(gameState, 'p1', 'down');
+	if (gameState.aiGame){
+		if (playerId === 'p1' && (key === 'w' || key === 'ArrowUp'))
+			movePaddle(gameState, 'p1', 'up');
+		else if (playerId === 'p1' && (key === 'ArrowDown' || key === 's'))
+			movePaddle(gameState, 'p1', 'down');
+	}
+	else
+	{
+		if (key === 'w')
+			movePaddle(gameState, 'p1', 'up');
+		else if (key === 's')
+			movePaddle(gameState, 'p1', 'down');
+	}
 
 	if (isAI || !gameState.aiGame) {
 		if (key === 'ArrowUp')
