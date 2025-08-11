@@ -49,23 +49,21 @@ async function flipboardNumberAnimation(target, targetBox) {
         spans[i].textContent = target[i];
     }
 }
-function getUserPosition() {
+async function getUserPosition() {
     const userNick = localStorage.getItem("nickname");
-    fetch(`${backendUrl}/leaderboard/position/${userNick}`)
-        .then((response) => {
+    try {
+        const response = await fetch(`${backendUrl}/leaderboard/position/${userNick}`);
         if (!response.ok) {
-            return response.json().then((err) => {
-                throw new Error(err.error || "Unknown error");
-            });
+            const err = await response.json();
+            throw new Error(err.error || "Unknown error");
         }
-        return response.json();
-    })
-        .then((data) => {
-        positionNumber.textContent = data.position + "º";
-    })
-        .catch((error) => {
+        const data = await response.json();
+        return data.position.toString();
+    }
+    catch (error) {
         console.error("Failed to fetch leaderboard position:", error.message);
-    });
+        return "";
+    }
 }
 async function getUserStats(nickname) {
     if (checkIfLogged()) {
@@ -78,12 +76,13 @@ async function getUserStats(nickname) {
             }
             return response.json();
         })
-            .then((stats) => {
+            .then(async (stats) => {
+            const positionStr = await getUserPosition();
             flipboardNumberAnimation(stats.wins.toString(), winsNumber);
             flipboardNumberAnimation(stats.defeats.toString(), losesNumber);
             flipboardNumberAnimation(stats.games_played.toString(), gamesNumber);
+            flipboardNumberAnimation(positionStr, positionNumber);
             winRateText.textContent = "Current Winrate: " + stats.win_percentage;
-            getUserPosition();
         })
             .catch((error) => {
             console.error("Failed to fetch player stats:", error.message);
@@ -91,33 +90,89 @@ async function getUserStats(nickname) {
     }
 }
 document.addEventListener("DOMContentLoaded", async () => {
-    const switchNick = document.querySelector(".pupupSwitchButton");
+    const profileOptions = document.getElementById("profileOptionsButtonID");
     const matchesButton = document.getElementById("matchesButtonID");
     const friendsButton = document.getElementById("friendsButtonID");
-    // SWITCH NICK FUNCTION
-    switchNick.addEventListener("click", () => {
-        const nickInput = document.getElementById("popupNewNick").value.trim();
-        displayWarning(nickInput);
+    const addFriendsButton = document.getElementById("addFriendId");
+    const refreshMatchesButton = document.getElementById("refreshMatchId");
+    const photoPopupButtom = document.getElementById("popupPhotoButtonID");
+    const popupNickButton = document.getElementById("popupNickButtonID");
+    const popupEmailButton = document.getElementById("popupEmailButtonID");
+    const popupPasswordButton = document.getElementById("popupPasswordButtonID");
+    const frontpagePopup = document.querySelector(".frontpagePopup");
+    const nickpagePopup = document.querySelector(".nickpagePopup");
+    // const frontpagePopupPage = document.querySelector(".frontpagePopup");
+    // PROFILE OPTIONS
+    profileOptions.addEventListener("click", () => {
+        openPopup();
+        // const nickInput = (document.getElementById("popupNewNick") as HTMLInputElement).value.trim();
+        // displayWarning(nickInput);
     });
     // OPEN MATCH HISTORY
     matchesButton.addEventListener("click", () => {
         matchesAnimationHandler();
     });
     // OPEN FRIEND LIST
-    friendsButton.addEventListener("click", () => {
-        updateFriends();
+    friendsButton.addEventListener("click", async () => {
+        await updateFriends();
         friendsAnimationHandler();
     });
+    //ADD FRIEND BUTTOM
+    addFriendsButton.addEventListener("click", async () => {
+        const addFriendInput = document.getElementById("inputFriend").value.trim();
+        if (!addFriendInput) {
+            displayWarning("No nick!");
+            return;
+        }
+        addfriendHandler(addFriendInput);
+    });
+    // REFRESH MATCHES LIST BUTTOM
+    refreshMatchesButton.addEventListener("click", async () => {
+        displayWarning("THIS REFRESH THE LIST");
+    });
+    // POPUP PHOTO BUTTOM
+    photoPopupButtom.addEventListener("click", async () => {
+        // changePopupTo()
+    });
+    // POPUP NICK BUTTOM
+    popupNickButton.addEventListener("click", async () => {
+        changePopupTo(frontpagePopup, nickpagePopup);
+    });
+    // POPUP EMAIL BUTTOM
+    popupEmailButton.addEventListener("click", async () => {
+        // changePopupTo()
+    });
+    // POPUP PASSWORK BUTTOM
+    popupPasswordButton.addEventListener("click", async () => {
+        // changePopupTo()
+    });
 });
+function changePopupTo(remove, activate) {
+    remove.classList.remove("displayPagePopup");
+    activate.classList.add("displayPagePopup");
+}
+function addfriendHandler(friendNick) {
+    //#TODO Make the logic of addfriend here!
+}
+function openPopup() {
+    document.getElementById("popupContainer").style.display = "flex";
+    document.querySelectorAll(".popupPage").forEach((el) => {
+        el.classList.remove("displayPagePopup");
+    });
+    document.querySelector(".frontpagePopup").classList.add("displayPagePopup");
+}
+function closePopup() {
+    document.getElementById("popupContainer").style.display = "none";
+}
 async function matchesAnimationHandler() {
     if (!matchOpen && !isPlayingSoundMatch) {
-        updateLeaderboard();
+        // updateLeaderboard();
         isPlayingSoundMatch = true;
         openSound.play();
         matchesProfile.classList.remove("closeMatchAnimation");
         matchesProfile.classList.add("openMatchAnimation");
         await betterWait(1500);
-        matchesProfile.style.left = "-22%";
+        matchesProfile.style.left = "-25%";
         matchesProfile.style.opacity = "1";
         matchesProfile.classList.remove("openMatchAnimation");
         await betterWait(100);
@@ -146,7 +201,7 @@ async function friendsAnimationHandler() {
         friendsProfile.classList.add("openFriendsAnimation");
         await betterWait(1000);
         friendsProfile.classList.remove("openFriendsAnimation");
-        friendsProfile.style.left = "122%";
+        friendsProfile.style.left = "125%";
         friendsOpen = true;
         isPlayingSoundFriends = false;
     }
@@ -165,7 +220,7 @@ async function friendsAnimationHandler() {
 async function updateFriends() {
     try {
         const response = await fetch(`${backendUrl}/friends`, {
-            credentials: 'include'
+            credentials: "include",
         });
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
@@ -189,11 +244,11 @@ async function updateFriends() {
             const statusCell = row.insertCell();
             if (friend.isOnline) {
                 statusCell.innerHTML = '<span style="color: #063508ff;">🟢 Online</span>';
-                statusCell.className = 'online-status';
+                statusCell.className = "online-status";
             }
             else {
                 statusCell.innerHTML = '<span style="color: #757575;">🔴 Offline</span>';
-                statusCell.className = 'offline-status';
+                statusCell.className = "offline-status";
             }
         });
         // Fill remaining rows with placeholders

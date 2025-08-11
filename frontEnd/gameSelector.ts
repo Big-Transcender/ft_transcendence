@@ -16,7 +16,6 @@ const gameSelectorPongMultiplayerPage = document.getElementById("gameSelectorPon
 const startGameTimer = document.getElementById("timerId");
 const startGameTimerBox = document.getElementById("timerBoxId");
 
-
 function setRandomBackground() {
 	const bgNumber = Math.floor(Math.random() * 3) + 1;
 	const board = document.querySelector(".board") as HTMLElement;
@@ -85,9 +84,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 	//Change to Multiplayer Versus
 	buttonVersusMP.addEventListener("click", async () => {
-
 		openPopupPong();
-
 	});
 
 	//Change to Multiplayer Local
@@ -119,16 +116,13 @@ document.addEventListener("DOMContentLoaded", () => {
 	});
 });
 
-
-
-
 async function checkMatchExists(matchId: string): Promise<MatchCheckResponse> {
 	const response = await fetch(`${backendUrl}/pongGame/${matchId}/exists`);
-	
+
 	if (!response.ok) {
 		throw new Error(`HTTP error! status: ${response.status}`);
 	}
-	
+
 	return response.json();
 }
 
@@ -142,9 +136,8 @@ function joinExistingMatch(matchId: string): void {
 	//setGameScore("Player 1", getNickOnLocalStorage());
 }
 
-function createNewMatch(isLocal: boolean = false, aiGame: boolean = false, teamGame: boolean = false): void
-{
-	const matchId = generateMatchId()
+function createNewMatch(isLocal: boolean = false, aiGame: boolean = false, teamGame: boolean = false): void {
+	const matchId = generateMatchId();
 	history.replaceState(undefined, "", `#pong/${matchId}`);
 	startPongWebSocket(matchId, isLocal, aiGame, teamGame); // Start as host
 	changePageTo(gameSelectorPongMultiplayerPage, pongGamePage);
@@ -174,57 +167,109 @@ function openPopupPong() {
 	});
 
 	// CREATE 2v2 MATCH
-	create2V2PopupButton.addEventListener("click", async () => { //TODO fix this
-		const action = prompt("Type 'create' to start a new 2v2 match or 'join' to join one:");
+	create2V2PopupButton.addEventListener("click", async () => {
+		closePopupPong();
+		openPopup2v2();
+		// 	const action = prompt("Type 'create' to start a new 2v2 match or 'join' to join one:");
 
-		if (!action) return;
-	
-		if (action.toLowerCase() === "create") {
-			createNewMatch(false, false, true); // teamGame = true
-			closePopupPong();
-		} else if (action.toLowerCase() === "join") {
-			const matchId = prompt("Enter the 2v2 Match ID:");
-			if (!matchId || !matchId.trim()) return;
-	
-			try {
-				const matchData = await checkMatchExists(matchId.trim());
-				if (matchData.exists) {
-					joinExistingMatch(matchId.trim());
-					showMatchId(matchId.trim());
-					closePopupPong();
-				} else {
-					showErrorAndReturn("2v2 Match not found or is full.");
-				}
-			} catch (error) {
-				const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-				showErrorAndReturn(`Error checking match: ${errorMessage}`);
-			}
-		} else {
-			alert("Invalid input. Type either 'create' or 'join'.");
-		}
+		// 	if (!action) return;
+
+		// 	if (action.toLowerCase() === "create") {
+		// 		createNewMatch(false, false, true); // teamGame = true
+		// 		closePopupPong();
+		// 	} else if (action.toLowerCase() === "join") {
+		// 		const matchId = prompt("Enter the 2v2 Match ID:");
+		// 		if (!matchId || !matchId.trim()) return;
+
+		// 		try {
+		// 			const matchData = await checkMatchExists(matchId.trim());
+		// 			if (matchData.exists) {
+		// 				joinExistingMatch(matchId.trim());
+		// 				showMatchId(matchId.trim());
+		// 				closePopupPong();
+		// 			} else {
+		// 				showErrorAndReturn("2v2 Match not found or is full.");
+		// 			}
+		// 		} catch (error) {
+		// 			const errorMessage = error instanceof Error ? error.message : "Unknown error";
+		// 			showErrorAndReturn(`Error checking match: ${errorMessage}`);
+		// 		}
+		// 	} else {
+		// 		alert("Invalid input. Type either 'create' or 'join'.");
+		// 	}
 	});
 
 	// JOIN A MP MATCH
 	joinPopupButton.addEventListener("click", async () => {
 		const matchId = (document.getElementById("popupMatchID") as HTMLInputElement).value.trim();
+
+		if (!matchId) {
+			displayWarning("Empty Match Id");
+			return;
+		}
 		try {
-				
 			const matchData = await checkMatchExists(matchId);
 			if (matchData.exists) {
 				joinExistingMatch(matchId);
 				showMatchId(matchId);
 				closePopupPong();
 			} else {
-				showErrorAndReturn("Match not found or is full.");
+				displayWarning("Match not found or is full.");
 			}
 		} catch (error) {
-			const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+			const errorMessage = error instanceof Error ? error.message : "Unknown error";
 			showErrorAndReturn(`Error checking match: ${errorMessage}`);
 		}
-
 	});
 }
 
 function closePopupPong() {
 	document.getElementById("popupContainerPong").style.display = "none";
+}
+
+function openPopup2v2() {
+	document.getElementById("popupContainer2v2").style.display = "flex";
+	const join2v2PopupButton = document.getElementById("join2v2ID");
+	const create2v2PopupButton = document.getElementById("create2v2ID");
+	const close2v2PopupButton = document.getElementById("close2v2ID");
+
+	// CLOSE 2v2POPUP
+	close2v2PopupButton.addEventListener("click", async () => {
+		close2v2Popup();
+	});
+
+	// JOIN 2v2POPUP
+	join2v2PopupButton.addEventListener("click", async () => {
+		const matchId = (document.getElementById("popup2v2MatchID") as HTMLInputElement).value.trim();
+
+		if (!matchId) {
+			displayWarning("Empty Match Id");
+			return;
+		}
+
+		try {
+			const matchData = await checkMatchExists(matchId);
+			if (matchData.exists) {
+				joinExistingMatch(matchId);
+				showMatchId(matchId);
+				closePopupPong();
+			} else {
+				displayWarning("2v2 match not found or is full");
+				return;
+			}
+		} catch (error) {
+			const errorMessage = error instanceof Error ? error.message : "Unknown error";
+			showErrorAndReturn(`Error checking match: ${errorMessage}`);
+		}
+	});
+
+	// CREATE 2v2POPUP
+	create2v2PopupButton.addEventListener("click", async () => {
+		createNewMatch(false, false, true); // teamGame = true
+		close2v2Popup();
+	});
+}
+
+function close2v2Popup() {
+	document.getElementById("popupContainer2v2").style.display = "none";
 }
