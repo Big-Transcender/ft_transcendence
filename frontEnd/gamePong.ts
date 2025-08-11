@@ -141,7 +141,10 @@ function startPongWebSocket(matchId: string, isLocal: boolean = false, aiGame: b
 					return ;
 				}
 				case "gameOver": {
-					const { winner, reason } = data.payload;
+					var { winner, reason } = data.payload;
+					if (winner === null)
+						winner = "Bot";
+						
 					alert(`Game Over! The winner is ${winner}. Reason: ${reason}`);
 					
 					if (currentMatchId) {

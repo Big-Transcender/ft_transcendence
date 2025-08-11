@@ -30,6 +30,8 @@ function startGameLoopForMatch(matchId, updateBall, isLocal = false, aiGame = fa
 				gameState.started = true;
 				player1 = getNicknameByUserId(match.gameState.playerDbId.p1) || "Player 1"
 				player2 = getNicknameByUserId(match.gameState.playerDbId.p2) || "Player 2"
+				if (isLocal)
+					player2 = "Bot";
 
 				match.clients.forEach((client) => {
 					const message = JSON.stringify({ 
