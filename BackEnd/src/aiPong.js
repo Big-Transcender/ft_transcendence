@@ -111,7 +111,7 @@ function pressKeysForMovement(handleInputFn, gs, desiredCenterY, paddleKeyName) 
 
 
 	const now = Date.now();
-	const inputCooldown = 16000;//16.67; 
+	const inputCooldown = 1016.67;//16.67; 
 	if (!lastInputTimestamp[paddleKeyName]) {
 		lastInputTimestamp[paddleKeyName] = 0;
 	}
