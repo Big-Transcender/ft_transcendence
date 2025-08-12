@@ -660,9 +660,9 @@
 
 .profilePopup {
 	position: absolute;
-	width: 700px;
-	height: 700px;
-	top: 50%;
+	width: 600px;
+	height: 600px;
+	top: 55%;
 	translate: -50% -50%;
 }
 
@@ -713,11 +713,26 @@
 	border-radius: 0px;
 }
 
+.b {
+	left: 50%;
+}
+
+.pupupBBackButton {
+	position: absolute;
+	bottom: 10%;
+	left: 25%;
+	translate: -50%;
+}
+
 .popupPhotoButton .gameSelectorButtonBG,
 .popupNickButton .gameSelectorButtonBG,
 .popupPasswordButton .gameSelectorButtonBG,
 .popupEmailButton .gameSelectorButtonBG {
 	border-radius: 20px;
+}
+
+.popupEmail {
+	width: 300px !important;
 }
 
 .displayPagePopup {
@@ -730,4 +745,40 @@
 
 .nickpagePopup {
 	display: none;
+}
+
+.emailpagePopup {
+	display: none;
+}
+
+.passwordpagePopup {
+	display: none;
+}
+
+.photopagePopup {
+	display: none;
+}
+
+.popupPhoto {
+	left: 50% !important;
+	top: 30% !important;
+	translate: -50%;
+	transform: scale(1.5);
+}
+
+.uploadButton {
+	left: 50% !important;
+	top: 70% !important;
+	translate: -50% -50%;
+	width: 150px !important;
+	height: 50px !important;
+	border-radius: 5px !important;
+}
+
+.uploadButton .gameSelectorButtonBG {
+	border-radius: 20px !important;
+}
+
+.uploadButtomText {
+	font-size: 25px !important;
 }

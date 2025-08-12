@@ -12,6 +12,7 @@ let friendsOpen = false;
 let isPlayingSoundMatch = false;
 let isPlayingSoundFriends = false;
 getUserStats(getNickOnLocalStorage());
+preVisualizePhoto();
 async function flipboardNumberAnimation(target, targetBox) {
     targetBox.textContent = "";
     let flips = 50;
@@ -101,7 +102,9 @@ document.addEventListener("DOMContentLoaded", async () => {
     const popupPasswordButton = document.getElementById("popupPasswordButtonID");
     const frontpagePopup = document.querySelector(".frontpagePopup");
     const nickpagePopup = document.querySelector(".nickpagePopup");
-    // const frontpagePopupPage = document.querySelector(".frontpagePopup");
+    const emailpagePopup = document.querySelector(".emailpagePopup");
+    const passwordpagePopup = document.querySelector(".passwordpagePopup");
+    const photopagePopup = document.querySelector(".photopagePopup");
     // PROFILE OPTIONS
     profileOptions.addEventListener("click", () => {
         openPopup();
@@ -132,19 +135,26 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
     // POPUP PHOTO BUTTOM
     photoPopupButtom.addEventListener("click", async () => {
-        // changePopupTo()
+        await betterWait(150);
+        changePopupTo(frontpagePopup, photopagePopup);
+        const fileInput = document.getElementById("fileInput");
+        fileInput.value = "";
+        //#TODO Need a function to take the current photo of user, so it clear the last upload
     });
     // POPUP NICK BUTTOM
     popupNickButton.addEventListener("click", async () => {
+        await betterWait(150);
         changePopupTo(frontpagePopup, nickpagePopup);
     });
     // POPUP EMAIL BUTTOM
     popupEmailButton.addEventListener("click", async () => {
-        // changePopupTo()
+        await betterWait(150);
+        changePopupTo(frontpagePopup, emailpagePopup);
     });
     // POPUP PASSWORK BUTTOM
     popupPasswordButton.addEventListener("click", async () => {
-        // changePopupTo()
+        await betterWait(150);
+        changePopupTo(frontpagePopup, passwordpagePopup);
     });
 });
 function changePopupTo(remove, activate) {
@@ -163,6 +173,69 @@ function openPopup() {
 }
 function closePopup() {
     document.getElementById("popupContainer").style.display = "none";
+}
+function changeNickPopup() {
+    const newNick = document.getElementById("popupNewNick").value.trim();
+    if (!newNick)
+        displayWarning("No nick has been given!");
+    else {
+        //#TODO here where you change the nick
+        displayWarning(newNick);
+    }
+}
+function changeEmailPopup() {
+    const newEmail = document.getElementById("popupNewEmail").value.trim();
+    if (!newEmail)
+        displayWarning("No email has been given!");
+    else {
+        //#TODO here where you change the email
+        displayWarning(newEmail);
+    }
+}
+function changePasswordPopup() {
+    const newEmail = document.getElementById("popupNewPassword").value.trim();
+    if (!newEmail)
+        displayWarning("No password has been given!");
+    else {
+        //#TODO here where you change the password
+        displayWarning(newEmail);
+    }
+}
+function changePhotoPopup() {
+    const newPhoto = document.getElementById("fileInput");
+    console.log(newPhoto);
+    // if (newPhoto && newPhoto.files && newPhoto.files.length > 0) {
+    // 	console.log("File selected:", newPhoto.files[0]);
+    // } else {
+    // 	console.log("No file selected");
+    // }
+    if (!newPhoto || !newPhoto.files || newPhoto.files.length === 0) {
+        displayWarning("No photo has been given!");
+    }
+    else {
+        //#TODO here where you change the photo
+        //Change the photo after it put a image
+        displayWarning("Photo selected: " + newPhoto.files[0].name);
+    }
+}
+function preVisualizePhoto() {
+    document.addEventListener("DOMContentLoaded", () => {
+        const fileInput = document.getElementById("fileInput");
+        const photoLocation = document.querySelector(".profilePhotoLocation");
+        if (fileInput && photoLocation) {
+            fileInput.addEventListener("change", (event) => {
+                const target = event.target;
+                if (target.files && target.files[0]) {
+                    const reader = new FileReader();
+                    reader.onload = function (e) {
+                        var _a;
+                        photoLocation.style.backgroundImage = `url('${(_a = e.target) === null || _a === void 0 ? void 0 : _a.result}')`;
+                    };
+                    reader.readAsDataURL(target.files[0]);
+                }
+            });
+        }
+    });
 }
 async function matchesAnimationHandler() {
     if (!matchOpen && !isPlayingSoundMatch) {
