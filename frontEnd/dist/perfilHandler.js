@@ -113,6 +113,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
     // OPEN MATCH HISTORY
     matchesButton.addEventListener("click", () => {
+        updateMatchHistory();
         matchesAnimationHandler();
     });
     // OPEN FRIEND LIST
@@ -345,6 +346,72 @@ async function updateFriends() {
             const cell2 = row.insertCell();
             cell1.textContent = "Error loading friends";
             cell2.textContent = `${error}`;
+            cell1.style.color = "#ff0000";
+        }
+    }
+}
+async function updateMatchHistory() {
+    const nickname = getNickOnLocalStorage();
+    if (!nickname)
+        return;
+    try {
+        const response = await fetch(`${backendUrl}/player-matches/${nickname}`, {
+            credentials: 'include'
+        });
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.json();
+        // Get the match history table
+        const table = document.getElementById("matchListId");
+        if (!table) {
+            console.error("Match history table not found!");
+            return;
+        }
+        // Clear existing rows (except header)
+        while (table.rows.length > 1) {
+            table.deleteRow(1);
+        }
+        // Insert new rows for each match
+        data.matches.forEach((match) => {
+            const row = table.insertRow();
+            // ✅ Column 1: Result (WIN/LOSS)
+            const resultCell = row.insertCell();
+            resultCell.textContent = match.result;
+            resultCell.style.color = match.result === 'WIN' ? '#4CAF50' : '#f44336';
+            resultCell.style.fontWeight = 'bold';
+            // ✅ Column 2: Score
+            const scoreCell = row.insertCell();
+            scoreCell.textContent = match.score;
+            // ✅ Column 3: Opponent
+            const opponentCell = row.insertCell();
+            opponentCell.textContent = match.opponent;
+        });
+        // Fill remaining rows with placeholders (if you want exactly 5 rows)
+        const currentRows = table.rows.length - 1; // Subtract header row
+        const maxRows = 5;
+        for (let i = currentRows; i < maxRows; i++) {
+            const row = table.insertRow();
+            row.insertCell().textContent = "-----";
+            row.insertCell().textContent = "-----";
+            row.insertCell().textContent = "-----";
+        }
+    }
+    catch (error) {
+        console.error("Failed to load match history:", error);
+        // Show error in table
+        const table = document.getElementById("matchListId");
+        if (table) {
+            while (table.rows.length > 1) {
+                table.deleteRow(1);
+            }
+            const row = table.insertRow();
+            const cell1 = row.insertCell();
+            const cell2 = row.insertCell();
+            const cell3 = row.insertCell();
+            cell1.textContent = "Error loading matches";
+            cell2.textContent = "-----";
+            cell3.textContent = "-----";
             cell1.style.color = "#ff0000";
         }
     }

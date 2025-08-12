@@ -8,7 +8,7 @@ interface MatchCheckResponse {
 	playerCount: number;
 }
 
-function startPongWebSocket(matchId: string, isLocal: boolean = false, aiGame: boolean = false, teamGame: boolean = false) {
+function startPongWebSocket(matchId: string, isLocal: boolean = false, aiGame: boolean = false, teamGame: boolean = false, localNicks: string[] = null) {
 	if (socketInitialized){
 		console.log("game already in Progress");
 		return;
@@ -17,13 +17,24 @@ function startPongWebSocket(matchId: string, isLocal: boolean = false, aiGame: b
 	currentMatchId = matchId;
 	currentIsLocal = isLocal;
 
+
 	let animationFrameId: number;
 	let playerId: "p1" | "p2" | "p3" | "p4" = "p1";
 	const keysPressed = new Set<string>();
 
 	// --- WebSocket Setup
 	socket = new WebSocket(`ws://${window.location.hostname}:3000/game`);
-	const nickname = getNickOnLocalStorage();
+
+	let nickname: string;
+	let opponentNickname: string | null = null;
+	if (localNicks && localNicks.length > 1)
+	{
+		nickname = localNicks[0];
+		opponentNickname = localNicks[1];
+	}
+	else
+		nickname = getNickOnLocalStorage();
+
 	socket.addEventListener("open", () => {
 		console.log("✅ Connected to WebSocket server");
 		socket.send(
@@ -33,6 +44,7 @@ function startPongWebSocket(matchId: string, isLocal: boolean = false, aiGame: b
 				isLocal: isLocal,
 				aiGame: aiGame,
 				nickname: nickname,
+				opponentNickname: opponentNickname,
 				teamGame: teamGame,
 			})
 		);
@@ -128,25 +140,26 @@ function startPongWebSocket(matchId: string, isLocal: boolean = false, aiGame: b
 				}
 				case "assign": {
 					playerId = data.payload;
-					if (playerId === "p1")
+					if (playerId === "p1" && !isLocal)
 						setGameScore(getNickOnLocalStorage(), "Player 2");
 					break;
 				}
 				case "PlayerBoard": {
 					const players = data.payload;
-					if (isLocal && !aiGame)
-						setGameScore(players[0], players[0]);
-					else
+					if (!aiGame && !isLocal)
 						setGameScore(players[0], players[1]);
 					return ;
 				}
 				case "gameOver": {
-					const { winner, reason } = data.payload;
+					var { winner, reason } = data.payload;
+					if (winner === null)
+						winner = "Bot";
+						
 					alert(`Game Over! The winner is ${winner}. Reason: ${reason}`);
 					
 					if (currentMatchId) {
 						window.dispatchEvent(new CustomEvent('MatchEnd', {
-							detail: { matchId: currentMatchId, winner: winner }
+							detail: { matchId: currentMatchId, winner: winner, isLocal: isLocal }
 						}));
 					}
 					setGameScore("Player 1", "Player 2");

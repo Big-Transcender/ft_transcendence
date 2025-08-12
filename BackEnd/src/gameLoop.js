@@ -96,7 +96,7 @@ function cleanupMatch(matchId, reason = "unknown", nick = null)
 	match.clients.forEach((client) => {
 		const message = JSON.stringify({
 			type: 'gameOver',
-			payload: { winner: getNicknameByUserId(match.gameState.winnerId) || getNicknameByUserId(nick), reason },
+			payload: { winner: getNicknameByUserId(match.gameState.winnerId) || getNicknameByUserId(nick) || match.gameState.winnerName, reason },
 		});
 		if (client.ws.readyState === 1) {
 			client.ws.send(message);

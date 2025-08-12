@@ -14,7 +14,7 @@ var SPEED = 0.7;
 const ballSizeX = (33 / 900) * 100;
 const ballSizeY = (33 / 500) * 100;
 
-const BALLS = 19;
+const BALLS = 9;
 
 function createInitialGameState() {
 
@@ -25,6 +25,8 @@ function createInitialGameState() {
 		score: { p1: 0, p2: 0 },
 		playerId: { p1: 1, p2: 2, p3: 3, p4: 4 },
 		playerDbId: { p1: 0, p2: 0, p3: 0, p4: 0},
+		playersName: {player1: null, player2: null},
+		winnerName: null,
 		onGoing: false,
 		started: false,
 		finished: false,
@@ -40,15 +42,16 @@ function createInitialGameState() {
 function resetBall(gameState) {
 	gameState.ball.x = 50;
 	gameState.ball.y = 50;
-	gameState.paddles.p1 = 45;
-	gameState.paddles.p2 = 45;
-	gameState.paddles.p3 = 45;
-	gameState.paddles.p4 = 45;
 
 	const direction = Math.random() < 0.5 ? 1 : -1;
 	gameState.speed = SPEED;
-	gameState.ballVel.x = direction * gameState.speed;
+
+	gameState.ballVel.x = 0;
 	gameState.ballVel.y = 0;
+
+	setTimeout(() => {
+		gameState.ballVel.x = direction * gameState.speed;
+	}, 750);
 }
 
 function handleInput(gameState, playerId, keys, isAI = false) {
@@ -56,7 +59,7 @@ function handleInput(gameState, playerId, keys, isAI = false) {
 	if (!Array.isArray(keys))
 		return;
 	if (gameState.GamePlayLocal)
-		keys.forEach((key) => handleInputLocal(gameState, key, isAI));
+		keys.forEach((key) => handleInputLocal(playerId, gameState, key, isAI));
 	else
 		keys.forEach((key) => {
 			if (key === 'ArrowUp' || key === 'w')
@@ -66,12 +69,21 @@ function handleInput(gameState, playerId, keys, isAI = false) {
 		});
 }
 
-function handleInputLocal(gameState, key, isAI) {
+function handleInputLocal(playerId, gameState, key, isAI) {
 
-	if (key === 'w')
-		movePaddle(gameState, 'p1', 'up');
-	else if (key === 's')
-		movePaddle(gameState, 'p1', 'down');
+	if (gameState.aiGame){
+		if (playerId === 'p1' && (key === 'w' || key === 'ArrowUp'))
+			movePaddle(gameState, 'p1', 'up');
+		else if (playerId === 'p1' && (key === 'ArrowDown' || key === 's'))
+			movePaddle(gameState, 'p1', 'down');
+	}
+	else
+	{
+		if (key === 'w')
+			movePaddle(gameState, 'p1', 'up');
+		else if (key === 's')
+			movePaddle(gameState, 'p1', 'down');
+	}
 
 	if (isAI || !gameState.aiGame) {
 		if (key === 'ArrowUp')
@@ -129,13 +141,17 @@ function updateBall(gameState) {
 		resetBall(gameState);
 		return;
 	}
-
-	if ((gameState.score.p2 === 10 || gameState.score.p1 === 10) && gameState.onGoing ) {
+	// Winning
+	if ((gameState.score.p2 === 5 || gameState.score.p1 === 5) && gameState.onGoing ) {
 		gameState.winnerId = gameState.playerDbId.p1;
+		gameState.winnerName = gameState.playersName.player1
 		if (gameState.score.p1 < gameState.score.p2)
+		{
 			gameState.winnerId = gameState.playerDbId.p2;
+			gameState.winnerName = gameState.playersName.player2
+		}
+			
 		insertOnDb(gameState);
-		
 		gameState.onGoing = false;
 		gameState.finished= true;
 	}

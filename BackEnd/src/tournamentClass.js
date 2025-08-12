@@ -1,5 +1,3 @@
-// TODO need to talk to bruno to see if this makes sense 
-
 const tournaments = new Map(); // tournamentId -> tournament data
 
 

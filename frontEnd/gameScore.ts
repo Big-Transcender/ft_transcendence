@@ -97,10 +97,6 @@ function resetEmotions() {
 
 function setGameScore(name1: string, name2: string = "Bot") {
 	player1Nick.textContent = name1;
-	if (name2 === null){
-		player2Nick.textContent = "Bot";
-		return
-	}
 	player2Nick.textContent = name2;
 }
 

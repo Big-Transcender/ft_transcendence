@@ -61,7 +61,7 @@ document.addEventListener("DOMContentLoaded", () => {
             animateTimer();
             setRandomBackground();
             resetEmotions();
-            //setGameScore(getNickOnLocalStorage());
+            setGameScore(getNickOnLocalStorage());
             backGamePongButton.classList.add("active");
             showMatchId("NONE");
         }
@@ -80,16 +80,16 @@ document.addEventListener("DOMContentLoaded", () => {
     });
     //Change to Multiplayer Local
     buttonLocalMP.addEventListener("click", () => {
-        if (checkIfLogged()) {
+        if (checkIfLogged() || !checkIfLogged()) {
             changePageTo(gameSelectorPongMultiplayerPage, pongGamePage);
             const matchId = generateMatchId();
             updatePageHash(`#pong/${matchId}`);
-            startPongWebSocket(matchId, true); // true = local mode
+            startPongWebSocket(matchId, true, false, false, [getNickOnLocalStorage() || "gigachad", "minichad"]); // true = local mode
             resetEmotions();
             animateTimer();
-            //setGameScore(getNickOnLocalStorage(), "Player 2");
+            setGameScore(getNickOnLocalStorage() || "gigachad", "minichad");
             backGamePongButton.classList.add("active");
-            showMatchId("NONE");
+            showMatchId(matchId);
         }
         else {
             displayWarning("You need to log in.");
@@ -151,30 +151,6 @@ function openPopupPong() {
     create2V2PopupButton.addEventListener("click", async () => {
         closePopupPong();
         openPopup2v2();
-        // 	const action = prompt("Type 'create' to start a new 2v2 match or 'join' to join one:");
-        // 	if (!action) return;
-        // 	if (action.toLowerCase() === "create") {
-        // 		createNewMatch(false, false, true); // teamGame = true
-        // 		closePopupPong();
-        // 	} else if (action.toLowerCase() === "join") {
-        // 		const matchId = prompt("Enter the 2v2 Match ID:");
-        // 		if (!matchId || !matchId.trim()) return;
-        // 		try {
-        // 			const matchData = await checkMatchExists(matchId.trim());
-        // 			if (matchData.exists) {
-        // 				joinExistingMatch(matchId.trim());
-        // 				showMatchId(matchId.trim());
-        // 				closePopupPong();
-        // 			} else {
-        // 				showErrorAndReturn("2v2 Match not found or is full.");
-        // 			}
-        // 		} catch (error) {
-        // 			const errorMessage = error instanceof Error ? error.message : "Unknown error";
-        // 			showErrorAndReturn(`Error checking match: ${errorMessage}`);
-        // 		}
-        // 	} else {
-        // 		alert("Invalid input. Type either 'create' or 'join'.");
-        // 	}
     });
     // JOIN A MP MATCH
     joinPopupButton.addEventListener("click", async () => {
@@ -191,12 +167,14 @@ function openPopupPong() {
                 closePopupPong();
             }
             else {
+                //console.log("Match not found or is full.");
                 displayWarning("Match not found or is full.");
+                //showErrorAndReturn("Match not found or is full.");
             }
         }
         catch (error) {
             const errorMessage = error instanceof Error ? error.message : "Unknown error";
-            showErrorAndReturn(`Error checking match: ${errorMessage}`);
+            displayWarning(`Error checking match: ${errorMessage}`);
         }
     });
 }
@@ -233,7 +211,7 @@ function openPopup2v2() {
         }
         catch (error) {
             const errorMessage = error instanceof Error ? error.message : "Unknown error";
-            showErrorAndReturn(`Error checking match: ${errorMessage}`);
+            displayWarning(`Error checking match: ${errorMessage}`);
         }
     });
     // CREATE 2v2POPUP

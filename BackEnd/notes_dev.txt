@@ -25,6 +25,9 @@ curl -X POST http://localhost:3000/tournament \
 
 curl -X POST http://localhost:3000/test/reset-database
 
+to remove n last commit
+	git reset --hard HEAD~1
+
 node src/index.js
 
 page 175 index.html
