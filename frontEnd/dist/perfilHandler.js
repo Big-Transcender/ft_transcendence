@@ -293,7 +293,12 @@ async function friendsAnimationHandler() {
 }
 async function updateFriends() {
     try {
+        const token = localStorage.getItem("token");
         const response = await fetch(`${backendUrl}/friends`, {
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`,
+            },
             credentials: "include",
         });
         if (!response.ok) {
