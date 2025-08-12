@@ -99,6 +99,8 @@ fastify.decorate("authenticate", async function (request, reply) {
 
 		const decoded = jwt.verify(token, 'your-secret-key'); //TODO: key in env
 		request.userId = decoded.userId;
+		const user = db.prepare('SELECT nickname FROM users WHERE id = ?').get(decoded.userId);
+		request.userNickname = user.nickname;
 	} catch (err) {
 		reply.code(401).send({ error: "Invalid token" });
 	}

@@ -1,24 +1,40 @@
 const { getFriends, addFriend, removeFriend } = require('../friendsStorage');
 const { getOnlineUsers } = require('../wsManager');
+const db = require('../database');
+const repl = require("node:repl");
 
 module.exports = async function (fastify) {
     
     // Add friend
-    fastify.post('/friends/add', async (request, reply) => {
+// Add friend (fixed: get user from session)
+    fastify.post('/friends/add', {preHandler: fastify.authenticate } , async (request, reply) =>
+    {
         const { friendNickname } = request.body;
-        const sessionUser = request.session.get('user');
-        
-        if (!sessionUser) return reply.code(401).send({ error: "Not logged in" });
-        if (!friendNickname) return reply.code(400).send({ error: "Friend nickname required" });
-        
-        const success = addFriend(sessionUser.nickname, friendNickname);
-        
-        if (success) {
-            return reply.send({ message: "Friend added" });
-        } else {
+        if (!friendNickname)
+            return reply.code(400).send({ error: "Friend nickname required" });
+
+        if (friendNickname === request.userNickname)
+            return reply.code(400).send({ error: "Cannot add yourself as friend" });
+
+        const friendRow = db.prepare('SELECT id FROM users WHERE nickname = ?').get(friendNickname);
+
+        if (!friendRow)
+            return reply.code(404).send({ error: "No Player found with that nickname" });
+
+        const userId = request.userId;
+        const friendId = friendRow.id;
+
+        const [id1, id2] = userId < friendId ? [userId, friendId] : [friendId, userId];
+
+        const exists = db.prepare('SELECT 1 FROM friends WHERE user_id = ? AND friend_id = ?').get(id1, id2);
+        if (exists)
             return reply.code(400).send({ error: "Already friends" });
-        }
+
+        db.prepare('INSERT INTO friends (user_id, friend_id) VALUES (?, ?)').run(id1, id2);
+
+        return reply.send({ success: true });
     });
+
     
     // Get friends with online status
     fastify.get('/friends', async (request, reply) => {
