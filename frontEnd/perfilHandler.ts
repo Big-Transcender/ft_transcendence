@@ -484,7 +484,7 @@ async function changeNickAPI(newNick: string): Promise<void> {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json",
-				...(token ? { Authorization: `Bearer ${token}` } : {}),
+				Authorization: `Bearer ${token}`,
 			},
 			body: JSON.stringify({ nickname: newNick }),
 		});
@@ -496,8 +496,10 @@ async function changeNickAPI(newNick: string): Promise<void> {
 		} else {
 			displayWarning("Nickname changed successfully!");
 			// Update localStorage and refresh profile data
-			// localStorage.setItem("nickname", newNick);
-			// await getUserStats(newNick);
+			//TODO need to put the correct function to change nickname
+			localStorage.setItem("nickname", newNick);
+			putNickOnProfileHeader(newNick);
+			await getUserStats(newNick);
 		}
 	} catch (error) {
 		displayWarning((error as Error).message || "Error changing nickname");
