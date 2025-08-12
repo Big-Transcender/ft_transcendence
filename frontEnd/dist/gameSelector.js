@@ -84,10 +84,10 @@ document.addEventListener("DOMContentLoaded", () => {
             changePageTo(gameSelectorPongMultiplayerPage, pongGamePage);
             const matchId = generateMatchId();
             updatePageHash(`#pong/${matchId}`);
-            startPongWebSocket(matchId, true); // true = local mode
+            startPongWebSocket(matchId, true, false, false, [getNickOnLocalStorage() || "gigachad", "minichad"]); // true = local mode
             resetEmotions();
             animateTimer();
-            setGameScore(getNickOnLocalStorage(), "Player 2");
+            setGameScore(getNickOnLocalStorage(), "minichad");
             backGamePongButton.classList.add("active");
             showMatchId(matchId);
         }
