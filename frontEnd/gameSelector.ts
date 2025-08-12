@@ -92,14 +92,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
 	//Change to Multiplayer Local
 	buttonLocalMP.addEventListener("click", () => {
-		if (checkIfLogged()) {
+		if (checkIfLogged() || !checkIfLogged()) {
 			changePageTo(gameSelectorPongMultiplayerPage, pongGamePage);
 			const matchId = generateMatchId();
 			updatePageHash(`#pong/${matchId}`);
 			startPongWebSocket(matchId, true, false, false, [getNickOnLocalStorage() || "gigachad", "minichad"]); // true = local mode
 			resetEmotions();
 			animateTimer();
-			setGameScore(getNickOnLocalStorage(), "minichad");
+			setGameScore(getNickOnLocalStorage() || "gigachad", "minichad");
 			backGamePongButton.classList.add("active");
 			showMatchId(matchId);
 		} else {
