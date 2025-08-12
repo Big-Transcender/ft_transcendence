@@ -117,7 +117,7 @@ fastify.get("/logout", async (req, res) => {
 fastify.get("/me", async (request, reply) => {
 	const sessionUser = request.session.get('user');
 	if (sessionUser) {
-		return { user: sessionUser.nickname };
+		return { user: sessionUser.user };
 	} else {
 		return reply.status(401).send({ error: "Not logged in" });
 	}
