@@ -9,9 +9,11 @@ module.exports = async function (fastify) {
         reply.send(users);
     });
 
-    fastify.post('/switch-nickname', async (request, reply) => {
+    fastify.post('/switch-nickname',{ preHandler: fastify.authenticate }, async (request, reply) => {
         const newNickname = request.body.nickname;
         const userId = request.userId;
+
+        console.log("id", userId);
 
         if (!newNickname) {
             return reply.code(400).send({ error: "Nickname is required" });
@@ -30,7 +32,7 @@ module.exports = async function (fastify) {
         }
     });
 
-    fastify.post('/switch-email', async (request, reply) => {
+    fastify.post('/switch-email', { preHandler: fastify.authenticate }, async (request, reply) => {
         const newEmail = request.body.email;
         const userId = request.userId;
 
@@ -50,7 +52,7 @@ module.exports = async function (fastify) {
         }
     })
 
-    fastify.post('/switch-password', async (request, reply) => {
+    fastify.post('/switch-password', { preHandler: fastify.authenticate }, async (request, reply) => {
         const oldPassowrd = request.body;
         const newPassword = request.body;
         const userId = request.userId;
