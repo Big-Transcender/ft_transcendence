@@ -6,9 +6,6 @@
 	top: 150px;
 	height: 82%;
 	width: 95%;
-	/* background-color: rgb(131, 108, 155); */
-	/* width: 100v; */
-	/* background-color: rgb(185, 104, 104); */
 }
 
 .loginBox {
@@ -18,7 +15,17 @@
 	left: 50%;
 	top: 50%;
 	translate: -50% -50%;
-	/* background-color: rgb(87, 32, 32); */
+	/* background-color: red; */
+}
+
+.loginBoxBG {
+	/* opacity: 0; */
+	position: absolute;
+	height: 100%;
+	width: 100%;
+	background-color: #f8eebb;
+	border-radius: 18px;
+	overflow: hidden;
 }
 
 .newUserPage {
@@ -115,16 +122,6 @@
 	background-position: bottom;
 	width: 740px;
 	height: 50%;
-}
-
-.loginBoxBG {
-	/* opacity: 0; */
-	position: absolute;
-	height: 100%;
-	width: 100%;
-	background-color: #f8eebb;
-	border-radius: 18px;
-	overflow: hidden;
 }
 
 .profileId {
@@ -317,15 +314,47 @@
 }
 
 .matchesButton {
-	bottom: 20%;
-	left: 23%;
-	translate: -50%;
+	width: 30px;
+	height: 60px;
+	top: 50%;
+	left: 5%;
+	translate: -50% -50%;
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+	/* gap: 6px; */
+}
+
+.matchesButton .defaultButtonBGWave {
+	top: 120px;
+}
+
+.matchesButton:hover svg {
+	transition: 0.3s ease-in-out;
+	transform: scale(1.5);
 }
 
 .friendsButton {
-	bottom: 20%;
-	left: 77%;
-	translate: -50%;
+	width: 30px;
+	height: 60px;
+	top: 50%;
+	left: 95%;
+	translate: -50% -50%;
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.friendsButton .defaultButtonBGWave {
+	top: 120px;
+}
+
+.friendsButton:hover svg {
+	transition: 0.3s ease-in-out;
+	transform: scale(1.5);
 }
 
 .QrCode {
@@ -627,4 +656,129 @@
 	background-position: top;
 	background-size: 300px;
 	background-repeat: no-repeat;
+}
+
+.profilePopup {
+	position: absolute;
+	width: 600px;
+	height: 600px;
+	top: 55%;
+	translate: -50% -50%;
+}
+
+.popupProfileBG {
+	background-size: contain;
+}
+
+.profileTextPopup {
+	transform: scale(1.4);
+	font-size: 23px;
+	/* align-content: center; */
+}
+
+.popupPhotoButton {
+	position: absolute;
+	left: 30% !important;
+	top: 35% !important;
+	translate: -50% -50% !important;
+	width: 130px !important;
+	height: 130px !important;
+	border-radius: 0px;
+}
+
+.popupNickButton {
+	left: 70% !important;
+	top: 35% !important;
+	translate: -50% -50% !important;
+	width: 130px !important;
+	height: 130px !important;
+	border-radius: 0px;
+}
+
+.popupEmailButton {
+	left: 30% !important;
+	top: 60% !important;
+	translate: -50% -50% !important;
+	width: 130px !important;
+	height: 130px !important;
+	border-radius: 0px;
+}
+
+.popupPasswordButton {
+	left: 70% !important;
+	top: 60% !important;
+	translate: -50% -50% !important;
+	width: 130px !important;
+	height: 130px !important;
+	border-radius: 0px;
+}
+
+.b {
+	left: 50%;
+}
+
+.pupupBBackButton {
+	position: absolute;
+	bottom: 10%;
+	left: 25%;
+	translate: -50%;
+}
+
+.popupPhotoButton .gameSelectorButtonBG,
+.popupNickButton .gameSelectorButtonBG,
+.popupPasswordButton .gameSelectorButtonBG,
+.popupEmailButton .gameSelectorButtonBG {
+	border-radius: 20px;
+}
+
+.popupEmail {
+	width: 300px !important;
+}
+
+.displayPagePopup {
+	display: block !important;
+}
+
+.frontpagePopup {
+	display: none;
+}
+
+.nickpagePopup {
+	display: none;
+}
+
+.emailpagePopup {
+	display: none;
+}
+
+.passwordpagePopup {
+	display: none;
+}
+
+.photopagePopup {
+	display: none;
+}
+
+.popupPhoto {
+	left: 50% !important;
+	top: 30% !important;
+	translate: -50%;
+	transform: scale(1.5);
+}
+
+.uploadButton {
+	left: 50% !important;
+	top: 70% !important;
+	translate: -50% -50%;
+	width: 150px !important;
+	height: 50px !important;
+	border-radius: 5px !important;
+}
+
+.uploadButton .gameSelectorButtonBG {
+	border-radius: 20px !important;
+}
+
+.uploadButtomText {
+	font-size: 25px !important;
 }

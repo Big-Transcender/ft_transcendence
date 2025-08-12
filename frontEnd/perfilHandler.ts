@@ -15,6 +15,7 @@ let isPlayingSoundMatch = false;
 let isPlayingSoundFriends = false;
 
 getUserStats(getNickOnLocalStorage());
+preVisualizePhoto();
 
 async function flipboardNumberAnimation(target: string, targetBox) {
 	targetBox.textContent = "";
@@ -57,23 +58,20 @@ async function flipboardNumberAnimation(target: string, targetBox) {
 	}
 }
 
-function getUserPosition() {
+async function getUserPosition(): Promise<string> {
 	const userNick = localStorage.getItem("nickname");
-	fetch(`${backendUrl}/leaderboard/position/${userNick}`)
-		.then((response) => {
-			if (!response.ok) {
-				return response.json().then((err) => {
-					throw new Error(err.error || "Unknown error");
-				});
-			}
-			return response.json();
-		})
-		.then((data) => {
-			positionNumber.textContent = data.position + "º";
-		})
-		.catch((error) => {
-			console.error("Failed to fetch leaderboard position:", error.message);
-		});
+	try {
+		const response = await fetch(`${backendUrl}/leaderboard/position/${userNick}`);
+		if (!response.ok) {
+			const err = await response.json();
+			throw new Error(err.error || "Unknown error");
+		}
+		const data = await response.json();
+		return data.position.toString();
+	} catch (error) {
+		console.error("Failed to fetch leaderboard position:", (error as Error).message);
+		return "";
+	}
 }
 async function getUserStats(nickname: string) {
 	if (checkIfLogged()) {
@@ -86,12 +84,13 @@ async function getUserStats(nickname: string) {
 				}
 				return response.json();
 			})
-			.then((stats) => {
+			.then(async (stats) => {
+				const positionStr: string = await getUserPosition();
 				flipboardNumberAnimation(stats.wins.toString(), winsNumber);
 				flipboardNumberAnimation(stats.defeats.toString(), losesNumber);
 				flipboardNumberAnimation(stats.games_played.toString(), gamesNumber);
+				flipboardNumberAnimation(positionStr, positionNumber);
 				winRateText.textContent = "Current Winrate: " + stats.win_percentage;
-				getUserPosition();
 			})
 			.catch((error) => {
 				console.error("Failed to fetch player stats:", error.message);
@@ -100,14 +99,28 @@ async function getUserStats(nickname: string) {
 }
 
 document.addEventListener("DOMContentLoaded", async () => {
-	const switchNick = document.querySelector(".pupupSwitchButton");
+	const profileOptions = document.getElementById("profileOptionsButtonID");
 	const matchesButton = document.getElementById("matchesButtonID");
 	const friendsButton = document.getElementById("friendsButtonID");
+	const addFriendsButton = document.getElementById("addFriendId");
+	const refreshMatchesButton = document.getElementById("refreshMatchId");
 
-	// SWITCH NICK FUNCTION
-	switchNick.addEventListener("click", () => {
-		const nickInput = (document.getElementById("popupNewNick") as HTMLInputElement).value.trim();
-		displayWarning(nickInput);
+	const photoPopupButtom = document.getElementById("popupPhotoButtonID");
+	const popupNickButton = document.getElementById("popupNickButtonID");
+	const popupEmailButton = document.getElementById("popupEmailButtonID");
+	const popupPasswordButton = document.getElementById("popupPasswordButtonID");
+
+	const frontpagePopup = document.querySelector(".frontpagePopup");
+	const nickpagePopup = document.querySelector(".nickpagePopup");
+	const emailpagePopup = document.querySelector(".emailpagePopup");
+	const passwordpagePopup = document.querySelector(".passwordpagePopup");
+	const photopagePopup = document.querySelector(".photopagePopup");
+
+	// PROFILE OPTIONS
+	profileOptions.addEventListener("click", () => {
+		openPopup();
+		// const nickInput = (document.getElementById("popupNewNick") as HTMLInputElement).value.trim();
+		// displayWarning(nickInput);
 	});
 
 	// OPEN MATCH HISTORY
@@ -117,21 +130,156 @@ document.addEventListener("DOMContentLoaded", async () => {
 	});
 
 	// OPEN FRIEND LIST
-	friendsButton.addEventListener("click", () => {
-		updateFriends()
+	friendsButton.addEventListener("click", async () => {
+		await updateFriends();
 		friendsAnimationHandler();
+	});
+
+	//ADD FRIEND BUTTOM
+	addFriendsButton.addEventListener("click", async () => {
+		const addFriendInput = (document.getElementById("inputFriend") as HTMLInputElement).value.trim();
+		if (!addFriendInput) {
+			displayWarning("No nick!");
+			return;
+		}
+		addfriendHandler(addFriendInput);
+	});
+
+	// REFRESH MATCHES LIST BUTTOM
+	refreshMatchesButton.addEventListener("click", async () => {
+		displayWarning("THIS REFRESH THE LIST");
+	});
+
+	// POPUP PHOTO BUTTOM
+	photoPopupButtom.addEventListener("click", async () => {
+		await betterWait(150);
+		changePopupTo(frontpagePopup, photopagePopup);
+
+		const fileInput = document.getElementById("fileInput") as HTMLInputElement;
+		fileInput.value = "";
+
+		//#TODO Need a function to take the current photo of user, so it clear the last upload
+	});
+
+	// POPUP NICK BUTTOM
+	popupNickButton.addEventListener("click", async () => {
+		await betterWait(150);
+		changePopupTo(frontpagePopup, nickpagePopup);
+	});
+
+	// POPUP EMAIL BUTTOM
+	popupEmailButton.addEventListener("click", async () => {
+		await betterWait(150);
+		changePopupTo(frontpagePopup, emailpagePopup);
+	});
+
+	// POPUP PASSWORK BUTTOM
+	popupPasswordButton.addEventListener("click", async () => {
+		await betterWait(150);
+		changePopupTo(frontpagePopup, passwordpagePopup);
 	});
 });
 
+function changePopupTo(remove, activate) {
+	remove.classList.remove("displayPagePopup");
+	activate.classList.add("displayPagePopup");
+}
+
+function addfriendHandler(friendNick: string) {
+	//#TODO Make the logic of addfriend here!
+}
+
+function openPopup() {
+	document.getElementById("popupContainer").style.display = "flex";
+	document.querySelectorAll(".popupPage").forEach((el) => {
+		el.classList.remove("displayPagePopup");
+	});
+	document.querySelector(".frontpagePopup").classList.add("displayPagePopup");
+}
+
+function closePopup() {
+	document.getElementById("popupContainer").style.display = "none";
+}
+
+function changeNickPopup() {
+	const newNick = (document.getElementById("popupNewNick") as HTMLInputElement).value.trim();
+
+	if (!newNick) displayWarning("No nick has been given!");
+	else {
+		//#TODO here where you change the nick
+		displayWarning(newNick);
+	}
+}
+
+function changeEmailPopup() {
+	const newEmail = (document.getElementById("popupNewEmail") as HTMLInputElement).value.trim();
+
+	if (!newEmail) displayWarning("No email has been given!");
+	else {
+		//#TODO here where you change the email
+		displayWarning(newEmail);
+	}
+}
+
+function changePasswordPopup() {
+	const newEmail = (document.getElementById("popupNewPassword") as HTMLInputElement).value.trim();
+
+	if (!newEmail) displayWarning("No password has been given!");
+	else {
+		//#TODO here where you change the password
+		displayWarning(newEmail);
+	}
+}
+
+function changePhotoPopup() {
+	const newPhoto = document.getElementById("fileInput") as HTMLInputElement | null;
+
+	console.log(newPhoto);
+
+	// if (newPhoto && newPhoto.files && newPhoto.files.length > 0) {
+	// 	console.log("File selected:", newPhoto.files[0]);
+	// } else {
+	// 	console.log("No file selected");
+	// }
+
+	if (!newPhoto || !newPhoto.files || newPhoto.files.length === 0) {
+		displayWarning("No photo has been given!");
+	} else {
+		//#TODO here where you change the photo
+		//Change the photo after it put a image
+		displayWarning("Photo selected: " + newPhoto.files[0].name);
+	}
+}
+
+function preVisualizePhoto() {
+	document.addEventListener("DOMContentLoaded", () => {
+		const fileInput = document.getElementById("fileInput") as HTMLInputElement;
+		const photoLocation = document.querySelector(".profilePhotoLocation") as HTMLElement;
+
+		if (fileInput && photoLocation) {
+			fileInput.addEventListener("change", (event) => {
+				const target = event.target as HTMLInputElement;
+				if (target.files && target.files[0]) {
+					const reader = new FileReader();
+					reader.onload = function (e) {
+						photoLocation.style.backgroundImage = `url('${e.target?.result}')`;
+					};
+					reader.readAsDataURL(target.files[0]);
+				}
+			});
+		}
+	});
+}
+
 async function matchesAnimationHandler() {
 	if (!matchOpen && !isPlayingSoundMatch) {
-		updateLeaderboard();
+		// updateLeaderboard();
 		isPlayingSoundMatch = true;
 		openSound.play();
 		matchesProfile.classList.remove("closeMatchAnimation");
 		matchesProfile.classList.add("openMatchAnimation");
 		await betterWait(1500);
-		matchesProfile.style.left = "-22%";
+		matchesProfile.style.left = "-25%";
 		matchesProfile.style.opacity = "1";
 		matchesProfile.classList.remove("openMatchAnimation");
 		await betterWait(100);
@@ -160,7 +308,7 @@ async function friendsAnimationHandler() {
 		friendsProfile.classList.add("openFriendsAnimation");
 		await betterWait(1000);
 		friendsProfile.classList.remove("openFriendsAnimation");
-		friendsProfile.style.left = "122%";
+		friendsProfile.style.left = "125%";
 		friendsOpen = true;
 		isPlayingSoundFriends = false;
 	} else if (friendsOpen && !isPlayingSoundFriends) {
@@ -176,60 +324,57 @@ async function friendsAnimationHandler() {
 	}
 }
 
-
 async function updateFriends() {
 	try {
 		const response = await fetch(`${backendUrl}/friends`, {
-			credentials: 'include'
+			credentials: "include",
 		});
-		
+
 		if (!response.ok) {
 			throw new Error(`HTTP error! status: ${response.status}`);
 		}
-		
+
 		const data = await response.json();
 
-		
 		// Get the friends table (not the leaderboard table)
 		const table = document.getElementById("friendListId") as HTMLTableElement;
-		
+
 		if (!table) {
 			console.error("Friends table not found!");
 			return;
 		}
-		
+
 		// Clear existing rows (except header)
 		while (table.rows.length > 1) {
 			table.deleteRow(1);
 		}
-		
+
 		// Insert new rows for each friend
 		data.friends.forEach((friend) => {
 			const row = table.insertRow();
-			
+
 			const nameCell = row.insertCell();
 			nameCell.textContent = friend.nickname;
-			
+
 			const statusCell = row.insertCell();
 			if (friend.isOnline) {
 				statusCell.innerHTML = '<span style="color: #063508ff;">🟢 Online</span>';
-				statusCell.className = 'online-status';
+				statusCell.className = "online-status";
 			} else {
 				statusCell.innerHTML = '<span style="color: #757575;">🔴 Offline</span>';
-				statusCell.className = 'offline-status';
+				statusCell.className = "offline-status";
 			}
 		});
-		
+
 		// Fill remaining rows with placeholders
 		const currentRows = table.rows.length - 1;
 		const maxRows = 5;
-		
+
 		for (let i = currentRows; i < maxRows; i++) {
 			const row = table.insertRow();
 			row.insertCell().textContent = "-----";
 			row.insertCell().textContent = "-----";
 		}
-		
 	} catch (error) {
 		// Show error in table
 		const table = document.getElementById("friendListId") as HTMLTableElement;

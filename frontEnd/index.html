@@ -26,32 +26,154 @@
 					<div class="defaultWarningBG"></div>
 					<p class="defaultWarningText" id="warningContest">Generic Error</p>
 				</div>
-				<!-- POPUP FROM SWITCH NICK-->
+				<!-- POPUP FROM PROFILE -->
 				<div id="popupContainer" class="popup-overlay">
-					<div class="popup">
-						<div class="popupBG"></div>
-						<div class="popupText">Switch your Nick!</div>
+					<div class="popup profilePopup">
+						<div class="popupBG popupProfileBG"></div>
 
-						<div class="inputBox popupNewNick">
-							<label for="popupNewNick">Enter new Nick</label>
-							<input type="text" id="popupNewNick" class="inputText smallInput" placeholder="NEW NICK" autocomplete="off" />
+						<!-- FRONT POPUP PAGE -->
+						<div class="frontpagePopup popupPage displayPagePopup">
+							<div class="popupText profileTextPopup">What you want <br />to change?</div>
+							<!-- CHANGE PHOTO BUTTOM -->
+							<div class="gameSelectorButton popupPhotoButton" id="popupPhotoButtonID">
+								<div class="gameSelectorButtonBG"></div>
+								<p class="gameSelectorText">Photo</p>
+							</div>
+
+							<!-- CHANGE NICK BUTTOM -->
+							<div class="gameSelectorButton popupNickButton" id="popupNickButtonID">
+								<div class="gameSelectorButtonBG"></div>
+								<p class="gameSelectorText">Nick</p>
+							</div>
+
+							<!-- CHANGE EMAIL BUTTOM -->
+							<div class="gameSelectorButton popupEmailButton" id="popupEmailButtonID">
+								<div class="gameSelectorButtonBG"></div>
+								<p class="gameSelectorText">Email</p>
+							</div>
+
+							<!-- CHANGE PASSWORD BUTTOM -->
+							<div class="gameSelectorButton popupPasswordButton" id="popupPasswordButtonID">
+								<div class="gameSelectorButtonBG"></div>
+								<p class="gameSelectorText">Pass</p>
+							</div>
+
+							<button onclick="closePopup()" class="defaultButton pupupBackButton b">
+								<p class="defaultButtonText">Close</p>
+								<div class="defaultButtonBG">
+									<div class="defaultButtonBGWave"></div>
+									<div class="defaultButtonBGWave wave2"></div>
+								</div>
+							</button>
 						</div>
 
-						<button onclick="fecharPopup()" class="defaultButton pupupBackButton">
-							<p class="defaultButtonText">Close</p>
-							<div class="defaultButtonBG">
-								<div class="defaultButtonBGWave"></div>
-								<div class="defaultButtonBGWave wave2"></div>
+						<!-- CHANGE NICK POPUP PAGE -->
+						<div class="nickpagePopup popupPage">
+							<div class="popupText profileTextPopup">Change your nick!</div>
+							<div class="inputBox popupNewNick">
+								<label for="popupNewNick">Enter new Nick</label>
+								<input type="text" id="popupNewNick" class="inputText smallInput" placeholder="NEW NICK" autocomplete="off" />
 							</div>
-						</button>
 
-						<button class="defaultButton pupupSwitchButton">
-							<p class="defaultButtonText">Switch!</p>
-							<div class="defaultButtonBG">
-								<div class="defaultButtonBGWave"></div>
-								<div class="defaultButtonBGWave wave2"></div>
+							<button onclick="changeNickPopup()" class="defaultButton pupupSwitchButton">
+								<p class="defaultButtonText">Switch!</p>
+								<div class="defaultButtonBG">
+									<div class="defaultButtonBGWave"></div>
+									<div class="defaultButtonBGWave wave2"></div>
+								</div>
+							</button>
+
+							<button onclick="openPopup()" class="defaultButton pupupBBackButton">
+								<p class="defaultButtonText">Back</p>
+								<div class="defaultButtonBG">
+									<div class="defaultButtonBGWave"></div>
+									<div class="defaultButtonBGWave wave2"></div>
+								</div>
+							</button>
+						</div>
+
+						<!-- CHANGE EMAIL POPUP PAGE -->
+						<div class="emailpagePopup popupPage">
+							<div class="popupText profileTextPopup">Change your Email!</div>
+							<div class="inputBox popupNewNick">
+								<label for="popupNewNick">Enter new Email</label>
+								<input type="text" id="popupNewEmail" class="inputText smallInput popupEmail" placeholder="NEW EMAIL" autocomplete="off" />
 							</div>
-						</button>
+
+							<button onclick="changeEmailPopup()" class="defaultButton pupupSwitchButton">
+								<p class="defaultButtonText">Switch!</p>
+								<div class="defaultButtonBG">
+									<div class="defaultButtonBGWave"></div>
+									<div class="defaultButtonBGWave wave2"></div>
+								</div>
+							</button>
+
+							<button onclick="openPopup()" class="defaultButton pupupBBackButton">
+								<p class="defaultButtonText">Back</p>
+								<div class="defaultButtonBG">
+									<div class="defaultButtonBGWave"></div>
+									<div class="defaultButtonBGWave wave2"></div>
+								</div>
+							</button>
+						</div>
+
+						<!-- CHANGE PASS POPUP PAGE -->
+						<div class="passwordpagePopup popupPage">
+							<div class="popupText profileTextPopup">Change your Password!</div>
+							<div class="inputBox popupNewNick">
+								<label for="popupNewNick">Enter new Password</label>
+								<input type="password" id="popupNewPassword" class="inputText smallInput" placeholder="NEW PASSWORD" autocomplete="off" />
+							</div>
+
+							<button onclick="changePasswordPopup()" class="defaultButton pupupSwitchButton">
+								<p class="defaultButtonText">Switch!</p>
+								<div class="defaultButtonBG">
+									<div class="defaultButtonBGWave"></div>
+									<div class="defaultButtonBGWave wave2"></div>
+								</div>
+							</button>
+
+							<button onclick="openPopup()" class="defaultButton pupupBBackButton">
+								<p class="defaultButtonText">Back</p>
+								<div class="defaultButtonBG">
+									<div class="defaultButtonBGWave"></div>
+									<div class="defaultButtonBGWave wave2"></div>
+								</div>
+							</button>
+						</div>
+
+						<!-- CHANGE PHOTO POPUP PAGE -->
+						<div class="photopagePopup popupPage">
+							<div class="popupText profileTextPopup">Change your<br />Passport Photo!</div>
+
+							<!-- PROFILE PHOTO -->
+							<div class="profilePhoto popupPhoto">
+								<div class="profilePhotoBG"></div>
+								<div class="profilePhotoLocation"></div>
+							</div>
+
+							<div class="gameSelectorButton uploadButton" id="uploadButtonID">
+								<div class="gameSelectorButtonBG"></div>
+								<label for="fileInput" class="gameSelectorText uploadButtomText" style="cursor: pointer">Upload!</label>
+								<input type="file" id="fileInput" accept="image/*" style="display: none" />
+							</div>
+
+							<button onclick="changePhotoPopup()" class="defaultButton pupupSwitchButton">
+								<p class="defaultButtonText">Switch!</p>
+								<div class="defaultButtonBG">
+									<div class="defaultButtonBGWave"></div>
+									<div class="defaultButtonBGWave wave2"></div>
+								</div>
+							</button>
+
+							<button onclick="openPopup()" class="defaultButton pupupBBackButton">
+								<p class="defaultButtonText">Back</p>
+								<div class="defaultButtonBG">
+									<div class="defaultButtonBGWave"></div>
+									<div class="defaultButtonBGWave wave2"></div>
+								</div>
+							</button>
+						</div>
 					</div>
 				</div>
 				<!-- POPUP FROM MULTIPLAYER PONG-->
@@ -98,6 +220,80 @@
 						</button>
 					</div>
 				</div>
+				<!-- POPUP FROM 2v2 PONG-->
+				<div id="popupContainer2v2" class="popup-overlay">
+					<div class="popup">
+						<div class="popupBG"></div>
+						<div class="popupText pongPopup">Create a new <span style="color: red">2v2</span> or <br />join an existing one?</div>
+
+						<div class="inputBox popupNewNick">
+							<label for="popupNewNick">Enter 2v2 match ID</label>
+							<input type="text" id="popup2v2MatchID" class="inputText smallInput" placeholder="2v2 MATCH ID" autocomplete="off" />
+						</div>
+
+						<button class="defaultButton pongPopupBackButton" id="close2v2ID">
+							<p class="defaultButtonText">Close</p>
+							<div class="defaultButtonBG">
+								<div class="defaultButtonBGWave"></div>
+								<div class="defaultButtonBGWave wave2"></div>
+							</div>
+						</button>
+
+						<button class="defaultButton joinPopupButton" id="join2v2ID">
+							<p class="defaultButtonText">Join!</p>
+							<div class="defaultButtonBG">
+								<div class="defaultButtonBGWave"></div>
+								<div class="defaultButtonBGWave wave2"></div>
+							</div>
+						</button>
+
+						<button class="defaultButton createPopupButton" id="create2v2ID">
+							<p class="defaultButtonText">Create!</p>
+							<div class="defaultButtonBG">
+								<div class="defaultButtonBGWave"></div>
+								<div class="defaultButtonBGWave wave2"></div>
+							</div>
+						</button>
+					</div>
+				</div>
+
+				<!-- POPUP FROM PROFILE
+				<div id="popupContainerProfile" class="popup-overlay">
+					<div class="popup">
+						<div class="popupBG"></div>
+						<div class="popupText pongPopup">Create a new <span style="color: red">2v2</span> or <br />join an existing one?</div>
+
+						<div class="inputBox popupNewNick">
+							<label for="popupNewNick">Enter 2v2 match ID</label>
+							<input type="text" id="popup2v2MatchID" class="inputText smallInput" placeholder="2v2 MATCH ID" autocomplete="off" />
+						</div>
+
+						<button class="defaultButton pongPopupBackButton" id="close2v2ID">
+							<p class="defaultButtonText">Close</p>
+							<div class="defaultButtonBG">
+								<div class="defaultButtonBGWave"></div>
+								<div class="defaultButtonBGWave wave2"></div>
+							</div>
+						</button>
+
+						<button class="defaultButton joinPopupButton" id="join2v2ID">
+							<p class="defaultButtonText">Join!</p>
+							<div class="defaultButtonBG">
+								<div class="defaultButtonBGWave"></div>
+								<div class="defaultButtonBGWave wave2"></div>
+							</div>
+						</button>
+
+						<button class="defaultButton createPopupButton" id="create2v2ID">
+							<p class="defaultButtonText">Create!</p>
+							<div class="defaultButtonBG">
+								<div class="defaultButtonBGWave"></div>
+								<div class="defaultButtonBGWave wave2"></div>
+							</div>
+						</button>
+					</div>
+				</div> -->
+
 				<div class="backgroudCenterBg"></div>
 				<div class="backgroundCenter">
 					<!-- HEADER -->
@@ -513,89 +709,6 @@
 					<!-- PROFILE PAGE -->
 					<div id="profile" class="profile page">
 						<div class="loginBox">
-							<!-- MATCHES  -->
-							<div class="matchesProfile">
-								<div class="homePlayersRankBG"></div>
-								<p class="playersRankTitle">Match History</p>
-								<div class="playersRankList">
-									<div class="playersRankListBG"></div>
-									<!-- MATCH LIST -->
-									<table id="matchListId" class="playerRankTable">
-										<tr>
-											<th>Match</th>
-											<th>Mode</th>
-											<th>Result</th>
-										</tr>
-										<tr>
-											<td>-----</td>
-											<td>-----</td>
-											<td>-----</td>
-										</tr>
-										<tr>
-											<td>-----</td>
-											<td>-----</td>
-											<td>-----</td>
-										</tr>
-										<tr>
-											<td>-----</td>
-											<td>-----</td>
-											<td>-----</td>
-										</tr>
-										<tr>
-											<td>-----</td>
-											<td>-----</td>
-											<td>-----</td>
-										</tr>
-										<tr>
-											<td>-----</td>
-											<td>-----</td>
-											<td>-----</td>
-										</tr>
-									</table>
-								</div>
-							</div>
-
-							<!-- FRIENDS  -->
-							<div class="friendsProfile">
-								<div class="friendsProfileBG"></div>
-								<p class="playersRankTitle">Friends List</p>
-								<div class="playersRankList">
-									<div class="playersRankListBG"></div>
-									<!-- FRIEND LIST -->
-									<table id="friendListId" class="playerRankTable">
-										<tr>
-											<th class="friendTh">Name</th>
-											<th class="friendTh">Status</th>
-											<!-- <th>Result</th> -->
-										</tr>
-										<tr>
-											<td>-----</td>
-											<td>-----</td>
-											<!-- <td>-----</td> -->
-										</tr>
-										<tr>
-											<td>-----</td>
-											<td>-----</td>
-											<!-- <td>-----</td> -->
-										</tr>
-										<tr>
-											<td>-----</td>
-											<td>-----</td>
-											<!-- <td>-----</td> -->
-										</tr>
-										<tr>
-											<td>-----</td>
-											<td>-----</td>
-											<!-- <td>-----</td> -->
-										</tr>
-										<tr>
-											<td>-----</td>
-											<td>-----</td>
-											<!-- <td>-----</td> -->
-										</tr>
-									</table>
-								</div>
-							</div>
 							<!-- LOGIN PAGE -->
 							<div class="loginPage profileId active" id="loginId">
 								<img src="images/avatar4.png" alt="" class="avatar4" />
@@ -686,17 +799,122 @@
 
 							<!-- USER PROFILE PAGE -->
 							<div class="profilePage profileId" id="profileId">
+								<!-- MATCHES  -->
+								<div class="matchesProfile">
+									<div class="homePlayersRankBG"></div>
+									<p class="playersRankTitle">Match History</p>
+									<div class="playersRankList">
+										<div class="playersRankListBG matchListBG"></div>
+										<!-- MATCH LIST -->
+										<table id="matchListId" class="playerRankTable matchList">
+											<tr>
+												<th>Match</th>
+												<th>Mode</th>
+												<th>Result</th>
+											</tr>
+											<tr>
+												<td>-----</td>
+												<td>-----</td>
+												<td>-----</td>
+											</tr>
+											<tr>
+												<td>-----</td>
+												<td>-----</td>
+												<td>-----</td>
+											</tr>
+											<tr>
+												<td>-----</td>
+												<td>-----</td>
+												<td>-----</td>
+											</tr>
+											<tr>
+												<td>-----</td>
+												<td>-----</td>
+												<td>-----</td>
+											</tr>
+											<tr>
+												<td>-----</td>
+												<td>-----</td>
+												<td>-----</td>
+											</tr>
+										</table>
+										<!-- REFRESH MATCH BUTTOM -->
+										<div class="gameSelectorButton refreshMatchButton" id="refreshMatchId">
+											<div class="gameSelectorButtonBG"></div>
+											<p class="gameSelectorText refreshMatchButtomText">Refresh!</p>
+										</div>
+									</div>
+								</div>
+								<!-- FRIENDS  -->
+								<div class="friendsProfile">
+									<div class="friendsProfileBG"></div>
+									<p class="playersRankTitle">Friends List</p>
+									<div class="playersRankList">
+										<div class="playersRankListBG friendsListBG"></div>
+										<!-- FRIEND LIST -->
+										<table id="friendListId" class="playerRankTable friendList">
+											<tr>
+												<th class="friendTh">Name</th>
+												<th class="friendTh">Status</th>
+												<!-- <th>Result</th> -->
+											</tr>
+											<tr>
+												<td>-----</td>
+												<td>-----</td>
+												<!-- <td>-----</td> -->
+											</tr>
+											<tr>
+												<td>-----</td>
+												<td>-----</td>
+												<!-- <td>-----</td> -->
+											</tr>
+											<tr>
+												<td>-----</td>
+												<td>-----</td>
+												<!-- <td>-----</td> -->
+											</tr>
+											<tr>
+												<td>-----</td>
+												<td>-----</td>
+												<!-- <td>-----</td> -->
+											</tr>
+											<tr>
+												<td>-----</td>
+												<td>-----</td>
+												<!-- <td>-----</td> -->
+											</tr>
+										</table>
+									</div>
+									<!-- ADD FRIEND -->
+									<div>
+										<!-- ADD FRIEND BUTTOM -->
+										<div class="gameSelectorButton addFriendButton" id="addFriendId">
+											<div class="gameSelectorButtonBG"></div>
+											<p class="gameSelectorText addFriendButtomText">Add!</p>
+										</div>
+									</div>
+									<!-- <div class="inputBox"> -->
+									<!-- <label for="inputNick">Enter your nickname</label> -->
+									<input type="text" id="inputFriend" class="inputText smallInput friendInput" placeholder="FRIEND NICK" autocomplete="off" />
+									<!-- </div> -->
+								</div>
+
 								<div class="loginBoxBG">
 									<div class="decoration1"></div>
 								</div>
+
 								<div class="profileHeader">
 									<div class="profileHeaderBG"></div>
 									<div class="profileHeaderDecoration"></div>
 									<p class="profileHeaderText">Welcome, zeeeeeee</p>
 								</div>
-
 								<div class="profileMainBody">
 									<div class="profileMainBodyBG"></div>
+									<!-- PROFILE PHOTO -->
+									<div class="profilePhoto">
+										<div class="profilePhotoBG"></div>
+										<div class="profilePhotoLocation"></div>
+									</div>
 									<div class="winsBox">
 										<div class="boxNail1"></div>
 										<div class="boxNail2"></div>
@@ -718,24 +936,35 @@
 										<p class="boxText">Games</p>
 										<p class="boxNumber" id="boxGamesNumber"></p>
 									</div>
+									<div class="winsBox position">
+										<div class="boxNail1"></div>
+										<div class="boxNail2"></div>
+										<div class="winsBoxBG"></div>
+										<p class="boxText">Position</p>
+										<p class="boxNumber" id="positionId"></p>
+									</div>
 									<div class="winRateBox">
 										<div class="winRateBoxBG"></div>
 										<p class="winRateText" id="winRateTextId">Current Winrate: ...</p>
-										<div class="positionBox">
-											<p class="positionHeader">Position</p>
-											<p class="positionText" id="positionId">Wait</p>
-										</div>
 									</div>
 								</div>
+
+								<!-- MATCH BUTTOM -->
 								<button class="defaultButton matchesButton" id="matchesButtonID">
-									<p class="defaultButtonText">Matches</p>
+									<svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+										<path d="M12 15l-5-5 5-5" stroke="#333" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+									</svg>
 									<div class="defaultButtonBG">
 										<div class="defaultButtonBGWave"></div>
 										<div class="defaultButtonBGWave wave2"></div>
 									</div>
 								</button>
+
+								<!-- FRIEND BUTTOM -->
 								<button class="defaultButton friendsButton" id="friendsButtonID">
-									<p class="defaultButtonText">Friends!</p>
+									<svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+										<path d="M8 5l5 5-5 5" stroke="#333" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+									</svg>
 									<div class="defaultButtonBG">
 										<div class="defaultButtonBGWave"></div>
 										<div class="defaultButtonBGWave wave2"></div>
@@ -755,8 +984,9 @@
 										<div class="defaultButtonBGWave wave2"></div>
 									</div>
 								</button>
-								<button class="defaultButton changeNick" id="switchNickButtonID">
-									<p class="defaultButtonText">Switch Nick</p>
+								<!-- PROFILE OPTIONS BUTTOM -->
+								<button class="defaultButton changeNick" id="profileOptionsButtonID">
+									<p class="defaultButtonText">Options</p>
 									<div class="defaultButtonBG">
 										<div class="defaultButtonBGWave"></div>
 										<div class="defaultButtonBGWave wave2"></div>
