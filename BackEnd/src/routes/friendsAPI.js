@@ -1,12 +1,8 @@
-const { getFriends, addFriend, removeFriend } = require('../friendsStorage');
+const { removeFriend } = require('../friendsStorage');
 const { getOnlineUsers } = require('../wsManager');
 const db = require('../database');
-const repl = require("node:repl");
-
 module.exports = async function (fastify) {
-    
-    // Add friend
-// Add friend (fixed: get user from session)
+
     fastify.post('/friends/add', {preHandler: fastify.authenticate } , async (request, reply) =>
     {
         const { friendNickname } = request.body;
@@ -35,21 +31,22 @@ module.exports = async function (fastify) {
         return reply.send({ success: true });
     });
 
-    
-    // Get friends with online status
-    fastify.get('/friends', async (request, reply) => {
-        const sessionUser = request.session.get('user');
-        
-        if (!sessionUser) return reply.code(401).send({ error: "Not logged in" });
-        
-        const friends = getFriends(sessionUser.nickname);
+    fastify.get('/friends', { preHandler: fastify.authenticate }, async (request, reply) => {
+        const userId = request.userId;
         const onlineUsers = getOnlineUsers();
-        
-        const friendsWithStatus = friends.map(friendNickname => ({
-            nickname: friendNickname,
-            isOnline: onlineUsers.includes(friendNickname)
+
+        const rows = db.prepare(`
+        SELECT u.nickname
+        FROM friends f
+        JOIN users u ON (u.id = CASE WHEN f.user_id = ? THEN f.friend_id ELSE f.user_id END)
+        WHERE f.user_id = ? OR f.friend_id = ?
+    `).all(userId, userId, userId);
+
+        const friendsWithStatus = rows.map(row => ({
+            nickname: row.nickname,
+            isOnline: onlineUsers.includes(row.nickname)
         }));
-        
+
         return reply.send({ friends: friendsWithStatus });
     });
     
