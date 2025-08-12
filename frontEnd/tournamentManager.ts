@@ -19,6 +19,8 @@ async function handleNextFase(nick: string, Tournament: any) {
 
 		if (Tournament.currentMatchIndex === 3) {
 			alert(`You win the Tournament! The Great ${Tournament.Winner}!`);
+			navigate("home");
+			location.reload();
 			return ;
 		}
 
@@ -33,6 +35,7 @@ async function handleNextFase(nick: string, Tournament: any) {
 				startPongWebSocket(Tournament.matches[2]);
 			}, 3000);
 			navigate("home");
+			location.reload()
 
 		} else {
 			console.log(`${nick} is not in the semifinals.`);
@@ -42,10 +45,16 @@ async function handleNextFase(nick: string, Tournament: any) {
 	}
 }
 
-
 // Listen for tournament match end events
 window.addEventListener('MatchEnd', (event: CustomEvent) => {
-	const { matchId, winner } = event.detail;
+	const { matchId, winner, isLocal } = event.detail;
+	if (isLocal)
+	{
+		console.log('Handling LOCAL match end...');
+		console.log(`Match ID: ${matchId}, Winner: ${winner}`);
+		handleLocalMatchEnd(matchId, winner);
+		return ;
+	}
 	handleMatchEnd(matchId, winner);
 });
 
@@ -63,6 +72,7 @@ async function handleMatchEnd(currentMatchId: string, winner: string) {
 		if (nick != winner)
 		{
 			navigate("home");
+			location.reload();
 			return;
 		}
 			
@@ -71,6 +81,7 @@ async function handleMatchEnd(currentMatchId: string, winner: string) {
 		if (!tournament.exists)
 		{
 			navigate("home");
+			location.reload();
 			return;
 		}
 
@@ -96,4 +107,82 @@ async function handleMatchEnd(currentMatchId: string, winner: string) {
 	} catch (error) {
 		console.error('Error handling match end:', error);
 	}
+}
+
+
+
+function handleLocalMatchEnd(matchId: string, winner: string)
+{
+	var tournament = findTournamentByMatch(matchId);
+	if (!tournament)
+	{
+		navigate("home");
+		location.reload()
+		return;
+	}
+
+	if (tournament.currentMatchIndex === 0) {
+		tournament.semifinal1 = winner;
+		tournament.currentMatchIndex++;
+
+		console.log(tournament.semifinal1);
+		console.log(tournament.semifinal2);
+		console.log(tournament.currentMatchIndex);
+
+		changePageTo(pongGamePage, joinedContestPage);
+		setTimeout(() => {
+			navigate('game1');
+			history.replaceState(undefined, "", `#pong/${tournament.matches[1]}`);
+			changePageTo(joinedContestPage, pongGamePage);
+			startPongWebSocket(tournament.matches[1], true, false, false, [tournament.players[2], tournament.players[3]]);
+			setGameScore(tournament.players[2], tournament.players[3]);
+			resetEmotions();
+		}, 3000);
+
+
+	} 
+	
+	else if (tournament.currentMatchIndex === 1) {
+		tournament.semifinal2 = winner;
+		tournament.currentMatchIndex++;
+
+
+		console.log(tournament.semifinal1);
+		console.log(tournament.semifinal2);
+		console.log(tournament.currentMatchIndex);
+
+		setTimeout(() => {
+			navigate('game1');
+			history.replaceState(undefined, "", `#pong/${tournament.matches[2]}`);
+			changePageTo(joinedContestPage, pongGamePage);
+			startPongWebSocket(tournament.matches[2],  true, false, false, [tournament.semifinal1, tournament.semifinal2]);
+			setGameScore(tournament.semifinal1, tournament.semifinal2);
+			resetEmotions();
+		}, 3000);
+
+		
+	} 
+	
+	else if (tournament.currentMatchIndex === 2) {
+		tournament.Winner = winner;
+		alert(`You win the Tournament! The winner is: The Great ${tournament.Winner}!`);
+		navigate("home");
+		location.reload();
+	} 
+	
+	else {
+		console.error("Invalid match index in tournament.");
+	}
+
+	
+
+}
+
+function findTournamentByMatch(matchId: string): any | null {
+	for (const [tournamentId, tournament] of LocalTournaments.entries()) {
+		if (tournament.matches.includes(matchId)) {
+			return tournament;
+		}
+	}
+	return null;
 }

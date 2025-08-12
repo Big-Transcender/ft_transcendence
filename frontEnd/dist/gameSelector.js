@@ -61,7 +61,7 @@ document.addEventListener("DOMContentLoaded", () => {
             animateTimer();
             setRandomBackground();
             resetEmotions();
-            //setGameScore(getNickOnLocalStorage());
+            setGameScore(getNickOnLocalStorage());
             backGamePongButton.classList.add("active");
             showMatchId("NONE");
         }
@@ -87,9 +87,9 @@ document.addEventListener("DOMContentLoaded", () => {
             startPongWebSocket(matchId, true); // true = local mode
             resetEmotions();
             animateTimer();
-            //setGameScore(getNickOnLocalStorage(), "Player 2");
+            setGameScore(getNickOnLocalStorage(), "Player 2");
             backGamePongButton.classList.add("active");
-            showMatchId("NONE");
+            showMatchId(matchId);
         }
         else {
             displayWarning("You need to log in.");
@@ -191,7 +191,8 @@ function openPopupPong() {
                 closePopupPong();
             }
             else {
-                showErrorAndReturn("Match not found or is full.");
+                console.log("Match not found or is full.");
+                //showErrorAndReturn("Match not found or is full.");
             }
         }
         catch (error) {

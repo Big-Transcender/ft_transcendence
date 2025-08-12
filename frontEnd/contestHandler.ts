@@ -13,6 +13,8 @@ const createContestPage = document.getElementById("contestCreateId");
 const pinBox = document.querySelector(".contestPinBox");
 var pin;
 
+var LocalTournaments = new Map();
+
 function genericBackFunctionContest() {
 	const currentActive = document.querySelector(".contestId.active");
 	if (currentActive) {
@@ -101,13 +103,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
 	// START THE CONTEST
 	startContestButton.addEventListener("click", async () => {
-		// Hi Diogo-San, this is the button you asked for.
-		// The function, "displayWarning", well... display a text in the display to show some errors if you want.
-		// It has a 5 seconds cooldown.
-		// Arigato gozaimasu.
+
 		const id = pin
-		//displayWarning("This start the contest");
-		startTournament( id );
+		const players = ["diogosan", "Bde", "cacarval", "bousa"];
+		startLocalTournament(id, players);
+		//startTournament( id );
 	});
 
 	genericBackButton.forEach((button) => {
@@ -263,9 +263,54 @@ function resetContestPage() {
 	contestSelectorPage.classList.add("active");
 }
 
-async function startTournament(tournamentId: string, isLocal: boolean = false)
+async function startTournament(tournamentId: string)
 {
-	console.log("aqui vai a response");
+	var data = await getTournamentData(tournamentId);
+
+	const nick = getNickOnLocalStorage();
+
+	console.log(nick);
+	console.log(data.players[0]);
+
+	if (nick === data.players[0] || nick === data.players[1]) {
+		navigate('game1');
+		history.replaceState(undefined, "", `#pong/${data.matches[0]}`);
+		changePageTo(gameSelectorPongPage, pongGamePage);
+		startPongWebSocket(data.matches[0]);
+	}
+	else if (nick === data.players[2] || nick === data.players[3]) {
+		navigate('game1');
+		history.replaceState(undefined, "", `#pong/${data.matches[1]}`);
+		changePageTo(gameSelectorPongPage, pongGamePage);
+		startPongWebSocket(data.matches[1]);
+	}
+
+}
+
+function startLocalTournament(tournamentId: string, players: string[])
+{
+	var tournament = {
+						tournamentId, 
+						players,
+						matches: [generateMatchId(), generateMatchId(), generateMatchId()],
+						currentMatchIndex: 0,
+						semifinal1:  null, 
+						semifinal2:  null,
+					 };
+	
+	LocalTournaments.set(tournament.tournamentId, tournament);
+	navigate('game1');
+	history.replaceState(undefined, "", `#pong/${tournament.matches[0]}`);
+	changePageTo(gameSelectorPongPage, pongGamePage);
+	setGameScore(tournament.players[0], tournament.players[1]);
+	startPongWebSocket(tournament.matches[0], true, false, false,[tournament.players[0], tournament.players[1]]);
+	
+
+}
+
+
+async function getTournamentData(tournamentId: string)
+{
 	const response = await fetch(`${backendUrl}/constructTournament`, {
 		method: 'POST',
 		headers: { 'Content-Type': 'application/json' },
@@ -287,23 +332,5 @@ async function startTournament(tournamentId: string, isLocal: boolean = false)
 		return;
 	}
 
-	console.log(data);
-	const nick = getNickOnLocalStorage();
-
-	console.log(nick);
-	console.log(data.tournament.players[0]);
-
-	if (nick === data.tournament.players[0] || nick === data.tournament.players[1]) {
-		navigate('game1');
-		history.replaceState(undefined, "", `#pong/${data.tournament.matches[0]}`);
-		changePageTo(gameSelectorPongPage, pongGamePage);
-		startPongWebSocket(data.tournament.matches[0], isLocal);
-	}
-	else if (nick === data.tournament.players[2] || nick === data.tournament.players[3]) {
-		navigate('game1');
-		history.replaceState(undefined, "", `#pong/${data.tournament.matches[1]}`);
-		changePageTo(gameSelectorPongPage, pongGamePage);
-		startPongWebSocket(data.tournament.matches[1]);
-	}
-
+	return data.tournament;
 }

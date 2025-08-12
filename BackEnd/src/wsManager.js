@@ -3,7 +3,6 @@ const { matches, createMatch, startGameLoopForMatch, cleanupMatch } = require('.
 const { createInitialGameState, updateBall, updateBall4Players, handleInput } = require('./gameLogic.js');
 const { insertMatch, getUserIdByNickname } = require('./dataQuerys.js');
 
-// Presence functionality
 const onlineUsers = new Set();
 
 function setupUnifiedWebSocket(server) {
@@ -51,6 +50,7 @@ function handleGameConnection(ws, wss) {
             const isLocal = parsed.isLocal || false;
             const aiGame = parsed.aiGame || false;
             const nickname = parsed.nickname || null;
+			const opponentNickname = parsed.opponentNickname || null;
             const team = parsed.teamGame || false;
 
             if (!matches.has(matchId)) {
@@ -62,6 +62,11 @@ function handleGameConnection(ws, wss) {
             }
 
             const match = matches.get(matchId);
+			if (opponentNickname)
+			{
+				match.gameState.playersName.player1 = nickname;
+				match.gameState.playersName.player2 = opponentNickname;
+			}
             assignedPlayer = setPlayers(match, nickname, ws, matchId, team);
         }
         else if (parsed.type === 'input' && matchId && matches.has(matchId)) {
@@ -158,7 +163,7 @@ function broadcastUserStatus(nickname, isOnline, wss) {
     });
 }
 
-// Game helper functions (copied from your socketConnection.js)
+
 function setPlayers(match, nickname, ws, matchId, team) {
     const maxPlayers = team ? 4 : 2;
     let assignedPlayer = null;
@@ -236,7 +241,7 @@ function seeTeamMatchDisconection(match) {
     }
 }
 
-// Function to get online users (for friends API)
+
 function getOnlineUsers() {
     return Array.from(onlineUsers);
 }

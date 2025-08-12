@@ -30,8 +30,6 @@ function startGameLoopForMatch(matchId, updateBall, isLocal = false, aiGame = fa
 				gameState.started = true;
 				player1 = getNicknameByUserId(match.gameState.playerDbId.p1) || "Player 1"
 				player2 = getNicknameByUserId(match.gameState.playerDbId.p2) || "Player 2"
-				if (isLocal)
-					player2 = "Bot";
 
 				match.clients.forEach((client) => {
 					const message = JSON.stringify({ 
@@ -98,7 +96,7 @@ function cleanupMatch(matchId, reason = "unknown", nick = null)
 	match.clients.forEach((client) => {
 		const message = JSON.stringify({
 			type: 'gameOver',
-			payload: { winner: getNicknameByUserId(match.gameState.winnerId) || getNicknameByUserId(nick), reason },
+			payload: { winner: getNicknameByUserId(match.gameState.winnerId) || getNicknameByUserId(nick) || match.gameState.winnerName, reason },
 		});
 		if (client.ws.readyState === 1) {
 			client.ws.send(message);

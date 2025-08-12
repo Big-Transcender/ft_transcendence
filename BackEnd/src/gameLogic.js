@@ -25,6 +25,8 @@ function createInitialGameState() {
 		score: { p1: 0, p2: 0 },
 		playerId: { p1: 1, p2: 2, p3: 3, p4: 4 },
 		playerDbId: { p1: 0, p2: 0, p3: 0, p4: 0},
+		playersName: {player1: null, player2: null},
+		winnerName: null,
 		onGoing: false,
 		started: false,
 		finished: false,
@@ -139,11 +141,16 @@ function updateBall(gameState) {
 		resetBall(gameState);
 		return;
 	}
-
+	// Winning
 	if ((gameState.score.p2 === 5 || gameState.score.p1 === 5) && gameState.onGoing ) {
 		gameState.winnerId = gameState.playerDbId.p1;
+		gameState.winnerName = gameState.playersName.player1
 		if (gameState.score.p1 < gameState.score.p2)
+		{
 			gameState.winnerId = gameState.playerDbId.p2;
+			gameState.winnerName = gameState.playersName.player2
+		}
+			
 		insertOnDb(gameState);
 		gameState.onGoing = false;
 		gameState.finished= true;
