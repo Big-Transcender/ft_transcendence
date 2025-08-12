@@ -154,16 +154,19 @@ function startPongWebSocket(matchId: string, isLocal: boolean = false, aiGame: b
 					var { winner, reason } = data.payload;
 					if (winner === null)
 						winner = "Bot";
-						
-					alert(`Game Over! The winner is ${winner}. Reason: ${reason}`);
-					
-					if (currentMatchId) {
-						window.dispatchEvent(new CustomEvent('MatchEnd', {
-							detail: { matchId: currentMatchId, winner: winner, isLocal: isLocal }
-						}));
-					}
-					setGameScore("Player 1", "Player 2");
-					stopPongWebSocket()
+
+					setTimeout(() => {
+						alert(`Game Over! The winner is ${winner}. Reason: ${reason}`);
+
+						if (currentMatchId) {
+							window.dispatchEvent(new CustomEvent('MatchEnd', {
+								detail: { matchId: currentMatchId, winner: winner, isLocal: isLocal }
+							}));
+						}
+						setGameScore("Player 1", "Player 2");
+						stopPongWebSocket()
+
+					}, 250);
 					break;
 				}
 			}
