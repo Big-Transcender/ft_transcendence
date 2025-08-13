@@ -60,7 +60,7 @@ window.addEventListener("popstate", (event) => {
 	console.log(`📍 Navigating to: ${page} (via browser navigation)`);
 	
 	// ✅ Check if last 4 characters are all numbers
-	const last4Chars = page.slice(-3);
+	const last4Chars = page.slice(-4);
 	const isAllNumbers = /^\d{4}$/.test(last4Chars);
 	
 	if (isAllNumbers) {

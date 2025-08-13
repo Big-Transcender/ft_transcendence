@@ -50,7 +50,7 @@ window.addEventListener("popstate", (event) => {
     const page = ((_a = event.state) === null || _a === void 0 ? void 0 : _a.page) || location.hash.replace("#", "") || "home";
     console.log(`📍 Navigating to: ${page} (via browser navigation)`);
     // ✅ Check if last 4 characters are all numbers
-    const last4Chars = page.slice(-3);
+    const last4Chars = page.slice(-4);
     const isAllNumbers = /^\d{4}$/.test(last4Chars);
     if (isAllNumbers) {
         console.log(`🚫 Blocked page "${page}" (ends with numbers: ${last4Chars}), redirecting to home`);
