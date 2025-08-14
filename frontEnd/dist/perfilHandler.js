@@ -505,13 +505,13 @@ async function setProfileAvatar() {
         });
         const data = await response.json();
         const avatarUrl = data.avatar.startsWith('/') ? backendUrl + data.avatar : data.avatar;
-        const photoElements = document.querySelectorAll('.profilePhotoLocation, .profilePhoto');
+        const photoElements = document.querySelectorAll('.profilePhotoLocation');
         photoElements.forEach((el) => {
             if (el instanceof HTMLImageElement) {
-                el.src = avatarUrl;
+                el.src = avatarUrl + '?t=' + Date.now(); // cache busting
             }
             else {
-                el.style.backgroundImage = `url('${avatarUrl}')`;
+                el.style.backgroundImage = `url('${avatarUrl}?t=${Date.now()}')`;
             }
         });
     }
