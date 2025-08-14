@@ -8,53 +8,38 @@ module.exports = async function (fastify)
 		reply.send(leaderBoard);
 	});
 
-	fastify.get('/player-matches/:nickname', async (request, reply) => {
-			const { nickname } = request.params;
-			const userId = getUserIdByNickname(nickname);
-			
-			if (!userId) {
-				return reply.code(404).send({ error: 'User not found' });
-			}
 
-			try {
-				const matches = db.prepare(`
-					SELECT 
-						m.id,
-						m.score_p1,
-						m.score_p2,
-						m.tournament_id,
-						p1.nickname as player1_nickname,
-						p2.nickname as player2_nickname,
-						winner.nickname as winner_nickname
-					FROM matches m
-					JOIN users p1 ON m.player1_id = p1.id
-					JOIN users p2 ON m.player2_id = p2.id
-					JOIN users winner ON m.winner_id = winner.id
-					WHERE m.player1_id = ? OR m.player2_id = ?
-					ORDER BY m.id DESC
-					LIMIT 5
-				`).all(userId, userId);
+	fastify.get('/player-matches/', { preHandler: fastify.authenticate }, async (request, reply) => {
+		const nickname = request.userNickname;
 
-				const formattedMatches = matches.map(match => {
-					const isPlayer1 = match.player1_nickname === nickname;
-					const opponent = isPlayer1 ? match.player2_nickname : match.player1_nickname;
-					const playerScore = isPlayer1 ? match.score_p1 : match.score_p2;
-					const opponentScore = isPlayer1 ? match.score_p2 : match.score_p1;
-					const result = match.winner_nickname === nickname ? 'WIN' : 'LOSS';
-					
-					// ✅ Only 3 things: Result, Score, Opponent
-					return {
-						result: result,                              // WIN/LOSS
-						score: `${playerScore}-${opponentScore}`,    // Score
-						opponent: opponent                           // Opponent name
-					};
-				});
+		const userRow = await db.prepare('SELECT id FROM users WHERE nickname = ?').get(nickname);
+		if (!userRow) {
+			return reply.code(404).send({ error: 'User not found' });
+		}
+		const userId = userRow.id;
 
-				return reply.send({ matches: formattedMatches });
-			} catch (error) {
-				console.error('Error fetching match history:', error);
-				return reply.code(500).send({ error: 'Internal server error' });
-			}
+		const matches = await db.prepare(
+			`SELECT * FROM matches WHERE player1_id = ? OR player2_id = ?`
+		).all(userId, userId);
+
+		const formattedMatches = await Promise.all(matches.map(async match => {
+			const isPlayer1 = match.player1_id === userId;
+			const opponentId = isPlayer1 ? match.player2_id : match.player1_id;
+			const opponentRow = await db.prepare('SELECT nickname FROM users WHERE id = ?').get(opponentId);
+			const opponent = opponentRow ? opponentRow.nickname : 'Unknown';
+
+			const isWinner = match.winner_id === userId;
+			const result = isWinner ? 'WIN' : 'LOSS';
+			const playerScore = isPlayer1 ? match.score_p1 : match.score_p2;
+			const opponentScore = isPlayer1 ? match.score_p2 : match.score_p1;
+			return {
+				result,
+				score: `${playerScore}-${opponentScore}`,
+				opponent
+			};
+		}));
+
+		reply.send(formattedMatches);
 	});
 	fastify.get('/leaderboard/position/', { preHandler: fastify.authenticate }, async (request, reply) => {
 			const nickname = request.userNickname;
