@@ -90,7 +90,7 @@ fastify.get(
 );
 
 fastify.decorate("authenticate", async function (request, reply) {
-	try {
+	/*try {
 		const authHeader = request.headers.authorization;
 		if (!authHeader) {
 			return reply.code(401).send({ error: "Access denied" });
@@ -103,7 +103,7 @@ fastify.decorate("authenticate", async function (request, reply) {
 		request.userNickname = user.nickname;
 	} catch (err) {
 		reply.code(401).send({ error: "Invalid token" });
-	}
+	}*/
 });
 
 

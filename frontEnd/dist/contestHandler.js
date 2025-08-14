@@ -97,8 +97,8 @@ document.addEventListener("DOMContentLoaded", () => {
     startContestButton.addEventListener("click", async () => {
         const id = pin;
         const players = ["diogosan", "Bde", "cacarval", "bousa"];
-        startLocalTournament(id, players);
-        //startTournament( id );
+        //startLocalTournament(id, players);
+        startTournament(id);
     });
     genericBackButton.forEach((button) => {
         button.addEventListener("click", () => {

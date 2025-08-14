@@ -34,8 +34,6 @@ async function handleNextFase(nick: string, Tournament: any) {
 				changePageTo(joinedContestPage, pongGamePage);
 				startPongWebSocket(Tournament.matches[2]);
 			}, 3000);
-			navigate("home");
-			location.reload()
 
 		} else {
 			console.log(`${nick} is not in the semifinals.`);

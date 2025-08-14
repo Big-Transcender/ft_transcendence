@@ -9,6 +9,13 @@ interface MatchCheckResponse {
 }
 
 function startPongWebSocket(matchId: string, isLocal: boolean = false, aiGame: boolean = false, teamGame: boolean = false, localNicks: string[] = null) {
+	if (socket) {
+        console.log("Closing existing WebSocket connection...");
+        socket.close();
+        socket = null;
+        socketInitialized = false;
+    }
+	
 	if (socketInitialized){
 		console.log("game already in Progress");
 		return;
@@ -188,7 +195,7 @@ function stopPongWebSocket() {
 	}
 	socketInitialized = false;
 	currentMatchId = null;
-	location.reload();
+	//location.reload();
 }
 
 
@@ -200,7 +207,7 @@ setInterval(() => {
 
 	if (!isOnPongGame && socketInitialized) {
 		stopPongWebSocket();
-		console.log("closed socket from FrontEnd");
+		console.log("closed socket from FrontEnd (leaving page)");
 		console.log(currentMatchId);
 	}
 }, 100);
