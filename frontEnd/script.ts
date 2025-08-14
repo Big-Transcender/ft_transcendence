@@ -76,6 +76,8 @@ window.addEventListener("popstate", (event) => {
 window.addEventListener("load", () => {
 	const page = location.hash.replace("#", "") || "home";
 	console.log(`📍 Initial page load: ${page}`);
+	if (isGamePage(page))
+		return;
 	
 	history.replaceState({ page: page }, "", `#${page}`);
 	navigateWithoutHistory(page);
@@ -132,3 +134,18 @@ musicMenu.addEventListener("mouseleave", () => {
 		musicIn = false;
 	}
 });
+
+function isGamePage(page)
+{
+	const last4Chars = page.slice(-4);
+	const isAllNumbers = /^\d{4}$/.test(last4Chars);
+	
+	if (isAllNumbers) {
+		console.log(`🚫 Blocked page "${page}" (ends with numbers: ${last4Chars}), redirecting to home`);
+		history.replaceState({ page: "home" }, "", "#home");
+		navigateWithoutHistory("home");
+		return true;
+	}
+	return false;
+	
+}

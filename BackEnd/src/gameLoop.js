@@ -40,8 +40,16 @@ function startGameLoopForMatch(matchId, updateBall, isLocal = false, aiGame = fa
 						client.ws.send(message);
 					}
 				});
-				
-
+				if (requiredPlayers > 1){
+					match.clients.forEach((client) => {
+						const message = JSON.stringify({ 
+							type: 'startAnimation', 
+						});
+						if (client.ws.readyState === 1) {
+							client.ws.send(message);
+						}
+					});
+				}
 				console.log("⏳ Starting game in 3 seconds...");
 				startTimer(3000, gameState);
 			}

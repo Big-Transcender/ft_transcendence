@@ -150,6 +150,10 @@ function startPongWebSocket(matchId: string, isLocal: boolean = false, aiGame: b
 						setGameScore(players[0], players[1]);
 					return ;
 				}
+				case "startAnimation": {
+					animateTimer();
+					break;
+				}
 				case "gameOver": {
 					var { winner, reason } = data.payload;
 					if (winner === null)
@@ -184,6 +188,7 @@ function stopPongWebSocket() {
 	}
 	socketInitialized = false;
 	currentMatchId = null;
+	location.reload();
 }
 
 
@@ -195,6 +200,8 @@ setInterval(() => {
 
 	if (!isOnPongGame && socketInitialized) {
 		stopPongWebSocket();
+		console.log("closed socket from FrontEnd");
+		console.log(currentMatchId);
 	}
 }, 100);
 

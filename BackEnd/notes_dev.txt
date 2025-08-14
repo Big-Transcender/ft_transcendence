@@ -46,3 +46,8 @@ curl -X POST http://localhost:3000/join-tournament \
 curl -X POST http://localhost:3000/join-tournament \
   -H "Content-Type: application/json" \
   -d '{"nick": "bde", "code": "1055"}'
+
+
+postman
+
+

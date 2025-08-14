@@ -117,7 +117,7 @@ function joinExistingMatch(matchId) {
     startPongWebSocket(matchId);
     changePageTo(gameSelectorPongMultiplayerPage, pongGamePage);
     backGamePongButton.classList.add("active");
-    animateTimer();
+    //animateTimer();
     resetEmotions();
     //setGameScore("Player 1", getNickOnLocalStorage());
 }
@@ -127,7 +127,7 @@ function createNewMatch(isLocal = false, aiGame = false, teamGame = false) {
     startPongWebSocket(matchId, isLocal, aiGame, teamGame); // Start as host
     changePageTo(gameSelectorPongMultiplayerPage, pongGamePage);
     backGamePongButton.classList.add("active");
-    animateTimer();
+    //animateTimer();
     resetEmotions();
     showMatchId(matchId);
     //setGameScore(getNickOnLocalStorage(), "Player 1");
