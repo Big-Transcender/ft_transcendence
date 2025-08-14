@@ -29,10 +29,10 @@ module.exports = async function (fastify) {
 		const players = getTournamentPlayers(tournamentId);
 		
 		tournament.players = [
-								players[0]?.nickname, 
-								players[1]?.nickname, 
-								players[2]?.nickname, 
-								players[3]?.nickname
+								players[0].nickname, 
+								players[1].nickname, 
+								players[2].nickname, 
+								players[3].nickname
 							 ];
 
 		res.send({     

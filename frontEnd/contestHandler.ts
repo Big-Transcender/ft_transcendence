@@ -333,22 +333,6 @@ async function getTournamentData(tournamentId: string)
 		return null;
 	}
 
-	if (!isArrayPopulated(data.tournament.players))
-	{
-		displayWarning("Not enough players to start the tournament");
-		return null;
-	}
-
-
 	return data.tournament;
 }
 
-function isArrayPopulated(array: string)
-{
-	for(let i = 0; i < array.length ; ++i)
-	{
-		if (array[i] === null)
-			return false;
-	}
-	return true;
-}
