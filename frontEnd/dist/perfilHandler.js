@@ -427,7 +427,10 @@ async function changeNickAPI(newNick) {
     try {
         const response = await fetch(`${backendUrl}/switch-nickname`, {
             method: "POST",
-            headers: Object.assign({ "Content-Type": "application/json" }, (token ? { Authorization: `Bearer ${token}` } : {})),
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+            },
             body: JSON.stringify({ nickname: newNick }),
         });
         const data = await response.json();
@@ -438,8 +441,10 @@ async function changeNickAPI(newNick) {
         else {
             displayWarning("Nickname changed successfully!");
             // Update localStorage and refresh profile data
-            // localStorage.setItem("nickname", newNick);
-            // await getUserStats(newNick);
+            //TODO need to put the correct function to change nickname
+            localStorage.setItem("nickname", newNick);
+            putNickOnProfileHeader(newNick);
+            await getUserStats(newNick);
         }
     }
     catch (error) {
