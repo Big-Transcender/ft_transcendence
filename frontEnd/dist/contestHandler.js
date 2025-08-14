@@ -11,6 +11,7 @@ const createContestPage = document.getElementById("contestCreateId");
 const pongContestPage = document.getElementById("pongContestId");
 const pinBox = document.querySelector(".contestPinBox");
 var pin;
+var numberOfPlayers = 0;
 var LocalTournaments = new Map();
 function genericBackFunctionContest() {
     const currentActive = document.querySelector(".contestId.active");
@@ -99,7 +100,10 @@ document.addEventListener("DOMContentLoaded", () => {
         const id = pin;
         const players = ["diogosan", "Bde", "cacarval", "bousa"];
         //startLocalTournament(id, players);
-        startTournament(id);
+        if (numberOfPlayers === 4)
+            startTournament(id);
+        else
+            displayWarning("Wait for all players!");
     });
     genericBackButton.forEach((button) => {
         button.addEventListener("click", () => {
@@ -179,6 +183,7 @@ async function getInfoFromContest(pin) {
         let name = document.getElementById("contestNameId");
         console.log("info from matches:", data.players);
         let players = data.players;
+        numberOfPlayers = players.length;
         for (let i = 0; i < players.length; i++) {
             const playerName = playerPlaces[i].querySelector(".playerContestPlaceName");
             const playerBG = playerPlaces[i].querySelector(".playerContestPlaceBG");
@@ -252,13 +257,11 @@ async function startTournament(tournamentId) {
     console.log(nick);
     console.log(data.players[0]);
     if (nick === data.players[0] || nick === data.players[1]) {
-        // navigate("game1");
         history.replaceState(undefined, "", `#pong/${data.matches[0]}`);
         changePageTo(joinedContestPage, pongContestPage);
         startPongWebSocket(data.matches[0]);
     }
     else if (nick === data.players[2] || nick === data.players[3]) {
-        // navigate("game1");
         history.replaceState(undefined, "", `#pong/${data.matches[1]}`);
         changePageTo(joinedContestPage, pongContestPage);
         startPongWebSocket(data.matches[1]);
@@ -296,5 +299,6 @@ async function getTournamentData(tournamentId) {
         displayWarning("Invalid tournament data received");
         return null;
     }
+    console.log(data.tournament.tournamentId);
     return data.tournament;
 }
