@@ -24,10 +24,16 @@ module.exports = async function (fastify) {
 			});
 		}
 
+
 		tournament = new Tournament(tournamentId);
 		const players = getTournamentPlayers(tournamentId);
-		tournament.players = [players[0].nickname, players[1].nickname, players[2].nickname, players[3].nickname];
-
+		
+		tournament.players = [
+								players[0]?.nickname, 
+								players[1]?.nickname, 
+								players[2]?.nickname, 
+								players[3]?.nickname
+							 ];
 
 		res.send({     
 			tournament: {

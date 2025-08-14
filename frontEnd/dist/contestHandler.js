@@ -245,6 +245,8 @@ function resetContestPage() {
 }
 async function startTournament(tournamentId) {
     var data = await getTournamentData(tournamentId);
+    if (!data)
+        return;
     const nick = getNickOnLocalStorage();
     console.log(nick);
     console.log(data.players[0]);
@@ -285,15 +287,24 @@ async function getTournamentData(tournamentId) {
     });
     if (!response.ok) {
         const errorData = await response.json();
-        console.error("Error starting tournament:", errorData.error);
         displayWarning(errorData.error);
-        return;
+        return null;
     }
     const data = await response.json();
     if (!data || !data.tournament) {
-        console.error("Invalid tournament data received");
         displayWarning("Invalid tournament data received");
-        return;
+        return null;
+    }
+    if (!isArrayPopulated(data.tournament.players)) {
+        displayWarning("Not enough players to start the tournament");
+        return null;
     }
     return data.tournament;
+}
+function isArrayPopulated(array) {
+    for (let i = 0; i < array.length; ++i) {
+        if (array[i] === null)
+            return false;
+    }
+    return true;
 }
