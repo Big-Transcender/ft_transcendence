@@ -3,6 +3,9 @@ const bcrypt = require('bcryptjs');
 const fs = require('fs');
 const path = require('path');
 
+// Frontend base URL used to build absolute URL for default assets
+const FRONTEND_URL = process.env.FRONTEND_URL || 'http://localhost:5173';
+
 module.exports = async function (fastify) {
     fastify.get('/users', async (request, reply) => {
         const users = db.prepare('SELECT id, nickname FROM users').all();
@@ -75,18 +78,20 @@ module.exports = async function (fastify) {
     fastify.get('/me/avatar', { preHandler: fastify.authenticate }, async (request, reply) => {
         const userId = request.userId;
         const user = db.prepare('SELECT avatar FROM users WHERE id = ?').get(userId);
-        let avatarPath = '';
+
+        // Build default avatar as an absolute URL to the frontend asset
+        const defaultAvatar = `${FRONTEND_URL}/images/pongGame/player1.png`;
+        let avatarPath = defaultAvatar;
+
         if (user && user.avatar) {
-            avatarPath = `/uploads/${user.avatar}`;
-            // Check if file exists
+            // Prefer uploaded avatar when it exists on disk
             const uploadsDir = process.env.UPLOADS_DIR || '/app/uploads';
             const filePath = path.join(uploadsDir, user.avatar);
-            if (!fs.existsSync(filePath)) {
-                avatarPath = '/images/profileDefault.png';
+            if (fs.existsSync(filePath)) {
+                avatarPath = `/uploads/${user.avatar}`; // served by backend static
             }
-        } else {
-            avatarPath = '/images/profileDefault.png';
         }
+
         reply.send({ avatar: avatarPath });
     });
 };
