@@ -53,7 +53,17 @@ async function flipboardNumberAnimation(target, targetBox) {
 async function getUserPosition() {
     const userNick = localStorage.getItem("nickname");
     try {
-        const response = await fetch(`${backendUrl}/leaderboard/position/${userNick}`);
+        // const response = await fetch(`${backendUrl}/leaderboard/position/${userNick}`);
+        // const response = await fetch(`${backendUrl}/leaderboard/position/`);
+        const token = localStorage.getItem("token");
+        const response = await fetch(`${backendUrl}/leaderboard/position/`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`,
+            },
+            credentials: "include",
+        });
         if (!response.ok) {
             const err = await response.json();
             throw new Error(err.error || "Unknown error");
@@ -361,9 +371,17 @@ async function updateMatchHistory() {
     if (!nickname)
         return;
     try {
-        const response = await fetch(`${backendUrl}/player-matches/${nickname}`, {
+        const token = localStorage.getItem("token");
+        // const response = await fetch(`${backendUrl}/player-matches/${nickname}`, {
+        const response = await fetch(`${backendUrl}/player-matches/`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`,
+            },
             credentials: "include",
         });
+        console.log("hahahaha");
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
@@ -379,7 +397,7 @@ async function updateMatchHistory() {
             table.deleteRow(1);
         }
         // Insert new rows for each match
-        data.matches.forEach((match) => {
+        data.forEach((match) => {
             const row = table.insertRow();
             // ✅ Column 1: Result (WIN/LOSS)
             const resultCell = row.insertCell();

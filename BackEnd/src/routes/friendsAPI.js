@@ -49,21 +49,33 @@ module.exports = async function (fastify) {
 
         return reply.send({ friends: friendsWithStatus });
     });
-    
-    // Remove friend
-    fastify.delete('/friends/remove', async (request, reply) => {
+
+    fastify.delete('/friends/remove', {preHandler: fastify.authenticate }, async (request, reply) => {
         const { friendNickname } = request.body;
-        const sessionUser = request.session.get('user');
-        
-        if (!sessionUser) return reply.code(401).send({ error: "Not logged in" });
-        
-        const success = removeFriend(sessionUser.nickname, friendNickname);
-        
-        if (success) {
-            return reply.send({ message: "Friend removed" });
-        } else {
-            return reply.code(404).send({ error: "Friend not found" });
-        }
+
+        if(!friendNickname)
+            return reply.code(400).send({ error: "Friend nickname required" });
+
+        if(friendNickname === request.userNickname)
+            return reply.code(400).send({ error: "Cannot remove yourself as friend" });
+
+        const friendRow = db.prepare('SELECT id FROM users WHERE nickname = ?').get(friendNickname);
+
+        if (!friendRow)
+            return reply.code(404).send({ error: "No Player found with that nickname" });
+
+        const userId = request.userId;
+        const friendId = friendRow.id;
+
+        const [id1, id2] = userId < friendId ? [userId, friendId] : [friendId, userId];
+
+        const exists = db.prepare('SELECT 1 FROM friends WHERE user_id = ? AND friend_id = ?').get(id1, id2);
+        if (!exists)
+            return reply.code(400).send({ error: "You are not friends" });
+
+        db.prepare('DELETE FROM friends WHERE user_id = ? AND friend_id = ?').run(id1, id2);
+
+        return reply.send({ success: true });
     });
 
     fastify.post('/test/setup-friends', async (request, reply) => {
