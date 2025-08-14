@@ -265,8 +265,8 @@ function changePhotoPopup() {
 	.then(response => response.json())
 	.then(data => {
 		if (data.success && data.url) {
-			// Update all profile photo elements
-			const photoElements = document.querySelectorAll('.profilePhotoLocation, .profilePhoto');
+			// Update only profile photo location elements
+			const photoElements = document.querySelectorAll('.profilePhotoLocation');
 			photoElements.forEach((el) => {
 				if (el instanceof HTMLImageElement) {
 					el.src = backendUrl + data.url + '?t=' + Date.now(); // cache busting
