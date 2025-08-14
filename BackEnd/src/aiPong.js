@@ -16,7 +16,7 @@ let nextActionTime = 0;
 const AI_INPUT_INTERVAL_MS = 16; 
 let lastAIInputTime = 0;
 
-// Deep-ish clone for "vision"
+
 function takeSnapshot(gs) {
 	return {
 		t: Date.now(),
@@ -28,7 +28,7 @@ function takeSnapshot(gs) {
 	};
 }
 
-// Better prediction: simulates all wall bounces until ball reaches AI paddle
+
 function predictBallInterceptY(snapshot, aiPaddleKey = 'p2') {
 	let x = snapshot.ball.x;
 	let y = snapshot.ball.y;
@@ -45,7 +45,6 @@ function predictBallInterceptY(snapshot, aiPaddleKey = 'p2') {
 		x += vx;
 		y += vy;
 
-		// vertical bounces
 		if (y <= 0) {
 			y = -y;
 			vy = -vy;
@@ -54,12 +53,10 @@ function predictBallInterceptY(snapshot, aiPaddleKey = 'p2') {
 			vy = -vy;
 		}
 
-		// AI paddle collision plane
 		if (vx > 0 && (x + BALL_SIZE_X) >= targetX) {
 			return y + halfBall;
 		}
 
-		// stop if ball goes off field
 		if (x + BALL_SIZE_X <= 0 || x >= 100 + BALL_SIZE_X) {
 			return y + halfBall;
 		}
@@ -67,7 +64,7 @@ function predictBallInterceptY(snapshot, aiPaddleKey = 'p2') {
 	return y + halfBall;
 }
 
-let aiCurrentDir = null; // 'up', 'down', or null
+let aiCurrentDir = null;
 
 function pressKeysForMovementStatic(handleInputFn, gs, desiredCenterY, paddleKeyName) {
 	const currentPaddleTop = gs.paddles[paddleKeyName];
@@ -75,19 +72,18 @@ function pressKeysForMovementStatic(handleInputFn, gs, desiredCenterY, paddleKey
 
 	const deadZone = 2.5;
 
-	// If we're already in dead zone, stop
+
 	if (Math.abs(currentPaddleCenter - desiredCenterY) <= deadZone) {
 		aiCurrentDir = null;
 		handleInputFn(gs, null, [], true);
 		return;
 	}
 
-	// If no direction yet, pick one based on current position
+
 	if (!aiCurrentDir) {
 		aiCurrentDir = currentPaddleCenter < desiredCenterY ? 'down' : 'up';
 	}
 
-	// Continue moving in chosen direction until target reached
 	if (aiCurrentDir === 'down') {
 		if (currentPaddleCenter < desiredCenterY - deadZone) {
 			handleInputFn(gs, null, ['ArrowDown'], true);
@@ -111,31 +107,25 @@ function aiMove(gameState, handleInput) {
 	const now = Date.now();
 	const paddleKey = 'p2';
 
-	// Match player input frequency
 	if (now - lastAIInputTime < AI_INPUT_INTERVAL_MS) return;
 	lastAIInputTime = now;
 
-	// Refresh vision once per second
 	if (!lastSnapshot || (now - lastVisionTimestamp) >= VISION_INTERVAL_MS) {
 		lastVisionTimestamp = now;
 		lastSnapshot = takeSnapshot(gameState);
 		nextActionTime = now + Math.round(Math.random() * REACTION_JITTER_MS);
 
-		// Improved prediction
 		const predictedCenter = predictBallInterceptY(lastSnapshot, paddleKey);
 		predictedTargetY = Math.max(BALL_SIZE_Y / 2, Math.min(100 - BALL_SIZE_Y / 2, predictedCenter));
 
-		// Reset direction so new target is evaluated
 		aiCurrentDir = null;
 	}
 
-	// Simulate thinking delay
 	if (now < nextActionTime) {
 		handleInput(gameState, null, [], true);
 		return;
 	}
 
-	// Move steadily toward predicted target without flicker
 	pressKeysForMovementStatic(handleInput, gameState, predictedTargetY, paddleKey);
 }
 
