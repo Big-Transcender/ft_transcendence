@@ -1,7 +1,7 @@
 const db = require('../database');
 const bcrypt = require('bcryptjs');
-
-
+const fs = require('fs');
+const path = require('path');
 
 module.exports = async function (fastify) {
     fastify.get('/users', async (request, reply) => {
@@ -70,5 +70,23 @@ module.exports = async function (fastify) {
 
         await db.prepare('UPDATE users SET password = ? WHERE id = ?').run(newPassword, userId);
         return reply.send({ success: true});
-    })
+    });
+
+    fastify.get('/me/avatar', { preHandler: fastify.authenticate }, async (request, reply) => {
+        const userId = request.userId;
+        const user = db.prepare('SELECT avatar FROM users WHERE id = ?').get(userId);
+        let avatarPath = '';
+        if (user && user.avatar) {
+            avatarPath = `/uploads/${user.avatar}`;
+            // Check if file exists
+            const uploadsDir = process.env.UPLOADS_DIR || '/app/uploads';
+            const filePath = path.join(uploadsDir, user.avatar);
+            if (!fs.existsSync(filePath)) {
+                avatarPath = '/images/profileDefault.png';
+            }
+        } else {
+            avatarPath = '/images/profileDefault.png';
+        }
+        reply.send({ avatar: avatarPath });
+    });
 };

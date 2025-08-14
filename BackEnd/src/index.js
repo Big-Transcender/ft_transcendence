@@ -1,4 +1,4 @@
-const fastify = require("fastify")({ logger: false });
+const fastify = require("fastify")({ logger: true });
 const cors = require("@fastify/cors");
 const path = require("path");
 const fs = require("fs");
@@ -149,10 +149,10 @@ async function start() {
 		// Dynamically register all route files
 		await registerRoutes();
 
-		// Serve frontend static files
+		// Register static file serving for /uploads ONLY
 		fastify.register(fastifyStatic, {
-			root: path.join(__dirname, "../../frontEnd"),
-			prefix: "/",
+			root: process.env.UPLOADS_DIR || '/app/uploads',
+			prefix: '/uploads/',
 		});
 
 		await fastify.listen({ port: 3000, host: "0.0.0.0" });

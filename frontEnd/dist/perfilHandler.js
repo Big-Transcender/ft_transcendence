@@ -93,6 +93,7 @@ async function getUserStats(nickname) {
             flipboardNumberAnimation(stats.defeats.toString(), losesNumber);
             flipboardNumberAnimation(stats.games_played.toString(), gamesNumber);
             flipboardNumberAnimation(positionStr, positionNumber);
+            await setProfileAvatar();
             winRateText.textContent = "Current Winrate: " + stats.win_percentage;
         })
             .catch((error) => {
@@ -215,20 +216,43 @@ function changePasswordPopup() {
 }
 function changePhotoPopup() {
     const newPhoto = document.getElementById("fileInput");
-    console.log(newPhoto);
-    // if (newPhoto && newPhoto.files && newPhoto.files.length > 0) {
-    // 	console.log("File selected:", newPhoto.files[0]);
-    // } else {
-    // 	console.log("No file selected");
-    // }
     if (!newPhoto || !newPhoto.files || newPhoto.files.length === 0) {
         displayWarning("No photo has been given!");
+        return;
     }
-    else {
-        //#TODO here where you change the photo
-        //Change the photo after it put a image
-        displayWarning("Photo selected: " + newPhoto.files[0].name);
-    }
+    const file = newPhoto.files[0];
+    const formData = new FormData();
+    formData.append('file', file);
+    fetch(`${backendUrl}/avatar`, {
+        method: 'POST',
+        body: formData,
+        headers: {
+            'Authorization': `Bearer ${localStorage.getItem('token')}`
+        }
+    })
+        .then(response => response.json())
+        .then(data => {
+        if (data.success && data.url) {
+            // Update all profile photo elements
+            const photoElements = document.querySelectorAll('.profilePhotoLocation, .profilePhoto');
+            photoElements.forEach((el) => {
+                if (el instanceof HTMLImageElement) {
+                    el.src = backendUrl + data.url + '?t=' + Date.now(); // cache busting
+                }
+                else {
+                    el.style.backgroundImage = `url('${backendUrl + data.url}?t=${Date.now()}')`;
+                }
+            });
+            setProfileAvatar(); // Ensure avatar is refreshed everywhere after upload
+            displayWarning("Photo updated successfully!");
+        }
+        else {
+            displayWarning("Failed to update photo.");
+        }
+    })
+        .catch(() => {
+        displayWarning("Error uploading photo.");
+    });
 }
 function preVisualizePhoto() {
     document.addEventListener("DOMContentLoaded", () => {
@@ -469,3 +493,41 @@ async function changeNickAPI(newNick) {
         displayWarning(error.message || "Error changing nickname");
     }
 }
+// Fetch and set the user's avatar on the profile page
+async function setProfileAvatar() {
+    const token = localStorage.getItem("token");
+    if (!token)
+        return;
+    try {
+        const response = await fetch(`${backendUrl}/me/avatar`, {
+            headers: { 'Authorization': `Bearer ${token}` },
+            credentials: 'include',
+        });
+        const data = await response.json();
+        const avatarUrl = data.avatar.startsWith('/') ? backendUrl + data.avatar : data.avatar;
+        const photoElements = document.querySelectorAll('.profilePhotoLocation, .profilePhoto');
+        photoElements.forEach((el) => {
+            if (el instanceof HTMLImageElement) {
+                el.src = avatarUrl;
+            }
+            else {
+                el.style.backgroundImage = `url('${avatarUrl}')`;
+            }
+        });
+    }
+    catch (e) {
+        // Optionally handle error
+    }
+}
+// SPA: Always refresh avatar on profile page navigation
+function handleProfilePageNavigation() {
+    if (window.location.pathname.includes('perfil') || window.location.pathname.includes('profile')) {
+        setProfileAvatar();
+    }
+}
+// Listen for SPA navigation events
+window.addEventListener('popstate', handleProfilePageNavigation);
+window.addEventListener('pushstate', handleProfilePageNavigation);
+window.addEventListener('replacestate', handleProfilePageNavigation);
+// Also run on initial load
+handleProfilePageNavigation();
