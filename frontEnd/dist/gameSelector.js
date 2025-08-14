@@ -31,14 +31,18 @@ function setRandomBackground() {
 }
 async function animateTimer() {
     const timer = document.querySelector(".timer");
+    const timerContest = document.querySelector(".timerContest");
     if (!timer)
         return;
     timer.style.opacity = "1";
-    timer.style.animation = "timerAnimation 3s";
+    timerContest.style.opacity = "1";
+    timerContest.style.animation = "timerAnimation 3s";
     // Remove a animação após terminar para poder reutilizar depois
     setTimeout(() => {
         timer.style.animation = "";
+        timerContest.style.animation = "";
         timer.style.opacity = "0";
+        timerContest.style.opacity = "0";
     }, 3000);
 }
 function updatePageHash(hash) {
