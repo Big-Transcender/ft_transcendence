@@ -1,4 +1,4 @@
-const fastify = require("fastify")({ logger: false});
+const fastify = require("fastify")({ logger: false });
 const cors = require("@fastify/cors");
 const path = require("path");
 const fs = require("fs");
@@ -7,8 +7,8 @@ const fastifySecureSession = require("@fastify/secure-session");
 const fastifyStatic = require("@fastify/static");
 const GoogleStrategy = require("passport-google-oauth2").Strategy;
 const dotenv = require("dotenv");
-const jwt = require('jsonwebtoken')
-const fastifyMultipart = require('@fastify/multipart')
+const jwt = require("jsonwebtoken");
+const fastifyMultipart = require("@fastify/multipart");
 
 const db = require("./database");
 
@@ -90,22 +90,21 @@ fastify.get(
 );
 
 fastify.decorate("authenticate", async function (request, reply) {
-	/*try {
+	try {
 		const authHeader = request.headers.authorization;
 		if (!authHeader) {
 			return reply.code(401).send({ error: "Access denied" });
 		}
-		const token = authHeader.split(' ')[1]; // if using "Bearer <token>"
+		const token = authHeader.split(" ")[1]; // if using "Bearer <token>"
 
-		const decoded = jwt.verify(token, 'your-secret-key'); //TODO: key in env
+		const decoded = jwt.verify(token, "your-secret-key"); //TODO: key in env
 		request.userId = decoded.userId;
-		const user = db.prepare('SELECT nickname FROM users WHERE id = ?').get(decoded.userId);
+		const user = db.prepare("SELECT nickname FROM users WHERE id = ?").get(decoded.userId);
 		request.userNickname = user.nickname;
 	} catch (err) {
 		reply.code(401).send({ error: "Invalid token" });
-	}*/
+	}
 });
-
 
 fastify.get("/logout", async (req, res) => {
 	req.logout();
@@ -115,7 +114,7 @@ fastify.get("/logout", async (req, res) => {
 	return res.send({ success: true });
 });
 fastify.get("/me", async (request, reply) => {
-	const sessionUser = request.session.get('user');
+	const sessionUser = request.session.get("user");
 	if (sessionUser) {
 		return { user: sessionUser.user };
 	} else {
@@ -144,9 +143,8 @@ async function start() {
 				else cb(null, false);
 			},
 			credentials: true,
-			methods: ['GET', 'POST', 'PUT', 'PATCH', 'UPDATE', 'DELETE', 'OPTIONS'],
+			methods: ["GET", "POST", "PUT", "PATCH", "UPDATE", "DELETE", "OPTIONS"],
 		});
-
 
 		// Dynamically register all route files
 		await registerRoutes();
@@ -162,7 +160,6 @@ async function start() {
 
 		// Setup Server WebSocket connection
 		setupUnifiedWebSocket(fastify.server);
-
 	} catch (error) {
 		console.error("❌ Failed to start:", error);
 		process.exit(1);
