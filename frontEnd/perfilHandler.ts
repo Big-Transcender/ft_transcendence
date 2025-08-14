@@ -61,7 +61,17 @@ async function flipboardNumberAnimation(target: string, targetBox) {
 async function getUserPosition(): Promise<string> {
 	const userNick = localStorage.getItem("nickname");
 	try {
-		const response = await fetch(`${backendUrl}/leaderboard/position/${userNick}`);
+		// const response = await fetch(`${backendUrl}/leaderboard/position/${userNick}`);
+		// const response = await fetch(`${backendUrl}/leaderboard/position/`);
+		const token = localStorage.getItem("token");
+		const response = await fetch(`${backendUrl}/leaderboard/position/`, {
+			method: "GET",
+			headers: {
+				"Content-Type": "application/json",
+				"Authorization": `Bearer ${token}`,
+			},
+			credentials: "include",
+		});
 		if (!response.ok) {
 			const err = await response.json();
 			throw new Error(err.error || "Unknown error");

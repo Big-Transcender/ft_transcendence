@@ -1,18 +1,11 @@
 const { getLeaderboard, getUserLeaderboardPosition, getUserIdByNickname, getNicknameByUserId } = require('../dataQuerys');
 const db = require('../database');
 
-module.exports = async function (fastify) {
+module.exports = async function (fastify)
+{
 	fastify.get('/leaderboard', async (request, reply) => {
 		const leaderBoard = getLeaderboard();
 		reply.send(leaderBoard);
-	});
-
-	fastify.get('/leaderboard/position/:nickname', async (request, reply) => {
-		const { nickname } = request.params;
-		const position = getUserLeaderboardPosition(nickname);
-		if (!position)
-			return reply.code(404).send({ error: "User not found in leaderboard" });
-		reply.send({ position });
 	});
 
 	fastify.get('/player-matches/:nickname', async (request, reply) => {
@@ -62,5 +55,17 @@ module.exports = async function (fastify) {
 				console.error('Error fetching match history:', error);
 				return reply.code(500).send({ error: 'Internal server error' });
 			}
-		});
+	});
+	fastify.get('/leaderboard/position/', { preHandler: fastify.authenticate }, async (request, reply) => {
+			const nickname = request.userNickname;
+
+			if (!nickname)
+				return reply.code(404).send({ error: 'User not found' });
+
+			const position = getUserLeaderboardPosition(nickname);
+			if (!position)
+				return reply.code(404).send({ error: 'User not found in leaderboard' });
+
+			reply.send({ position });
+	});
 };
