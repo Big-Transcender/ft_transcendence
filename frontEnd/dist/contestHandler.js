@@ -8,6 +8,7 @@ const contestMainPage = document.getElementById("contestSelectorId");
 const joinContestPage = document.getElementById("contestJoinSelectorId");
 const joinedContestPage = document.getElementById("contestJoinedSelectorId");
 const createContestPage = document.getElementById("contestCreateId");
+const pongContestPage = document.getElementById("pongContestId");
 const pinBox = document.querySelector(".contestPinBox");
 var pin;
 var LocalTournaments = new Map();
@@ -145,7 +146,7 @@ async function createNewContest() {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
-                "Authorization": `Bearer ${token}`,
+                Authorization: `Bearer ${token}`,
             },
             credentials: "include",
             body: JSON.stringify({ tournamentName }),
@@ -251,15 +252,15 @@ async function startTournament(tournamentId) {
     console.log(nick);
     console.log(data.players[0]);
     if (nick === data.players[0] || nick === data.players[1]) {
-        navigate('game1');
+        // navigate("game1");
         history.replaceState(undefined, "", `#pong/${data.matches[0]}`);
-        changePageTo(gameSelectorPongPage, pongGamePage);
+        changePageTo(joinedContestPage, pongContestPage);
         startPongWebSocket(data.matches[0]);
     }
     else if (nick === data.players[2] || nick === data.players[3]) {
-        navigate('game1');
+        // navigate("game1");
         history.replaceState(undefined, "", `#pong/${data.matches[1]}`);
-        changePageTo(gameSelectorPongPage, pongGamePage);
+        changePageTo(joinedContestPage, pongContestPage);
         startPongWebSocket(data.matches[1]);
     }
 }
@@ -273,7 +274,7 @@ function startLocalTournament(tournamentId, players) {
         semifinal2: null,
     };
     LocalTournaments.set(tournament.tournamentId, tournament);
-    navigate('game1');
+    navigate("game1");
     history.replaceState(undefined, "", `#pong/${tournament.matches[0]}`);
     changePageTo(gameSelectorPongPage, pongGamePage);
     setGameScore(tournament.players[0], tournament.players[1]);
@@ -281,8 +282,8 @@ function startLocalTournament(tournamentId, players) {
 }
 async function getTournamentData(tournamentId) {
     const response = await fetch(`${backendUrl}/constructTournament`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ id: tournamentId }),
     });
     if (!response.ok) {

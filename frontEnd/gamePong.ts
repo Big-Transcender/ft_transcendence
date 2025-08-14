@@ -8,22 +8,27 @@ interface MatchCheckResponse {
 	playerCount: number;
 }
 
-function startPongWebSocket(matchId: string, isLocal: boolean = false, aiGame: boolean = false, teamGame: boolean = false, localNicks: string[] = null) {
+function startPongWebSocket(
+	matchId: string,
+	isLocal: boolean = false,
+	aiGame: boolean = false,
+	teamGame: boolean = false,
+	localNicks: string[] = null
+) {
 	if (socket) {
-        console.log("Closing existing WebSocket connection...");
-        socket.close();
-        socket = null;
-        socketInitialized = false;
-    }
-	
-	if (socketInitialized){
+		console.log("Closing existing WebSocket connection...");
+		socket.close();
+		socket = null;
+		socketInitialized = false;
+	}
+
+	if (socketInitialized) {
 		console.log("game already in Progress");
 		return;
 	}
 	socketInitialized = true;
 	currentMatchId = matchId;
 	currentIsLocal = isLocal;
-
 
 	let animationFrameId: number;
 	let playerId: "p1" | "p2" | "p3" | "p4" = "p1";
@@ -34,13 +39,10 @@ function startPongWebSocket(matchId: string, isLocal: boolean = false, aiGame: b
 
 	let nickname: string;
 	let opponentNickname: string | null = null;
-	if (localNicks && localNicks.length > 1)
-	{
+	if (localNicks && localNicks.length > 1) {
 		nickname = localNicks[0];
 		opponentNickname = localNicks[1];
-	}
-	else
-		nickname = getNickOnLocalStorage();
+	} else nickname = getNickOnLocalStorage();
 
 	socket.addEventListener("open", () => {
 		console.log("✅ Connected to WebSocket server");
@@ -67,10 +69,15 @@ function startPongWebSocket(matchId: string, isLocal: boolean = false, aiGame: b
 	});
 
 	// --- Game Elements
+	const paddleContest1 = document.querySelector(".paddle1Contest") as HTMLElement;
 	const paddle1 = document.querySelector(".paddle1") as HTMLElement;
+	const paddleContest2 = document.querySelector(".paddle2Contest") as HTMLElement;
 	const paddle2 = document.querySelector(".paddle2") as HTMLElement;
+	const paddleContest3 = document.querySelector(".paddle3Contest") as HTMLElement;
 	const paddle3 = document.querySelector(".paddle3") as HTMLElement;
+	const paddleContest4 = document.querySelector(".paddle4Contest") as HTMLElement;
 	const paddle4 = document.querySelector(".paddle4") as HTMLElement;
+	const ballContest = document.querySelector(".ballContest") as HTMLElement;
 	const ball = document.querySelector(".ball") as HTMLElement;
 
 	// --- Input Handling
@@ -103,15 +110,12 @@ function startPongWebSocket(matchId: string, isLocal: boolean = false, aiGame: b
 	}
 	sendInputLoop();
 
-	if (!teamGame)
-	{
-		paddle3.classList.add('offPaddle');
-		paddle4.classList.add('offPaddle');
-	}
-	else
-	{
-		paddle3.classList.remove('offPaddle');
-		paddle4.classList.remove('offPaddle');
+	if (!teamGame) {
+		paddle3.classList.add("offPaddle");
+		paddle4.classList.add("offPaddle");
+	} else {
+		paddle3.classList.remove("offPaddle");
+		paddle4.classList.remove("offPaddle");
 	}
 
 	socket.addEventListener("message", (event: MessageEvent) => {
@@ -125,37 +129,41 @@ function startPongWebSocket(matchId: string, isLocal: boolean = false, aiGame: b
 
 					if (paddle1) {
 						paddle1.style.top = `${state.paddles.p1}%`;
+						paddleContest1.style.top = `${state.paddles.p1}%`;
 					}
 
 					if (paddle2) {
 						paddle2.style.top = `${state.paddles.p2}%`;
+						paddleContest2.style.top = `${state.paddles.p2}%`;
 					}
 
 					if (paddle3 && teamGame) {
 						paddle3.style.top = `${state.paddles.p3}%`;
+						paddleContest3.style.top = `${state.paddles.p3}%`;
 					}
 
 					if (paddle4 && teamGame) {
 						paddle4.style.top = `${state.paddles.p4}%`;
+						paddleContest4.style.top = `${state.paddles.p4}%`;
 					}
 
 					if (ball) {
 						ball.style.left = `${state.ball.x}%`;
 						ball.style.top = `${state.ball.y}%`;
+						ballContest.style.left = `${state.ball.x}%`;
+						ballContest.style.top = `${state.ball.y}%`;
 					}
 					break;
 				}
 				case "assign": {
 					playerId = data.payload;
-					if (playerId === "p1" && !isLocal)
-						setGameScore(getNickOnLocalStorage(), "Player 2");
+					if (playerId === "p1" && !isLocal) setGameScore(getNickOnLocalStorage(), "Player 2");
 					break;
 				}
 				case "PlayerBoard": {
 					const players = data.payload;
-					if (!aiGame && !isLocal)
-						setGameScore(players[0], players[1]);
-					return ;
+					if (!aiGame && !isLocal) setGameScore(players[0], players[1]);
+					return;
 				}
 				case "startAnimation": {
 					animateTimer();
@@ -163,20 +171,20 @@ function startPongWebSocket(matchId: string, isLocal: boolean = false, aiGame: b
 				}
 				case "gameOver": {
 					var { winner, reason } = data.payload;
-					if (winner === null)
-						winner = "Bot";
+					if (winner === null) winner = "Bot";
 
 					setTimeout(() => {
 						alert(`Game Over! The winner is ${winner}. Reason: ${reason}`);
 
 						if (currentMatchId) {
-							window.dispatchEvent(new CustomEvent('MatchEnd', {
-								detail: { matchId: currentMatchId, winner: winner, isLocal: isLocal }
-							}));
+							window.dispatchEvent(
+								new CustomEvent("MatchEnd", {
+									detail: { matchId: currentMatchId, winner: winner, isLocal: isLocal },
+								})
+							);
 						}
 						setGameScore("Player 1", "Player 2");
-						stopPongWebSocket()
-
+						stopPongWebSocket();
 					}, 250);
 					break;
 				}
@@ -198,9 +206,7 @@ function stopPongWebSocket() {
 	//location.reload();
 }
 
-
 setInterval(() => {
-
 	const hash = window.location.hash;
 	const matchPrefix = "#pong/";
 	const isOnPongGame = hash.startsWith(matchPrefix) && hash.slice(matchPrefix.length) === currentMatchId;
@@ -212,9 +218,6 @@ setInterval(() => {
 	}
 }, 100);
 
-
-function generateMatchId(){
-	return  Math.floor(1000 + Math.random() * 90000).toString();
+function generateMatchId() {
+	return Math.floor(1000 + Math.random() * 90000).toString();
 }
-
-
