@@ -189,6 +189,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 	//Login Button
 	loginButton.addEventListener("click", async () => {
 		if ((await loginUser()) === true) {
+			await updateFriends();
 			changePageTo(loginPage, profilePage);
 			getUserStats(getNickOnLocalStorage());
 			// flipboardNumberAnimation("23");

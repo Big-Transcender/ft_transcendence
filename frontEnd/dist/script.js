@@ -37,6 +37,7 @@ function handlePageChange(page) {
             }
             else {
                 getUserStats(getNickOnLocalStorage());
+                updateMatchHistory();
             }
             break;
         case 'game1':

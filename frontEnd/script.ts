@@ -43,8 +43,8 @@ function handlePageChange(page: string) {
 				typeText(bubbleTextLogin, "Welcome back!", 60);
 			} else {
 				getUserStats(getNickOnLocalStorage());
+				updateMatchHistory();
 			}
-
 			break;
 		case 'game1':
 

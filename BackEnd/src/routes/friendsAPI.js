@@ -57,7 +57,7 @@ module.exports = async function (fastify) {
         const { addFriend } = require('../friendsStorage');
         
         // Add 4 friends for diogosan
-        const testFriends = ['bousa', 'bde', 'cacarval', 'rumachad'];
+        const testFriends = ['bousa', 'bde', 'cacarval', 'teste'];
         
         testFriends.forEach(friendNick => {
             addFriend('diogosan', friendNick);
