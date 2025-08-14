@@ -47,6 +47,10 @@ const musicDate = document.getElementById("musicDate");
 
 musicTitle.textContent = bgMusic.title;
 musicDate.textContent = today.getHours().toString().padStart(2, "0") + ":" + today.getMinutes().toString().padStart(2, "0");
+setInterval(() => {
+	today = new Date();
+	musicDate.textContent = today.getHours().toString().padStart(2, "0") + ":" + today.getMinutes().toString().padStart(2, "0");
+}, 2000);
 
 musicButtonStop.addEventListener("click", () => {
 	musicPause();

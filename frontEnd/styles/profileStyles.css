@@ -642,6 +642,38 @@
 	top: 40%;
 	translate: -50% -50%;
 }
+
+.contestNick1 {
+	left: 25%;
+	top: 35%;
+	/* transform: scale(0.9); */
+	width: 250px;
+	height: 100px;
+}
+
+.contestNick2 {
+	left: 75%;
+	top: 35%;
+	/* transform: scale(0.9); */
+	width: 250px;
+	height: 100px;
+}
+
+.contestNick3 {
+	left: 25%;
+	top: 60%;
+	/* transform: scale(0.9); */
+	width: 250px;
+	height: 100px;
+}
+
+.contestNick4 {
+	left: 75%;
+	top: 60%;
+	/* transform: scale(0.9); */
+	width: 250px;
+	height: 100px;
+}
 .popupText {
 	position: absolute;
 	width: 100%;
@@ -724,6 +756,13 @@
 	translate: -50%;
 }
 
+.pupupStartLocalContestButton {
+	position: absolute;
+	bottom: 10%;
+	left: 75%;
+	translate: -50%;
+}
+
 .popupPhotoButton .gameSelectorButtonBG,
 .popupNickButton .gameSelectorButtonBG,
 .popupPasswordButton .gameSelectorButtonBG,
@@ -756,6 +795,10 @@
 }
 
 .photopagePopup {
+	display: none;
+}
+
+.localContestPopup {
 	display: none;
 }
 

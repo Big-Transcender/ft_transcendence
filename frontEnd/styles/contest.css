@@ -288,13 +288,17 @@
 .contestNewCreateButton {
 	position: absolute;
 	bottom: 50px;
-	left: 75%;
+	left: 80%;
 	translate: -50%;
+}
+
+.contestLocalButton {
+	left: 50%;
 }
 
 .contestNewCreateBackButton {
 	position: absolute;
 	bottom: 50px;
-	left: 25%;
+	left: 20%;
 	translate: -50%;
 }

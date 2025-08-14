@@ -3,6 +3,7 @@ const createContesButton = document.getElementById("createContestId");
 const enterContestButton = document.getElementById("enterContestButtonId");
 const genericBackButton = document.querySelectorAll(".genericBackButton");
 const createNewContestButton = document.getElementById("createNewContestButtonId");
+const createNewContestLocalButton = document.getElementById("createNewContestLocalButtonId");
 const startContestButton = document.getElementById("startContestButtonId");
 
 const contestMainPage = document.getElementById("contestSelectorId");
@@ -102,6 +103,18 @@ document.addEventListener("DOMContentLoaded", () => {
 		}
 	});
 
+	// CREATE NEW CONTEST LOCAL BUTTON
+	createNewContestLocalButton.addEventListener("click", async () => {
+		if (!checkIfLogged()) {
+			displayWarning("You need to log in.");
+		} else {
+			await betterWait(100);
+			// createNewContest();
+			openPopupContestLocal();
+			// changePopupTo()
+		}
+	});
+
 	// START THE CONTEST
 	startContestButton.addEventListener("click", async () => {
 		const id = pin;
@@ -116,6 +129,27 @@ document.addEventListener("DOMContentLoaded", () => {
 		});
 	});
 });
+
+function openPopupContestLocal() {
+	document.getElementById("popupContainer").style.display = "flex";
+	document.querySelectorAll(".popupPage").forEach((el) => {
+		el.classList.remove("displayPagePopup");
+	});
+
+	document.querySelector(".localContestPopup").classList.add("displayPagePopup");
+}
+
+function prepareContestLocal() {
+	const nicks = [
+		(document.getElementById("popupContestNick1") as HTMLInputElement).value.trim(),
+		(document.getElementById("popupContestNick2") as HTMLInputElement).value.trim(),
+		(document.getElementById("popupContestNick3") as HTMLInputElement).value.trim(),
+		(document.getElementById("popupContestNick4") as HTMLInputElement).value.trim(),
+	];
+
+	startLocalTournament(pin, nicks);
+	closePopup();
+}
 
 if (pinBox) {
 	pinBox.addEventListener("click", () => {
