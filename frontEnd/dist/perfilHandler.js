@@ -175,13 +175,14 @@ function openPopup() {
 function closePopup() {
     document.getElementById("popupContainer").style.display = "none";
 }
-function changeNickPopup() {
+async function changeNickPopup() {
     const newNick = document.getElementById("popupNewNick").value.trim();
     if (!newNick)
         displayWarning("No nick has been given!");
     else {
         //#TODO here where you change the nick
-        displayWarning(newNick);
+        await changeNickAPI(newNick);
+        // displayWarning(newNick);
     }
 }
 function changeEmailPopup() {
@@ -293,7 +294,12 @@ async function friendsAnimationHandler() {
 }
 async function updateFriends() {
     try {
+        const token = localStorage.getItem("token");
         const response = await fetch(`${backendUrl}/friends`, {
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+            },
             credentials: "include",
         });
         if (!response.ok) {
@@ -356,7 +362,7 @@ async function updateMatchHistory() {
         return;
     try {
         const response = await fetch(`${backendUrl}/player-matches/${nickname}`, {
-            credentials: 'include'
+            credentials: "include",
         });
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
@@ -378,8 +384,8 @@ async function updateMatchHistory() {
             // ✅ Column 1: Result (WIN/LOSS)
             const resultCell = row.insertCell();
             resultCell.textContent = match.result;
-            resultCell.style.color = match.result === 'WIN' ? '#4CAF50' : '#f44336';
-            resultCell.style.fontWeight = 'bold';
+            resultCell.style.color = match.result === "WIN" ? "#4CAF50" : "#f44336";
+            resultCell.style.fontWeight = "bold";
             // ✅ Column 2: Score
             const scoreCell = row.insertCell();
             scoreCell.textContent = match.score;
@@ -414,5 +420,29 @@ async function updateMatchHistory() {
             cell3.textContent = "-----";
             cell1.style.color = "#ff0000";
         }
+    }
+}
+async function changeNickAPI(newNick) {
+    const token = localStorage.getItem("token");
+    try {
+        const response = await fetch(`${backendUrl}/switch-nickname`, {
+            method: "POST",
+            headers: Object.assign({ "Content-Type": "application/json" }, (token ? { Authorization: `Bearer ${token}` } : {})),
+            body: JSON.stringify({ nickname: newNick }),
+        });
+        const data = await response.json();
+        if (!response.ok) {
+            displayWarning(data.error || "Failed to switch nickname");
+            return;
+        }
+        else {
+            displayWarning("Nickname changed successfully!");
+            // Update localStorage and refresh profile data
+            // localStorage.setItem("nickname", newNick);
+            // await getUserStats(newNick);
+        }
+    }
+    catch (error) {
+        displayWarning(error.message || "Error changing nickname");
     }
 }

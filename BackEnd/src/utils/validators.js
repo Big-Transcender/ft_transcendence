@@ -4,6 +4,9 @@ function validateRegistration({ password, email, nickname }) {
     if (!password || !email || !nickname)
         return "All fields are required";
 
+    if(nickname.length > 8)
+        return "Nickname too long";
+
     if (!emailRegex.test(email))
         return "Invalid email format";
 

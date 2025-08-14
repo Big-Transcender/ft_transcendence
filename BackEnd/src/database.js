@@ -38,6 +38,7 @@ db.prepare(
 		winner_id INTEGER NOT NULL,
 		score_p1 INTEGER NOT NULL,
 		score_p2 INTEGER NOT NULL,
+		date DATETIME DEFAULT CURRENT_TIMESTAMP,
 		FOREIGN KEY (tournament_id) REFERENCES tournaments(id),
 		FOREIGN KEY (player1_id) REFERENCES users(id),
 		FOREIGN KEY (player2_id) REFERENCES users(id),
@@ -57,6 +58,18 @@ db.prepare(
 		FOREIGN KEY (user_id) REFERENCES users(id)
 	)
 `
+).run();
+
+db.prepare(`
+	CREATE TABLE IF NOT EXISTS friends (
+		user_id INTEGER NOT NULL,
+		friend_id INTEGER NOT NULL,
+		PRIMARY KEY (user_id, friend_id),
+		FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+		FOREIGN KEY (friend_id) REFERENCES users(id) ON DELETE CASCADE,
+		CHECK ( user_id < friend_id )
+	)
+	`
 ).run();
 
 module.exports = db;

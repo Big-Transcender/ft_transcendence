@@ -140,9 +140,9 @@ async function loginUser() {
 }
 function clickButton(button) {
 	button.addEventListener("click", () => {
-		if (button.className.search("loginUser") != -1) {
-			loginUser();
-		} else if (button.className.search("newUser") != -1) {
+		// if (button.className.search("loginUser") != -1) {
+		// 	loginUser();
+		if (button.className.search("newUser") != -1) {
 			// pageProfile = document.getElementById("newUserId");
 			// navigateProfile(pageProfile);
 			// stopSpech();

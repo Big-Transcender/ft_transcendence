@@ -297,6 +297,17 @@
 	height: 90%;
 }
 
+.matchList tr {
+	/* transition: 0.15s ease-in-out; */
+
+	background-color: #9ad3e475;
+}
+
+.matchList tr:hover {
+	/* transition: 0.15s ease-in-out; */
+
+	background-color: #3e555c9a;
+}
 .matchListBG {
 	height: 90%;
 }

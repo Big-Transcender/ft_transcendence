@@ -34,7 +34,6 @@ module.exports = async function (fastify) {
         const token = jwt.sign({ userId: user.id }, 'your-secret-key', {
             expiresIn: '1h',
         });
-
         reply.code(200).send({ message: 'Login Successful', token, user: {id: user.id, name: user.nickname} });
         // reply.status(200).send({ message: 'Login successful', user: { id: user.id, name: user.nickname } });
     });
