@@ -14,15 +14,9 @@ const repl = require("node:repl");
 module.exports = async function (fastify) {
 	fastify.post("/create-tournament", { preHandler: [fastify.authenticate] }, async (request, reply) => {
 		const { tournamentName } = request.body;
-
-        // Get user info from session
-        const sessionUser = request.session.get('user');
-        if (!sessionUser) return reply.code(401).send({ error: "Not authenticated" });
+		const userId = request.userId;
 
 		if (!tournamentName) return reply.code(400).send({ error: "Name is empty" });
-
-		const user = getUserIdByNickname(sessionUser.nickname);
-		if (!user) return reply.code(404).send({ error: "User not found" });
 
 		const createdAt = new Date().toISOString();
 
@@ -31,9 +25,9 @@ module.exports = async function (fastify) {
 			code = Math.floor(1000 + Math.random() * 9000).toString();
 		} while (getTournamentByCode(code));
 
-		const result = createTournament(tournamentName, code, user, createdAt);
+		const result = createTournament(tournamentName, code, userId, createdAt);
 
-		addUserToTournament(result.lastInsertRowid, user);
+		addUserToTournament(result.lastInsertRowid, userId);
 
 		reply.code(201).send({
 			tournamentId: result.lastInsertRowid,
@@ -43,7 +37,7 @@ module.exports = async function (fastify) {
 		});
 	});
 
-	fastify.get("/tournament/:code", async (request, reply) => {
+	fastify.get("/tournament/:code", {preHandler: fastify.authenticate}, async (request, reply) => {
 		const { code } = request.params;
 		if (!code) return reply.code(400).send({ error: "Tournament code is required" });
 
@@ -57,27 +51,22 @@ module.exports = async function (fastify) {
 
 	fastify.post("/join-tournament", { preHandler: [fastify.authenticate] }, async (request, reply) => {
 		const { code } = request.body;
+		const userId = request.userId;
 
-		// Get user info from session
-		const sessionUser = request.session.get("user");
-		if (!sessionUser) return reply.code(401).send({ error: "Not authenticated" });
-
-		if (!code) return reply.code(400).send({ error: "Tournament code is required" });
-
-		const user = getUserIdByNickname(sessionUser.nickname);
-		if (!user) return reply.code(404).send({ error: "User not found" });
+		if (!code)
+			return reply.code(400).send({ error: "Tournament code is required" });
 
 		const tournament = getTournamentByCode(code);
 		if (!tournament) return reply.code(404).send({ error: "Tournament not found" });
 
-		if (hasUserJoinedTournament(tournament.id, user)) return reply.code(400).send({ error: "User already joined this tournament" });
+		if (hasUserJoinedTournament(tournament.id, userId)) return reply.code(400).send({ error: "User already joined this tournament" });
 
-		addUserToTournament(tournament.id, user);
+		addUserToTournament(tournament.id, userId);
 
 		reply.code(200).send({
 			message: "User successfully joined the tournament",
 			tournamentId: tournament.id,
-			userId: user,
+			userId: userId,
 		});
 	});
 

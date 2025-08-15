@@ -1,4 +1,3 @@
-const { removeFriend } = require('../friendsStorage');
 const { getOnlineUsers } = require('../wsManager');
 const db = require('../database');
 module.exports = async function (fastify) {

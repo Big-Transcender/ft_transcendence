@@ -5,7 +5,7 @@ const { getTournamentPlayers} = require('../dataQuerys');
 module.exports = async function (fastify) {
 
 
-	fastify.post('/constructTournament', async (req, res) => {
+	fastify.post('/constructTournament', {preHandler: fastify.authenticate}, async (req, res) => {
 		const { id: tournamentId } = req.body;
 	
 		if (!tournamentId) {
@@ -41,7 +41,7 @@ module.exports = async function (fastify) {
 	
 	});
 
-	fastify.get('/tournamentPlayers/:id', async (req, res) => {
+	fastify.get('/tournamentPlayers/:id', {preHandler: fastify.authenticate}, async (req, res) => {
 		const { id: tournamentId } = req.params;
 	
 		if (!tournamentId) {
@@ -55,7 +55,7 @@ module.exports = async function (fastify) {
 		res.send(tournamentObject.players);
 	});
 
-	fastify.get('/isTournamentMatch/:id', async (req, res) => {
+	fastify.get('/isTournamentMatch/:id', {preHandler: fastify.authenticate}, async (req, res) => {
 		const { id: matchId } = req.params;
 	
 		if (!matchId) {
@@ -72,7 +72,7 @@ module.exports = async function (fastify) {
 		}
 	});
 
-	fastify.patch('/updateTournamentWinner', async (req, res) => {
+	fastify.patch('/updateTournamentWinner', {preHandler: fastify.authenticate}, async (req, res) => {
 		const {  id: tournamentId, winner: nickName} = req.body;
 	
 		if (!nickName || !tournamentId ) {
@@ -86,7 +86,7 @@ module.exports = async function (fastify) {
 		}
 	});
 
-	fastify.get('/tornamentSemiFinals', async (req, res) => {
+	fastify.get('/tornamentSemiFinals', {preHandler: fastify.authenticate}, async (req, res) => {
 		const { id: tournamentId} = req.params;
 	
 		if (!tournamentId ) {

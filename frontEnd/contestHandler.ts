@@ -206,7 +206,7 @@ async function createNewContest() {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json",
-				Authorization: `Bearer ${token}`,
+				"Authorization": `Bearer ${token}`,
 			},
 			credentials: "include",
 			body: JSON.stringify({ tournamentName }),
@@ -234,7 +234,16 @@ async function createNewContest() {
 
 async function getInfoFromContest(pin: string) {
 	try {
-		const response = await fetch(`${backendUrl}/tournament/${pin}`);
+		const token = localStorage.getItem("token");
+		const response = await fetch(`${backendUrl}/tournament/${pin}`, {
+			method: "GET",
+			headers: {
+				"Content-Type": "application/json",
+				"Authorization": `Bearer ${token}`,
+			},
+			credentials: "include"
+		});
+
 		const data = await response.json();
 		const playerPlaces = document.querySelectorAll(".playerContestPlace");
 		let pinNumber = document.getElementById("contestPinBoxNumberId") as HTMLElement;
@@ -261,9 +270,13 @@ async function getInfoFromContest(pin: string) {
 
 async function joinTournament(nick: string, code: string) {
 	try {
+		const token = localStorage.getItem("token");
 		const response = await fetch(`${backendUrl}/join-tournament`, {
 			method: "POST",
-			headers: { "Content-Type": "application/json" },
+			headers: {
+				"Content-Type": "application/json",
+				"Authorization": `Bearer ${token}`,
+			},
 			body: JSON.stringify({ code }),
 			credentials: "include",
 		});
@@ -286,7 +299,15 @@ async function joinTournament(nick: string, code: string) {
 
 async function checkIsValidPin(pin: string): Promise<boolean> {
 	try {
-		const response = await fetch(`${backendUrl}/tournament/${pin}`);
+		const token = localStorage.getItem("token");
+		const response = await fetch(`${backendUrl}/tournament/${pin}`, {
+			method: "GET",
+			headers: {
+				"Content-Type": "application/json",
+				"Authorization": `Bearer ${token}`,
+			},
+			credentials: "include"
+		});
 		const data = await response.json();
 
 		if (response.ok) {
@@ -350,9 +371,14 @@ function startLocalTournament(tournamentId: string, players: string[]) {
 }
 
 async function getTournamentData(tournamentId: string) {
+	const token = localStorage.getItem("token");
 	const response = await fetch(`${backendUrl}/constructTournament`, {
 		method: "POST",
-		headers: { "Content-Type": "application/json" },
+		headers: {
+			"Content-Type": "application/json",
+			"Authorization": `Bearer ${token}`,
+		},
+		credentials: "include",
 		body: JSON.stringify({ id: tournamentId }),
 	});
 

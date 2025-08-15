@@ -1,7 +1,7 @@
 const { getPlayerStats } = require('../dataQuerys');
 
 module.exports = async function (fastify) {
-    fastify.get('/player-stats/:nickname', async (request, reply) => {
+    fastify.get('/player-stats/:nickname',  {preHandler: fastify.authenticate}, async (request, reply) => {
         const { nickname } = request.params;
         const stats = getPlayerStats(nickname);
 

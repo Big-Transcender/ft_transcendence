@@ -87,10 +87,14 @@ async function handleMatchEnd(currentMatchId: string, winner: string) {
 			location.reload();
 			return;
 		}
-
+		const token = localStorage.getItem("token");
 		const updateResponse = await fetch(`${backendUrl}/updateTournamentWinner`, {
 			method: "PATCH",
-			headers: { "Content-Type": "application/json" },
+			headers: {
+				"Content-Type": "application/json",
+				"Authorization": `Bearer ${token}`,
+			},
+			credentials: "include",
 			body: JSON.stringify({ id: tournament.tournamentObject.tournamentID, winner }),
 		});
 
