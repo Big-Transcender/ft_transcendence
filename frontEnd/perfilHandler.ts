@@ -452,7 +452,19 @@ async function updateFriends() {
 			const row = table.insertRow();
 
 			const nameCell = row.insertCell();
-			nameCell.textContent = friend.nickname;
+
+			// Add delete button before the friend's name
+			const deleteButton = document.createElement("button");
+			deleteButton.textContent = "❌";
+			deleteButton.style.marginRight = "8px";
+			deleteButton.style.cursor = "pointer";
+			deleteButton.title = "Remove Friend";
+			deleteButton.addEventListener("click", async () => {
+				await removefriendHandler(friend.nickname);
+			});
+
+			nameCell.appendChild(deleteButton);
+			nameCell.appendChild(document.createTextNode(friend.nickname));
 
 			const statusCell = row.insertCell();
 			if (friend.isOnline) {

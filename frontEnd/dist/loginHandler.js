@@ -27,6 +27,9 @@ function errorCatcher(data, bubbleText) {
         typeText(bubbleText, "Uh-ohª... That nick is not in our village!", 60);
     }
     //
+    else if (data.error.search("Nickname too long") != -1) {
+        typeText(bubbleText, "Ohª... That nick is too long!", 60);
+    }
     //
     // Email in use
     else if (data.error.search("Email already in use") != -1) {
