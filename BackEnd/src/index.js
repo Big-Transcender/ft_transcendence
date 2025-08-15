@@ -28,7 +28,11 @@ fastify.register(fastifySecureSession, {
 
 fastify.register(fastifyPassport.initialize());
 fastify.register(fastifyPassport.secureSession());
-fastify.register(fastifyMultipart);
+fastify.register(require('@fastify/multipart'), {
+	limits: {
+		fileSize: 10 * 1024 * 1024 // 10 MB
+	}
+});
 
 fastifyPassport.use(
 	"google",
@@ -148,10 +152,10 @@ async function start() {
 		// Dynamically register all route files
 		await registerRoutes();
 
-		// Serve frontend static files
+		// Register static file serving for /uploads ONLY
 		fastify.register(fastifyStatic, {
-			root: path.join(__dirname, "../../frontEnd"),
-			prefix: "/",
+			root: process.env.UPLOADS_DIR || '/app/uploads',
+			prefix: '/uploads/',
 		});
 
 		await fastify.listen({ port: 3000, host: "0.0.0.0" });

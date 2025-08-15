@@ -15,6 +15,13 @@ db.prepare(
 `
 ).run();
 
+// Add avatar column to users table if it doesn't exist
+try {
+	db.prepare('ALTER TABLE users ADD COLUMN avatar TEXT').run();
+} catch (e) {
+	if (!e.message.includes('duplicate column name')) throw e;
+}
+
 db.prepare(
 	`
     CREATE TABLE IF NOT EXISTS tournaments (
@@ -72,4 +79,10 @@ db.prepare(`
 	`
 ).run();
 
+// Update a user's avatar
+function updateUserAvatar(userId, avatarFilename) {
+	db.prepare('UPDATE users SET avatar = ? WHERE id = ?').run(avatarFilename, userId);
+}
+
+db.updateUserAvatar = updateUserAvatar;
 module.exports = db;

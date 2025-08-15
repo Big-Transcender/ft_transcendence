@@ -18,6 +18,7 @@ services:
       - frontend
     volumes:
       - backend-db:/app/db
+      - ./uploads:/app/uploads
 
 volumes:
   backend-db:

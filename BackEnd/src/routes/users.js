@@ -1,5 +1,10 @@
-const db = require("../database");
-const bcrypt = require("bcryptjs");
+const db = require('../database');
+const bcrypt = require('bcryptjs');
+const fs = require('fs');
+const path = require('path');
+
+// Frontend base URL used to build absolute URL for default assets
+const FRONTEND_URL = process.env.FRONTEND_URL || 'http://localhost:5173';
 
 module.exports = async function (fastify) {
 	fastify.get("/users", async (request, reply) => {
@@ -63,9 +68,7 @@ module.exports = async function (fastify) {
 		const isValid = await bcrypt.compare(oldPassword, user.password);
 		if (!isValid) return reply.code(401).send({ error: "Wrong password" });
 
-		const hashedPassword = await bcrypt.hash(newPassword, 10);
-
-		await db.prepare("UPDATE users SET password = ? WHERE id = ?").run(hashedPassword, userId);
-		return reply.send({ success: true });
-	});
+        await db.prepare('UPDATE users SET password = ? WHERE id = ?').run(newPassword, userId);
+        return reply.send({ success: true});
+    })
 };
