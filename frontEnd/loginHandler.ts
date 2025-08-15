@@ -267,12 +267,14 @@ document.addEventListener("DOMContentLoaded", async () => {
 		const twoFactorInput = (document.getElementById("twoFactorPass") as HTMLInputElement).value.trim();
 
 		console.log("2F input: " + twoFactorInput);
+		const token = localStorage.getItem("token");
 		fetch(`${backendUrl}/2fa/verify`, {
 			method: "POST",
-			credentials: "include", // Needed if using session/cookies
 			headers: {
 				"Content-Type": "application/json",
+				"Authorization": `Bearer ${token}`,
 			},
+			credentials: "include",
 			body: JSON.stringify({
 				token: twoFactorInput, // Replace with the actual token from user input
 			}),
