@@ -28,7 +28,11 @@ fastify.register(fastifySecureSession, {
 
 fastify.register(fastifyPassport.initialize());
 fastify.register(fastifyPassport.secureSession());
-fastify.register(fastifyMultipart);
+fastify.register(require('@fastify/multipart'), {
+	limits: {
+		fileSize: 10 * 1024 * 1024 // 10 MB
+	}
+});
 
 fastifyPassport.use(
 	"google",

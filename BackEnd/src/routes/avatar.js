@@ -20,12 +20,14 @@ module.exports = async function (fastify) {
         fastify.log.info(`Saving avatar to: ${filepath}`);
         try {
             await pipeline(data.file, fs.createWriteStream(filepath));
-            fastify.log.info(`Avatar saved: ${filepath}`);
+            // Log file size after saving
+            const stats = fs.statSync(filepath);
+            fastify.log.info(`Avatar saved: ${filepath}, size: ${stats.size} bytes`);
             db.updateUserAvatar(userId, filename);
-            reply.send({ success: true, filename, url: `/uploads/${filename}` });
+            reply.send({ success: true, filename, url: `/uploads/${filename}`, size: stats.size });
         } catch (err) {
             fastify.log.error(`Failed to save avatar: ${err}`);
-            reply.code(500).send({ success: false, error: 'Failed to save avatar' });
+            reply.code(500).send({ success: false, error: 'Failed to save avatar', details: err.message });
         }
     });
 }
