@@ -227,8 +227,7 @@ function changeEmailPopup() {
 
 	if (!newEmail) displayWarning("No email has been given!");
 	else {
-		//#TODO here where you change the email
-		displayWarning(newEmail);
+		changeEmailAPI(newEmail);
 	}
 }
 
@@ -548,5 +547,30 @@ async function changePasswordAPI(newPassword: string, oldPassword: string): Prom
 		}
 	} catch (error) {
 		displayWarning((error as Error).message || "Error changing password");
+	}
+}
+
+async function changeEmailAPI(newEmail: string): Promise<void> {
+	const token = localStorage.getItem("token");
+	try {
+		const response = await fetch(`${backendUrl}/switch-email`, {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+				Authorization: `Bearer ${token}`,
+			},
+			body: JSON.stringify({ email: newEmail }),
+		});
+
+		const data = await response.json();
+
+		if (!response.ok) {
+			displayWarning(data.error || "Failed to switch email");
+		}
+
+		displayWarning("Email changed successfully!");
+	} catch (error: any) {
+		const errorMessage = (error as Error).message || "Error changing email";
+		displayWarning(errorMessage);
 	}
 }
