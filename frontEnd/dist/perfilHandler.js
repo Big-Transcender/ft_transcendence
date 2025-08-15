@@ -565,7 +565,7 @@ async function setProfileAvatar() {
         });
     }
     catch (e) {
-        // Optionally handle error
+        // fucking
     }
 }
 // SPA: Always refresh avatar on profile page navigation

@@ -68,7 +68,29 @@ module.exports = async function (fastify) {
 		const isValid = await bcrypt.compare(oldPassword, user.password);
 		if (!isValid) return reply.code(401).send({ error: "Wrong password" });
 
-        await db.prepare('UPDATE users SET password = ? WHERE id = ?').run(newPassword, userId);
-        return reply.send({ success: true});
-    })
+		const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+		await db.prepare("UPDATE users SET password = ? WHERE id = ?").run(hashedPassword, userId);
+		return reply.send({ success: true });
+	});
+
+    fastify.get('/me/avatar', { preHandler: fastify.authenticate }, async (request, reply) => {
+        const userId = request.userId;
+        const user = db.prepare('SELECT avatar FROM users WHERE id = ?').get(userId);
+
+        // Build default avatar as an absolute URL to the frontend asset
+        const defaultAvatar = `${FRONTEND_URL}/images/pongGame/player1.png`;
+        let avatarPath = defaultAvatar;
+
+        if (user && user.avatar) {
+            // Prefer uploaded avatar when it exists on disk
+            const uploadsDir = process.env.UPLOADS_DIR || '/app/uploads';
+            const filePath = path.join(uploadsDir, user.avatar);
+            if (fs.existsSync(filePath)) {
+                avatarPath = `/uploads/${user.avatar}`; // served by backend static
+            }
+        }
+
+        reply.send({ avatar: avatarPath });
+    });
 };
