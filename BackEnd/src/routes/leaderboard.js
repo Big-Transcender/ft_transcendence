@@ -19,7 +19,10 @@ module.exports = async function (fastify)
 		const userId = userRow.id;
 
 		const matches = await db.prepare(
-			`SELECT * FROM matches WHERE player1_id = ? OR player2_id = ?`
+			`SELECT * FROM matches 
+			 WHERE player1_id = ? OR player2_id = ? 
+			 ORDER BY match_date DESC 
+			 LIMIT 5`
 		).all(userId, userId);
 
 		const formattedMatches = await Promise.all(matches.map(async match => {
