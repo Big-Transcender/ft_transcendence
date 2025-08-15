@@ -24,22 +24,24 @@ class Tournament {
 		tournaments.set(tournamentId, this);
 	}
 
-	recordMatchWinner(winnerNickname) {
+	recordMatchWinner(winnerNickname, currentMatchId) {
+
+
 		const winner = this.players.find(p => p === winnerNickname);
 		if (!winner) {
 			console.error("⚠️ Winner not found in player list.");
 			return;
 		}
 
-		if (this.currentMatchIndex === 0) {
+		if (currentMatchId === this.matches[0]) {
 			this.semifinal1Winner = winner;
-			this.currentMatchIndex = 1;
 			console.log("✅ Semifinal 1 winner recorded: ", winner);
-		} else if (this.currentMatchIndex === 1) {
+		}
+		else if (currentMatchId === this.matches[1]) {
 			this.semifinal2Winner = winner;
-			this.currentMatchIndex = 2;
 			console.log("✅ Semifinal 2 winner recorded: ", winner);
-		} else if (this.currentMatchIndex === 2) {
+		}
+		else if (currentMatchId === this.matches[2]) {
 			this.Winner = winnerNickname;
 			this.currentMatchIndex = 3;
 			console.log("✅ The winner is: ", winner);

@@ -73,16 +73,25 @@ module.exports = async function (fastify) {
 	});
 
 	fastify.patch('/updateTournamentWinner', {preHandler: fastify.authenticate}, async (req, res) => {
-		const {  id: tournamentId, winner: nickName} = req.body;
+		const {  id: tournamentId, winner: nickName, currentMatchId: currentMatchId} = req.body;
 	
+		console.log("PATCH /updateTournamentWinner called with:", {
+			tournamentId,
+			nickName,
+			currentMatchId,
+		});
+		
+		
 		if (!nickName || !tournamentId ) {
 			return res.status(400).send({ error: 'Nickname and TournamentID is required' });
 		}
 	
 		const tournamentObject = getTournament(tournamentId);
+
+		console.log(tournamentObject)
 	
 		if (tournamentObject) {
-			tournamentObject.recordMatchWinner(nickName);
+			tournamentObject.recordMatchWinner(nickName, currentMatchId);
 		}
 	});
 
