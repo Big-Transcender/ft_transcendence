@@ -109,8 +109,6 @@ async function loginUser() {
 	const identifier = (document.getElementById("inputNick") as HTMLInputElement).value.trim();
 	const password = (document.getElementById("inputPass") as HTMLInputElement).value.trim();
 
-	console.log("nickname:", identifier);
-	console.log("password:", password);
 	try {
 		const response = await fetch(`${backendUrl}/login`, {
 			method: "POST",
@@ -196,7 +194,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 	const twoFactorPage = document.getElementById("twoFactorId");
 	const loginPage = document.getElementById("loginId");
 
-	await checkGoogleLogin();
+	// await checkGoogleLogin();
 	// await checkGoogleLogin();
 	if (checkIfLogged()) {
 		changePageTo(loginPage, profilePage);
