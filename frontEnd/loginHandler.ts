@@ -328,6 +328,10 @@ function getNickOnLocalStorage() {
 	return localStorage.getItem("nickname");
 }
 
+function getTournamentPin() {
+	return localStorage.getItem("pin");
+}
+
 function setNickOnLocalStorage(nickname: string) {
 	localStorage.setItem("nickname", nickname);
 }

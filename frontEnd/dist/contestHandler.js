@@ -11,10 +11,10 @@ const joinedContestPage = document.getElementById("contestJoinedSelectorId");
 const createContestPage = document.getElementById("contestCreateId");
 const pongContestPage = document.getElementById("pongContestId");
 const pinBox = document.querySelector(".contestPinBox");
-var pin;
+var pin = null;
 var numberOfPlayers = 0;
 var LocalTournaments = new Map();
-function genericBackFunctionContest() {
+async function genericBackFunctionContest() {
     const currentActive = document.querySelector(".contestId.active");
     if (currentActive) {
         currentActive.classList.remove("active");
@@ -23,6 +23,7 @@ function genericBackFunctionContest() {
         }
         else if (currentActive.id === "contestJoinedSelectorId") {
             contestMainPage.classList.add("active");
+            await removePlayer();
             stopContestPolling();
         }
         else if (currentActive.id === "contestCreateId") {
@@ -198,6 +199,7 @@ async function createNewContest() {
             // getInfoFromContest(data.code);
             startContestPolling(data.code);
             pin = data.tournamentId;
+            localStorage.setItem("pin", pin);
         }
         return data;
     }
@@ -207,6 +209,7 @@ async function createNewContest() {
     }
 }
 async function getInfoFromContest(pin) {
+    var _a;
     try {
         const token = localStorage.getItem("token");
         const response = await fetch(`${backendUrl}/tournament/${pin}`, {
@@ -222,14 +225,27 @@ async function getInfoFromContest(pin) {
         let pinNumber = document.getElementById("contestPinBoxNumberId");
         let name = document.getElementById("contestNameId");
         console.log("info from matches:", data.players);
-        let players = data.players;
+        let players = new Array(4).fill(null);
+        data.players.forEach((player, index) => {
+            if (index < 3) { // Ensure we only populate up to 4 positions
+                players[index] = player;
+            }
+        });
         numberOfPlayers = players.length;
         for (let i = 0; i < players.length; i++) {
-            const playerName = playerPlaces[i].querySelector(".playerContestPlaceName");
-            const playerBG = playerPlaces[i].querySelector(".playerContestPlaceBG");
-            playerName.textContent = players[i].nickname;
-            // playerPlaces[i].classList.remove("noplayer");
-            playerBG.classList.remove("noGame");
+            if ((_a = players[i]) === null || _a === void 0 ? void 0 : _a.nickname) {
+                const playerName = playerPlaces[i].querySelector(".playerContestPlaceName");
+                const playerBG = playerPlaces[i].querySelector(".playerContestPlaceBG");
+                playerName.textContent = players[i].nickname;
+                playerBG.classList.remove("noGame");
+            }
+            else {
+                console.log("the position is free: ", i);
+                const playerName = playerPlaces[i].querySelector(".playerContestPlaceName");
+                const playerBG = playerPlaces[i].querySelector(".playerContestPlaceBG");
+                playerName.textContent = "waiting";
+                playerBG.classList.add("noGame");
+            }
         }
         pinNumber.textContent = data.code;
         name.textContent = data.name;
@@ -256,6 +272,7 @@ async function joinTournament(nick, code) {
         if (response.ok) {
             console.log("Joined tournament:", data);
             pin = data.tournamentId;
+            localStorage.setItem("pin", pin);
             return true;
             // handle success (e.g., update UI)
         }
@@ -357,4 +374,20 @@ async function getTournamentData(tournamentId) {
         return null;
     }
     return data.tournament;
+}
+async function removePlayer() {
+    pin = getTournamentPin();
+    if (!pin)
+        return;
+    const token = localStorage.getItem("token");
+    await fetch(`${backendUrl}/delete-player-tournament`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`,
+        },
+        credentials: "include",
+        body: JSON.stringify(pin),
+    });
+    console.log("removed the player");
 }

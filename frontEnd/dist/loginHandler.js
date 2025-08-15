@@ -299,6 +299,9 @@ document.addEventListener("DOMContentLoaded", async () => {
 function getNickOnLocalStorage() {
     return localStorage.getItem("nickname");
 }
+function getTournamentPin() {
+    return localStorage.getItem("pin");
+}
 function setNickOnLocalStorage(nickname) {
     localStorage.setItem("nickname", nickname);
 }
