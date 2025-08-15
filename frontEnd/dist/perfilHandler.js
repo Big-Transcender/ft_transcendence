@@ -181,8 +181,53 @@ function changePopupTo(remove, activate) {
     remove.classList.remove("displayPagePopup");
     activate.classList.add("displayPagePopup");
 }
-function addfriendHandler(friendNick) {
-    //#TODO Make the logic of addfriend here!
+async function addfriendHandler(friendNick) {
+    const token = localStorage.getItem("token");
+    try {
+        const response = await fetch(`${backendUrl}/friends/add`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify({ friendNickname: friendNick }),
+        });
+        const data = await response.json();
+        if (!response.ok) {
+            displayWarning(data.error || "Failed to add friend");
+            return;
+        }
+        displayWarning("Friend added successfully!");
+        await updateFriends();
+    }
+    catch (error) {
+        const errorMessage = error.message || "Error adding friend";
+        displayWarning(errorMessage);
+    }
+}
+async function removefriendHandler(friendNick) {
+    const token = localStorage.getItem("token");
+    try {
+        const response = await fetch(`${backendUrl}/friends/remove`, {
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify({ friendNickname: friendNick }),
+        });
+        const data = await response.json();
+        if (!response.ok) {
+            displayWarning(data.error || "Failed to remove friend");
+            return;
+        }
+        displayWarning("Friend removed successfully!");
+        await updateFriends();
+    }
+    catch (error) {
+        const errorMessage = error.message || "Error removing friend";
+        displayWarning(errorMessage);
+    }
 }
 function openPopup() {
     document.getElementById("popupContainer").style.display = "flex";
