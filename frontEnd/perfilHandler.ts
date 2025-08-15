@@ -620,7 +620,7 @@ async function setProfileAvatar() {
 			if (el instanceof HTMLImageElement) {
 				el.src = avatarUrl + '?t=' + Date.now(); // cache busting
 			} else {
-				el.style.backgroundImage = `url('${avatarUrl}?t=${Date.now()}')`;
+				(el as HTMLElement).style.backgroundImage = `url('${avatarUrl}?t=${Date.now()}')`;
 			}
 		});
 	} catch (e) {
