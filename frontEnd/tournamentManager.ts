@@ -132,37 +132,25 @@ function handleLocalMatchEnd(matchId: string, winner: string) {
 	if (tournament.currentMatchIndex === 0) {
 		tournament.semifinal1 = winner;
 		tournament.currentMatchIndex++;
-
-		console.log(tournament.semifinal1);
-		console.log(tournament.semifinal2);
-		console.log(tournament.currentMatchIndex);
-
-		changePageTo(pongGamePage, joinedContestPage);
 		setTimeout(() => {
-			navigate("game1");
 			history.replaceState(undefined, "", `#pong/${tournament.matches[1]}`);
-			changePageTo(joinedContestPage, pongGamePage);
+			changePageTo(joinedContestPage, pongContestPage);
 			startPongWebSocket(tournament.matches[1], true, false, false, [tournament.players[2], tournament.players[3]]);
 			setGameScore(tournament.players[2], tournament.players[3]);
 			resetEmotions();
-		}, 3000);
+		}, 125);
 	} 
 	else if (tournament.currentMatchIndex === 1) {
 		tournament.semifinal2 = winner;
 		tournament.currentMatchIndex++;
-
-		console.log(tournament.semifinal1);
-		console.log(tournament.semifinal2);
-		console.log(tournament.currentMatchIndex);
-
 		setTimeout(() => {
-			navigate("game1");
+
 			history.replaceState(undefined, "", `#pong/${tournament.matches[2]}`);
-			changePageTo(joinedContestPage, pongGamePage);
+			changePageTo(joinedContestPage, pongContestPage);
 			startPongWebSocket(tournament.matches[2], true, false, false, [tournament.semifinal1, tournament.semifinal2]);
 			setGameScore(tournament.semifinal1, tournament.semifinal2);
 			resetEmotions();
-		}, 3000);
+		}, 125);
 	}
 	else if (tournament.currentMatchIndex === 2) {
 		tournament.Winner = winner;

@@ -360,12 +360,12 @@ function startLocalTournament(tournamentId: string, players: string[]) {
 		currentMatchIndex: 0,
 		semifinal1: null,
 		semifinal2: null,
+		winner: null,
 	};
 
 	LocalTournaments.set(tournament.tournamentId, tournament);
-	navigate("game1");
 	history.replaceState(undefined, "", `#pong/${tournament.matches[0]}`);
-	changePageTo(gameSelectorPongPage, pongGamePage);
+	changePageTo(createContestPage, pongContestPage);
 	setGameScore(tournament.players[0], tournament.players[1]);
 	startPongWebSocket(tournament.matches[0], true, false, false, [tournament.players[0], tournament.players[1]]);
 }
