@@ -394,7 +394,6 @@ async function updateFriends() {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
         const data = await response.json();
-        // Get the friends table (not the leaderboard table)
         const table = document.getElementById("friendListId");
         if (!table) {
             console.error("Friends table not found!");
@@ -404,37 +403,52 @@ async function updateFriends() {
         while (table.rows.length > 1) {
             table.deleteRow(1);
         }
-        // Insert new rows for each friend
-        data.friends.forEach((friend) => {
-            const row = table.insertRow();
-            const nameCell = row.insertCell();
-            // Add delete button before the friend's name
-            const deleteButton = document.createElement("button");
-            deleteButton.textContent = "❌";
-            deleteButton.style.marginRight = "8px";
-            deleteButton.style.cursor = "pointer";
-            deleteButton.title = "Remove Friend";
-            deleteButton.addEventListener("click", async () => {
-                await removefriendHandler(friend.nickname);
-            });
-            nameCell.appendChild(deleteButton);
-            nameCell.appendChild(document.createTextNode(friend.nickname));
-            const statusCell = row.insertCell();
-            if (friend.isOnline) {
-                statusCell.innerHTML = '<span style="color: #063508ff;">🟢 Online</span>';
-                statusCell.className = "online-status";
-            }
-            else {
-                statusCell.innerHTML = '<span style="color: #757575;">🔴 Offline</span>';
-                statusCell.className = "offline-status";
-            }
-        });
-        // Make the table scrollable if there are more than 5 friends
         const maxRows = 5;
+        if (data.friends.length === 0) {
+            // Fill first 5 positions with default string
+            for (let i = 0; i < maxRows; i++) {
+                const row = table.insertRow();
+                row.insertCell().textContent = "-----";
+                row.insertCell().textContent = "-----";
+            }
+        }
+        else {
+            // Insert new rows for each friend
+            data.friends.forEach((friend) => {
+                const row = table.insertRow();
+                const nameCell = row.insertCell();
+                const deleteButton = document.createElement("button");
+                deleteButton.textContent = "❌";
+                deleteButton.style.marginRight = "8px";
+                deleteButton.style.cursor = "pointer";
+                deleteButton.title = "Remove Friend";
+                deleteButton.addEventListener("click", async () => {
+                    await removefriendHandler(friend.nickname);
+                });
+                nameCell.appendChild(deleteButton);
+                nameCell.appendChild(document.createTextNode(friend.nickname));
+                const statusCell = row.insertCell();
+                if (friend.isOnline) {
+                    statusCell.innerHTML = '<span style="color: #063508ff;">🟢 Online</span>';
+                    statusCell.className = "online-status";
+                }
+                else {
+                    statusCell.innerHTML = '<span style="color: #757575;">🔴 Offline</span>';
+                    statusCell.className = "offline-status";
+                }
+            });
+            // Fill remaining rows with placeholders if less than 5 friends
+            for (let i = data.friends.length; i < maxRows; i++) {
+                const row = table.insertRow();
+                row.insertCell().textContent = "-----";
+                row.insertCell().textContent = "-----";
+            }
+        }
+        // Make the table scrollable if there are more than 5 friends
         if (data.friends.length > maxRows) {
             table.style.display = "block";
             table.style.overflowY = "scroll";
-            table.style.maxHeight = "342px"; // Adjust height as needed
+            table.style.maxHeight = "342px";
         }
         else {
             table.style.display = "table";
@@ -443,18 +457,25 @@ async function updateFriends() {
         }
     }
     catch (error) {
-        // Show error in table
         const table = document.getElementById("friendListId");
         if (table) {
             while (table.rows.length > 1) {
                 table.deleteRow(1);
             }
-            const row = table.insertRow();
-            const cell1 = row.insertCell();
-            const cell2 = row.insertCell();
-            cell1.textContent = "Error loading friends";
-            cell2.textContent = `${error}`;
-            cell1.style.color = "#ff0000";
+            for (let i = 0; i < 5; i++) {
+                const row = table.insertRow();
+                const cell1 = row.insertCell();
+                const cell2 = row.insertCell();
+                if (i === 0) {
+                    cell1.textContent = "Error loading friends";
+                    cell2.textContent = `${error}`;
+                    cell1.style.color = "#ff0000";
+                }
+                else {
+                    cell1.textContent = "-----";
+                    cell2.textContent = "-----";
+                }
+            }
         }
     }
 }
