@@ -14,6 +14,7 @@ const pongContestPage = document.getElementById("pongContestId");
 
 const pinBox = document.querySelector(".contestPinBox");
 var pin;
+var numberOfPlayers = 0;
 
 var LocalTournaments = new Map();
 
@@ -120,7 +121,16 @@ document.addEventListener("DOMContentLoaded", () => {
 		const id = pin;
 		const players = ["diogosan", "Bde", "cacarval", "bousa"];
 		//startLocalTournament(id, players);
-		startTournament(id);
+		if (numberOfPlayers === 4)
+		{
+			stopContestPolling();
+			startTournament(id);
+		}
+
+		else
+			displayWarning("Wait for all players!");
+
+
 	});
 
 	genericBackButton.forEach((button) => {
@@ -168,7 +178,9 @@ let contestPollingInterval: number | null = null;
 
 function startContestPolling(pin: string, intervalMs = 2000) {
 	getInfoFromContest(pin);
-	if (contestPollingInterval) clearInterval(contestPollingInterval);
+	if (contestPollingInterval)
+		clearInterval(contestPollingInterval);
+
 	contestPollingInterval = window.setInterval(() => {
 		getInfoFromContest(pin);
 	}, intervalMs);
@@ -230,7 +242,7 @@ async function getInfoFromContest(pin: string) {
 
 		console.log("info from matches:", data.players);
 		let players = data.players;
-
+		numberOfPlayers = players.length;
 		for (let i = 0; i < players.length; i++) {
 			const playerName = playerPlaces[i].querySelector(".playerContestPlaceName");
 			const playerBG = playerPlaces[i].querySelector(".playerContestPlaceBG");
@@ -300,7 +312,8 @@ function resetContestPage() {
 async function startTournament(tournamentId: string) {
 	var data = await getTournamentData(tournamentId);
 
-	if (!data) return;
+	if (!data)
+		return;
 
 	const nick = getNickOnLocalStorage();
 
@@ -308,12 +321,10 @@ async function startTournament(tournamentId: string) {
 	console.log(data.players[0]);
 
 	if (nick === data.players[0] || nick === data.players[1]) {
-		// navigate("game1");
 		history.replaceState(undefined, "", `#pong/${data.matches[0]}`);
 		changePageTo(joinedContestPage, pongContestPage);
 		startPongWebSocket(data.matches[0]);
 	} else if (nick === data.players[2] || nick === data.players[3]) {
-		// navigate("game1");
 		history.replaceState(undefined, "", `#pong/${data.matches[1]}`);
 		changePageTo(joinedContestPage, pongContestPage);
 		startPongWebSocket(data.matches[1]);

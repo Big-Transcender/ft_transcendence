@@ -16,11 +16,7 @@ module.exports = async function (fastify) {
 		if (tournament)
 		{
 			return res.send({     
-				tournament: {
-				id: tournamentId,
-				players: tournament.players,
-				matches: tournament.matches,
-				},
+				tournament: tournament
 			});
 		}
 
@@ -104,8 +100,8 @@ module.exports = async function (fastify) {
 		}
 	
 		return res.send({
-			semifinal1Winner: tournamentObject.semifinal1Winner,
-			semifinal2Winner: tournamentObject.semifinal2Winner,
+			semifinal1Winner: tournamentObject?.semifinal1Winner,
+			semifinal2Winner: tournamentObject?.semifinal2Winner,
 		});
 	});
 

@@ -1,7 +1,16 @@
+
+var semiFinalPag: string = null;
+
 window.addEventListener("TournamentMatch", (event: CustomEvent) => {
 	const { Tournament } = event.detail;
 
 	const nick = getNickOnLocalStorage();
+
+	if (nick === Tournament.semifinal1Winner)
+		semiFinalPag = "p1";
+	else
+		semiFinalPag = "p2";
+
 	console.log("lets see the last stage");
 	console.log(Tournament);
 	handleNextFase(nick, Tournament);
@@ -18,17 +27,27 @@ async function handleNextFase(nick: string, Tournament: any) {
 			return;
 		}
 
-		const tournamentPlayers = [Tournament.semifinal1Winner, Tournament.semifinal2Winner];
-		if (nick === tournamentPlayers[0] || nick === tournamentPlayers[1]) {
-			changePageTo(pongContestPage, joinedContestPage);
-			setTimeout(() => {
-				history.replaceState(undefined, "", `#pong/${Tournament.matches[2]}`);
-				changePageTo(joinedContestPage, pongContestPage);
-				startPongWebSocket(Tournament.matches[2]);
-			}, 3000);
-		} else {
-			console.log(`${nick} is not in the semifinals.`);
-		}
+		changePageTo(pongContestPage, joinedContestPage);
+
+		const semifinalData = await waitForSemifinalsToComplete(Tournament.tournamentID);
+
+
+
+		console.log("all are ready!!");
+
+		console.log(semifinalData.semifinal1Winner);
+		console.log(semifinalData.semifinal2Winner);
+
+
+
+
+		setTimeout(() => {
+			history.replaceState(undefined, "", `#pong/${Tournament.matches[2]}`);
+			changePageTo(joinedContestPage, pongContestPage);
+			semiFinalPag = null;
+			startPongWebSocket(Tournament.matches[2]);
+		}, 3000);
+
 	} catch (error) {
 		console.error("Error handling next phase:", error);
 	}
@@ -90,6 +109,8 @@ async function handleMatchEnd(currentMatchId: string, winner: string) {
 				detail: { Tournament: updatedTournament.tournamentObject },
 			})
 		);
+
+
 	} catch (error) {
 		console.error("Error handling match end:", error);
 	}
@@ -154,3 +175,45 @@ function findTournamentByMatch(matchId: string): any | null {
 	}
 	return null;
 }
+
+async function waitForSemifinalsToComplete(tournamentId: string) {
+	const playerPlaces = document.querySelectorAll(".playerContestPlace");
+       
+
+	while (true) {
+		console.log("Waiting for semifinals to complete...");
+		await new Promise((resolve) => setTimeout(resolve, 2000)); // Wait for 2 seconds
+
+        const data = await getTournamentData(tournamentId);
+
+		console.log(data.semifinal1Winner);
+		console.log(data.semifinal2Winner);
+
+		// Update the tournament state
+
+		updateBrackets(playerPlaces, [data.semifinal1Winner, data.semifinal2Winner]);
+
+		if (data.semifinal1Winner && data.semifinal2Winner) {
+			updateBrackets(playerPlaces, [data.semifinal1Winner, data.semifinal2Winner]);
+            return data; // Return the semifinal winners
+        }
+	}
+}
+
+function updateBrackets(playerPlaces: NodeListOf<Element>, tournamentPlayers: string[]) {
+	if (tournamentPlayers[0]) {
+		const playerName = playerPlaces[4].querySelector(".playerContestPlaceName");
+		const playerBG = playerPlaces[4].querySelector(".playerContestPlaceBG");
+		playerName.textContent = tournamentPlayers[0];
+		playerBG.classList.remove("noGame");
+	}
+
+	if (tournamentPlayers[1]) {
+		const playerName = playerPlaces[5].querySelector(".playerContestPlaceName");
+		const playerBG = playerPlaces[5].querySelector(".playerContestPlaceBG");
+		playerName.textContent = tournamentPlayers[1];
+		playerBG.classList.remove("noGame");
+	}
+}
+
+
