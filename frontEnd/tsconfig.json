@@ -2,7 +2,14 @@
 	"compilerOptions": {
 		"target": "es2017",
 		"lib": ["dom", "es2017"],
-		"outDir": "dist"
+		"outDir": "dist",
+		"strict": false,               // disables all strict checks
+		"noImplicitAny": false,        // allows implicit 'any'
+		"strictNullChecks": false,     // allows null without checks
+		"skipLibCheck": true,          // skips type checking for node_modules
+		"esModuleInterop": true,       // easier module imports
+		"moduleResolution": "node"
 	},
 	"include": ["**/*.ts"]
 }
+
