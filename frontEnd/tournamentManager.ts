@@ -27,13 +27,18 @@ async function handleNextFase(nick: string, Tournament: any) {
 			return;
 		}
 
-		await waitForSemifinalsToComplete(Tournament);
-        // Update the brackets UI
-
-
-		
-
 		changePageTo(pongContestPage, joinedContestPage);
+
+		const semifinalData = await waitForSemifinalsToComplete(Tournament.tournamentID);
+
+
+
+		console.log("all are ready!!");
+
+		console.log(semifinalData.semifinal1Winner);
+		console.log(semifinalData.semifinal2Winner);
+
+
 
 
 		setTimeout(() => {
@@ -171,40 +176,44 @@ function findTournamentByMatch(matchId: string): any | null {
 	return null;
 }
 
-async function waitForSemifinalsToComplete(Tournament: any) {
+async function waitForSemifinalsToComplete(tournamentId: string) {
 	const playerPlaces = document.querySelectorAll(".playerContestPlace");
        
 
-	while (!Tournament.semifinal1Winner || !Tournament.semifinal2Winner) {
+	while (true) {
 		console.log("Waiting for semifinals to complete...");
 		await new Promise((resolve) => setTimeout(resolve, 2000)); // Wait for 2 seconds
 
-		// Fetch the updated tournament state
-		const updatedTournament = await getTournamentData(Tournament.tournamentID);
-		if (!updatedTournament) {
-			console.error("Failed to fetch updated tournament data.");
-			break;
-		}
+        const data = await getTournamentData(tournamentId);
+
+		console.log(data.semifinal1Winner);
+		console.log(data.semifinal2Winner);
 
 		// Update the tournament state
-		const tournamentPlayers = [Tournament.semifinal1Winner, Tournament.semifinal2Winner];
-		updateBrackets(playerPlaces, tournamentPlayers);
+
+		updateBrackets(playerPlaces, [data.semifinal1Winner, data.semifinal2Winner]);
+
+		if (data.semifinal1Winner && data.semifinal2Winner) {
+			updateBrackets(playerPlaces, [data.semifinal1Winner, data.semifinal2Winner]);
+            return data; // Return the semifinal winners
+        }
 	}
-	return ;
 }
 
 function updateBrackets(playerPlaces: NodeListOf<Element>, tournamentPlayers: string[]) {
-	if (semiFinalPag === "p1") {
+	if (tournamentPlayers[0]) {
 		const playerName = playerPlaces[4].querySelector(".playerContestPlaceName");
 		const playerBG = playerPlaces[4].querySelector(".playerContestPlaceBG");
 		playerName.textContent = tournamentPlayers[0];
 		playerBG.classList.remove("noGame");
 	}
 
-	else if(semiFinalPag === "p2") {
+	if (tournamentPlayers[1]) {
 		const playerName = playerPlaces[5].querySelector(".playerContestPlaceName");
 		const playerBG = playerPlaces[5].querySelector(".playerContestPlaceBG");
 		playerName.textContent = tournamentPlayers[1];
 		playerBG.classList.remove("noGame");
 	}
 }
+
+

@@ -100,8 +100,10 @@ document.addEventListener("DOMContentLoaded", () => {
         const id = pin;
         const players = ["diogosan", "Bde", "cacarval", "bousa"];
         //startLocalTournament(id, players);
-        if (numberOfPlayers === 4)
+        if (numberOfPlayers === 4) {
+            stopContestPolling();
             startTournament(id);
+        }
         else
             displayWarning("Wait for all players!");
     });
@@ -299,6 +301,5 @@ async function getTournamentData(tournamentId) {
         displayWarning("Invalid tournament data received");
         return null;
     }
-    console.log(data.tournament.tournamentId);
     return data.tournament;
 }
