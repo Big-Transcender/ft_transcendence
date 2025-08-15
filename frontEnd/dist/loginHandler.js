@@ -328,6 +328,13 @@ function changePageTo(remove, activate) {
     remove.classList.remove("active");
     activate.classList.add("active");
 }
+function getCookie(name) {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2)
+        return parts.pop().split(';').shift();
+    return null;
+}
 async function checkGoogleLogin() {
     try {
         const res = await fetch(`${backendUrl}/me`, {
@@ -341,6 +348,10 @@ async function checkGoogleLogin() {
                 setNickOnLocalStorage(data.user.nickname);
                 putNickOnProfileHeader(data.user.nickname);
                 changePageTo(document.getElementById("loginId"), document.getElementById("profileId"));
+                // Set JWT from cookie to localStorage
+                const token = getCookie("token");
+                if (token)
+                    localStorage.setItem("token", token);
             }
             else {
                 console.warn("No user found in response");

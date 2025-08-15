@@ -81,6 +81,20 @@ fastify.get(
 		preValidation: fastifyPassport.authenticate("google", { scope: ["profile", "email"] }),
 	},
 	async (req, res) => {
+		// Set user in session for /me route
+		req.session.set("user", { user: req.user });
+		// Issue JWT for frontend use
+		const token = jwt.sign({ userId: req.user.id }, 'your-secret-key', {
+			expiresIn: '1h',
+		});
+		// Set JWT in cookie (not httpOnly so frontend can read it)
+		res.setCookie("token", token, {
+			path: "/",
+			httpOnly: false,
+			secure: false, // set to true if using https
+			sameSite: "lax",
+			maxAge: 7 * 24 * 60 * 60 // 7 days
+		});
 		console.log(req.hostname);
 		res.redirect(`http://c1r3s1.42porto.com:5173/#profile`);
 	}

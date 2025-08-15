@@ -197,7 +197,7 @@ async function createNewContest() {
 	//Create Contest here
 	const tournamentName = (document.getElementById("inputContestNameId") as HTMLInputElement).value.trim();
 	const nick = getNickOnLocalStorage();
-	const token = localStorage.getItem("token");
+	const token = getCookie("token");
 
 	console.log("tournamentName:", tournamentName);
 	console.log("nick:", nick);
@@ -234,7 +234,7 @@ async function createNewContest() {
 
 async function getInfoFromContest(pin: string) {
 	try {
-		const token = localStorage.getItem("token");
+		const token = getCookie("token");
 		const response = await fetch(`${backendUrl}/tournament/${pin}`, {
 			method: "GET",
 			headers: {
@@ -270,7 +270,7 @@ async function getInfoFromContest(pin: string) {
 
 async function joinTournament(nick: string, code: string) {
 	try {
-		const token = localStorage.getItem("token");
+		const token = getCookie("token");
 		const response = await fetch(`${backendUrl}/join-tournament`, {
 			method: "POST",
 			headers: {
@@ -299,7 +299,7 @@ async function joinTournament(nick: string, code: string) {
 
 async function checkIsValidPin(pin: string): Promise<boolean> {
 	try {
-		const token = localStorage.getItem("token");
+		const token = getCookie("token");
 		const response = await fetch(`${backendUrl}/tournament/${pin}`, {
 			method: "GET",
 			headers: {
@@ -371,7 +371,7 @@ function startLocalTournament(tournamentId: string, players: string[]) {
 }
 
 async function getTournamentData(tournamentId: string) {
-	const token = localStorage.getItem("token");
+	const token = getCookie("token");
 	const response = await fetch(`${backendUrl}/constructTournament`, {
 		method: "POST",
 		headers: {

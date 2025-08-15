@@ -63,7 +63,7 @@ async function getUserPosition(): Promise<string> {
 	try {
 		// const response = await fetch(`${backendUrl}/leaderboard/position/${userNick}`);
 		// const response = await fetch(`${backendUrl}/leaderboard/position/`);
-		const token = localStorage.getItem("token");
+		const token = getCookie("token");
 		const response = await fetch(`${backendUrl}/leaderboard/position/`, {
 			method: "GET",
 			headers: {
@@ -84,7 +84,7 @@ async function getUserPosition(): Promise<string> {
 	}
 }
 async function getUserStats(nickname: string) {
-	const token = localStorage.getItem("token");
+	const token = getCookie("token");
 	if (checkIfLogged()) {
 		fetch(`${backendUrl}/player-stats/${nickname}`, {
 			method: "GET",
@@ -369,7 +369,7 @@ async function friendsAnimationHandler() {
 
 async function updateFriends() {
 	try {
-		const token = localStorage.getItem("token");
+		const token = getCookie("token");
 		const response = await fetch(`${backendUrl}/friends`, {
 			headers: {
 				"Content-Type": "application/json",
@@ -445,7 +445,7 @@ async function updateMatchHistory() {
 	if (!nickname) return;
 
 	try {
-		const token = localStorage.getItem("token");
+		const token = getCookie("token");
 		// const response = await fetch(`${backendUrl}/player-matches/${nickname}`, {
 		const response = await fetch(`${backendUrl}/player-matches/`, {
 			method: "GET",
@@ -525,7 +525,7 @@ async function updateMatchHistory() {
 }
 
 async function changeNickAPI(newNick: string): Promise<void> {
-	const token = localStorage.getItem("token");
+	const token = getCookie("token");
 	try {
 		const response = await fetch(`${backendUrl}/switch-nickname`, {
 			method: "POST",
@@ -554,7 +554,7 @@ async function changeNickAPI(newNick: string): Promise<void> {
 }
 
 async function changePasswordAPI(newPassword: string, oldPassword: string): Promise<void> {
-	const token = localStorage.getItem("token");
+	const token = getCookie("token");
 	try {
 		const response = await fetch(`${backendUrl}/switch-password`, {
 			method: "POST",
@@ -580,7 +580,7 @@ async function changePasswordAPI(newPassword: string, oldPassword: string): Prom
 }
 
 async function changeEmailAPI(newEmail: string): Promise<void> {
-	const token = localStorage.getItem("token");
+	const token = getCookie("token");
 	try {
 		const response = await fetch(`${backendUrl}/switch-email`, {
 			method: "POST",
@@ -606,7 +606,7 @@ async function changeEmailAPI(newEmail: string): Promise<void> {
 
 // Fetch and set the user's avatar on the profile page
 async function setProfileAvatar() {
-	const token = localStorage.getItem("token");
+	const token = getCookie("token");
 	if (!token) return;
 	try {
 		const response = await fetch(`${backendUrl}/me/avatar`, {

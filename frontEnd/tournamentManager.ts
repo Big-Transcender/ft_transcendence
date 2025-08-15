@@ -67,7 +67,7 @@ window.addEventListener("MatchEnd", (event: CustomEvent) => {
 
 async function handleMatchEnd(currentMatchId: string, winner: string) {
 	try {
-		const token = localStorage.getItem("token");
+		const token = getCookie("token");
 		console.log("Handling match end...");
 		const nick = getNickOnLocalStorage();
 

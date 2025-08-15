@@ -174,7 +174,7 @@ async function createNewContest() {
     //Create Contest here
     const tournamentName = document.getElementById("inputContestNameId").value.trim();
     const nick = getNickOnLocalStorage();
-    const token = localStorage.getItem("token");
+    const token = getCookie("token");
     console.log("tournamentName:", tournamentName);
     console.log("nick:", nick);
     try {
@@ -208,7 +208,7 @@ async function createNewContest() {
 }
 async function getInfoFromContest(pin) {
     try {
-        const token = localStorage.getItem("token");
+        const token = getCookie("token");
         const response = await fetch(`${backendUrl}/tournament/${pin}`, {
             method: "GET",
             headers: {
@@ -242,7 +242,7 @@ async function getInfoFromContest(pin) {
 }
 async function joinTournament(nick, code) {
     try {
-        const token = localStorage.getItem("token");
+        const token = getCookie("token");
         const response = await fetch(`${backendUrl}/join-tournament`, {
             method: "POST",
             headers: {
@@ -272,7 +272,7 @@ async function joinTournament(nick, code) {
 }
 async function checkIsValidPin(pin) {
     try {
-        const token = localStorage.getItem("token");
+        const token = getCookie("token");
         const response = await fetch(`${backendUrl}/tournament/${pin}`, {
             method: "GET",
             headers: {
@@ -336,7 +336,7 @@ function startLocalTournament(tournamentId, players) {
     startPongWebSocket(tournament.matches[0], true, false, false, [tournament.players[0], tournament.players[1]]);
 }
 async function getTournamentData(tournamentId) {
-    const token = localStorage.getItem("token");
+    const token = getCookie("token");
     const response = await fetch(`${backendUrl}/constructTournament`, {
         method: "POST",
         headers: {
