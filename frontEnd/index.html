@@ -310,6 +310,33 @@
 					</div>
 				</div>
 
+				<!-- POPUP 2AF -->
+				<div id="popupContainer2FA" class="popup-overlay">
+					<div class="popup popup2FA">
+						<div class="popupBG"></div>
+
+						<div class="inputBox popup2FANumber">
+							<label for="popupNewNick">Enter 2FA code!</label>
+							<input type="text" id="AFCode" class="inputText smallInput" placeholder="2FA CODE" autocomplete="off" />
+						</div>
+
+						<button onclick="close2FApopup()" class="defaultButton popup2FAClose" id="close2FA">
+							<p class="defaultButtonText">Close</p>
+							<div class="defaultButtonBG">
+								<div class="defaultButtonBGWave"></div>
+								<div class="defaultButtonBGWave wave2"></div>
+							</div>
+						</button>
+
+						<button onclick="verify2FACode()" class="defaultButton popup2FAVerify" id="Verify2FA">
+							<p class="defaultButtonText">Verify!</p>
+							<div class="defaultButtonBG">
+								<div class="defaultButtonBGWave"></div>
+								<div class="defaultButtonBGWave wave2"></div>
+							</div>
+						</button>
+					</div>
+				</div>
 				<!-- POPUP FROM PROFILE
 				<div id="popupContainerProfile" class="popup-overlay">
 					<div class="popup">

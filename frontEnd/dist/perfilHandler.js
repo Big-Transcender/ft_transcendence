@@ -83,7 +83,7 @@ async function getUserStats(nickname) {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
-                "Authorization": `Bearer ${token}`,
+                Authorization: `Bearer ${token}`,
             },
             credentials: "include",
         })
@@ -231,22 +231,22 @@ function changePhotoPopup() {
     }
     const file = newPhoto.files[0];
     const formData = new FormData();
-    formData.append('file', file);
+    formData.append("file", file);
     fetch(`${backendUrl}/avatar`, {
-        method: 'POST',
+        method: "POST",
         body: formData,
         headers: {
-            'Authorization': `Bearer ${localStorage.getItem('token')}`
-        }
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
     })
-        .then(response => response.json())
-        .then(data => {
+        .then((response) => response.json())
+        .then((data) => {
         if (data.success && data.url) {
             // Update only profile photo location elements
-            const photoElements = document.querySelectorAll('.profilePhotoLocation');
+            const photoElements = document.querySelectorAll(".profilePhotoLocation");
             photoElements.forEach((el) => {
                 if (el instanceof HTMLImageElement) {
-                    el.src = backendUrl + data.url + '?t=' + Date.now(); // cache busting
+                    el.src = backendUrl + data.url + "?t=" + Date.now(); // cache busting
                 }
                 else {
                     el.style.backgroundImage = `url('${backendUrl + data.url}?t=${Date.now()}')`;
@@ -557,15 +557,15 @@ async function setProfileAvatar() {
         return;
     try {
         const response = await fetch(`${backendUrl}/me/avatar`, {
-            headers: { 'Authorization': `Bearer ${token}` },
-            credentials: 'include',
+            headers: { Authorization: `Bearer ${token}` },
+            credentials: "include",
         });
         const data = await response.json();
-        const avatarUrl = data.avatar.startsWith('/') ? backendUrl + data.avatar : data.avatar;
-        const photoElements = document.querySelectorAll('.profilePhotoLocation');
+        const avatarUrl = data.avatar.startsWith("/") ? backendUrl + data.avatar : data.avatar;
+        const photoElements = document.querySelectorAll(".profilePhotoLocation");
         photoElements.forEach((el) => {
             if (el instanceof HTMLImageElement) {
-                el.src = avatarUrl + '?t=' + Date.now(); // cache busting
+                el.src = avatarUrl + "?t=" + Date.now(); // cache busting
             }
             else {
                 el.style.backgroundImage = `url('${avatarUrl}?t=${Date.now()}')`;
@@ -578,13 +578,13 @@ async function setProfileAvatar() {
 }
 // SPA: Always refresh avatar on profile page navigation
 function handleProfilePageNavigation() {
-    if (window.location.pathname.includes('perfil') || window.location.pathname.includes('profile')) {
+    if (window.location.pathname.includes("perfil") || window.location.pathname.includes("profile")) {
         setProfileAvatar();
     }
 }
 // Listen for SPA navigation events
-window.addEventListener('popstate', handleProfilePageNavigation);
-window.addEventListener('pushstate', handleProfilePageNavigation);
-window.addEventListener('replacestate', handleProfilePageNavigation);
+window.addEventListener("popstate", handleProfilePageNavigation);
+window.addEventListener("pushstate", handleProfilePageNavigation);
+window.addEventListener("replacestate", handleProfilePageNavigation);
 // Also run on initial load
 handleProfilePageNavigation();
