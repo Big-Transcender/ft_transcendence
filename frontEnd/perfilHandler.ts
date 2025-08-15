@@ -68,7 +68,7 @@ async function getUserPosition(): Promise<string> {
 			method: "GET",
 			headers: {
 				"Content-Type": "application/json",
-				"Authorization": `Bearer ${token}`,
+				Authorization: `Bearer ${token}`,
 			},
 			credentials: "include",
 		});
@@ -233,12 +233,14 @@ function changeEmailPopup() {
 }
 
 function changePasswordPopup() {
-	const newEmail = (document.getElementById("popupNewPassword") as HTMLInputElement).value.trim();
+	const oldPassword = (document.getElementById("popupOldPassword") as HTMLInputElement).value.trim();
+	const newPassword = (document.getElementById("popupNewPassword") as HTMLInputElement).value.trim();
 
-	if (!newEmail) displayWarning("No password has been given!");
+	if (!newPassword || !oldPassword) displayWarning("No password has been given!");
 	else {
 		//#TODO here where you change the password
-		displayWarning(newEmail);
+		changePasswordAPI(newPassword, oldPassword);
+		// displayWarning(newPassword);
 	}
 }
 
@@ -419,7 +421,7 @@ async function updateMatchHistory() {
 			method: "GET",
 			headers: {
 				"Content-Type": "application/json",
-				"Authorization": `Bearer ${token}`,
+				Authorization: `Bearer ${token}`,
 			},
 			credentials: "include",
 		});
@@ -520,5 +522,31 @@ async function changeNickAPI(newNick: string): Promise<void> {
 		}
 	} catch (error) {
 		displayWarning((error as Error).message || "Error changing nickname");
+	}
+}
+
+async function changePasswordAPI(newPassword: string, oldPassword: string): Promise<void> {
+	const token = localStorage.getItem("token");
+	try {
+		const response = await fetch(`${backendUrl}/switch-password`, {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+				Authorization: `Bearer ${token}`,
+			},
+			body: JSON.stringify({ oldPassword, newPassword }),
+		});
+
+		console.log(oldPassword);
+		console.log(newPassword);
+		const data = await response.json();
+		if (!response.ok) {
+			displayWarning(data.error || "Failed to change password");
+			return;
+		} else {
+			displayWarning("Password changed successfully!");
+		}
+	} catch (error) {
+		displayWarning((error as Error).message || "Error changing password");
 	}
 }

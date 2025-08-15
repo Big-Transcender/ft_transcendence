@@ -1,4 +1,4 @@
-const fastify = require("fastify")({ logger: false });
+const fastify = require("fastify")({ logger: true });
 const cors = require("@fastify/cors");
 const path = require("path");
 const fs = require("fs");
@@ -90,19 +90,19 @@ fastify.get(
 );
 
 fastify.decorate("authenticate", async function (request, reply) {
-	// try {
-	// 	const authHeader = request.headers.authorization;
-	// 	if (!authHeader) {
-	// 		return reply.code(401).send({ error: "Access denied" });
-	// 	}
-	// 	const token = authHeader.split(" ")[1]; // if using "Bearer <token>"
-	// 	const decoded = jwt.verify(token, "your-secret-key"); //TODO: key in env
-	// 	request.userId = decoded.userId;
-	// 	const user = db.prepare("SELECT nickname FROM users WHERE id = ?").get(decoded.userId);
-	// 	request.userNickname = user.nickname;
-	// } catch (err) {
-	// 	reply.code(401).send({ error: "Invalid token" });
-	// }
+	try {
+		const authHeader = request.headers.authorization;
+		if (!authHeader) {
+			return reply.code(401).send({ error: "Access denied" });
+		}
+		const token = authHeader.split(" ")[1]; // if using "Bearer <token>"
+		const decoded = jwt.verify(token, "your-secret-key"); //TODO: key in env
+		request.userId = decoded.userId;
+		const user = db.prepare("SELECT nickname FROM users WHERE id = ?").get(decoded.userId);
+		request.userNickname = user.nickname;
+	} catch (err) {
+		reply.code(401).send({ error: "Invalid token" });
+	}
 });
 
 fastify.get("/logout", async (req, res) => {

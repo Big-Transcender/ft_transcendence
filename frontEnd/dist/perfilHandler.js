@@ -60,7 +60,7 @@ async function getUserPosition() {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
-                "Authorization": `Bearer ${token}`,
+                Authorization: `Bearer ${token}`,
             },
             credentials: "include",
         });
@@ -205,12 +205,14 @@ function changeEmailPopup() {
     }
 }
 function changePasswordPopup() {
-    const newEmail = document.getElementById("popupNewPassword").value.trim();
-    if (!newEmail)
+    const oldPassword = document.getElementById("popupOldPassword").value.trim();
+    const newPassword = document.getElementById("popupNewPassword").value.trim();
+    if (!newPassword || !oldPassword)
         displayWarning("No password has been given!");
     else {
         //#TODO here where you change the password
-        displayWarning(newEmail);
+        changePasswordAPI(newPassword, oldPassword);
+        // displayWarning(newPassword);
     }
 }
 function changePhotoPopup() {
@@ -377,7 +379,7 @@ async function updateMatchHistory() {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
-                "Authorization": `Bearer ${token}`,
+                Authorization: `Bearer ${token}`,
             },
             credentials: "include",
         });
@@ -467,5 +469,31 @@ async function changeNickAPI(newNick) {
     }
     catch (error) {
         displayWarning(error.message || "Error changing nickname");
+    }
+}
+async function changePasswordAPI(newPassword, oldPassword) {
+    const token = localStorage.getItem("token");
+    try {
+        const response = await fetch(`${backendUrl}/switch-password`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify({ oldPassword, newPassword }),
+        });
+        console.log(oldPassword);
+        console.log(newPassword);
+        const data = await response.json();
+        if (!response.ok) {
+            displayWarning(data.error || "Failed to change password");
+            return;
+        }
+        else {
+            displayWarning("Password changed successfully!");
+        }
+    }
+    catch (error) {
+        displayWarning(error.message || "Error changing password");
     }
 }
