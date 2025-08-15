@@ -182,7 +182,7 @@ async function createNewContest() {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
-                Authorization: `Bearer ${token}`,
+                "Authorization": `Bearer ${token}`,
             },
             credentials: "include",
             body: JSON.stringify({ tournamentName }),
@@ -208,7 +208,15 @@ async function createNewContest() {
 }
 async function getInfoFromContest(pin) {
     try {
-        const response = await fetch(`${backendUrl}/tournament/${pin}`);
+        const token = localStorage.getItem("token");
+        const response = await fetch(`${backendUrl}/tournament/${pin}`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`,
+            },
+            credentials: "include"
+        });
         const data = await response.json();
         const playerPlaces = document.querySelectorAll(".playerContestPlace");
         let pinNumber = document.getElementById("contestPinBoxNumberId");
@@ -234,9 +242,13 @@ async function getInfoFromContest(pin) {
 }
 async function joinTournament(nick, code) {
     try {
+        const token = localStorage.getItem("token");
         const response = await fetch(`${backendUrl}/join-tournament`, {
             method: "POST",
-            headers: { "Content-Type": "application/json" },
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`,
+            },
             body: JSON.stringify({ code }),
             credentials: "include",
         });
@@ -260,7 +272,15 @@ async function joinTournament(nick, code) {
 }
 async function checkIsValidPin(pin) {
     try {
-        const response = await fetch(`${backendUrl}/tournament/${pin}`);
+        const token = localStorage.getItem("token");
+        const response = await fetch(`${backendUrl}/tournament/${pin}`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`,
+            },
+            credentials: "include"
+        });
         const data = await response.json();
         if (response.ok) {
             return true;
@@ -316,9 +336,14 @@ function startLocalTournament(tournamentId, players) {
     startPongWebSocket(tournament.matches[0], true, false, false, [tournament.players[0], tournament.players[1]]);
 }
 async function getTournamentData(tournamentId) {
+    const token = localStorage.getItem("token");
     const response = await fetch(`${backendUrl}/constructTournament`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`,
+        },
+        credentials: "include",
         body: JSON.stringify({ id: tournamentId }),
     });
     if (!response.ok) {
