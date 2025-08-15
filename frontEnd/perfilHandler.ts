@@ -455,7 +455,6 @@ async function updateMatchHistory() {
 			},
 			credentials: "include",
 		});
-		console.log("hahahaha");
 		if (!response.ok) {
 			throw new Error(`HTTP error! status: ${response.status}`);
 		}
@@ -480,19 +479,18 @@ async function updateMatchHistory() {
 		data.forEach((match) => {
 			const row = table.insertRow();
 
-			// ✅ Column 1: Result (WIN/LOSS)
+			const opponentCell = row.insertCell();
+			opponentCell.textContent = match.opponent;
+
+			const scoreCell = row.insertCell();
+			scoreCell.textContent = match.score;
+
 			const resultCell = row.insertCell();
 			resultCell.textContent = match.result;
 			resultCell.style.color = match.result === "WIN" ? "#4CAF50" : "#f44336";
 			resultCell.style.fontWeight = "bold";
 
-			// ✅ Column 2: Score
-			const scoreCell = row.insertCell();
-			scoreCell.textContent = match.score;
 
-			// ✅ Column 3: Opponent
-			const opponentCell = row.insertCell();
-			opponentCell.textContent = match.opponent;
 		});
 
 		// Fill remaining rows with placeholders (if you want exactly 5 rows)
