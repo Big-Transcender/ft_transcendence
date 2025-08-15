@@ -429,13 +429,17 @@ async function updateFriends() {
                 statusCell.className = "offline-status";
             }
         });
-        // Fill remaining rows with placeholders
-        const currentRows = table.rows.length - 1;
+        // Make the table scrollable if there are more than 5 friends
         const maxRows = 5;
-        for (let i = currentRows; i < maxRows; i++) {
-            const row = table.insertRow();
-            row.insertCell().textContent = "-----";
-            row.insertCell().textContent = "-----";
+        if (data.friends.length > maxRows) {
+            table.style.display = "block";
+            table.style.overflowY = "scroll";
+            table.style.maxHeight = "342px"; // Adjust height as needed
+        }
+        else {
+            table.style.display = "table";
+            table.style.overflowY = "unset";
+            table.style.maxHeight = "unset";
         }
     }
     catch (error) {
