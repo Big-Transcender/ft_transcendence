@@ -566,7 +566,7 @@ async function setProfileAvatar() {
 			}
 		});
 	} catch (e) {
-		// Optionally handle error
+		// fucking
 	}
 }
 
