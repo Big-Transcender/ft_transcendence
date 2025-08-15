@@ -77,8 +77,16 @@ async function getUserPosition() {
     }
 }
 async function getUserStats(nickname) {
+    const token = localStorage.getItem("token");
     if (checkIfLogged()) {
-        fetch(`${backendUrl}/player-stats/${nickname}`)
+        fetch(`${backendUrl}/player-stats/${nickname}`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`,
+            },
+            credentials: "include",
+        })
             .then((response) => {
             if (!response.ok) {
                 return response.json().then((err) => {

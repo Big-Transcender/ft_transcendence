@@ -21,7 +21,7 @@ module.exports = async function (fastify)
 		const matches = await db.prepare(
 			`SELECT * FROM matches 
 			 WHERE player1_id = ? OR player2_id = ? 
-			 ORDER BY match_date DESC 
+			 ORDER BY date_match DESC 
 			 LIMIT 5`
 		).all(userId, userId);
 

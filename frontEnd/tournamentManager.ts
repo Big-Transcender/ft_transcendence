@@ -67,10 +67,18 @@ window.addEventListener("MatchEnd", (event: CustomEvent) => {
 
 async function handleMatchEnd(currentMatchId: string, winner: string) {
 	try {
+		const token = localStorage.getItem("token");
 		console.log("Handling match end...");
 		const nick = getNickOnLocalStorage();
 
-		const response = await fetch(`${backendUrl}/isTournamentMatch/${currentMatchId}`);
+		const response = await fetch(`${backendUrl}/isTournamentMatch/${currentMatchId}`, {
+			method: "GET",
+			headers: {
+				"Content-Type": "application/json",
+				"Authorization": `Bearer ${token}`,
+			},
+			credentials: "include",
+		});
 		if (!response.ok) {
 			throw new Error(`Failed to check tournament match: ${response.statusText}`);
 		}
@@ -87,7 +95,6 @@ async function handleMatchEnd(currentMatchId: string, winner: string) {
 			location.reload();
 			return;
 		}
-		const token = localStorage.getItem("token");
 		const updateResponse = await fetch(`${backendUrl}/updateTournamentWinner`, {
 			method: "PATCH",
 			headers: {
@@ -102,7 +109,14 @@ async function handleMatchEnd(currentMatchId: string, winner: string) {
 			throw new Error(`Failed to update tournament winner: ${updateResponse.statusText}`);
 		}
 
-		const updatedResponse = await fetch(`${backendUrl}/isTournamentMatch/${currentMatchId}`);
+		const updatedResponse = await fetch(`${backendUrl}/isTournamentMatch/${currentMatchId}`, {
+			method: "GET",
+			headers: {
+				"Content-Type": "application/json",
+				"Authorization": `Bearer ${token}`,
+			},
+			credentials: "include",
+		});
 		if (!updatedResponse.ok) {
 			throw new Error(`Failed to get updated tournament: ${updatedResponse.statusText}`);
 		}
