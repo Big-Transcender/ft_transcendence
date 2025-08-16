@@ -106,7 +106,7 @@ fastify.get(
 		req.session.set("user", { user: req.user });
 		// Issue JWT for frontend use
 		const token = jwt.sign({ userId: req.user.id }, 'your-secret-key', {
-			expiresIn: '1h',
+			expiresIn: '2h',
 		});
 		// Set JWT in cookie (not httpOnly so frontend can read it)
 		res.setCookie("token", token, {
@@ -151,10 +151,17 @@ fastify.get("/logout", async (req, res) => {
 
 	return res.send({ success: true });
 });
+
 fastify.get("/me", async (request, reply) => {
 	const sessionUser = request.session.get("user");
+	console.log("Session User:", sessionUser);
+	const token = request.cookies?.token || (request.headers.authorization && request.headers.authorization.split(" ")[1]);
+	console.log("Token:", token);
+	if(!token) {
+		return reply.status(401).send({ error: "Not logged in" });
+	}
 	if (sessionUser) {
-		return { user: sessionUser.user };
+		return { user: sessionUser.user, sessionUser: sessionUser };
 	} else {
 		return reply.status(401).send({ error: "Not logged in" });
 	}
