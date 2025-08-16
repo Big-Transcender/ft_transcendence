@@ -7,6 +7,11 @@ let bubbleTextNewUser = document.getElementById("thinkingBubbleTextNewUser") as 
 let bubbleTextLogin = document.getElementById("thinkingBubbleTextLogin") as HTMLInputElement;
 let stopSpeechFlag = false;
 
+const profilePage = document.getElementById("profileId");
+const newUserPage = document.getElementById("newUserId");
+const twoFactorPage = document.getElementById("twoFactorId");
+const loginPage = document.getElementById("loginId");
+
 let currentNickName;
 let userIsLogged;
 
@@ -108,6 +113,40 @@ const registerNewUser = async () => {
 	return 0;
 };
 
+async function loginUserVerified() {
+	const identifier = (document.getElementById("inputNick") as HTMLInputElement).value.trim();
+	const password = (document.getElementById("inputPass") as HTMLInputElement).value.trim();
+
+	try {
+		const response = await fetch(`${backendUrl}/login`, {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			credentials: "include",
+			body: JSON.stringify({ identifier, password }),
+		});
+
+		const data = await response.json();
+
+		if (response.ok) {
+			localStorage.setItem("token", data.token);
+			putNickOnProfileHeader(data.user.name);
+			setToLogged();
+			setNickOnLocalStorage(data.user.name);
+			changePageTo(loginPage, profilePage);
+			getUserStats(getNickOnLocalStorage());
+			return true;
+		} else {
+			errorCatcher(data, bubbleTextLogin);
+			return false;
+		}
+	} catch (err) {
+		console.error("Failed to register:", err);
+		alert("Something went wrong! " + err);
+	}
+}
+
 async function loginUser() {
 	const identifier = (document.getElementById("inputNick") as HTMLInputElement).value.trim();
 	const password = (document.getElementById("inputPass") as HTMLInputElement).value.trim();
@@ -125,12 +164,16 @@ async function loginUser() {
 		const data = await response.json();
 
 		if (response.ok) {
-			putNickOnProfileHeader(data.user.name);
-			setToLogged();
-			setNickOnLocalStorage(data.user.name);
 			localStorage.setItem("token", data.token);
-			await open2FApopup();
-			return true;
+
+			if (await check2FAStatus()) {
+				await open2FApopup();
+			} else {
+				putNickOnProfileHeader(data.user.name);
+				setToLogged();
+				setNickOnLocalStorage(data.user.name);
+				return true;
+			}
 		} else {
 			errorCatcher(data, bubbleTextLogin);
 			return false;
@@ -167,15 +210,6 @@ function close2FApopup() {
 	document.getElementById("popupContainer2FA").style.display = "none";
 }
 
-function verify2FACode() {
-	const AFCode = (document.getElementById("AFCode") as HTMLInputElement).value.trim();
-
-	if (!AFCode) displayWarning("No code was given!");
-	else {
-		displayWarning("THIS WILL VERIFY THE CODE");
-	}
-}
-
 clickButton(loginButton);
 clickButton(newUserButton);
 clickButton(createUserButton);
@@ -190,12 +224,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 	const twoAFButton = document.getElementById("twoFactorButtonID");
 	const showQrCodeButton = document.getElementById("showQrButtonID");
 	const twoFactorButton = document.getElementById("verifyTwoFactorButtonID");
-	const switchNickButton = document.getElementById("switchNickButtonID");
-
-	const profilePage = document.getElementById("profileId");
-	const newUserPage = document.getElementById("newUserId");
-	const twoFactorPage = document.getElementById("twoFactorId");
-	const loginPage = document.getElementById("loginId");
+	const twoFactorDisableButton = document.getElementById("disableTwoFactorButtonID");
 
 	// await checkGoogleLogin();
 	// await checkGoogleLogin();
@@ -242,70 +271,81 @@ document.addEventListener("DOMContentLoaded", async () => {
 	});
 
 	// GENERATE QR CODE
-	showQrCodeButton.addEventListener("click", () => {
+	showQrCodeButton.addEventListener("click", async () => {
+		const token = localStorage.getItem("token");
+		if (!token) {
+			console.warn("No auth token found.");
+			return;
+		}
+
+		// Optional: prevent multiple generations once enabled
+		const alreadyEnabled = await check2FAStatus();
+		if (alreadyEnabled === true) {
+			displayWarning("2FA already enabled.");
+			return;
+		}
+
 		let QrCodeBox = document.getElementById("QrCodeBoxId") as HTMLElement;
 		let QrCodePlace = document.getElementById("QrCodeId") as HTMLElement;
 
-		//#TODO MAKE A API TO CHECK IF THE QR WAS GENERATED FOR THIS USER
-		// IF SO, DO LET IT GENERATE AGAIN, IF NOT, GENERATE
-
-		fetch(`${backendUrl}/2fa/setup`, {
-			method: "POST",
-			credentials: "include", // Important if using cookies/session
-			headers: {
-				Accept: "application/json",
-			},
-		})
-			.then((response) => {
-				if (!response.ok) throw new Error("Network response was not ok");
-				return response.json();
-			})
-			.then((data) => {
-				QrCodeBox.style.backgroundImage = "url(" + data.qr + ")";
-				QrCodePlace.style.opacity = "1";
-			})
-			.catch((error) => {
-				console.error("Error fetching 2FA setup:", error);
+		try {
+			const response = await fetch(`${backendUrl}/2fa/setup`, {
+				method: "POST",
+				credentials: "include",
+				headers: {
+					Accept: "application/json",
+					Authorization: `Bearer ${token}`,
+				},
 			});
+
+			if (response.status === 401) {
+				displayWarning("Unauthorized. Please login again.");
+				// setToUnLogged(); #TODO MAKE TO UNLOGGED
+				return;
+			}
+			if (!response.ok) {
+				const errTxt = await response.text();
+				throw new Error(errTxt || `HTTP ${response.status}`);
+			}
+
+			const data = await response.json();
+			if (!data.qr) {
+				throw new Error("QR code not in response.");
+			}
+
+			QrCodeBox.style.backgroundImage = `url(${data.qr})`;
+			QrCodePlace.style.opacity = "1";
+		} catch (error) {
+			console.error("Error fetching 2FA setup:", error);
+			displayWarning("Failed to generate QR.");
+		}
 	});
 
 	//2AF Button
 	twoAFButton.addEventListener("click", () => {
 		changePageTo(profilePage, twoFactorPage);
+		if (check2FAStatus()) {
+			document.getElementById("verifyTwoFactorButtonID").style.display = "none";
+			document.getElementById("showQrButtonID").style.display = "none";
+			document.getElementById("disableTwoFactorButtonID").style.display = "block";
+		} else {
+			document.getElementById("verifyTwoFactorButtonID").style.display = "block";
+			document.getElementById("showQrButtonID").style.display = "block";
+			document.getElementById("disableTwoFactorButtonID").style.display = "none";
+		}
+		let QrCodePlace = document.getElementById("QrCodeId") as HTMLElement;
+		QrCodePlace.style.opacity = "0";
 	});
 
-	// TWO FACTTOR BUTTON
+	// VERIFY 2FA CODE ON PROFILE BUTTON
 	twoFactorButton.addEventListener("click", () => {
 		const twoFactorInput = (document.getElementById("twoFactorPass") as HTMLInputElement).value.trim();
+		verify2FACode(twoFactorInput);
+	});
 
-		console.log("2F input: " + twoFactorInput);
-		const token = localStorage.getItem("token");
-		fetch(`${backendUrl}/2fa/verify`, {
-			method: "POST",
-			headers: {
-				"Content-Type": "application/json",
-				Authorization: `Bearer ${token}`,
-			},
-			credentials: "include",
-			body: JSON.stringify({
-				token: twoFactorInput, // Replace with the actual token from user input
-			}),
-		})
-			.then((response) => response.json())
-			.then((data) => {
-				if (data.success) {
-					console.log("2FA verified!");
-					// Handle success (e.g., redirect or show message)
-				} else {
-					displayWarning(data.error);
-					console.error("2FA failed:", data.error);
-					// Handle failure (e.g., show error to user)
-				}
-			})
-			.catch((error) => {
-				// displayWarning(error);
-				console.error("Error verifying 2FA:", error);
-			});
+	twoFactorDisableButton.addEventListener("click", () => {
+		const twoFactorInput = (document.getElementById("twoFactorPass") as HTMLInputElement).value.trim();
+		disable2FA(twoFactorInput);
 	});
 
 	//NewUser Button
@@ -372,6 +412,124 @@ function putNickOnProfileHeader(nick: string) {
 function changePageTo(remove, activate) {
 	remove.classList.remove("active");
 	activate.classList.add("active");
+}
+
+async function verify2FACode(twoFactorInput: string) {
+	console.log("2F input: " + twoFactorInput);
+	const token = localStorage.getItem("token");
+	fetch(`${backendUrl}/2fa/verify`, {
+		method: "POST",
+		headers: {
+			"Content-Type": "application/json",
+			Authorization: `Bearer ${token}`,
+		},
+		credentials: "include",
+		body: JSON.stringify({
+			token: twoFactorInput, // Replace with the actual token from user input
+		}),
+	})
+		.then((response) => response.json())
+		.then((data) => {
+			if (data.success) {
+				displayWarning("2FA verified!");
+				// Handle success (e.g., redirect or show message)
+			} else {
+				displayWarning(data.error);
+				console.error("2FA failed:", data.error);
+				// Handle failure (e.g., show error to user)
+			}
+		})
+		.catch((error) => {
+			// displayWarning(error);
+			console.error("Error verifying 2FA:", error);
+		});
+}
+
+async function verify2FACodePopup() {
+	const twoFactorInput = (document.getElementById("AFCode") as HTMLInputElement).value.trim();
+	console.log("2F input popup: " + twoFactorInput);
+	const token = localStorage.getItem("token");
+	fetch(`${backendUrl}/2fa/verify`, {
+		method: "POST",
+		headers: {
+			"Content-Type": "application/json",
+			Authorization: `Bearer ${token}`,
+		},
+		credentials: "include",
+		body: JSON.stringify({
+			token: twoFactorInput, // Replace with the actual token from user input
+		}),
+	})
+		.then((response) => response.json())
+		.then((data) => {
+			if (data.success) {
+				// displayWarning("2FA verified!");
+				close2FApopup();
+				loginUserVerified();
+			} else {
+				displayWarning(data.error);
+				console.error("2FA failed:", data.error);
+				// Handle failure (e.g., show error to user)
+			}
+		})
+		.catch((error) => {
+			// displayWarning(error);
+			console.error("Error verifying 2FA:", error);
+		});
+}
+
+async function check2FAStatus() {
+	try {
+		const response = await fetch(`${backendUrl}/2fa/status`, {
+			method: "GET",
+			headers: {
+				"Content-Type": "application/json",
+				Authorization: `Bearer ${localStorage.getItem("token")}`, // Assuming token is stored in localStorage
+			},
+		});
+
+		if (!response.ok) {
+			throw new Error(`Error: ${response.status} - ${response.statusText}`);
+		}
+
+		const data = await response.json();
+		return data.enabled; // Returns true if 2FA is enabled, false otherwise
+	} catch (error) {
+		displayWarning("Failed to check 2FA status: " + error);
+		return null; // Return null in case of an error
+	}
+}
+
+async function disable2FA(twoFactorInput: string) {
+	const token = twoFactorInput;
+	const userId = localStorage.getItem("userId"); // Assuming userId is stored in localStorage
+
+	if (!token) {
+		displayWarning("Token is required");
+		return;
+	}
+
+	try {
+		const response = await fetch(`${backendUrl}/2fa/disable`, {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+				Authorization: `Bearer ${localStorage.getItem("token")}`,
+			},
+			body: JSON.stringify({ token }),
+		});
+
+		const data = await response.json();
+
+		if (response.ok) {
+			displayWarning("2FA disabled successfully!");
+		} else {
+			displayWarning(data.error || "Failed to disable 2FA");
+		}
+	} catch (error) {
+		console.error("Error disabling 2FA:", error);
+		displayWarning("An error occurred while disabling 2FA");
+	}
 }
 
 async function checkGoogleLogin() {

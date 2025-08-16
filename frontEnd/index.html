@@ -328,7 +328,7 @@
 							</div>
 						</button>
 
-						<button onclick="verify2FACode()" class="defaultButton popup2FAVerify" id="Verify2FA">
+						<button onclick="verify2FACodePopup()" class="defaultButton popup2FAVerify" id="Verify2FA">
 							<p class="defaultButtonText">Verify!</p>
 							<div class="defaultButtonBG">
 								<div class="defaultButtonBGWave"></div>
@@ -1138,7 +1138,7 @@
 								<!-- <img src="images/avatar3.png" alt="" class="avatar3" /> -->
 								<div class="inputBox twoFactorInput">
 									<label for="twoFactorInput">Enter your TwoFactor</label>
-									<input type="text" id="twoFactorPass" class="inputText smallInput" placeholder="2F" autocomplete="off" />
+									<input type="text" id="twoFactorPass" class="inputText smallInput" placeholder="2FA" autocomplete="off" />
 								</div>
 
 								<div class="QrCode" id="QrCodeId">
@@ -1153,9 +1153,18 @@
 									</div>
 								</button>
 
-								<!-- VERIFY TWO FACTOR CODE BUTTOM -->
+								<!-- ENABLE TWO FACTOR CODE BUTTOM -->
 								<button class="defaultButton twoFactor" id="verifyTwoFactorButtonID">
-									<p class="defaultButtonText">Verify</p>
+									<p class="defaultButtonText">Enable!</p>
+									<div class="defaultButtonBG">
+										<div class="defaultButtonBGWave"></div>
+										<div class="defaultButtonBGWave wave2"></div>
+									</div>
+								</button>
+
+								<!-- DISABLE TWO FACTOR CODE BUTTOM -->
+								<button class="defaultButton twoFactor" id="disableTwoFactorButtonID">
+									<p class="defaultButtonText">Disable!</p>
 									<div class="defaultButtonBG">
 										<div class="defaultButtonBGWave"></div>
 										<div class="defaultButtonBGWave wave2"></div>
