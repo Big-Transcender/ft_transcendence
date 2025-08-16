@@ -211,19 +211,17 @@ function close2FApopup() {
 }
 
 function openVictory(quote) {
-	document.querySelector(".pongVictory").textContent = quote;
+	document.querySelector(".pongVictory").innerHTML = quote;
 	document.getElementById("popupContainerVictory").style.display = "flex";
 }
 
 function closeVictory() {
-
 	document.getElementById("popupContainerVictory").style.display = "none";
 	window.dispatchEvent(
 		new CustomEvent("next", {
 			detail: true,
 		})
 	);
-
 }
 
 clickButton(loginButton);
@@ -404,17 +402,14 @@ async function getNickOnLocalStorageSync(): Promise<string | null> {
 	return null;
 }
 
-function getNickOnLocalStorage()
-{
+function getNickOnLocalStorage() {
 	let nickname: string | null = null;
- 	getNickOnLocalStorageSync().then((res) => (nickname = res));
+	getNickOnLocalStorageSync().then((res) => (nickname = res));
 	console.log("heres the nick ", nickname);
 	return localStorage.getItem("nickname");
 }
 
-
-
-// function getNickOnLocalStorage(): string | null { 
+// function getNickOnLocalStorage(): string | null {
 // 	let nickname: string | null = null;
 // 	getNickOnLocalStorageSync().then((res) => (nickname = res));
 // 	return nickname;

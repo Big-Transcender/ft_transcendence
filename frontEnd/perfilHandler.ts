@@ -3,6 +3,8 @@ let losesNumber = document.getElementById("boxLosesNumber");
 let gamesNumber = document.getElementById("boxGamesNumber");
 let positionNumber = document.getElementById("positionId");
 let winRateText = document.getElementById("winRateTextId");
+const gustSound = new Audio("/audios/gust.wav");
+
 const backendUrl = `http://${window.location.hostname}:3000`;
 const frontendUrl = `http://${window.location.hostname}:5173`;
 
@@ -116,6 +118,18 @@ async function getUserStats(nickname: string) {
 			});
 	}
 }
+
+document.querySelectorAll(".winsBox").forEach((box) => {
+	box.addEventListener("mouseenter", () => {
+		box.classList.add("wind-animate");
+		gustSound.pause();
+		gustSound.currentTime = 0;
+		gustSound.play();
+	});
+	box.addEventListener("animationend", () => {
+		box.classList.remove("wind-animate");
+	});
+});
 
 document.addEventListener("DOMContentLoaded", async () => {
 	const profileOptions = document.getElementById("profileOptionsButtonID");

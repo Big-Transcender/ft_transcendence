@@ -704,6 +704,8 @@
 
 .pongVictory {
 	font-size: 23px;
+	top: 35%;
+	translate: 0% -50%;
 }
 
 .profilePopup {
@@ -881,7 +883,33 @@
 	height: 50px;
 }
 
-/* THIS NEED TO BE REMOVED */
-/* .popupContainer2FA {
-	display: flex;
-} */
+@keyframes windEffect {
+	0% {
+		transform: translateX(0) rotate(0deg) scale(1);
+		box-shadow: none;
+	}
+	20% {
+		transform: translateX(10px) rotate(-2deg) scale(1);
+		box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+	}
+	40% {
+		transform: translateX(-10px) rotate(2deg) scale(1);
+		box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+	}
+	60% {
+		transform: translateX(8px) rotate(-1deg) scale(1);
+		box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+	}
+	80% {
+		transform: translateX(-8px) rotate(1deg) scale(1);
+		box-shadow: 0 1px 5px rgba(0, 0, 0, 0.05);
+	}
+	100% {
+		transform: translateX(0) rotate(0deg) scale(1);
+		box-shadow: none;
+	}
+}
+
+.winsBox.wind-animate {
+	animation: windEffect 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+}

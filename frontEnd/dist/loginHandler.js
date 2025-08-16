@@ -193,7 +193,7 @@ function close2FApopup() {
     document.getElementById("popupContainer2FA").style.display = "none";
 }
 function openVictory(quote) {
-    document.querySelector(".pongVictory").textContent = quote;
+    document.querySelector(".pongVictory").innerHTML = quote;
     document.getElementById("popupContainerVictory").style.display = "flex";
 }
 function closeVictory() {
@@ -369,7 +369,7 @@ function getNickOnLocalStorage() {
     console.log("heres the nick ", nickname);
     return localStorage.getItem("nickname");
 }
-// function getNickOnLocalStorage(): string | null { 
+// function getNickOnLocalStorage(): string | null {
 // 	let nickname: string | null = null;
 // 	getNickOnLocalStorageSync().then((res) => (nickname = res));
 // 	return nickname;

@@ -174,8 +174,6 @@ function startPongWebSocket(
 					if (winner === null) winner = "Bot";
 
 					setTimeout(() => {
-
-
 						if (currentMatchId) {
 							window.dispatchEvent(
 								new CustomEvent("ShowWinner", {
@@ -222,12 +220,10 @@ function generateMatchId() {
 	return Math.floor(1000 + Math.random() * 90000).toString();
 }
 
-
 window.addEventListener("ShowWinner", async (event: CustomEvent) => {
 	const { matchId, winner, isLocal, reason } = event.detail;
 
-
-	openVictory(`Game Over!\nThe winner is ${winner}!`);
+	openVictory(`Game Over! <br>The winner is ${winner}!`);
 
 	await waitForEvent("next");
 
@@ -238,8 +234,6 @@ window.addEventListener("ShowWinner", async (event: CustomEvent) => {
 			})
 		);
 	}
-
-
 });
 
 async function waitForEvent(eventName: string): Promise<CustomEvent> {
