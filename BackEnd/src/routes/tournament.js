@@ -7,9 +7,12 @@ const {
 	hasUserJoinedTournament,
 	startTournament,
 	deleteTournament,
+	getUserByNickname,
+	deletePlayerFromTournament,
 } = require("../dataQuerys");
 
 const repl = require("node:repl");
+
 
 module.exports = async function (fastify) {
 	fastify.post("/create-tournament", { preHandler: [fastify.authenticate] }, async (request, reply) => {
@@ -96,4 +99,23 @@ module.exports = async function (fastify) {
 		deleteTournament(code);
 		return reply.code(200).send({ message: "Tournament deleted!" });
 	});
+
+
+	fastify.post("/delete-player-tournament", { preHandler: [fastify.authenticate] }, async (request, reply) => {
+		const code  = request.body;
+		console.log(code)
+
+		if (!code) return reply.code(400).send({ error: "Tournament code is required" });
+
+		const userId = request.userId;
+
+
+	
+		console.log("passou protecoes")
+		deletePlayerFromTournament(code, userId);
+		return reply.code(200).send({ message: "Tournament deleted!" });
+	});
 };
+
+
+

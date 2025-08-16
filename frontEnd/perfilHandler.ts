@@ -63,7 +63,7 @@ async function getUserPosition(): Promise<string> {
 	try {
 		// const response = await fetch(`${backendUrl}/leaderboard/position/${userNick}`);
 		// const response = await fetch(`${backendUrl}/leaderboard/position/`);
-		const token = localStorage.getItem("token");
+		const token = getCookie("token");
 		const response = await fetch(`${backendUrl}/leaderboard/position/`, {
 			method: "GET",
 			headers: {
@@ -84,7 +84,7 @@ async function getUserPosition(): Promise<string> {
 	}
 }
 async function getUserStats(nickname: string) {
-	const token = localStorage.getItem("token");
+	const token = getCookie("token");
 	if (checkIfLogged()) {
 		fetch(`${backendUrl}/player-stats/${nickname}`, {
 			method: "GET",
@@ -418,7 +418,7 @@ async function friendsAnimationHandler() {
 
 async function updateFriends() {
 	try {
-		const token = localStorage.getItem("token");
+		const token = getCookie("token");
 		const response = await fetch(`${backendUrl}/friends`, {
 			headers: {
 				"Content-Type": "application/json",
@@ -529,7 +529,7 @@ async function updateMatchHistory() {
 	if (!nickname) return;
 
 	try {
-		const token = localStorage.getItem("token");
+		const token = getCookie("token");
 		// const response = await fetch(`${backendUrl}/player-matches/${nickname}`, {
 		const response = await fetch(`${backendUrl}/player-matches/`, {
 			method: "GET",
@@ -539,7 +539,6 @@ async function updateMatchHistory() {
 			},
 			credentials: "include",
 		});
-		console.log("hahahaha");
 		if (!response.ok) {
 			throw new Error(`HTTP error! status: ${response.status}`);
 		}
@@ -564,19 +563,18 @@ async function updateMatchHistory() {
 		data.forEach((match) => {
 			const row = table.insertRow();
 
-			// ✅ Column 1: Result (WIN/LOSS)
+			const opponentCell = row.insertCell();
+			opponentCell.textContent = match.opponent;
+
+			const scoreCell = row.insertCell();
+			scoreCell.textContent = match.score;
+
 			const resultCell = row.insertCell();
 			resultCell.textContent = match.result;
 			resultCell.style.color = match.result === "WIN" ? "#4CAF50" : "#f44336";
 			resultCell.style.fontWeight = "bold";
 
-			// ✅ Column 2: Score
-			const scoreCell = row.insertCell();
-			scoreCell.textContent = match.score;
 
-			// ✅ Column 3: Opponent
-			const opponentCell = row.insertCell();
-			opponentCell.textContent = match.opponent;
 		});
 
 		// Fill remaining rows with placeholders (if you want exactly 5 rows)
@@ -611,7 +609,7 @@ async function updateMatchHistory() {
 }
 
 async function changeNickAPI(newNick: string): Promise<void> {
-	const token = localStorage.getItem("token");
+	const token = getCookie("token");
 	try {
 		const response = await fetch(`${backendUrl}/switch-nickname`, {
 			method: "POST",
@@ -640,7 +638,7 @@ async function changeNickAPI(newNick: string): Promise<void> {
 }
 
 async function changePasswordAPI(newPassword: string, oldPassword: string): Promise<void> {
-	const token = localStorage.getItem("token");
+	const token = getCookie("token");
 	try {
 		const response = await fetch(`${backendUrl}/switch-password`, {
 			method: "POST",
@@ -696,15 +694,15 @@ async function setProfileAvatar() {
 	if (!token) return;
 	try {
 		const response = await fetch(`${backendUrl}/me/avatar`, {
-			headers: { Authorization: `Bearer ${token}` },
-			credentials: "include",
+			headers: { 'Authorization': `Bearer ${token}` },
+			credentials: 'include',
 		});
 		const data = await response.json();
-		const avatarUrl = data.avatar.startsWith("/") ? backendUrl + data.avatar : data.avatar;
-		const photoElements = document.querySelectorAll(".profilePhotoLocation");
+		const avatarUrl = data.avatar.startsWith('/') ? backendUrl + data.avatar : data.avatar;
+		const photoElements = document.querySelectorAll('.profilePhotoLocation');
 		photoElements.forEach((el) => {
 			if (el instanceof HTMLImageElement) {
-				el.src = avatarUrl + "?t=" + Date.now(); // cache busting
+				el.src = avatarUrl + '?t=' + Date.now(); // cache busting
 			} else {
 				(el as HTMLElement).style.backgroundImage = `url('${avatarUrl}?t=${Date.now()}')`;
 			}

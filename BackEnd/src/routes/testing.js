@@ -51,21 +51,24 @@ module.exports = async function (fastify) {
             )
         `).run();
 
-        db.prepare(`
-            CREATE TABLE IF NOT EXISTS matches (
-                                                   id INTEGER PRIMARY KEY AUTOINCREMENT,
-                                                   tournament_id INTEGER, -- nullable
-                                                   player1_id INTEGER NOT NULL,
-                                                   player2_id INTEGER NOT NULL,
-                                                   winner_id INTEGER NOT NULL,
-                                                   score_p1 INTEGER NOT NULL,
-                                                   score_p2 INTEGER NOT NULL,
-                                                   FOREIGN KEY (tournament_id) REFERENCES tournaments(id),
-                                                   FOREIGN KEY (player1_id) REFERENCES users(id),
-                                                   FOREIGN KEY (player2_id) REFERENCES users(id),
-                                                   FOREIGN KEY (winner_id) REFERENCES users(id)
-            )
-        `).run();
+            db.prepare(
+        `
+        CREATE TABLE IF NOT EXISTS matches (
+                                                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                                                tournament_id INTEGER, -- nullable
+                                                player1_id INTEGER NOT NULL,
+                                                player2_id INTEGER NOT NULL,
+                                                winner_id INTEGER NOT NULL,
+                                                score_p1 INTEGER NOT NULL,
+                                                score_p2 INTEGER NOT NULL,
+                                                date_match DATETIME DEFAULT CURRENT_TIMESTAMP,
+                                                FOREIGN KEY (tournament_id) REFERENCES tournaments(id),
+                                                FOREIGN KEY (player1_id) REFERENCES users(id),
+                                                FOREIGN KEY (player2_id) REFERENCES users(id),
+                                                FOREIGN KEY (winner_id) REFERENCES users(id)
+        )
+        `
+    ).run();
 
         db.prepare(`
             CREATE TABLE IF NOT EXISTS tournament_players (
