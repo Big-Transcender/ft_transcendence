@@ -10,17 +10,11 @@ db.prepare(
 		password TEXT NOT NULL,
 		email TEXT NOT NULL UNIQUE,
 		two_factor_enable BOOLEAN DEFAULT false,
-		two_factor_secret TEXT
+		two_factor_secret TEXT,
+		avatar TEXT
 	);
 `
 ).run();
-
-// Add avatar column to users table if it doesn't exist
-try {
-	db.prepare('ALTER TABLE users ADD COLUMN avatar TEXT').run();
-} catch (e) {
-	if (!e.message.includes('duplicate column name')) throw e;
-}
 
 db.prepare(
 	`

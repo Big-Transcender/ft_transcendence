@@ -179,7 +179,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     const twoFactorPage = document.getElementById("twoFactorId");
     const loginPage = document.getElementById("loginId");
     // await checkGoogleLogin();
-    // await checkGoogleLogin();
+    await checkGoogleLogin();
     if (checkIfLogged()) {
         changePageTo(loginPage, profilePage);
         putNickOnProfileHeader(getNickOnLocalStorage());
@@ -366,9 +366,6 @@ async function checkGoogleLogin() {
             else {
                 console.warn("No user found in response");
             }
-        }
-        else {
-            console.warn("Response not OK");
         }
     }
     catch (err) {

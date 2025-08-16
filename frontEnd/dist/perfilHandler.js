@@ -605,7 +605,7 @@ async function changePasswordAPI(newPassword, oldPassword) {
     }
 }
 async function changeEmailAPI(newEmail) {
-    const token = getCookie("token");
+    const token = localStorage.getItem("token");
     try {
         const response = await fetch(`${backendUrl}/switch-email`, {
             method: "POST",
@@ -628,20 +628,20 @@ async function changeEmailAPI(newEmail) {
 }
 // Fetch and set the user's avatar on the profile page
 async function setProfileAvatar() {
-    const token = getCookie("token");
+    const token = localStorage.getItem("token");
     if (!token)
         return;
     try {
         const response = await fetch(`${backendUrl}/me/avatar`, {
-            headers: { Authorization: `Bearer ${token}` },
-            credentials: "include",
+            headers: { 'Authorization': `Bearer ${token}` },
+            credentials: 'include',
         });
         const data = await response.json();
-        const avatarUrl = data.avatar.startsWith("/") ? backendUrl + data.avatar : data.avatar;
-        const photoElements = document.querySelectorAll(".profilePhotoLocation");
+        const avatarUrl = data.avatar.startsWith('/') ? backendUrl + data.avatar : data.avatar;
+        const photoElements = document.querySelectorAll('.profilePhotoLocation');
         photoElements.forEach((el) => {
             if (el instanceof HTMLImageElement) {
-                el.src = avatarUrl + "?t=" + Date.now(); // cache busting
+                el.src = avatarUrl + '?t=' + Date.now(); // cache busting
             }
             else {
                 el.style.backgroundImage = `url('${avatarUrl}?t=${Date.now()}')`;
