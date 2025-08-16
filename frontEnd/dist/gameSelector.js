@@ -56,8 +56,8 @@ document.addEventListener("DOMContentLoaded", () => {
         backGamePongButton.classList.remove("active");
     });
     //Singleplayer Pong
-    buttonSinglePong.addEventListener("click", () => {
-        if (checkIfLogged()) {
+    buttonSinglePong.addEventListener("click", async () => {
+        if (await checkIfLogged()) {
             changePageTo(gameSelectorPongPage, pongGamePage);
             const matchId = generateMatchId();
             updatePageHash(`#pong/${matchId}`);
@@ -83,21 +83,16 @@ document.addEventListener("DOMContentLoaded", () => {
         openPopupPong();
     });
     //Change to Multiplayer Local
-    buttonLocalMP.addEventListener("click", () => {
-        if (checkIfLogged() || !checkIfLogged()) {
-            changePageTo(gameSelectorPongMultiplayerPage, pongGamePage);
-            const matchId = generateMatchId();
-            updatePageHash(`#pong/${matchId}`);
-            startPongWebSocket(matchId, true, false, false, [getNickOnLocalStorage() || "gigachad", "minichad"]); // true = local mode
-            resetEmotions();
-            animateTimer();
-            setGameScore(getNickOnLocalStorage() || "gigachad", "minichad");
-            backGamePongButton.classList.add("active");
-            showMatchId(matchId);
-        }
-        else {
-            displayWarning("You need to log in.");
-        }
+    buttonLocalMP.addEventListener("click", async () => {
+        changePageTo(gameSelectorPongMultiplayerPage, pongGamePage);
+        const matchId = generateMatchId();
+        updatePageHash(`#pong/${matchId}`);
+        startPongWebSocket(matchId, true, false, false, [getNickOnLocalStorage() || "gigachad", "minichad"]); // true = local mode
+        resetEmotions();
+        animateTimer();
+        setGameScore(getNickOnLocalStorage() || "gigachad", "minichad");
+        backGamePongButton.classList.add("active");
+        showMatchId(matchId);
     });
     //Back button of Multiplayer type Selector
     backButtonMP.addEventListener("click", () => {

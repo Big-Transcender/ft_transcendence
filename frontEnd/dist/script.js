@@ -1,5 +1,5 @@
 const page = document.getElementById("home");
-let currentPage = 'home';
+let currentPage = "home";
 function navigate(page) {
     var _a;
     if ((_a = document.getElementById(page)) === null || _a === void 0 ? void 0 : _a.classList.contains("active")) {
@@ -28,11 +28,11 @@ function navigateWithoutHistory(page) {
         handlePageChange(page);
     }
 }
-function handlePageChange(page) {
+async function handlePageChange(page) {
     // Add any page-specific initialization here
     switch (page) {
-        case 'profile':
-            if (!checkIfLogged()) {
+        case "profile":
+            if (await !checkIfLogged()) {
                 typeText(bubbleTextLogin, "Welcome back!", 60);
             }
             else {
@@ -40,7 +40,7 @@ function handlePageChange(page) {
                 updateMatchHistory();
             }
             break;
-        case 'contest':
+        case "contest":
             let contestIntervalId = setInterval(async () => {
                 const hash = window.location.hash;
                 if (!hash.startsWith("#contest")) {
@@ -50,7 +50,7 @@ function handlePageChange(page) {
                 }
             }, 100);
             break;
-        case 'home':
+        case "home":
             break;
     }
 }

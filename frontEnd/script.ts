@@ -1,6 +1,6 @@
 const page = document.getElementById("home");
 
-let currentPage = 'home';
+let currentPage = "home";
 
 function navigate(page: string) {
 	if (document.getElementById(page)?.classList.contains("active")) {
@@ -14,7 +14,7 @@ function navigate(page: string) {
 	if (targetPage) {
 		targetPage.classList.add("active");
 		currentPage = page;
-		
+
 		history.pushState({ page: page }, "", `#${page}`);
 
 		handlePageChange(page);
@@ -25,7 +25,7 @@ function navigateWithoutHistory(page: string) {
 	if (document.getElementById(page)?.classList.contains("active")) {
 		return;
 	}
-	
+
 	document.querySelectorAll(".page").forEach((p) => p.classList.remove("active"));
 	const targetPage = document.getElementById(page);
 	if (targetPage) {
@@ -35,21 +35,21 @@ function navigateWithoutHistory(page: string) {
 	}
 }
 
-function handlePageChange(page: string) {
+async function handlePageChange(page: string) {
 	// Add any page-specific initialization here
-	switch(page) {
-		case 'profile':
-			if (!checkIfLogged()) {
+	switch (page) {
+		case "profile":
+			if (await !checkIfLogged()) {
 				typeText(bubbleTextLogin, "Welcome back!", 60);
 			} else {
 				getUserStats(getNickOnLocalStorage());
 				updateMatchHistory();
 			}
 			break;
-		case 'contest':
+		case "contest":
 			let contestIntervalId = setInterval(async () => {
 				const hash = window.location.hash;
-			
+
 				if (!hash.startsWith("#contest")) {
 					await removePlayer();
 					stopContestPolling();
@@ -58,8 +58,7 @@ function handlePageChange(page: string) {
 			}, 100);
 
 			break;
-		case 'home':
-
+		case "home":
 			break;
 	}
 }
@@ -67,47 +66,43 @@ function handlePageChange(page: string) {
 window.addEventListener("popstate", (event) => {
 	const page = event.state?.page || location.hash.replace("#", "") || "home";
 	console.log(`📍 Navigating to: ${page} (via browser navigation)`);
-	
+
 	// ✅ Check if last 4 characters are all numbers
 	const last4Chars = page.slice(-4);
 	const isAllNumbers = /^\d{4}$/.test(last4Chars);
-	
+
 	if (isAllNumbers) {
 		console.log(`🚫 Blocked page "${page}" (ends with numbers: ${last4Chars}), redirecting to home`);
 		history.replaceState({ page: "home" }, "", "#home");
 		navigateWithoutHistory("home");
 		return;
 	}
-	
+
 	navigateWithoutHistory(page);
 });
 
 window.addEventListener("load", async () => {
-
 	const page = location.hash.replace("#", "") || "home";
 	console.log(`📍 Initial page load: ${page}`);
-	if (isGamePage(page))
-		return;
-	if (page === "contest")
-	{
+	if (isGamePage(page)) return;
+	if (page === "contest") {
 		await removePlayer();
 		stopContestPolling();
 	}
-	
+
 	history.replaceState({ page: page }, "", `#${page}`);
 	navigateWithoutHistory(page);
 });
 
 document.addEventListener("DOMContentLoaded", async () => {
-
 	const page = location.hash.replace("#", "") || "home";
 	console.log(`📍 DOM loaded, navigating to: ${page}`);
 
 	if (page === "contest") {
-        console.log("Page is refreshing or closing, removing player...");
-        await removePlayer();
-        stopContestPolling();
-    }
+		console.log("Page is refreshing or closing, removing player...");
+		await removePlayer();
+		stopContestPolling();
+	}
 	navigateWithoutHistory(page);
 });
 
@@ -157,11 +152,10 @@ musicMenu.addEventListener("mouseleave", () => {
 	}
 });
 
-function isGamePage(page)
-{
+function isGamePage(page) {
 	const last4Chars = page.slice(-4);
 	const isAllNumbers = /^\d{4}$/.test(last4Chars);
-	
+
 	if (isAllNumbers) {
 		console.log(`🚫 Blocked page "${page}" (ends with numbers: ${last4Chars}), redirecting to home`);
 		history.replaceState({ page: "home" }, "", "#home");
@@ -169,5 +163,4 @@ function isGamePage(page)
 		return true;
 	}
 	return false;
-	
 }

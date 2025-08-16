@@ -78,7 +78,7 @@ async function getUserPosition() {
 }
 async function getUserStats(nickname) {
     const token = getCookie("token");
-    if (checkIfLogged()) {
+    if (await checkIfLogged()) {
         fetch(`${backendUrl}/player-stats/${nickname}`, {
             method: "GET",
             headers: {
@@ -571,6 +571,7 @@ async function changeNickAPI(newNick) {
             localStorage.setItem("nickname", newNick);
             putNickOnProfileHeader(newNick);
             await getUserStats(newNick);
+            location.reload();
         }
     }
     catch (error) {
@@ -632,15 +633,15 @@ async function setProfileAvatar() {
         return;
     try {
         const response = await fetch(`${backendUrl}/me/avatar`, {
-            headers: { 'Authorization': `Bearer ${token}` },
-            credentials: 'include',
+            headers: { Authorization: `Bearer ${token}` },
+            credentials: "include",
         });
         const data = await response.json();
-        const avatarUrl = data.avatar.startsWith('/') ? backendUrl + data.avatar : data.avatar;
-        const photoElements = document.querySelectorAll('.profilePhotoLocation');
+        const avatarUrl = data.avatar.startsWith("/") ? backendUrl + data.avatar : data.avatar;
+        const photoElements = document.querySelectorAll(".profilePhotoLocation");
         photoElements.forEach((el) => {
             if (el instanceof HTMLImageElement) {
-                el.src = avatarUrl + '?t=' + Date.now(); // cache busting
+                el.src = avatarUrl + "?t=" + Date.now(); // cache busting
             }
             else {
                 el.style.backgroundImage = `url('${avatarUrl}?t=${Date.now()}')`;

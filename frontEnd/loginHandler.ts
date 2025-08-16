@@ -228,7 +228,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 	// await checkGoogleLogin();
 	await checkGoogleLogin();
-	if (checkIfLogged()) {
+	if (await checkIfLogged()) {
 		changePageTo(loginPage, profilePage);
 		putNickOnProfileHeader(getNickOnLocalStorage());
 		getUserStats(getNickOnLocalStorage());
@@ -349,19 +349,19 @@ document.addEventListener("DOMContentLoaded", async () => {
 	});
 
 	//NewUser Button
-	newUserButton.addEventListener("click", () => {
+	newUserButton.addEventListener("click", async () => {
 		changePageTo(loginPage, newUserPage);
 		stopSpech();
-		if (!checkIfLogged()) {
+		if (await !checkIfLogged()) {
 			typeText(bubbleTextNewUser, "Welcome, new resident!", 60);
 		}
 	});
 
 	//Back Button
-	backButton.addEventListener("click", () => {
+	backButton.addEventListener("click", async () => {
 		changePageTo(newUserPage, loginPage);
 		stopSpech();
-		if (!checkIfLogged()) {
+		if (await !checkIfLogged()) {
 			typeText(bubbleTextLogin, "Welcome back!", 60);
 		}
 	});
@@ -369,10 +369,6 @@ document.addEventListener("DOMContentLoaded", async () => {
 	//BACK BUTTON 2F
 	backButton2F.addEventListener("click", () => {
 		changePageTo(twoFactorPage, profilePage);
-		// stopSpech();
-		// if (!checkIfLogged()) {
-		// 	typeText(bubbleTextLogin, "Welcome back!", 60);
-		// }
 	});
 });
 

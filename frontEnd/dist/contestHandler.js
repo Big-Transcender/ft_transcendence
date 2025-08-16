@@ -60,10 +60,10 @@ async function betterWait(time) {
         setTimeout(resolve, time);
     });
 }
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
     //Enter Join Page
     joinContestButton.addEventListener("click", async () => {
-        if (!checkIfLogged()) {
+        if (await !checkIfLogged()) {
             displayWarning("You need to log in.");
         }
         else {
@@ -73,7 +73,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
     //Enter create Contest Page
     createContesButton.addEventListener("click", async () => {
-        if (!checkIfLogged()) {
+        if (await !checkIfLogged()) {
             displayWarning("You need to log in.");
         }
         else {
@@ -98,7 +98,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
     // CREATE NEW CONTEST BUTTON
     createNewContestButton.addEventListener("click", async () => {
-        if (!checkIfLogged()) {
+        if (await !checkIfLogged()) {
             displayWarning("You need to log in.");
         }
         else {
@@ -108,7 +108,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
     // CREATE NEW CONTEST LOCAL BUTTON
     createNewContestLocalButton.addEventListener("click", async () => {
-        if (!checkIfLogged()) {
+        if (await !checkIfLogged()) {
             displayWarning("You need to log in.");
         }
         else {
@@ -236,7 +236,8 @@ async function getInfoFromContest(pin) {
         console.log("info from matches:", data.players);
         let players = new Array(4).fill(null);
         data.players.forEach((player, index) => {
-            if (index < 3) { // Ensure we only populate up to 4 positions
+            if (index < 3) {
+                // Ensure we only populate up to 4 positions
                 players[index] = player;
             }
         });
@@ -393,7 +394,7 @@ async function removePlayer() {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
-            "Authorization": `Bearer ${token}`,
+            Authorization: `Bearer ${token}`,
         },
         credentials: "include",
         body: JSON.stringify(pin),
