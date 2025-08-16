@@ -372,9 +372,37 @@ document.addEventListener("DOMContentLoaded", async () => {
 	});
 });
 
-function getNickOnLocalStorage() {
+async function getNickOnLocalStorageSync(): Promise<string | null> {
+	try {
+		const res = await fetch(`${backendUrl}/me`, {
+			credentials: "include",
+		});
+		if (res.ok) {
+			const user = await res.json();
+			console.log("heres the nick ", user);
+			return user.nickname;
+		}
+	} catch (err) {
+		console.error("Error checking Google login:", err);
+	}
+	return null;
+}
+
+function getNickOnLocalStorage()
+{
+	let nickname: string | null = null;
+ 	getNickOnLocalStorageSync().then((res) => (nickname = res));
+	console.log("heres the nick ", nickname);
 	return localStorage.getItem("nickname");
 }
+
+
+
+// function getNickOnLocalStorage(): string | null { 
+// 	let nickname: string | null = null;
+// 	getNickOnLocalStorageSync().then((res) => (nickname = res));
+// 	return nickname;
+// }
 
 function getTournamentPin() {
 	return localStorage.getItem("pin");

@@ -510,14 +510,18 @@ async function updateMatchHistory() {
         // Insert new rows for each match
         data.forEach((match) => {
             const row = table.insertRow();
+            // Opponent column
             const opponentCell = row.insertCell();
             opponentCell.textContent = match.opponent;
+            // Score column
             const scoreCell = row.insertCell();
             scoreCell.textContent = match.score;
-            const resultCell = row.insertCell();
-            resultCell.textContent = match.result;
-            resultCell.style.color = match.result === "WIN" ? "#4CAF50" : "#f44336";
-            resultCell.style.fontWeight = "bold";
+            scoreCell.style.color = match.result === "WIN" ? "#4CAF50" : "#f44336"; // Green for win, red for loss
+            scoreCell.style.fontWeight = "bold";
+            // Date column
+            const dateCell = row.insertCell();
+            dateCell.textContent = match.date; // Assuming `match.date` is already formatted
+            dateCell.style.textAlign = "center";
         });
         // Fill remaining rows with placeholders (if you want exactly 5 rows)
         const currentRows = table.rows.length - 1; // Subtract header row

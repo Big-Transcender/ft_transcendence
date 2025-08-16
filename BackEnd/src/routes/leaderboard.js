@@ -30,15 +30,24 @@ module.exports = async function (fastify)
 			const opponentId = isPlayer1 ? match.player2_id : match.player1_id;
 			const opponentRow = await db.prepare('SELECT nickname FROM users WHERE id = ?').get(opponentId);
 			const opponent = opponentRow ? opponentRow.nickname : 'Unknown';
-
+		
 			const isWinner = match.winner_id === userId;
 			const result = isWinner ? 'WIN' : 'LOSS';
 			const playerScore = isPlayer1 ? match.score_p1 : match.score_p2;
 			const opponentScore = isPlayer1 ? match.score_p2 : match.score_p1;
+		
+			// Format the date of the match
+			const matchDate = new Date(match.date_match);
+			const formattedDate = matchDate.toLocaleDateString('en-US', {
+				month: 'short',
+				day: 'numeric'
+			});
+		
 			return {
 				result,
 				score: `${playerScore}-${opponentScore}`,
-				opponent
+				opponent,
+				date: formattedDate // Include the formatted date
 			};
 		}));
 
