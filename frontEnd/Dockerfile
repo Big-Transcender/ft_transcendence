@@ -11,20 +11,13 @@
 	COPY . .
 	
 	# Expose port for live-server
-	EXPOSE 5173
-	
-	# # Install live-server globally (optional if used via npx)
-	# RUN npm install -g live-server concurrently
-	
-	# # Default command: run tsc in watch mode + serve
-	# CMD ["concurrently", "npx tsc -w", "live-server --host=0.0.0.0 --port=5173 --open=./index.html"]
-	
+	EXPOSE 8080 5173 
 	
 	RUN npx tsc
 	
 	FROM debian:bullseye
 	
-	RUN apt update && apt upgrade -y && apt install -y nginx
+	RUN apt update && apt upgrade -y && apt install -y nginx openssl
 	
 	COPY --from=build /app/*.html /usr/share/nginx/html/
 	COPY --from=build /app/styles/*.css /usr/share/nginx/html/styles/
@@ -37,8 +30,10 @@
 	COPY --from=build /app/dist/ /usr/share/nginx/html/
 	
 	RUN rm -f /etc/nginx/sites-enabled/default
-	COPY ./default.conf /etc/nginx/conf.d/default.conf
-	
-	# EXPOSE 80
+	COPY nginx/default.conf /etc/nginx/conf.d/default.conf
+
+	# Copy SSL certs
+	COPY nginx/certs/selfsigned.crt /etc/nginx/certs/selfsigned.crt
+	COPY nginx/certs/selfsigned.key /etc/nginx/certs/selfsigned.key
 	
 	CMD ["nginx", "-g", "daemon off;"]

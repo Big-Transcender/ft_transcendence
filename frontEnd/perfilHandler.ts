@@ -3,8 +3,8 @@ let losesNumber = document.getElementById("boxLosesNumber");
 let gamesNumber = document.getElementById("boxGamesNumber");
 let positionNumber = document.getElementById("positionId");
 let winRateText = document.getElementById("winRateTextId");
-const backendUrl = `http://${window.location.hostname}:3000`;
-const frontendUrl = `http://${window.location.hostname}:5173`;
+const backendUrl = `/api`;
+const frontendUrl = `/api`;
 
 const matchesProfile = document.querySelector(".matchesProfile") as HTMLElement;
 const friendsProfile = document.querySelector(".friendsProfile") as HTMLElement;

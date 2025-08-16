@@ -35,7 +35,9 @@ function startPongWebSocket(
 	const keysPressed = new Set<string>();
 
 	// --- WebSocket Setup
-	socket = new WebSocket(`ws://${window.location.hostname}:3000/game`);
+	const wsProtocol = window.location.protocol === "https:" ? "wss" : "ws";
+	const wsHost = window.location.host;
+	socket = new WebSocket(`${wsProtocol}://${wsHost}/game`);
 
 	let nickname: string;
 	let opponentNickname: string | null = null;

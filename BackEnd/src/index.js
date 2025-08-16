@@ -1,4 +1,4 @@
-const fastify = require("fastify")({ logger: false });
+const fastify = require("fastify")({ logger: false, trustProxy: true });
 const cors = require("@fastify/cors");
 const path = require("path");
 const fs = require("fs");
@@ -20,9 +20,9 @@ fastify.register(fastifySecureSession, {
 	key: fs.readFileSync(path.join(__dirname, "not-so-secret-key")),
 	cookie: {
 		path: "/", // Make sure path is set
-		httpOnly: true,
-		secure: false, // TODO change to true when we start using https
-		sameSite: "lax", // or 'strict' depending on your setup
+		// httpOnly: true,
+		secure: true, // TODO change to true when we start using https
+		sameSite: "strict", // or 'strict' depending on your setup
 	},
 });
 
