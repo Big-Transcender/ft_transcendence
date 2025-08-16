@@ -645,7 +645,7 @@
 					<!-- CONTEST PAGE -->
 					<div id="contest" class="contest page">
 						<!-- CONTEST OPTION SELECTOR -->
-						<div class="gameSelector contestId active" id="contestSelectorId">
+						<div class="gameSelector contestId" id="contestSelectorId">
 							<div class="gameSelectorBG contestBG"></div>
 							<p class="gameSelectorHeader headerContest">What do you wanna do?</p>
 							<div class="gameSelectorButton" id="joinContestId">
@@ -875,7 +875,7 @@
 								</button>
 							</div>
 							<!-- NEW USER PAGE -->
-							<div class="newUserPage profileId" id="newUserId">
+							<div class="newUserPage profileId active" id="newUserId">
 								<img src="images/avatar1.png" alt="" class="avatar1" />
 								<img src="images/avatar2.png" alt="" class="avatar2" />
 								<div class="loginBoxBG">
@@ -1017,6 +1017,10 @@
 									<!-- <label for="inputNick">Enter your nickname</label> -->
 									<input type="text" id="inputFriend" class="inputText smallInput friendInput" placeholder="FRIEND NICK" autocomplete="off" />
 									<!-- </div> -->
+
+									<button onclick="updateFriends()" class="refreshFriendListButton" id="refreshFriendListId">
+										<div class="refreshIcon"></div>
+									</button>
 								</div>
 
 								<div class="loginBoxBG">

@@ -165,6 +165,11 @@ function prepareContestLocal() {
 		(document.getElementById("popupContestNick4") as HTMLInputElement).value.trim(),
 	];
 
+	if (nicks.some((nick) => !nick)) {
+		displayWarning("All player nicknames must be filled.");
+		return;
+	}
+
 	startLocalTournament(pin, nicks);
 	closePopup();
 }

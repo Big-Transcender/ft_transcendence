@@ -162,7 +162,9 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 	// OPEN FRIEND LIST
 	friendsButton.addEventListener("click", async () => {
-		await updateFriends();
+		if (!friendsOpen) {
+			await updateFriends();
+		}
 		friendsAnimationHandler();
 	});
 
@@ -178,7 +180,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 	// REFRESH MATCHES LIST BUTTOM
 	refreshMatchesButton.addEventListener("click", async () => {
-		displayWarning("THIS REFRESH THE LIST");
+		updateMatchHistory();
 	});
 
 	// POPUP PHOTO BUTTOM

@@ -328,11 +328,11 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
     //NewUser Button
     newUserButton.addEventListener("click", async () => {
-        changePageTo(loginPage, newUserPage);
-        stopSpech();
         if (await !checkIfLogged()) {
             typeText(bubbleTextNewUser, "Welcome, new resident!", 60);
         }
+        changePageTo(loginPage, newUserPage);
+        stopSpech();
     });
     //Back Button
     backButton.addEventListener("click", async () => {
@@ -401,7 +401,20 @@ async function checkIfLogged() {
     }
     else {
         const loginPage = document.getElementById("loginId");
-        changePageTo(loginPage, loginPage);
+        const profileDivs = document.querySelectorAll(".profileId");
+        profileDivs.forEach((div) => {
+            if (div.classList.contains("active")) {
+                if (div.classList.contains("newUserPage")) {
+                    // Se for a div de novo usuário e estiver ativa, não faz nada
+                    return;
+                }
+                if (div.classList.contains("loginPage"))
+                    return;
+                // div.classList.remove("active");
+            }
+        });
+        // loginPage.classList.add("active");
+        // changePageTo(loginPage, loginPage);
         return false;
     }
 }
