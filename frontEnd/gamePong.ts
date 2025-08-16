@@ -223,12 +223,13 @@ function generateMatchId() {
 }
 
 
-window.addEventListener("ShowWinner", (event: CustomEvent) => {
+window.addEventListener("ShowWinner", async (event: CustomEvent) => {
 	const { matchId, winner, isLocal, reason } = event.detail;
-	alert(`Game Over! The winner is ${winner}. Reason: ${reason}`);
 
-	//TODO brendon here!!!!!!
-	console.log(matchId, winner, isLocal);
+
+	openVictory(`Game Over!\nThe winner is ${winner}!`);
+
+	await betterWait(2000)
 
 	if (matchId) {
 		window.dispatchEvent(

@@ -216,7 +216,13 @@ function openVictory(quote) {
 }
 
 function closeVictory() {
+
 	document.getElementById("popupContainerVictory").style.display = "none";
+	window.dispatchEvent(
+		new CustomEvent("next", {
+		})
+	);
+
 }
 
 clickButton(loginButton);
