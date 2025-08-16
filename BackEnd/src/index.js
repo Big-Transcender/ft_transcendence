@@ -9,6 +9,7 @@ const GoogleStrategy = require("passport-google-oauth2").Strategy;
 const dotenv = require("dotenv");
 const jwt = require("jsonwebtoken");
 const fastifyMultipart = require("@fastify/multipart");
+const bcrypt = require("bcryptjs");
 
 const db = require("./database");
 
@@ -35,37 +36,57 @@ fastify.register(require('@fastify/multipart'), {
 });
 
 fastifyPassport.use(
-	"google",
-	new GoogleStrategy(
-		{
-			clientID: process.env.GOOGLE_CLIENT_ID,
-			clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-			callbackURL: "http://c1r3s1.42porto.com:3000/auth/google/callback",
-		},
-		(accessToken, refreshToken, profile, done) => {
-			try {
-				const email = profile.email;
-				const nickname = profile.displayName || profile.given_name;
+  "google",
+  new GoogleStrategy(
+    {
+      clientID: process.env.GOOGLE_CLIENT_ID,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+      callbackURL: "http://c1r3s1.42porto.com:3000/auth/google/callback",
+    },
+    (accessToken, refreshToken, profile, done) => {
+      try {
+        const email = profile.emails?.[0]?.value;
+        let displayName = profile.displayName || profile.name?.givenName || "user";
 
-				let user = db.prepare(`SELECT * FROM users WHERE email = ?`).get(email);
+        // If there's a space, take only the first word
+        let nickname = displayName.split(" ")[0];
 
-				if (!user) {
-					// Create user if not exists
-					const stmt = db.prepare(`
-				INSERT INTO users (nickname, password, email) VALUES (?, ?, ?)
-			`);
-					const defaultPassword = "google_oauth"; // or random string
-					const result = stmt.run(nickname, defaultPassword, email);
-					user = db.prepare(`SELECT * FROM users WHERE id = ?`).get(result.lastInsertRowid);
-				}
+        // Ensure max length 8
+        nickname = nickname.substring(0, 8);
 
-				done(null, user);
-			} catch (err) {
-				console.error("Google login error:", err);
-				done(err);
-			}
-		}
-	)
+        // Check if user with this email exists
+        let user = db.prepare(`SELECT * FROM users WHERE email = ?`).get(email);
+
+        if (!user) {
+          // Make nickname unique if already taken
+          let baseNickname = nickname;
+          let counter = 1;
+
+          while (db.prepare(`SELECT 1 FROM users WHERE nickname = ?`).get(nickname)) {
+            // keep total length <= 8
+            const suffix = counter.toString();
+			const maxBaseLength = Math.max(0, 8 - suffix.length);
+			nickname = `${baseNickname.substring(0, maxBaseLength)}${suffix}`;
+            counter++;
+          }
+
+          // Insert new user
+          const stmt = db.prepare(`
+            INSERT INTO users (nickname, password, email) VALUES (?, ?, ?)
+          `);
+          const defaultPassword = "Password1!"; // Default password for new users
+		  const hashedPassword = bcrypt.hashSync(defaultPassword, 10);
+          const result = stmt.run(nickname, hashedPassword, email);
+          user = db.prepare(`SELECT * FROM users WHERE id = ?`).get(result.lastInsertRowid);
+        }
+
+        done(null, user);
+      } catch (err) {
+        console.error("Google login error:", err);
+        done(err);
+      }
+    }
+  )
 );
 
 fastifyPassport.registerUserDeserializer(async (user, req) => {
