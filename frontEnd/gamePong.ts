@@ -174,12 +174,12 @@ function startPongWebSocket(
 					if (winner === null) winner = "Bot";
 
 					setTimeout(() => {
-						alert(`Game Over! The winner is ${winner}. Reason: ${reason}`);
+
 
 						if (currentMatchId) {
 							window.dispatchEvent(
-								new CustomEvent("MatchEnd", {
-									detail: { matchId: currentMatchId, winner: winner, isLocal: isLocal },
+								new CustomEvent("ShowWinner", {
+									detail: { matchId: currentMatchId, winner: winner, isLocal: isLocal, reason: reason },
 								})
 							);
 						}
@@ -221,3 +221,22 @@ setInterval(() => {
 function generateMatchId() {
 	return Math.floor(1000 + Math.random() * 90000).toString();
 }
+
+
+window.addEventListener("ShowWinner", (event: CustomEvent) => {
+	const { matchId, winner, isLocal, reason } = event.detail;
+	alert(`Game Over! The winner is ${winner}. Reason: ${reason}`);
+
+	//show the winner page
+	console.log(matchId, winner, isLocal);
+
+	if (matchId) {
+		window.dispatchEvent(
+			new CustomEvent("MatchEnd", {
+				detail: { matchId: matchId, winner: winner, isLocal: isLocal },
+			})
+		);
+	}
+
+
+});
