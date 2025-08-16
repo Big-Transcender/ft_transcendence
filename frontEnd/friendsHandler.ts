@@ -6,8 +6,10 @@ function startPresenceSocket() {
     const nickname = getNickOnLocalStorage();
     if (!nickname) return;
 
-    presenceSocket = new WebSocket(`ws://${window.location.hostname}:3000/presence`);
-    
+    const wsProtocol = window.location.protocol === "https:" ? "wss" : "ws";
+	const wsHost = window.location.host;
+	presenceSocket = new WebSocket(`${wsProtocol}://${wsHost}/presence`);
+
     presenceSocket.onopen = () => {
         console.log('✅ Connected to presence socket');
         presenceSocket?.send(JSON.stringify({
