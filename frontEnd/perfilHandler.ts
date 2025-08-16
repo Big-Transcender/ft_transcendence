@@ -4,6 +4,7 @@ let gamesNumber = document.getElementById("boxGamesNumber");
 let positionNumber = document.getElementById("positionId");
 let winRateText = document.getElementById("winRateTextId");
 const gustSound = new Audio("/audios/gust.wav");
+const flipSound = new Audio("/audios/flip.wav");
 
 const backendUrl = `http://${window.location.hostname}:3000`;
 const frontendUrl = `http://${window.location.hostname}:5173`;
@@ -19,13 +20,12 @@ let isPlayingSoundFriends = false;
 getUserStats(getNickOnLocalStorage());
 preVisualizePhoto();
 
-async function flipboardNumberAnimation(target: string, targetBox) {
+async function flipboardNumberAnimation(target: string, targetBox): Promise<boolean> {
 	targetBox.textContent = "";
 
 	let flips = 50;
 	let delay = 100;
 
-	// Inicializa todos os dígitos como "0"
 	const spans: HTMLSpanElement[] = [];
 	for (let i = 0; i < target.length; i++) {
 		const span = document.createElement("span");
@@ -34,30 +34,20 @@ async function flipboardNumberAnimation(target: string, targetBox) {
 		spans.push(span);
 	}
 
-	// Array para controlar se o dígito já acertou
 	const locked: boolean[] = new Array(target.length).fill(false);
 
-	for (let f = 0; f < flips; f++) {
-		let allLocked = true;
-		for (let i = 0; i < target.length; i++) {
-			if (!locked[i]) {
-				const randomDigit = Math.floor(Math.random() * 10).toString();
-				spans[i].textContent = randomDigit;
-				if (randomDigit === target[i]) {
-					locked[i] = true;
-				} else {
-					allLocked = false;
-				}
-			}
+	const startTime = Date.now();
+	while (Date.now() - startTime < 2000) {
+		for (let i = 0; i < spans.length; i++) {
+			spans[i].textContent = Math.floor(Math.random() * 10).toString();
 		}
-		if (allLocked) break;
 		await new Promise((res) => setTimeout(res, delay));
 	}
 
-	// Garante que todos os dígitos finais estão corretos
 	for (let i = 0; i < target.length; i++) {
 		spans[i].textContent = target[i];
 	}
+	return true;
 }
 
 async function getUserPosition(): Promise<string> {
@@ -110,6 +100,12 @@ async function getUserStats(nickname: string) {
 				flipboardNumberAnimation(stats.defeats.toString(), losesNumber);
 				flipboardNumberAnimation(stats.games_played.toString(), gamesNumber);
 				flipboardNumberAnimation(positionStr, positionNumber);
+				flipSound.currentTime = 0;
+				flipSound.play();
+				setTimeout(() => {
+					flipSound.pause();
+					flipSound.currentTime = 0;
+				}, 2000);
 				await setProfileAvatar();
 				winRateText.textContent = "Current Winrate: " + stats.win_percentage;
 			})
