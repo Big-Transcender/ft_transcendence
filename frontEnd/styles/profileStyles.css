@@ -702,6 +702,10 @@
 	background-repeat: no-repeat;
 }
 
+.pongVictory {
+	font-size: 23px;
+}
+
 .profilePopup {
 	position: absolute;
 	width: 600px;
@@ -855,6 +859,14 @@
 	position: absolute;
 	bottom: 10%;
 	left: 25%;
+	translate: -50%;
+	width: 100px;
+	height: 50px;
+}
+
+.popupVictory {
+	bottom: 10%;
+	left: 50%;
 	translate: -50%;
 	width: 100px;
 	height: 50px;

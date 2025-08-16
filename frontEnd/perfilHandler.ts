@@ -174,8 +174,6 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 		const fileInput = document.getElementById("fileInput") as HTMLInputElement;
 		fileInput.value = "";
-
-		//#TODO Need a function to take the current photo of user, so it clear the last upload
 	});
 
 	// POPUP NICK BUTTOM
@@ -274,9 +272,7 @@ async function changeNickPopup() {
 
 	if (!newNick) displayWarning("No nick has been given!");
 	else {
-		//#TODO here where you change the nick
 		await changeNickAPI(newNick);
-		// displayWarning(newNick);
 	}
 }
 
@@ -295,9 +291,7 @@ function changePasswordPopup() {
 
 	if (!newPassword || !oldPassword) displayWarning("No password has been given!");
 	else {
-		//#TODO here where you change the password
 		changePasswordAPI(newPassword, oldPassword);
-		// displayWarning(newPassword);
 	}
 }
 
@@ -628,8 +622,6 @@ async function changeNickAPI(newNick: string): Promise<void> {
 			return;
 		} else {
 			displayWarning("Nickname changed successfully!");
-			// Update localStorage and refresh profile data
-			//TODO need to put the correct function to change nickname
 			localStorage.setItem("nickname", newNick);
 			putNickOnProfileHeader(newNick);
 			await getUserStats(newNick);

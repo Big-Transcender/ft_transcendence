@@ -203,11 +203,20 @@ function clickButton(button) {
 
 async function open2FApopup() {
 	document.getElementById("popupContainer2FA").style.display = "flex";
-	document.querySelector(".frontpagePopup").classList.add("displayPagePopup");
+	// document.querySelector(".frontpagePopup").classList.add("displayPagePopup");
 }
 
 function close2FApopup() {
 	document.getElementById("popupContainer2FA").style.display = "none";
+}
+
+function openVictory(quote) {
+	document.querySelector(".pongVictory").textContent = quote;
+	document.getElementById("popupContainerVictory").style.display = "flex";
+}
+
+function closeVictory() {
+	document.getElementById("popupContainerVictory").style.display = "none";
 }
 
 clickButton(loginButton);
@@ -321,10 +330,10 @@ document.addEventListener("DOMContentLoaded", async () => {
 		}
 	});
 
-	//2AF Button
-	twoAFButton.addEventListener("click", () => {
+	// 2AF Button PROFILE
+	twoAFButton.addEventListener("click", async () => {
 		changePageTo(profilePage, twoFactorPage);
-		if (check2FAStatus()) {
+		if (await check2FAStatus()) {
 			document.getElementById("verifyTwoFactorButtonID").style.display = "none";
 			document.getElementById("showQrButtonID").style.display = "none";
 			document.getElementById("disableTwoFactorButtonID").style.display = "block";
@@ -440,13 +449,13 @@ function setToLogged() {
 	setTimeout(() => {
 		startPresenceSocket();
 	}, 500);
-	localStorage.setItem("isLogged", "true");
+	// localStorage.setItem("isLogged", "true");
 }
 
 function setToUnLogged() {
 	stopPresenceSocket();
-	localStorage.setItem("isLogged", "false");
-	localStorage.removeItem(getNickOnLocalStorage());
+	// localStorage.setItem("isLogged", "false");
+	// localStorage.removeItem(getNickOnLocalStorage());
 }
 
 function putNickOnProfileHeader(nick: string) {
@@ -537,6 +546,7 @@ async function check2FAStatus() {
 		}
 
 		const data = await response.json();
+		console.log("Has 2FA: " + data.enabled);
 		return data.enabled; // Returns true if 2FA is enabled, false otherwise
 	} catch (error) {
 		displayWarning("Failed to check 2FA status: " + error);
