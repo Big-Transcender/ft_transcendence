@@ -32,7 +32,7 @@ module.exports = async function (fastify) {
         }
         request.session.set('user', { id: user.id, nickname: user.nickname });
         const token = jwt.sign({ userId: user.id }, 'your-secret-key', {
-            expiresIn: '1h',
+            expiresIn: '2h',
         });
         // Set JWT in cookie (not httpOnly so frontend can read it)
         reply.setCookie("token", token, {
