@@ -229,7 +229,7 @@ window.addEventListener("ShowWinner", async (event: CustomEvent) => {
 
 	openVictory(`Game Over!\nThe winner is ${winner}!`);
 
-	await betterWait(2000)
+	await waitForEvent("next");
 
 	if (matchId) {
 		window.dispatchEvent(
@@ -241,3 +241,13 @@ window.addEventListener("ShowWinner", async (event: CustomEvent) => {
 
 
 });
+
+async function waitForEvent(eventName: string): Promise<CustomEvent> {
+	return new Promise((resolve) => {
+		const handler = (event: CustomEvent) => {
+			window.removeEventListener(eventName, handler); // Remove the listener after it's triggered
+			resolve(event); // Resolve the promise with the event
+		};
+		window.addEventListener(eventName, handler);
+	});
+}

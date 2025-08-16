@@ -198,7 +198,9 @@ function openVictory(quote) {
 }
 function closeVictory() {
     document.getElementById("popupContainerVictory").style.display = "none";
-    window.dispatchEvent(new CustomEvent("next", {}));
+    window.dispatchEvent(new CustomEvent("next", {
+        detail: true,
+    }));
 }
 clickButton(loginButton);
 clickButton(newUserButton);
