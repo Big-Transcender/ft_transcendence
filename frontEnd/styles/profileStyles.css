@@ -837,3 +837,39 @@
 .uploadButtomText {
 	font-size: 25px !important;
 }
+
+.popup2FA {
+	width: 450px;
+	height: 250px;
+	top: 30%;
+}
+
+.popup2FANumber {
+	width: 300px;
+	height: 100px;
+	left: 50%;
+	top: 30%;
+}
+
+.popup2FAClose {
+	position: absolute;
+	bottom: 10%;
+	left: 25%;
+	translate: -50%;
+	width: 100px;
+	height: 50px;
+}
+
+.popup2FAVerify {
+	position: absolute;
+	bottom: 10%;
+	left: 75%;
+	translate: -50%;
+	width: 100px;
+	height: 50px;
+}
+
+/* THIS NEED TO BE REMOVED */
+/* .popupContainer2FA {
+	display: flex;
+} */

@@ -90,7 +90,7 @@ async function getUserStats(nickname: string) {
 			method: "GET",
 			headers: {
 				"Content-Type": "application/json",
-				"Authorization": `Bearer ${token}`,
+				Authorization: `Bearer ${token}`,
 			},
 			credentials: "include",
 		})
@@ -204,8 +204,58 @@ function changePopupTo(remove, activate) {
 	activate.classList.add("displayPagePopup");
 }
 
-function addfriendHandler(friendNick: string) {
-	//#TODO Make the logic of addfriend here!
+async function addfriendHandler(friendNick: string): Promise<void> {
+	const token = localStorage.getItem("token");
+	try {
+		const response = await fetch(`${backendUrl}/friends/add`, {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+				Authorization: `Bearer ${token}`,
+			},
+			body: JSON.stringify({ friendNickname: friendNick }),
+		});
+
+		const data = await response.json();
+
+		if (!response.ok) {
+			displayWarning(data.error || "Failed to add friend");
+			return;
+		}
+
+		displayWarning("Friend added successfully!");
+		await updateFriends();
+	} catch (error: any) {
+		const errorMessage = (error as Error).message || "Error adding friend";
+		displayWarning(errorMessage);
+	}
+}
+
+async function removefriendHandler(friendNick: string): Promise<void> {
+	const token = localStorage.getItem("token");
+	try {
+		const response = await fetch(`${backendUrl}/friends/remove`, {
+			method: "DELETE",
+			headers: {
+				"Content-Type": "application/json",
+				Authorization: `Bearer ${token}`,
+			},
+			body: JSON.stringify({ friendNickname: friendNick }),
+		});
+
+		const data = await response.json();
+
+		if (!response.ok) {
+			displayWarning(data.error || "Failed to remove friend");
+			return;
+		}
+
+		displayWarning("Friend removed successfully!");
+		await updateFriends();
+	} catch (error: any) {
+		const errorMessage = (error as Error).message || "Error removing friend";
+		displayWarning(errorMessage);
+	}
 }
 
 function openPopup() {
@@ -262,36 +312,36 @@ function changePhotoPopup() {
 
 	const file = newPhoto.files[0];
 	const formData = new FormData();
-	formData.append('file', file);
+	formData.append("file", file);
 
 	fetch(`${backendUrl}/avatar`, {
-		method: 'POST',
+		method: "POST",
 		body: formData,
 		headers: {
-			'Authorization': `Bearer ${localStorage.getItem('token')}`
-		}
+			Authorization: `Bearer ${localStorage.getItem("token")}`,
+		},
 	})
-	.then(response => response.json())
-	.then(data => {
-		if (data.success && data.url) {
-			// Update only profile photo location elements
-			const photoElements = document.querySelectorAll('.profilePhotoLocation');
-			photoElements.forEach((el) => {
-				if (el instanceof HTMLImageElement) {
-					el.src = backendUrl + data.url + '?t=' + Date.now(); // cache busting
-				} else {
-					(el as HTMLElement).style.backgroundImage = `url('${backendUrl + data.url}?t=${Date.now()}')`;
-				}
-			});
-			setProfileAvatar(); // Ensure avatar is refreshed everywhere after upload
-			displayWarning("Photo updated successfully!");
-		} else {
-			displayWarning("Failed to update photo.");
-		}
-	})
-	.catch(() => {
-		displayWarning("Error uploading photo.");
-	});
+		.then((response) => response.json())
+		.then((data) => {
+			if (data.success && data.url) {
+				// Update only profile photo location elements
+				const photoElements = document.querySelectorAll(".profilePhotoLocation");
+				photoElements.forEach((el) => {
+					if (el instanceof HTMLImageElement) {
+						el.src = backendUrl + data.url + "?t=" + Date.now(); // cache busting
+					} else {
+						(el as HTMLElement).style.backgroundImage = `url('${backendUrl + data.url}?t=${Date.now()}')`;
+					}
+				});
+				setProfileAvatar(); // Ensure avatar is refreshed everywhere after upload
+				displayWarning("Photo updated successfully!");
+			} else {
+				displayWarning("Failed to update photo.");
+			}
+		})
+		.catch(() => {
+			displayWarning("Error uploading photo.");
+		});
 }
 
 function preVisualizePhoto() {
@@ -384,7 +434,6 @@ async function updateFriends() {
 
 		const data = await response.json();
 
-		// Get the friends table (not the leaderboard table)
 		const table = document.getElementById("friendListId") as HTMLTableElement;
 
 		if (!table) {
@@ -397,45 +446,81 @@ async function updateFriends() {
 			table.deleteRow(1);
 		}
 
-		// Insert new rows for each friend
-		data.friends.forEach((friend) => {
-			const row = table.insertRow();
-
-			const nameCell = row.insertCell();
-			nameCell.textContent = friend.nickname;
-
-			const statusCell = row.insertCell();
-			if (friend.isOnline) {
-				statusCell.innerHTML = '<span style="color: #063508ff;">🟢 Online</span>';
-				statusCell.className = "online-status";
-			} else {
-				statusCell.innerHTML = '<span style="color: #757575;">🔴 Offline</span>';
-				statusCell.className = "offline-status";
-			}
-		});
-
-		// Fill remaining rows with placeholders
-		const currentRows = table.rows.length - 1;
 		const maxRows = 5;
 
-		for (let i = currentRows; i < maxRows; i++) {
-			const row = table.insertRow();
-			row.insertCell().textContent = "-----";
-			row.insertCell().textContent = "-----";
+		if (data.friends.length === 0) {
+			// Fill first 5 positions with default string
+			for (let i = 0; i < maxRows; i++) {
+				const row = table.insertRow();
+				row.insertCell().textContent = "-----";
+				row.insertCell().textContent = "-----";
+			}
+		} else {
+			// Insert new rows for each friend
+			data.friends.forEach((friend) => {
+				const row = table.insertRow();
+
+				const nameCell = row.insertCell();
+
+				const deleteButton = document.createElement("button");
+				deleteButton.textContent = "❌";
+				deleteButton.style.marginRight = "8px";
+				deleteButton.style.cursor = "pointer";
+				deleteButton.title = "Remove Friend";
+				deleteButton.addEventListener("click", async () => {
+					await removefriendHandler(friend.nickname);
+				});
+
+				nameCell.appendChild(deleteButton);
+				nameCell.appendChild(document.createTextNode(friend.nickname));
+
+				const statusCell = row.insertCell();
+				if (friend.isOnline) {
+					statusCell.innerHTML = '<span style="color: #063508ff;">🟢 Online</span>';
+					statusCell.className = "online-status";
+				} else {
+					statusCell.innerHTML = '<span style="color: #757575;">🔴 Offline</span>';
+					statusCell.className = "offline-status";
+				}
+			});
+
+			// Fill remaining rows with placeholders if less than 5 friends
+			for (let i = data.friends.length; i < maxRows; i++) {
+				const row = table.insertRow();
+				row.insertCell().textContent = "-----";
+				row.insertCell().textContent = "-----";
+			}
+		}
+
+		// Make the table scrollable if there are more than 5 friends
+		if (data.friends.length > maxRows) {
+			table.style.display = "block";
+			table.style.overflowY = "scroll";
+			table.style.maxHeight = "342px";
+		} else {
+			table.style.display = "table";
+			table.style.overflowY = "unset";
+			table.style.maxHeight = "unset";
 		}
 	} catch (error) {
-		// Show error in table
 		const table = document.getElementById("friendListId") as HTMLTableElement;
 		if (table) {
 			while (table.rows.length > 1) {
 				table.deleteRow(1);
 			}
-			const row = table.insertRow();
-			const cell1 = row.insertCell();
-			const cell2 = row.insertCell();
-			cell1.textContent = "Error loading friends";
-			cell2.textContent = `${error}`;
-			cell1.style.color = "#ff0000";
+			for (let i = 0; i < 5; i++) {
+				const row = table.insertRow();
+				const cell1 = row.insertCell();
+				const cell2 = row.insertCell();
+				if (i === 0) {
+					cell1.textContent = "Error loading friends";
+					cell2.textContent = `${error}`;
+					cell1.style.color = "#ff0000";
+				} else {
+					cell1.textContent = "-----";
+					cell2.textContent = "-----";
+				}
+			}
 		}
 	}
 }
@@ -610,15 +695,15 @@ async function setProfileAvatar() {
 	if (!token) return;
 	try {
 		const response = await fetch(`${backendUrl}/me/avatar`, {
-			headers: { 'Authorization': `Bearer ${token}` },
-			credentials: 'include',
+			headers: { Authorization: `Bearer ${token}` },
+			credentials: "include",
 		});
 		const data = await response.json();
-		const avatarUrl = data.avatar.startsWith('/') ? backendUrl + data.avatar : data.avatar;
-		const photoElements = document.querySelectorAll('.profilePhotoLocation');
+		const avatarUrl = data.avatar.startsWith("/") ? backendUrl + data.avatar : data.avatar;
+		const photoElements = document.querySelectorAll(".profilePhotoLocation");
 		photoElements.forEach((el) => {
 			if (el instanceof HTMLImageElement) {
-				el.src = avatarUrl + '?t=' + Date.now(); // cache busting
+				el.src = avatarUrl + "?t=" + Date.now(); // cache busting
 			} else {
 				(el as HTMLElement).style.backgroundImage = `url('${avatarUrl}?t=${Date.now()}')`;
 			}
@@ -630,14 +715,14 @@ async function setProfileAvatar() {
 
 // SPA: Always refresh avatar on profile page navigation
 function handleProfilePageNavigation() {
-	if (window.location.pathname.includes('perfil') || window.location.pathname.includes('profile')) {
+	if (window.location.pathname.includes("perfil") || window.location.pathname.includes("profile")) {
 		setProfileAvatar();
 	}
 }
 
 // Listen for SPA navigation events
-window.addEventListener('popstate', handleProfilePageNavigation);
-window.addEventListener('pushstate', handleProfilePageNavigation);
-window.addEventListener('replacestate', handleProfilePageNavigation);
+window.addEventListener("popstate", handleProfilePageNavigation);
+window.addEventListener("pushstate", handleProfilePageNavigation);
+window.addEventListener("replacestate", handleProfilePageNavigation);
 // Also run on initial load
 handleProfilePageNavigation();

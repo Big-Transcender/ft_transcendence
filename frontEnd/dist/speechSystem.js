@@ -12,8 +12,6 @@ for (let i = 97; i <= 122; i++) {
 //| jump line
 //*word* turn in red
 function typeText(element, text, delay) {
-    console.log("isTyping: " + isTyping);
-    console.log("stopSpeechFlag: " + stopSpeechFlag);
     if (isTyping) {
         return;
     }

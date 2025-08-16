@@ -1,71 +1,94 @@
-// const music1AM = new Audio('audios/DayMusic/1AM.wav');
-// const music1PM = new Audio('audios/DayMusic/1PM.wav');
-var today = new Date();
-
-const dayMusic = {
-	// "12AM": new Audio('audios/DayMusic/12AM.wav'),
-	"1AM": new Audio("audios/DayMusic/1AM.wav"),
-	// "2AM": new Audio('audios/DayMusic/2AM.wav'),
-	// "3AM": new Audio('audios/DayMusic/3AM.wav'),
-	// "4AM": new Audio('audios/DayMusic/4AM.wav'),
-	// "5AM": new Audio('audios/DayMusic/5AM.wav'),
-	// "6AM": new Audio('audios/DayMusic/6AM.wav'),
-	// "7AM": new Audio('audios/DayMusic/7AM.wav'),
-	// "8AM": new Audio('audios/DayMusic/8AM.wav'),
-	// "9AM": new Audio('audios/DayMusic/9AM.wav'),
-	// "10AM": new Audio('audios/DayMusic/10AM.wav'),
-	// "11AM": new Audio('audios/DayMusic/11AM.wav'),
-	// "12PM": new Audio('audios/DayMusic/12PM.wav'),
-	"1PM": new Audio("audios/DayMusic/1PM.wav"),
-	// "2PM": new Audio('audios/DayMusic/2PM.wav'),
-	// "3PM": new Audio('audios/DayMusic/3PM.wav'),
-	// "4PM": new Audio('audios/DayMusic/4PM.wav'),
-	// "5PM": new Audio('audios/DayMusic/5PM.wav'),
-	// "6PM": new Audio('audios/DayMusic/6PM.wav'),
-	// "7PM": new Audio('audios/DayMusic/7PM.wav'),
-	// "8PM": new Audio('audios/DayMusic/8PM.wav'),
-	// "9PM": new Audio('audios/DayMusic/9PM.wav'),
-	// "10PM": new Audio('audios/DayMusic/10PM.wav'),
-	// "11PM": new Audio('audios/DayMusic/11PM.wav'),
+type PlaylistItem = {
+	name: string;
+	audio: HTMLAudioElement;
 };
 
-const currentHour = 1;
-const period = currentHour < 12 ? "AM" : "PM";
+const dayMusic: PlaylistItem[] = [
+	{ name: "1 AM", audio: new Audio("audios/DayMusic/1AM.wav") },
+	{ name: "Able Sisters", audio: new Audio("audios/DayMusic/Able_Sister.mp3") },
+	{ name: "1 PM", audio: new Audio("audios/DayMusic/1PM.wav") },
+	{ name: "Working at the Roost", audio: new Audio("audios/DayMusic/Working_at_the_Roost.mp3") },
+	{ name: "T.I.Y", audio: new Audio("audios/DayMusic/T.I.Y.mp3") },
+	// Add more items as needed
+];
 
-const musicButtonPlay = document.querySelector(".buttonPlay");
-const musicButtonStop = document.querySelector(".buttonStop");
+let musicToday = new Date();
 
-const formattedHour = (currentHour % 12 || 12) + period;
+const musicButtonPlay = document.querySelector(".buttonPlay") as HTMLButtonElement;
+const musicButtonStop = document.querySelector(".buttonStop") as HTMLButtonElement;
+const musicButtonNext = document.querySelector(".buttonNext") as HTMLButtonElement;
+const musicButtonPrev = document.querySelector(".buttonPrev") as HTMLButtonElement;
 
-const bgMusic = dayMusic[formattedHour];
+const musicTitle = document.getElementById("musicTitle") as HTMLElement;
+const musicDate = document.getElementById("musicDate") as HTMLElement;
+
+// Start with first item
+let currentIndex = 0;
+let bgMusic = dayMusic[currentIndex].audio;
 bgMusic.loop = true;
-bgMusic.title = (currentHour % 12 || 12) + " " + period;
-// bgMusic.play();
+bgMusic.title = dayMusic[currentIndex].name;
 
-const musicTitle = document.getElementById("musicTitle");
-const musicDate = document.getElementById("musicDate");
-
-musicTitle.textContent = bgMusic.title;
-musicDate.textContent = today.getHours().toString().padStart(2, "0") + ":" + today.getMinutes().toString().padStart(2, "0");
+musicTitle.textContent = dayMusic[currentIndex].name;
+musicDate.textContent = musicToday.getHours().toString().padStart(2, "0") + ":" + musicToday.getMinutes().toString().padStart(2, "0");
 setInterval(() => {
-	today = new Date();
-	musicDate.textContent = today.getHours().toString().padStart(2, "0") + ":" + today.getMinutes().toString().padStart(2, "0");
+	musicToday = new Date();
+	musicDate.textContent = musicToday.getHours().toString().padStart(2, "0") + ":" + musicToday.getMinutes().toString().padStart(2, "0");
 }, 2000);
 
+// Helper to update bgMusic and UI
+function setMusic(index: number) {
+	bgMusic.pause();
+	bgMusic.currentTime = 0;
+	currentIndex = index;
+	bgMusic = dayMusic[currentIndex].audio;
+	bgMusic.loop = true;
+	bgMusic.title = dayMusic[currentIndex].name;
+	musicTitle.textContent = dayMusic[currentIndex].name;
+}
+
+// Button event listeners
 musicButtonStop.addEventListener("click", () => {
 	musicPause();
-	console.log("musica pausada");
 });
 
 musicButtonPlay.addEventListener("click", () => {
-	musicResume();
-	console.log("musica resume");
+	if (bgMusic.paused || bgMusic.currentTime === 0) {
+		bgMusic.play();
+	}
 });
 
+musicButtonNext.addEventListener("click", () => {
+	playNextMusic();
+});
+
+musicButtonPrev.addEventListener("click", () => {
+	playPrevMusic();
+});
+
+// Functions
 function musicPause() {
-	bgMusic.pause();
+	if (bgMusic) {
+		bgMusic.pause();
+	}
 }
 
 function musicResume() {
+	if (bgMusic) {
+		bgMusic.play();
+	}
+}
+
+function playNextMusic() {
+	const nextIndex = (currentIndex + 1) % dayMusic.length;
+	setMusic(nextIndex);
 	bgMusic.play();
 }
+
+function playPrevMusic() {
+	const prevIndex = (currentIndex - 1 + dayMusic.length) % dayMusic.length;
+	setMusic(prevIndex);
+	bgMusic.play();
+}
+
+// Initialize UI with current music
+setMusic(currentIndex);

@@ -27,6 +27,9 @@ function errorCatcher(data, bubbleText) {
         typeText(bubbleText, "Uh-ohª... That nick is not in our village!", 60);
     }
     //
+    else if (data.error.search("Nickname too long") != -1) {
+        typeText(bubbleText, "Ohª... That nick is too long!", 60);
+    }
     //
     // Email in use
     else if (data.error.search("Email already in use") != -1) {
@@ -95,8 +98,6 @@ const registerNewUser = async () => {
 async function loginUser() {
     const identifier = document.getElementById("inputNick").value.trim();
     const password = document.getElementById("inputPass").value.trim();
-    console.log("nickname:", identifier);
-    console.log("password:", password);
     try {
         const response = await fetch(`${backendUrl}/login`, {
             method: "POST",
@@ -112,6 +113,7 @@ async function loginUser() {
             setToLogged();
             setNickOnLocalStorage(data.user.name);
             localStorage.setItem("token", data.token);
+            await open2FApopup();
             return true;
         }
         else {
@@ -143,6 +145,21 @@ function clickButton(button) {
         }
     });
 }
+async function open2FApopup() {
+    document.getElementById("popupContainer2FA").style.display = "flex";
+    document.querySelector(".frontpagePopup").classList.add("displayPagePopup");
+}
+function close2FApopup() {
+    document.getElementById("popupContainer2FA").style.display = "none";
+}
+function verify2FACode() {
+    const AFCode = document.getElementById("AFCode").value.trim();
+    if (!AFCode)
+        displayWarning("No code was given!");
+    else {
+        displayWarning("THIS WILL VERIFY THE CODE");
+    }
+}
 clickButton(loginButton);
 clickButton(newUserButton);
 clickButton(createUserButton);
@@ -161,7 +178,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     const newUserPage = document.getElementById("newUserId");
     const twoFactorPage = document.getElementById("twoFactorId");
     const loginPage = document.getElementById("loginId");
-    await checkGoogleLogin();
+    // await checkGoogleLogin();
     // await checkGoogleLogin();
     if (checkIfLogged()) {
         changePageTo(loginPage, profilePage);
@@ -183,13 +200,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         // changePageTo(loginPage, twoFactorPage);
         window.location.href = `${backendUrl}/logingoogle`;
     });
-    // switchNickButton.addEventListener("click", async () => {
-    // 	// let person = prompt("new nickname");
-    // 	// console.log("Fodese: " + person);
-    // 	abrirPopup();
-    // 	// changePageTo(loginPage, twoFactorPage);
-    // 	// window.location.href = `${backendUrl}/logingoogle`;
-    // });
     //Logout Button
     logoutButton.addEventListener("click", async () => {
         try {
@@ -247,7 +257,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
-                "Authorization": `Bearer ${token}`,
+                Authorization: `Bearer ${token}`,
             },
             credentials: "include",
             body: JSON.stringify({

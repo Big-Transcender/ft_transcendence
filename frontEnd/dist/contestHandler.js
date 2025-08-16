@@ -31,19 +31,28 @@ function genericBackFunctionContest() {
     }
 }
 let isPlaying = false;
+let warningTimeout = null;
 async function displayWarning(text) {
     const warningBubble = document.querySelector(".defaultWarning");
     const warningText = document.getElementById("warningContest");
-    if (!isPlaying) {
-        isPlaying = true;
-        warningText.textContent = text;
-        warningBubble.classList.add("warning");
-        await new Promise((resolve) => {
-            setTimeout(resolve, 5000);
-        });
-        warningBubble.classList.remove("warning");
-        isPlaying = false;
+    if (!warningBubble || !warningText)
+        return;
+    // Clear any existing timeout and reset styles
+    if (warningTimeout) {
+        clearTimeout(warningTimeout);
+        warningBubble.style.opacity = "0";
+        await new Promise((resolve) => setTimeout(resolve, 500)); // Wait for fade-out transition
     }
+    warningText.textContent = text;
+    warningBubble.style.display = "block";
+    warningBubble.style.opacity = "1";
+    warningBubble.style.transition = "opacity 0.5s ease";
+    warningTimeout = window.setTimeout(async () => {
+        warningBubble.style.opacity = "0";
+        await new Promise((resolve) => setTimeout(resolve, 500)); // Wait for fade-out transition
+        warningBubble.style.display = "none";
+        warningTimeout = null;
+    }, 5000);
 }
 async function betterWait(time) {
     await new Promise((resolve) => {
@@ -182,7 +191,7 @@ async function createNewContest() {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
-                "Authorization": `Bearer ${token}`,
+                Authorization: `Bearer ${token}`,
             },
             credentials: "include",
             body: JSON.stringify({ tournamentName }),
@@ -213,9 +222,9 @@ async function getInfoFromContest(pin) {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
-                "Authorization": `Bearer ${token}`,
+                Authorization: `Bearer ${token}`,
             },
-            credentials: "include"
+            credentials: "include",
         });
         const data = await response.json();
         const playerPlaces = document.querySelectorAll(".playerContestPlace");
@@ -247,7 +256,7 @@ async function joinTournament(nick, code) {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
-                "Authorization": `Bearer ${token}`,
+                Authorization: `Bearer ${token}`,
             },
             body: JSON.stringify({ code }),
             credentials: "include",
@@ -277,9 +286,9 @@ async function checkIsValidPin(pin) {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
-                "Authorization": `Bearer ${token}`,
+                Authorization: `Bearer ${token}`,
             },
-            credentials: "include"
+            credentials: "include",
         });
         const data = await response.json();
         if (response.ok) {
@@ -341,7 +350,7 @@ async function getTournamentData(tournamentId) {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
-            "Authorization": `Bearer ${token}`,
+            Authorization: `Bearer ${token}`,
         },
         credentials: "include",
         body: JSON.stringify({ id: tournamentId }),

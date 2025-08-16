@@ -36,19 +36,31 @@ function genericBackFunctionContest() {
 
 let isPlaying = false;
 
+let warningTimeout: number | null = null;
+
 async function displayWarning(text: string) {
-	const warningBubble = document.querySelector(".defaultWarning");
-	const warningText = document.getElementById("warningContest");
-	if (!isPlaying) {
-		isPlaying = true;
-		warningText.textContent = text;
-		warningBubble.classList.add("warning");
-		await new Promise((resolve) => {
-			setTimeout(resolve, 5000);
-		});
-		warningBubble.classList.remove("warning");
-		isPlaying = false;
+	const warningBubble = document.querySelector(".defaultWarning") as HTMLElement;
+	const warningText = document.getElementById("warningContest") as HTMLElement;
+	if (!warningBubble || !warningText) return;
+
+	// Clear any existing timeout and reset styles
+	if (warningTimeout) {
+		clearTimeout(warningTimeout);
+		warningBubble.style.opacity = "0";
+		await new Promise((resolve) => setTimeout(resolve, 500)); // Wait for fade-out transition
 	}
+
+	warningText.textContent = text;
+	warningBubble.style.display = "block";
+	warningBubble.style.opacity = "1";
+	warningBubble.style.transition = "opacity 0.5s ease";
+
+	warningTimeout = window.setTimeout(async () => {
+		warningBubble.style.opacity = "0";
+		await new Promise((resolve) => setTimeout(resolve, 500)); // Wait for fade-out transition
+		warningBubble.style.display = "none";
+		warningTimeout = null;
+	}, 5000);
 }
 
 async function betterWait(time: number) {
@@ -121,16 +133,10 @@ document.addEventListener("DOMContentLoaded", () => {
 		const id = pin;
 		const players = ["diogosan", "Bde", "cacarval", "bousa"];
 		//startLocalTournament(id, players);
-		if (numberOfPlayers === 4)
-		{
+		if (numberOfPlayers === 4) {
 			stopContestPolling();
 			startTournament(id);
-		}
-
-		else
-			displayWarning("Wait for all players!");
-
-
+		} else displayWarning("Wait for all players!");
 	});
 
 	genericBackButton.forEach((button) => {
@@ -178,8 +184,7 @@ let contestPollingInterval: number | null = null;
 
 function startContestPolling(pin: string, intervalMs = 2000) {
 	getInfoFromContest(pin);
-	if (contestPollingInterval)
-		clearInterval(contestPollingInterval);
+	if (contestPollingInterval) clearInterval(contestPollingInterval);
 
 	contestPollingInterval = window.setInterval(() => {
 		getInfoFromContest(pin);
@@ -206,7 +211,7 @@ async function createNewContest() {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json",
-				"Authorization": `Bearer ${token}`,
+				Authorization: `Bearer ${token}`,
 			},
 			credentials: "include",
 			body: JSON.stringify({ tournamentName }),
@@ -239,9 +244,9 @@ async function getInfoFromContest(pin: string) {
 			method: "GET",
 			headers: {
 				"Content-Type": "application/json",
-				"Authorization": `Bearer ${token}`,
+				Authorization: `Bearer ${token}`,
 			},
-			credentials: "include"
+			credentials: "include",
 		});
 
 		const data = await response.json();
@@ -275,7 +280,7 @@ async function joinTournament(nick: string, code: string) {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json",
-				"Authorization": `Bearer ${token}`,
+				Authorization: `Bearer ${token}`,
 			},
 			body: JSON.stringify({ code }),
 			credentials: "include",
@@ -304,9 +309,9 @@ async function checkIsValidPin(pin: string): Promise<boolean> {
 			method: "GET",
 			headers: {
 				"Content-Type": "application/json",
-				"Authorization": `Bearer ${token}`,
+				Authorization: `Bearer ${token}`,
 			},
-			credentials: "include"
+			credentials: "include",
 		});
 		const data = await response.json();
 
@@ -333,8 +338,7 @@ function resetContestPage() {
 async function startTournament(tournamentId: string) {
 	var data = await getTournamentData(tournamentId);
 
-	if (!data)
-		return;
+	if (!data) return;
 
 	const nick = getNickOnLocalStorage();
 
@@ -376,7 +380,7 @@ async function getTournamentData(tournamentId: string) {
 		method: "POST",
 		headers: {
 			"Content-Type": "application/json",
-			"Authorization": `Bearer ${token}`,
+			Authorization: `Bearer ${token}`,
 		},
 		credentials: "include",
 		body: JSON.stringify({ id: tournamentId }),
