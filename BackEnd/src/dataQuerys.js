@@ -209,6 +209,24 @@ function saveSecret(userId, secret)
 	return stmt.run(secret, userId);
 }
 
+function deletePlayerFromTournament(id, userId) {
+	try {
+
+		// Remove the user from the tournament
+		const stmt = db.prepare(`
+			DELETE FROM tournament_players
+			WHERE tournament_id = ? AND user_id = ?
+		`);
+		stmt.run(id, userId);
+
+		console.log(`User ${userId} removed from tournament with code ${id}.`);
+		return { success: true, message: "User removed from tournament" };
+	} catch (error) {
+		console.error("Error removing player from tournament:", error);
+		return { success: false, message: "An error occurred while removing the player" };
+	}
+}
+
 module.exports = {
 	isNicknameTaken,
 	isEmailTaken,
@@ -229,5 +247,6 @@ module.exports = {
 	hasUserJoinedTournament,
 	startTournament,
 	deleteTournament,
+	deletePlayerFromTournament,
 	saveSecret
 };

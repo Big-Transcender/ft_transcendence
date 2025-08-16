@@ -40,7 +40,15 @@ function handlePageChange(page) {
                 updateMatchHistory();
             }
             break;
-        case 'game1':
+        case 'contest':
+            let contestIntervalId = setInterval(async () => {
+                const hash = window.location.hash;
+                if (!hash.startsWith("#contest")) {
+                    await removePlayer();
+                    stopContestPolling();
+                    clearInterval(contestIntervalId);
+                }
+            }, 100);
             break;
         case 'home':
             break;
@@ -61,17 +69,26 @@ window.addEventListener("popstate", (event) => {
     }
     navigateWithoutHistory(page);
 });
-window.addEventListener("load", () => {
+window.addEventListener("load", async () => {
     const page = location.hash.replace("#", "") || "home";
     console.log(`📍 Initial page load: ${page}`);
     if (isGamePage(page))
         return;
+    if (page === "contest") {
+        await removePlayer();
+        stopContestPolling();
+    }
     history.replaceState({ page: page }, "", `#${page}`);
     navigateWithoutHistory(page);
 });
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
     const page = location.hash.replace("#", "") || "home";
     console.log(`📍 DOM loaded, navigating to: ${page}`);
+    if (page === "contest") {
+        console.log("Page is refreshing or closing, removing player...");
+        await removePlayer();
+        stopContestPolling();
+    }
     navigateWithoutHistory(page);
 });
 const buttons = document.querySelectorAll(".buttonHitBox");
