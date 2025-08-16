@@ -127,8 +127,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     // PROFILE OPTIONS
     profileOptions.addEventListener("click", () => {
         openPopup();
-        // const nickInput = (document.getElementById("popupNewNick") as HTMLInputElement).value.trim();
-        // displayWarning(nickInput);
     });
     // OPEN MATCH HISTORY
     matchesButton.addEventListener("click", () => {
@@ -174,6 +172,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     // POPUP PASSWORK BUTTOM
     popupPasswordButton.addEventListener("click", async () => {
         await betterWait(150);
+        //#TODO If is Google login, block the user to access this page
         changePopupTo(frontpagePopup, passwordpagePopup);
     });
 });
