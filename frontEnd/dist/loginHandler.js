@@ -15,6 +15,9 @@ let userIsLogged;
 // const API = "http://localhost:3000/";
 // const API = "http://10.11.3.4:3000/";
 // const API = "http://10.11.3.2:3000/"; //diogo machine
+(async () => {
+    await checkProfileMainPage();
+})();
 function errorCatcher(data, bubbleText) {
     // Empty Field
     if (data.error.search("All fields are required") != -1) {
@@ -400,22 +403,46 @@ async function checkIfLogged() {
         return true;
     }
     else {
-        const loginPage = document.getElementById("loginId");
-        const profileDivs = document.querySelectorAll(".profileId");
-        profileDivs.forEach((div) => {
-            if (div.classList.contains("active")) {
-                if (div.classList.contains("newUserPage")) {
-                    // Se for a div de novo usuário e estiver ativa, não faz nada
-                    return;
-                }
-                if (div.classList.contains("loginPage"))
-                    return;
-                // div.classList.remove("active");
-            }
-        });
+        // const loginPage = document.getElementById("loginId");
+        // const profileDivs = document.querySelectorAll(".profileId");
+        // profileDivs.forEach((div) => {
+        // 	if (div.classList.contains("active")) {
+        // 		if (div.classList.contains("loginPage")) return;
+        // 		if (div.classList.contains("newUserPage")) {
+        // 			// Se for a div de novo usuário e estiver ativa, não faz nada
+        // 			return;
+        // 		}
+        // 		// div.classList.remove("active");
+        // 	}
+        // });
         // loginPage.classList.add("active");
         // changePageTo(loginPage, loginPage);
         return false;
+    }
+}
+async function checkProfileMainPage() {
+    await new Promise((resolve) => setTimeout(resolve, 150));
+    if (await askMeApi()) {
+        return;
+    }
+    else {
+        const loginPage = document.getElementById("loginId");
+        loginPage.classList.remove("active");
+        const profileDivs = document.querySelectorAll(".profileId");
+        profileDivs.forEach((div) => {
+            if (div.classList.contains("active")) {
+                if (div.classList.contains("newUserPage"))
+                    return;
+                if (div.classList.contains("profilePage"))
+                    return;
+                if (div.classList.contains("twoFactorPage"))
+                    return;
+                // if (div.classList.contains("loginPage")) return;
+            }
+            // div.classList.remove("active");
+            // loginPage.classList.add("active");
+        });
+        loginPage.classList.add("active");
     }
 }
 function setToLogged() {
