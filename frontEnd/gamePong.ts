@@ -227,7 +227,7 @@ window.addEventListener("ShowWinner", (event: CustomEvent) => {
 	const { matchId, winner, isLocal, reason } = event.detail;
 	alert(`Game Over! The winner is ${winner}. Reason: ${reason}`);
 
-	//show the winner page
+	//TODO brendon here!!!!!!
 	console.log(matchId, winner, isLocal);
 
 	if (matchId) {
