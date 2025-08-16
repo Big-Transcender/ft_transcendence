@@ -305,11 +305,28 @@ function getTournamentPin() {
 function setNickOnLocalStorage(nickname) {
     localStorage.setItem("nickname", nickname);
 }
-function checkIfLogged() {
-    if (localStorage.getItem("isLogged") === "true") {
+async function askMeApi() {
+    try {
+        const res = await fetch(`${backendUrl}/me`, {
+            credentials: "include",
+        });
+        const text = await res.text();
+        if (res.ok) {
+            return true;
+        }
+    }
+    catch (err) {
+        console.error("Error checking Google login:", err);
+    }
+    return false;
+}
+async function checkIfLogged() {
+    if (await askMeApi()) {
         return true;
     }
     else {
+        const loginPage = document.getElementById("loginId");
+        changePageTo(loginPage, loginPage);
         return false;
     }
 }

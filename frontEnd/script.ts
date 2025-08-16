@@ -83,6 +83,7 @@ window.addEventListener("popstate", (event) => {
 });
 
 window.addEventListener("load", async () => {
+
 	const page = location.hash.replace("#", "") || "home";
 	console.log(`📍 Initial page load: ${page}`);
 	if (isGamePage(page))
@@ -98,6 +99,7 @@ window.addEventListener("load", async () => {
 });
 
 document.addEventListener("DOMContentLoaded", async () => {
+
 	const page = location.hash.replace("#", "") || "home";
 	console.log(`📍 DOM loaded, navigating to: ${page}`);
 
