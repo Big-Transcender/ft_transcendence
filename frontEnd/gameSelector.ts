@@ -65,20 +65,17 @@ document.addEventListener("DOMContentLoaded", () => {
 
 	//Singleplayer Pong
 	buttonSinglePong.addEventListener("click", async () => {
-		if (await checkIfLogged()) {
-			changePageTo(gameSelectorPongPage, pongGamePage);
-			const matchId = generateMatchId();
-			updatePageHash(`#pong/${matchId}`);
-			startPongWebSocket(matchId, true, true);
-			animateTimer();
-			setRandomBackground();
-			resetEmotions();
-			setGameScore(await getNickOnLocalStorage());
-			backGamePongButton.classList.add("active");
-			showMatchId("NONE");
-		} else {
-			displayWarning("You need to log in.");
-		}
+
+		changePageTo(gameSelectorPongPage, pongGamePage);
+		const matchId = generateMatchId();
+		updatePageHash(`#pong/${matchId}`);
+		startPongWebSocket(matchId, true, true);
+		animateTimer();
+		setRandomBackground();
+		resetEmotions();
+		setGameScore("Vilager");
+		backGamePongButton.classList.add("active");
+		showMatchId("NONE");
 	});
 
 	//Change to Multiplayer type selector
