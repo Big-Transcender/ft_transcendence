@@ -39,6 +39,7 @@ async function animateTimer() {
 
 	if (!timer) return;
 	timer.style.opacity = "1";
+	timer.style.animation = "timerAnimation 3s";
 	timerContest.style.opacity = "1";
 	timerContest.style.animation = "timerAnimation 3s";
 
