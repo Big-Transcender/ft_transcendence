@@ -100,7 +100,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 			displayWarning("Invalid pin.");
 		} else if (await checkIsValidPin(inputPin)) {
 			await betterWait(100);
-			if (await joinTournament(getNickOnLocalStorage(), inputPin)) {
+			if (await joinTournament(await getNickOnLocalStorage(), inputPin)) {
 				changePageTo(joinContestPage, joinedContestPage);
 				getInfoFromContest(inputPin);
 				startContestPolling(inputPin);
@@ -203,7 +203,7 @@ function stopContestPolling() {
 async function createNewContest() {
 	//Create Contest here
 	const tournamentName = (document.getElementById("inputContestNameId") as HTMLInputElement).value.trim();
-	const nick = getNickOnLocalStorage();
+	const nick = await getNickOnLocalStorage();
 	const token = getCookie("token");
 
 	console.log("tournamentName:", tournamentName);
@@ -358,7 +358,7 @@ async function startTournament(tournamentId: string) {
 
 	if (!data) return;
 
-	const nick = getNickOnLocalStorage();
+	const nick = await getNickOnLocalStorage();
 
 	console.log(nick);
 	console.log(data.players[0]);

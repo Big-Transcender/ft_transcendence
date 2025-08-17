@@ -42,7 +42,7 @@ async function handlePageChange(page: string) {
 			if (await !checkIfLogged()) {
 				typeText(bubbleTextLogin, "Welcome back!", 60);
 			} else {
-				getUserStats(getNickOnLocalStorage());
+				getUserStats(await getNickOnLocalStorage());
 				updateMatchHistory();
 			}
 			break;

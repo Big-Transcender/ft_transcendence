@@ -2,8 +2,8 @@ let presenceSocket: WebSocket | null = null;
 const onlineUsers = new Set<string>();
 
 // Start presence WebSocket
-function startPresenceSocket() {
-	const nickname = getNickOnLocalStorage();
+async function startPresenceSocket() {
+	const nickname = await getNickOnLocalStorage();
 	if (!nickname) return;
 
 	presenceSocket = new WebSocket(`ws://${window.location.hostname}:3000/presence`);
@@ -123,3 +123,6 @@ function setupAddFriend() {
 		setupAddFriend();
 	}
 })();
+
+
+

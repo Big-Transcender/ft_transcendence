@@ -135,7 +135,7 @@ async function loginUserVerified() {
 			setToLogged();
 			setNickOnLocalStorage(data.user.name);
 			changePageTo(loginPage, profilePage);
-			getUserStats(getNickOnLocalStorage());
+			getUserStats(await getNickOnLocalStorage());
 			return true;
 		} else {
 			errorCatcher(data, bubbleTextLogin);
@@ -246,8 +246,8 @@ document.addEventListener("DOMContentLoaded", async () => {
 	await checkGoogleLogin();
 	if (await checkIfLogged()) {
 		changePageTo(loginPage, profilePage);
-		putNickOnProfileHeader(getNickOnLocalStorage());
-		getUserStats(getNickOnLocalStorage());
+		putNickOnProfileHeader(await getNickOnLocalStorage());
+		getUserStats(await getNickOnLocalStorage());
 		// flipboardNumberAnimation("23");
 	}
 
@@ -256,7 +256,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 		if ((await loginUser()) === true) {
 			await updateFriends();
 			changePageTo(loginPage, profilePage);
-			getUserStats(getNickOnLocalStorage());
+			getUserStats(await getNickOnLocalStorage());
 			// flipboardNumberAnimation("23");
 		}
 	});
@@ -283,7 +283,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 		changePageTo(profilePage, loginPage);
 		stopSpech();
 		typeText(bubbleTextLogin, "Welcome back!", 60);
-		getUserStats(getNickOnLocalStorage());
+		getUserStats(await getNickOnLocalStorage());
 	});
 
 	// GENERATE QR CODE
@@ -395,8 +395,8 @@ async function getNickOnLocalStorageSync(): Promise<string | null> {
 		});
 		if (res.ok) {
 			const user = await res.json();
-			console.log("heres the nick ", user);
-			return user.nickname;
+			console.log("heres the nick1 ", user.sessionUser.nickname);
+			return user.sessionUser.nickname;
 		}
 	} catch (err) {
 		console.error("Error checking Google login:", err);
@@ -404,17 +404,26 @@ async function getNickOnLocalStorageSync(): Promise<string | null> {
 	return null;
 }
 
-function getNickOnLocalStorage()
+async function getNickOnLocalStorage()
 {
-	let nickname: string | null = null;
- 	getNickOnLocalStorageSync().then((res) => (nickname = res));
-	console.log("heres the nick ", nickname);
-	return localStorage.getItem("nickname");
+	try {
+		const res = await fetch(`${backendUrl}/me`, {
+			credentials: "include",
+		});
+		if (res.ok) {
+			const user = await res.json();
+			console.log("heres the nick1 ", user.sessionUser.nickname);
+			return user.sessionUser.nickname;
+		}
+	} catch (err) {
+		console.error("Error checking Google login:", err);
+	}
+	return null;
 }
 
 
 
-// function getNickOnLocalStorage(): string | null { 
+// function await getNickOnLocalStorage(): string | null { 
 // 	let nickname: string | null = null;
 // 	getNickOnLocalStorageSync().then((res) => (nickname = res));
 // 	return nickname;
@@ -462,7 +471,7 @@ function setToLogged() {
 function setToUnLogged() {
 	stopPresenceSocket();
 	// localStorage.setItem("isLogged", "false");
-	// localStorage.removeItem(getNickOnLocalStorage());
+	// localStorage.removeItem(await getNickOnLocalStorage());
 }
 
 function putNickOnProfileHeader(nick: string) {

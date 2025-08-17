@@ -8,13 +8,8 @@ interface MatchCheckResponse {
 	playerCount: number;
 }
 
-function startPongWebSocket(
-	matchId: string,
-	isLocal: boolean = false,
-	aiGame: boolean = false,
-	teamGame: boolean = false,
-	localNicks: string[] = null
-) {
+async function startPongWebSocket( matchId: string, isLocal: boolean = false, aiGame: boolean = false, teamGame: boolean = false, localNicks: string[] = null) {
+	
 	if (socket) {
 		console.log("Closing existing WebSocket connection...");
 		socket.close();
@@ -42,7 +37,7 @@ function startPongWebSocket(
 	if (localNicks && localNicks.length > 1) {
 		nickname = localNicks[0];
 		opponentNickname = localNicks[1];
-	} else nickname = getNickOnLocalStorage();
+	} else nickname = await getNickOnLocalStorage();
 
 	socket.addEventListener("open", () => {
 		console.log("✅ Connected to WebSocket server");
@@ -118,7 +113,7 @@ function startPongWebSocket(
 		paddle4.classList.remove("offPaddle");
 	}
 
-	socket.addEventListener("message", (event: MessageEvent) => {
+	socket.addEventListener("message", async (event: MessageEvent) => {
 		try {
 			const data = JSON.parse(event.data);
 
@@ -157,7 +152,7 @@ function startPongWebSocket(
 				}
 				case "assign": {
 					playerId = data.payload;
-					if (playerId === "p1" && !isLocal) setGameScore(getNickOnLocalStorage(), "Player 2");
+					if (playerId === "p1" && !isLocal) setGameScore(await getNickOnLocalStorage(), "Player 2");
 					break;
 				}
 				case "PlayerBoard": {

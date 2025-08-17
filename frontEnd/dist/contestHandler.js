@@ -89,7 +89,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
         else if (await checkIsValidPin(inputPin)) {
             await betterWait(100);
-            if (await joinTournament(getNickOnLocalStorage(), inputPin)) {
+            if (await joinTournament(await getNickOnLocalStorage(), inputPin)) {
                 changePageTo(joinContestPage, joinedContestPage);
                 getInfoFromContest(inputPin);
                 startContestPolling(inputPin);
@@ -183,7 +183,7 @@ function stopContestPolling() {
 async function createNewContest() {
     //Create Contest here
     const tournamentName = document.getElementById("inputContestNameId").value.trim();
-    const nick = getNickOnLocalStorage();
+    const nick = await getNickOnLocalStorage();
     const token = getCookie("token");
     console.log("tournamentName:", tournamentName);
     console.log("nick:", nick);
@@ -332,7 +332,7 @@ async function startTournament(tournamentId) {
     var data = await getTournamentData(tournamentId);
     if (!data)
         return;
-    const nick = getNickOnLocalStorage();
+    const nick = await getNickOnLocalStorage();
     console.log(nick);
     console.log(data.players[0]);
     if (nick === data.players[0] || nick === data.players[1]) {
