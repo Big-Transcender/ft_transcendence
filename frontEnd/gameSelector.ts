@@ -87,7 +87,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
 	//Change to Multiplayer Versus
 	buttonVersusMP.addEventListener("click", async () => {
-		openPopupPong();
+		if (await checkIfLogged())
+			openPopupPong();
+		else
+			displayWarning("Need to log in to play this");
 	});
 
 	//Change to Multiplayer Local
