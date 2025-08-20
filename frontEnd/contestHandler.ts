@@ -41,6 +41,8 @@ let isPlaying = false;
 let warningTimeout: number | null = null;
 
 async function displayWarning(text: string) {
+	const warningSound = new Audio("audios/warning3.wav");
+
 	const warningBubble = document.querySelector(".defaultWarning") as HTMLElement;
 	const warningText = document.getElementById("warningContest") as HTMLElement;
 	if (!warningBubble || !warningText) return;
@@ -57,6 +59,7 @@ async function displayWarning(text: string) {
 	warningBubble.style.opacity = "1";
 	warningBubble.style.transition = "opacity 0.5s ease";
 
+	warningSound.play();
 	warningTimeout = window.setTimeout(async () => {
 		warningBubble.style.opacity = "0";
 		await new Promise((resolve) => setTimeout(resolve, 500)); // Wait for fade-out transition

@@ -45,7 +45,7 @@ function errorCatcher(data, bubbleText) {
     }
     // Nick dont exist
     else if (data.error.search("User does not exist") != -1) {
-        typeText(bubbleText, "Uh-ohª... That nick is not in our village!", 60);
+        typeText(bubbleText, "Uh-ohª... That nick/email is not in our village!", 60);
     }
     //
     else if (data.error.search("Nickname too long") != -1) {
