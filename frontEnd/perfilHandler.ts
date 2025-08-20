@@ -11,6 +11,8 @@ const frontendUrl = `http://${window.location.hostname}:5173`;
 
 const matchesProfile = document.querySelector(".matchesProfile") as HTMLElement;
 const friendsProfile = document.querySelector(".friendsProfile") as HTMLElement;
+const matchesButton = document.getElementById("matchesButtonID");
+const friendsButton = document.getElementById("friendsButtonID");
 
 let matchOpen = false;
 let friendsOpen = false;
@@ -129,8 +131,7 @@ document.querySelectorAll(".winsBox").forEach((box) => {
 
 document.addEventListener("DOMContentLoaded", async () => {
 	const profileOptions = document.getElementById("profileOptionsButtonID");
-	const matchesButton = document.getElementById("matchesButtonID");
-	const friendsButton = document.getElementById("friendsButtonID");
+
 	const addFriendsButton = document.getElementById("addFriendId");
 	const refreshMatchesButton = document.getElementById("refreshMatchId");
 
@@ -371,6 +372,7 @@ function preVisualizePhoto() {
 
 async function matchesAnimationHandler() {
 	if (!matchOpen && !isPlayingSoundMatch) {
+		matchesButton.classList.add("open");
 		// updateLeaderboard();
 		isPlayingSoundMatch = true;
 		openSound.play();
@@ -384,6 +386,7 @@ async function matchesAnimationHandler() {
 		matchOpen = true;
 		isPlayingSoundMatch = false;
 	} else if (matchOpen && !isPlayingSoundMatch) {
+		matchesButton.classList.remove("open");
 		closeSound.play();
 		isPlayingSoundMatch = true;
 		matchesProfile.classList.remove("openMatchAnimation");
@@ -400,6 +403,7 @@ async function matchesAnimationHandler() {
 
 async function friendsAnimationHandler() {
 	if (!friendsOpen && !isPlayingSoundFriends) {
+		friendsButton.classList.add("open");
 		isPlayingSoundFriends = true;
 		openSound2.play();
 		friendsProfile.classList.remove("closeFriendsAnimation");
@@ -410,6 +414,7 @@ async function friendsAnimationHandler() {
 		friendsOpen = true;
 		isPlayingSoundFriends = false;
 	} else if (friendsOpen && !isPlayingSoundFriends) {
+		friendsButton.classList.remove("open");
 		isPlayingSoundFriends = true;
 		closeSound2.play();
 		friendsProfile.classList.add("closeFriendsAnimation");

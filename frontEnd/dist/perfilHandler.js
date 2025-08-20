@@ -9,6 +9,8 @@ const backendUrl = `http://${window.location.hostname}:3000`;
 const frontendUrl = `http://${window.location.hostname}:5173`;
 const matchesProfile = document.querySelector(".matchesProfile");
 const friendsProfile = document.querySelector(".friendsProfile");
+const matchesButton = document.getElementById("matchesButtonID");
+const friendsButton = document.getElementById("friendsButtonID");
 let matchOpen = false;
 let friendsOpen = false;
 let isPlayingSoundMatch = false;
@@ -117,8 +119,6 @@ document.querySelectorAll(".winsBox").forEach((box) => {
 });
 document.addEventListener("DOMContentLoaded", async () => {
     const profileOptions = document.getElementById("profileOptionsButtonID");
-    const matchesButton = document.getElementById("matchesButtonID");
-    const friendsButton = document.getElementById("friendsButtonID");
     const addFriendsButton = document.getElementById("addFriendId");
     const refreshMatchesButton = document.getElementById("refreshMatchId");
     const photoPopupButtom = document.getElementById("popupPhotoButtonID");
@@ -331,6 +331,7 @@ function preVisualizePhoto() {
 }
 async function matchesAnimationHandler() {
     if (!matchOpen && !isPlayingSoundMatch) {
+        matchesButton.classList.add("open");
         // updateLeaderboard();
         isPlayingSoundMatch = true;
         openSound.play();
@@ -345,6 +346,7 @@ async function matchesAnimationHandler() {
         isPlayingSoundMatch = false;
     }
     else if (matchOpen && !isPlayingSoundMatch) {
+        matchesButton.classList.remove("open");
         closeSound.play();
         isPlayingSoundMatch = true;
         matchesProfile.classList.remove("openMatchAnimation");
@@ -360,6 +362,7 @@ async function matchesAnimationHandler() {
 }
 async function friendsAnimationHandler() {
     if (!friendsOpen && !isPlayingSoundFriends) {
+        friendsButton.classList.add("open");
         isPlayingSoundFriends = true;
         openSound2.play();
         friendsProfile.classList.remove("closeFriendsAnimation");
@@ -371,6 +374,7 @@ async function friendsAnimationHandler() {
         isPlayingSoundFriends = false;
     }
     else if (friendsOpen && !isPlayingSoundFriends) {
+        friendsButton.classList.remove("open");
         isPlayingSoundFriends = true;
         closeSound2.play();
         friendsProfile.classList.add("closeFriendsAnimation");
