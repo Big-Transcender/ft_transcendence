@@ -1,3 +1,4 @@
+var _a, _b;
 const loginButton = document.querySelector(".loginUser");
 const newUserButton = document.querySelector(".newUser");
 const createUserButton = document.getElementById("loginButtonNewUser");
@@ -18,6 +19,19 @@ let userIsLogged;
 (async () => {
     await checkProfileMainPage();
 })();
+//This both is for enter press login
+(_a = document.getElementById("inputNick")) === null || _a === void 0 ? void 0 : _a.addEventListener("keydown", function (event) {
+    var _a;
+    if (event.key === "Enter") {
+        (_a = document.getElementById("loginUserButton")) === null || _a === void 0 ? void 0 : _a.click();
+    }
+});
+(_b = document.getElementById("inputPass")) === null || _b === void 0 ? void 0 : _b.addEventListener("keydown", function (event) {
+    var _a;
+    if (event.key === "Enter") {
+        (_a = document.getElementById("loginUserButton")) === null || _a === void 0 ? void 0 : _a.click();
+    }
+});
 function errorCatcher(data, bubbleText) {
     // Empty Field
     if (data.error.search("All fields are required") != -1) {

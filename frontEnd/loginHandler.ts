@@ -23,6 +23,18 @@ let userIsLogged;
 	await checkProfileMainPage();
 })();
 
+//This both is for enter press login
+document.getElementById("inputNick")?.addEventListener("keydown", function (event) {
+	if (event.key === "Enter") {
+		document.getElementById("loginUserButton")?.click();
+	}
+});
+document.getElementById("inputPass")?.addEventListener("keydown", function (event) {
+	if (event.key === "Enter") {
+		document.getElementById("loginUserButton")?.click();
+	}
+});
+
 function errorCatcher(data, bubbleText) {
 	// Empty Field
 	if (data.error.search("All fields are required") != -1) {
