@@ -6,36 +6,36 @@ async function startPresenceSocket() {
 	const nickname = await getNickOnLocalStorage();
 	if (!nickname) return;
 
-	presenceSocket = new WebSocket(`ws://${window.location.hostname}:3000/presence`);
+    const wsProtocol = window.location.protocol === "https:" ? "wss" : "ws";
+	const wsHost = window.location.host;
+	presenceSocket = new WebSocket(`${wsProtocol}://${wsHost}/presence`);
 
-	presenceSocket.onopen = () => {
-		console.log("✅ Connected to presence socket");
-		presenceSocket?.send(
-			JSON.stringify({
-				type: "register",
-				nickname: nickname,
-			})
-		);
-	};
-
-	presenceSocket.onmessage = (event) => {
-		const data = JSON.parse(event.data);
-
-		if (data.type === "user_online") {
-			onlineUsers.add(data.nickname);
-			updateFriends();
-		} else if (data.type === "user_offline") {
-			onlineUsers.delete(data.nickname);
-			updateFriends();
-		}
-	};
-
-	presenceSocket.onclose = () => {
-		console.log("❌ Presence socket disconnected");
-		setTimeout(async () => {
-			if (await checkIfLogged()) startPresenceSocket();
-		}, 3000);
-	};
+    presenceSocket.onopen = () => {
+        console.log('✅ Connected to presence socket');
+        presenceSocket?.send(JSON.stringify({
+            type: 'register',
+            nickname: nickname
+        }));
+    };
+    
+    presenceSocket.onmessage = (event) => {
+        const data = JSON.parse(event.data);
+        
+        if (data.type === 'user_online') {
+            onlineUsers.add(data.nickname);
+            updateFriends()
+        } else if (data.type === 'user_offline') {
+            onlineUsers.delete(data.nickname);
+            updateFriends()
+        }
+    };
+    
+    presenceSocket.onclose = () => {
+        console.log('❌ Presence socket disconnected');
+        setTimeout(() => {
+            if (checkIfLogged()) startPresenceSocket();
+        }, 3000);
+    };
 }
 
 function stopPresenceSocket() {
