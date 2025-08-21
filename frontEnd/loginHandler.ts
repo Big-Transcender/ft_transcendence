@@ -405,6 +405,10 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 async function getNickOnLocalStorage()
 {
+	const token = getCookie("token");
+	if (!token)
+		return ;
+
 	try {
 		const res = await fetch(`${backendUrl}/me`, {
 			credentials: "include",
@@ -483,6 +487,9 @@ function setNickOnLocalStorage(nickname: string) {
 }
 
 async function askMeApi() {
+	const token = getCookie("token");
+	if (!token)
+		return ;
 	try {
 		const res = await fetch(`${backendUrl}/me`, {
 			credentials: "include",
@@ -691,6 +698,11 @@ function getCookie(name: string) {
 }
 
 async function checkGoogleLogin() {
+	
+	const token = getCookie("token");
+	if (!token)
+		return ;
+
 	try {
 		const res = await fetch(`${backendUrl}/me`, {
 			credentials: "include",
@@ -704,7 +716,6 @@ async function checkGoogleLogin() {
 				putNickOnProfileHeader(data.user.nickname);
 				changePageTo(document.getElementById("loginId"), document.getElementById("profileId"));
 				// Set JWT from cookie to localStorage
-				const token = getCookie("token");
 				if (token) localStorage.setItem("token", token);
 			} else {
 				console.warn("No user found in response");

@@ -148,6 +148,7 @@ fastify.get("/logout", async (req, res) => {
 	req.logout();
 	req.session.delete();
 	res.clearCookie("session", { path: "/" });
+	res.clearCookie("token", { path: "/" });
 
 	return res.send({ success: true });
 });
@@ -155,14 +156,14 @@ fastify.get("/logout", async (req, res) => {
 fastify.get("/me", async (request, reply) => {
 	const token = request.cookies?.token || (request.headers.authorization && request.headers.authorization.split(" ")[1]);
 
+	if(!token)
+		return reply.status(401).send({ error: "Not logged in" });
+
     const decoded = jwt.verify(token, "your-secret-key"); //TODO: key in env
     request.userId = decoded.userId;
     const user = db.prepare("SELECT id, nickname FROM users WHERE id = ?").get(decoded.userId);
     request.session.set('user', { id: user.id, nickname: user.nickname });
     sessionUser = request.session.get('user');
-
-	if(!token)
-		return reply.status(401).send({ error: "Not logged in" });
 
 	if (sessionUser)
 		return { user: sessionUser.user, sessionUser: sessionUser };
