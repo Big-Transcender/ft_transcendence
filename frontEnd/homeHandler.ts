@@ -80,13 +80,13 @@ async function creditsPlay() {
 			&emsp;<span style="color: #FFFFFD;">Brendon Vianna</span>
 			<br>
 			<br>BackEnd Developer<br>
-			&emsp;<span style="color: #FFFFFD;">Diogo San</span>
+			&emsp;<span style="color: #FFFFFD;">Diogo Pinheiro</span>
 			<br>
 			<br>DataBase Developer<br>
 			&emsp;<span style="color: #FFFFFD;">Bruno Sousa</span>
 			<br>
 			<br>DevOps Developer<br>
-			&emsp;<span style="color: #FFFFFD;">Diogo Tintas</span>
+			&emsp;<span style="color: #FFFFFD;">Diogo Correia</span>
 			`;
 		await betterWait(1000);
 		creditsBox.classList.remove("openCredits-animation");
