@@ -98,10 +98,10 @@ document.addEventListener("DOMContentLoaded", () => {
 		changePageTo(gameSelectorPongMultiplayerPage, pongGamePage);
 		const matchId = generateMatchId();
 		updatePageHash(`#pong/${matchId}`);
-		startPongWebSocket(matchId, true, false, false, [await getNickOnLocalStorage() || "gigachad", "minichad"]); // true = local mode
+		startPongWebSocket(matchId, true, false, false, [await getNickOnLocalStorage() || "Tom Nook", "Isabele"]); // true = local mode
 		resetEmotions();
 		animateTimer();
-		setGameScore(await getNickOnLocalStorage() || "gigachad", "minichad");
+		setGameScore(await getNickOnLocalStorage() || "Tom Nook", "Isabele");
 		backGamePongButton.classList.add("active");
 		showMatchId(matchId);
 	});
