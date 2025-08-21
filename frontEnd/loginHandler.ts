@@ -19,6 +19,22 @@ let userIsLogged;
 // const API = "http://10.11.3.4:3000/";
 // const API = "http://10.11.3.2:3000/"; //diogo machine
 
+(async () => {
+	await checkProfileMainPage();
+})();
+
+//This both is for enter press login
+document.getElementById("inputNick")?.addEventListener("keydown", function (event) {
+	if (event.key === "Enter") {
+		document.getElementById("loginUserButton")?.click();
+	}
+});
+document.getElementById("inputPass")?.addEventListener("keydown", function (event) {
+	if (event.key === "Enter") {
+		document.getElementById("loginUserButton")?.click();
+	}
+});
+
 function errorCatcher(data, bubbleText) {
 	// Empty Field
 	if (data.error.search("All fields are required") != -1) {
@@ -34,7 +50,7 @@ function errorCatcher(data, bubbleText) {
 	}
 	// Nick dont exist
 	else if (data.error.search("User does not exist") != -1) {
-		typeText(bubbleText, "Uh-ohª... That nick is not in our village!", 60);
+		typeText(bubbleText, "Uh-ohª... That nick/email is not in our village!", 60);
 	}
 	//
 	else if (data.error.search("Nickname too long") != -1) {
@@ -211,19 +227,17 @@ function close2FApopup() {
 }
 
 function openVictory(quote) {
-	document.querySelector(".pongVictory").textContent = quote;
+	document.querySelector(".pongVictory").innerHTML = quote;
 	document.getElementById("popupContainerVictory").style.display = "flex";
 }
 
 function closeVictory() {
-
 	document.getElementById("popupContainerVictory").style.display = "none";
 	window.dispatchEvent(
 		new CustomEvent("next", {
 			detail: true,
 		})
 	);
-
 }
 
 clickButton(loginButton);
@@ -366,11 +380,12 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 	//NewUser Button
 	newUserButton.addEventListener("click", async () => {
-		changePageTo(loginPage, newUserPage);
-		stopSpech();
 		if (await !checkIfLogged()) {
 			typeText(bubbleTextNewUser, "Welcome, new resident!", 60);
 		}
+		changePageTo(loginPage, newUserPage);
+
+		stopSpech();
 	});
 
 	//Back Button
@@ -407,7 +422,7 @@ async function getNickOnLocalStorage()
 
 
 
-// function await getNickOnLocalStorage(): string | null { 
+// function getNickOnLocalStorage(): string | null { 
 // 	let nickname: string | null = null;
 // 	getNickOnLocalStorageSync().then((res) => (nickname = res));
 // 	return nickname;
@@ -493,9 +508,45 @@ async function checkIfLogged() {
 	if (await askMeApi()) {
 		return true;
 	} else {
-		const loginPage = document.getElementById("loginId");
-		changePageTo(loginPage, loginPage);
+		// const loginPage = document.getElementById("loginId");
+		// const profileDivs = document.querySelectorAll(".profileId");
+
+		// profileDivs.forEach((div) => {
+		// 	if (div.classList.contains("active")) {
+		// 		if (div.classList.contains("loginPage")) return;
+		// 		if (div.classList.contains("newUserPage")) {
+		// 			// Se for a div de novo usuário e estiver ativa, não faz nada
+		// 			return;
+		// 		}
+		// 		// div.classList.remove("active");
+		// 	}
+		// });
+		// loginPage.classList.add("active");
+		// changePageTo(loginPage, loginPage);
 		return false;
+	}
+}
+
+async function checkProfileMainPage() {
+	await new Promise((resolve) => setTimeout(resolve, 150));
+	if (await askMeApi()) {
+		return;
+	} else {
+		const loginPage = document.getElementById("loginId");
+		loginPage.classList.remove("active");
+		const profileDivs = document.querySelectorAll(".profileId");
+
+		profileDivs.forEach((div) => {
+			if (div.classList.contains("active")) {
+				if (div.classList.contains("newUserPage")) return;
+				if (div.classList.contains("profilePage")) return;
+				if (div.classList.contains("twoFactorPage")) return;
+				// if (div.classList.contains("loginPage")) return;
+			}
+			// div.classList.remove("active");
+			// loginPage.classList.add("active");
+		});
+		loginPage.classList.add("active");
 	}
 }
 

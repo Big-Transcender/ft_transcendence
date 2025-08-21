@@ -2,6 +2,36 @@ const page = document.getElementById("home");
 
 let currentPage = "home";
 
+const buttonSound = new Audio("audios/click.wav");
+const headerSound = new Audio("audios/click2.wav");
+const button2ButtonSound = new Audio("audios/click4.wav");
+const defaultButtonSound = new Audio("audios/click3.wav");
+
+document.querySelectorAll(".gameSelectorButton").forEach((btn) => {
+	btn.addEventListener("click", async () => {
+		buttonSound.currentTime = 0;
+		buttonSound.play();
+	});
+	btn.addEventListener("mouseenter", () => {
+		button2ButtonSound.currentTime = 0;
+		button2ButtonSound.play();
+	});
+});
+
+document.querySelectorAll(".headerSound").forEach((div) => {
+	div.addEventListener("click", () => {
+		headerSound.currentTime = 0;
+		headerSound.play();
+	});
+});
+
+document.querySelectorAll(".defaultButton").forEach((btn) => {
+	btn.addEventListener("click", () => {
+		defaultButtonSound.currentTime = 0;
+		defaultButtonSound.play();
+	});
+});
+
 function navigate(page: string) {
 	if (document.getElementById(page)?.classList.contains("active")) {
 		return;

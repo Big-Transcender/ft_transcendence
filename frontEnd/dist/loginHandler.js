@@ -1,3 +1,4 @@
+var _a, _b;
 const loginButton = document.querySelector(".loginUser");
 const newUserButton = document.querySelector(".newUser");
 const createUserButton = document.getElementById("loginButtonNewUser");
@@ -15,6 +16,22 @@ let userIsLogged;
 // const API = "http://localhost:3000/";
 // const API = "http://10.11.3.4:3000/";
 // const API = "http://10.11.3.2:3000/"; //diogo machine
+(async () => {
+    await checkProfileMainPage();
+})();
+//This both is for enter press login
+(_a = document.getElementById("inputNick")) === null || _a === void 0 ? void 0 : _a.addEventListener("keydown", function (event) {
+    var _a;
+    if (event.key === "Enter") {
+        (_a = document.getElementById("loginUserButton")) === null || _a === void 0 ? void 0 : _a.click();
+    }
+});
+(_b = document.getElementById("inputPass")) === null || _b === void 0 ? void 0 : _b.addEventListener("keydown", function (event) {
+    var _a;
+    if (event.key === "Enter") {
+        (_a = document.getElementById("loginUserButton")) === null || _a === void 0 ? void 0 : _a.click();
+    }
+});
 function errorCatcher(data, bubbleText) {
     // Empty Field
     if (data.error.search("All fields are required") != -1) {
@@ -28,7 +45,7 @@ function errorCatcher(data, bubbleText) {
     }
     // Nick dont exist
     else if (data.error.search("User does not exist") != -1) {
-        typeText(bubbleText, "Uh-ohª... That nick is not in our village!", 60);
+        typeText(bubbleText, "Uh-ohª... That nick/email is not in our village!", 60);
     }
     //
     else if (data.error.search("Nickname too long") != -1) {
@@ -193,7 +210,7 @@ function close2FApopup() {
     document.getElementById("popupContainer2FA").style.display = "none";
 }
 function openVictory(quote) {
-    document.querySelector(".pongVictory").textContent = quote;
+    document.querySelector(".pongVictory").innerHTML = quote;
     document.getElementById("popupContainerVictory").style.display = "flex";
 }
 function closeVictory() {
@@ -328,11 +345,11 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
     //NewUser Button
     newUserButton.addEventListener("click", async () => {
-        changePageTo(loginPage, newUserPage);
-        stopSpech();
         if (await !checkIfLogged()) {
             typeText(bubbleTextNewUser, "Welcome, new resident!", 60);
         }
+        changePageTo(loginPage, newUserPage);
+        stopSpech();
     });
     //Back Button
     backButton.addEventListener("click", async () => {
@@ -445,9 +462,46 @@ async function checkIfLogged() {
         return true;
     }
     else {
-        const loginPage = document.getElementById("loginId");
-        changePageTo(loginPage, loginPage);
+        // const loginPage = document.getElementById("loginId");
+        // const profileDivs = document.querySelectorAll(".profileId");
+        // profileDivs.forEach((div) => {
+        // 	if (div.classList.contains("active")) {
+        // 		if (div.classList.contains("loginPage")) return;
+        // 		if (div.classList.contains("newUserPage")) {
+        // 			// Se for a div de novo usuário e estiver ativa, não faz nada
+        // 			return;
+        // 		}
+        // 		// div.classList.remove("active");
+        // 	}
+        // });
+        // loginPage.classList.add("active");
+        // changePageTo(loginPage, loginPage);
         return false;
+    }
+}
+async function checkProfileMainPage() {
+    await new Promise((resolve) => setTimeout(resolve, 150));
+    if (await askMeApi()) {
+        return;
+    }
+    else {
+        const loginPage = document.getElementById("loginId");
+        loginPage.classList.remove("active");
+        const profileDivs = document.querySelectorAll(".profileId");
+        profileDivs.forEach((div) => {
+            if (div.classList.contains("active")) {
+                if (div.classList.contains("newUserPage"))
+                    return;
+                if (div.classList.contains("profilePage"))
+                    return;
+                if (div.classList.contains("twoFactorPage"))
+                    return;
+                // if (div.classList.contains("loginPage")) return;
+            }
+            // div.classList.remove("active");
+            // loginPage.classList.add("active");
+        });
+        loginPage.classList.add("active");
     }
 }
 function setToLogged() {

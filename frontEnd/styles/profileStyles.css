@@ -201,6 +201,10 @@
 	transform: scale(1.5);
 }
 
+.contestNewCreateButton:hover .defaultButtonText {
+	transform: scale(1.4) !important;
+}
+
 .defaultButtonBG {
 	position: absolute;
 	width: 100%;
@@ -327,6 +331,16 @@
 	/* gap: 6px; */
 }
 
+.matchesButton.open svg {
+	transform: rotate(180deg);
+	transition: transform 0.3s;
+}
+
+.matchesButton.open:hover svg {
+	transform: rotate(180deg) scale(1.5);
+	transition: transform 0.3s;
+}
+
 .matchesButton .defaultButtonBGWave {
 	top: 120px;
 }
@@ -346,6 +360,16 @@
 	display: flex;
 	align-items: center;
 	justify-content: center;
+}
+
+.friendsButton.open svg {
+	transform: rotate(180deg);
+	transition: transform 0.3s;
+}
+
+.friendsButton.open:hover svg {
+	transform: rotate(180deg) scale(1.5);
+	transition: transform 0.3s;
 }
 
 .friendsButton .defaultButtonBGWave {
@@ -704,6 +728,8 @@
 
 .pongVictory {
 	font-size: 23px;
+	top: 35%;
+	translate: 0% -50%;
 }
 
 .profilePopup {
@@ -881,7 +907,54 @@
 	height: 50px;
 }
 
-/* THIS NEED TO BE REMOVED */
-/* .popupContainer2FA {
-	display: flex;
-} */
+@keyframes windEffect {
+	0% {
+		transform: translateX(0) rotate(0deg) scale(1);
+		box-shadow: none;
+	}
+	20% {
+		transform: translateX(10px) rotate(-2deg) scale(1);
+		box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+	}
+	40% {
+		transform: translateX(-10px) rotate(2deg) scale(1);
+		box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+	}
+	60% {
+		transform: translateX(8px) rotate(-1deg) scale(1);
+		box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+	}
+	80% {
+		transform: translateX(-8px) rotate(1deg) scale(1);
+		box-shadow: 0 1px 5px rgba(0, 0, 0, 0.05);
+	}
+	100% {
+		transform: translateX(0) rotate(0deg) scale(1);
+		box-shadow: none;
+	}
+}
+
+.winsBox.wind-animate {
+	animation: windEffect 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.refreshFriendListButton {
+	width: 30px;
+	height: 30px;
+	left: 80%;
+	top: 1%;
+	position: absolute;
+	/* background-color: rebeccapurple; */
+	cursor: pointer;
+}
+
+.refreshIcon {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	background-image: url(/images/icons/refresh.png);
+	background-size: contain;
+	/* background-color: red; */
+	top: 50%;
+	translate: 0 -50%;
+}

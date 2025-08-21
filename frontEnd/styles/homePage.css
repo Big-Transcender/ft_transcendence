@@ -715,8 +715,7 @@ td {
 	position: absolute;
 	z-index: -1;
 	height: 250px;
-	/* z-index: 99; */
 
 	bottom: 1vw;
-	right: 0vw;
+	right: 1vw;
 }

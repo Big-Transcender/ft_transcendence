@@ -3,11 +3,16 @@ let losesNumber = document.getElementById("boxLosesNumber");
 let gamesNumber = document.getElementById("boxGamesNumber");
 let positionNumber = document.getElementById("positionId");
 let winRateText = document.getElementById("winRateTextId");
+const gustSound = new Audio("/audios/gust.wav");
+const flipSound = new Audio("/audios/flip.wav");
+
 const backendUrl = `http://${window.location.hostname}:3000`;
 const frontendUrl = `http://${window.location.hostname}:5173`;
 
 const matchesProfile = document.querySelector(".matchesProfile") as HTMLElement;
 const friendsProfile = document.querySelector(".friendsProfile") as HTMLElement;
+const matchesButton = document.getElementById("matchesButtonID");
+const friendsButton = document.getElementById("friendsButtonID");
 
 let matchOpen = false;
 let friendsOpen = false;
@@ -20,13 +25,12 @@ let isPlayingSoundFriends = false;
 })();
 preVisualizePhoto();
 
-async function flipboardNumberAnimation(target: string, targetBox) {
+async function flipboardNumberAnimation(target: string, targetBox): Promise<boolean> {
 	targetBox.textContent = "";
 
 	let flips = 50;
 	let delay = 100;
 
-	// Inicializa todos os dígitos como "0"
 	const spans: HTMLSpanElement[] = [];
 	for (let i = 0; i < target.length; i++) {
 		const span = document.createElement("span");
@@ -35,30 +39,20 @@ async function flipboardNumberAnimation(target: string, targetBox) {
 		spans.push(span);
 	}
 
-	// Array para controlar se o dígito já acertou
 	const locked: boolean[] = new Array(target.length).fill(false);
 
-	for (let f = 0; f < flips; f++) {
-		let allLocked = true;
-		for (let i = 0; i < target.length; i++) {
-			if (!locked[i]) {
-				const randomDigit = Math.floor(Math.random() * 10).toString();
-				spans[i].textContent = randomDigit;
-				if (randomDigit === target[i]) {
-					locked[i] = true;
-				} else {
-					allLocked = false;
-				}
-			}
+	const startTime = Date.now();
+	while (Date.now() - startTime < 2000) {
+		for (let i = 0; i < spans.length; i++) {
+			spans[i].textContent = Math.floor(Math.random() * 10).toString();
 		}
-		if (allLocked) break;
 		await new Promise((res) => setTimeout(res, delay));
 	}
 
-	// Garante que todos os dígitos finais estão corretos
 	for (let i = 0; i < target.length; i++) {
 		spans[i].textContent = target[i];
 	}
+	return true;
 }
 
 async function getUserPosition(): Promise<string> {
@@ -111,6 +105,12 @@ async function getUserStats(nickname: string) {
 				flipboardNumberAnimation(stats.defeats.toString(), losesNumber);
 				flipboardNumberAnimation(stats.games_played.toString(), gamesNumber);
 				flipboardNumberAnimation(positionStr, positionNumber);
+				flipSound.currentTime = 0;
+				flipSound.play();
+				setTimeout(() => {
+					flipSound.pause();
+					flipSound.currentTime = 0;
+				}, 2000);
 				await setProfileAvatar();
 				winRateText.textContent = "Current Winrate: " + stats.win_percentage;
 			})
@@ -120,10 +120,21 @@ async function getUserStats(nickname: string) {
 	}
 }
 
+document.querySelectorAll(".winsBox").forEach((box) => {
+	box.addEventListener("mouseenter", () => {
+		box.classList.add("wind-animate");
+		gustSound.pause();
+		gustSound.currentTime = 0;
+		gustSound.play();
+	});
+	box.addEventListener("animationend", () => {
+		box.classList.remove("wind-animate");
+	});
+});
+
 document.addEventListener("DOMContentLoaded", async () => {
 	const profileOptions = document.getElementById("profileOptionsButtonID");
-	const matchesButton = document.getElementById("matchesButtonID");
-	const friendsButton = document.getElementById("friendsButtonID");
+
 	const addFriendsButton = document.getElementById("addFriendId");
 	const refreshMatchesButton = document.getElementById("refreshMatchId");
 
@@ -151,7 +162,9 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 	// OPEN FRIEND LIST
 	friendsButton.addEventListener("click", async () => {
-		await updateFriends();
+		if (!friendsOpen) {
+			await updateFriends();
+		}
 		friendsAnimationHandler();
 	});
 
@@ -167,7 +180,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 	// REFRESH MATCHES LIST BUTTOM
 	refreshMatchesButton.addEventListener("click", async () => {
-		displayWarning("THIS REFRESH THE LIST");
+		updateMatchHistory();
 	});
 
 	// POPUP PHOTO BUTTOM
@@ -362,6 +375,7 @@ function preVisualizePhoto() {
 
 async function matchesAnimationHandler() {
 	if (!matchOpen && !isPlayingSoundMatch) {
+		matchesButton.classList.add("open");
 		// updateLeaderboard();
 		isPlayingSoundMatch = true;
 		openSound.play();
@@ -375,6 +389,7 @@ async function matchesAnimationHandler() {
 		matchOpen = true;
 		isPlayingSoundMatch = false;
 	} else if (matchOpen && !isPlayingSoundMatch) {
+		matchesButton.classList.remove("open");
 		closeSound.play();
 		isPlayingSoundMatch = true;
 		matchesProfile.classList.remove("openMatchAnimation");
@@ -391,6 +406,7 @@ async function matchesAnimationHandler() {
 
 async function friendsAnimationHandler() {
 	if (!friendsOpen && !isPlayingSoundFriends) {
+		friendsButton.classList.add("open");
 		isPlayingSoundFriends = true;
 		openSound2.play();
 		friendsProfile.classList.remove("closeFriendsAnimation");
@@ -401,6 +417,7 @@ async function friendsAnimationHandler() {
 		friendsOpen = true;
 		isPlayingSoundFriends = false;
 	} else if (friendsOpen && !isPlayingSoundFriends) {
+		friendsButton.classList.remove("open");
 		isPlayingSoundFriends = true;
 		closeSound2.play();
 		friendsProfile.classList.add("closeFriendsAnimation");

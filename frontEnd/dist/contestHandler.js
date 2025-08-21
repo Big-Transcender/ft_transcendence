@@ -34,6 +34,7 @@ async function genericBackFunctionContest() {
 let isPlaying = false;
 let warningTimeout = null;
 async function displayWarning(text) {
+    const warningSound = new Audio("audios/warning3.wav");
     const warningBubble = document.querySelector(".defaultWarning");
     const warningText = document.getElementById("warningContest");
     if (!warningBubble || !warningText)
@@ -48,6 +49,7 @@ async function displayWarning(text) {
     warningBubble.style.display = "block";
     warningBubble.style.opacity = "1";
     warningBubble.style.transition = "opacity 0.5s ease";
+    warningSound.play();
     warningTimeout = window.setTimeout(async () => {
         warningBubble.style.opacity = "0";
         await new Promise((resolve) => setTimeout(resolve, 500)); // Wait for fade-out transition
@@ -150,6 +152,10 @@ function prepareContestLocal() {
         document.getElementById("popupContestNick3").value.trim(),
         document.getElementById("popupContestNick4").value.trim(),
     ];
+    if (nicks.some((nick) => !nick)) {
+        displayWarning("All player nicknames must be filled.");
+        return;
+    }
     startLocalTournament(pin, nicks);
     closePopup();
 }
