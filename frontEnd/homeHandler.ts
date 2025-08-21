@@ -28,19 +28,19 @@ genericIcon.forEach((button) => {
 	button.addEventListener("mouseenter", () => {
 		if (button.classList.contains("pongIcon")) {
 			phonetitle.textContent = "Pong Game";
-			selectIconSound.play();
+			new Audio("audios/selectIcon.wav").play();
 		} else if (button.classList.contains("contestIcon")) {
 			phonetitle.textContent = "Contest Page";
-			selectIconSound.play();
+			new Audio("audios/selectIcon.wav").play();
 		} else if (button.classList.contains("profileIcon")) {
 			phonetitle.textContent = "Profile Page";
-			selectIconSound.play();
+			new Audio("audios/selectIcon.wav").play();
 		} else if (button.classList.contains("rankIcon")) {
 			phonetitle.textContent = "Players Rank";
-			selectIconSound.play();
+			new Audio("audios/selectIcon.wav").play();
 		} else if (button.classList.contains("creditsIcon")) {
 			phonetitle.textContent = "Credits!";
-			selectIconSound.play();
+			new Audio("audios/selectIcon.wav").play();
 		}
 	});
 
