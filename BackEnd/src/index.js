@@ -153,18 +153,22 @@ fastify.get("/logout", async (req, res) => {
 });
 
 fastify.get("/me", async (request, reply) => {
-	const sessionUser = request.session.get("user");
-	console.log("Session User:", sessionUser);
 	const token = request.cookies?.token || (request.headers.authorization && request.headers.authorization.split(" ")[1]);
-	console.log("Token:", token);
-	if(!token) {
+
+    const decoded = jwt.verify(token, "your-secret-key"); //TODO: key in env
+    request.userId = decoded.userId;
+    const user = db.prepare("SELECT id, nickname FROM users WHERE id = ?").get(decoded.userId);
+    request.session.set('user', { id: user.id, nickname: user.nickname });
+    sessionUser = request.session.get('user');
+
+	if(!token)
 		return reply.status(401).send({ error: "Not logged in" });
-	}
-	if (sessionUser) {
+
+	if (sessionUser)
 		return { user: sessionUser.user, sessionUser: sessionUser };
-	} else {
+	else
 		return reply.status(401).send({ error: "Not logged in" });
-	}
+
 });
 
 async function registerRoutes() {
