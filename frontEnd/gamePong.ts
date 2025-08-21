@@ -46,6 +46,8 @@ function startPongWebSocket( matchId: string, isLocal: boolean = false, aiGame: 
 		opponentNickname = localNicks[1];
 	} else nickname = localNick;
 
+
+
 	socket.addEventListener("open", () => {
 		console.log("✅ Connected to WebSocket server");
 		socket.send(

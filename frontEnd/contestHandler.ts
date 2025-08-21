@@ -15,6 +15,7 @@ const pongContestPage = document.getElementById("pongContestId");
 const pinBox = document.querySelector(".contestPinBox");
 var pin = null;
 var numberOfPlayers = 0;
+var startedContest = false;
 
 var LocalTournaments = new Map();
 
@@ -136,9 +137,10 @@ document.addEventListener("DOMContentLoaded", async () => {
 	// START THE CONTEST
 	startContestButton.addEventListener("click", async () => {
 		const id = pin;
-		const players = ["diogosan", "Bde", "cacarval", "bousa"];
 		//startLocalTournament(id, players);
-		if (numberOfPlayers === 4) {
+		console.log(numberOfPlayers, startedContest);
+		if (numberOfPlayers === 4 && !startedContest) {
+			startedContest = true;
 			stopContestPolling();
 			startTournament(id);
 		} else displayWarning("Wait for all players!");
@@ -274,7 +276,7 @@ async function getInfoFromContest(pin: string) {
 			}
 		});
 
-		numberOfPlayers = players.length;
+		numberOfPlayers = players.filter((player) => player !== null).length;
 		for (let i = 0; i < players.length; i++) {
 			if (players[i]?.nickname) {
 				const playerName = playerPlaces[i].querySelector(".playerContestPlaceName");

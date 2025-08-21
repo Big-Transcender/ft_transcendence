@@ -67,6 +67,7 @@ function navigateWithoutHistory(page: string) {
 
 async function handlePageChange(page: string) {
 	// Add any page-specific initialization here
+	startedContest = false;
 	switch (page) {
 		case "profile":
 			if (await !checkIfLogged()) {
