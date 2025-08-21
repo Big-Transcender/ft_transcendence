@@ -226,11 +226,11 @@ async function createNewContest() {
 			displayWarning(data.error);
 			return null;
 		} else {
+			await saveTournamentPin(data.tournamentId);
+			pin = data.tournamentId;
 			changePageTo(createContestPage, joinedContestPage);
 			// getInfoFromContest(data.code);
 			startContestPolling(data.code);
-			pin = data.tournamentId;
-			localStorage.setItem("pin", pin);
 		}
 
 		return data;
@@ -304,9 +304,9 @@ async function joinTournament(nick: string, code: string) {
 		});
 		const data = await response.json();
 		if (response.ok) {
-			console.log("Joined tournament:", data);
+			await saveTournamentPin(data.tournamentId);
 			pin = data.tournamentId;
-			localStorage.setItem("pin", pin);
+			console.log("Joined tournament:", data);
 			return true;
 			// handle success (e.g., update UI)
 		} else {
@@ -420,10 +420,12 @@ async function getTournamentData(tournamentId: string) {
 }
 
 async function removePlayer() {
-	pin = getTournamentPin();
-	if (!pin) return;
+	
+	pin = await getTournamentPin();
+	if (!pin)
+		return ;
 
-	const token = localStorage.getItem("token");
+	const token = getCookie("token");
 	await fetch(`${backendUrl}/delete-player-tournament`, {
 		method: "POST",
 		headers: {

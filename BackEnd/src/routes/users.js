@@ -30,6 +30,7 @@ module.exports = async function (fastify) {
 
 		try {
 			await db.prepare("UPDATE users SET nickname = ? WHERE id = ?").run(newNickname, userId);
+			//TODO fix the nickName change here
 			return reply.send({ success: true });
 		} catch (err) {
 			return reply.code(500).send({ error: "Database error" });

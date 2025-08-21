@@ -115,6 +115,31 @@ module.exports = async function (fastify) {
 	});
 
 
+	fastify.post("/save-tournament-pin", { preHandler: fastify.authenticate }, async (request, reply) => {
+		const { tournamentPin } = request.body;
+	
+		if (!tournamentPin) {
+			return reply.status(400).send({ error: "Tournament pin is required" });
+		}
+	
+		// Save the tournamentPin in the session
+		request.session.set("tournamentPin", tournamentPin);
+	
+		reply.send({ success: true, message: "Tournament pin saved in session" });
+	});
+
+	fastify.get("/get-tournament-pin", { preHandler: fastify.authenticate }, async (request, reply) => {
+		const tournamentPin = request.session.get("tournamentPin");
+	
+		if (!tournamentPin) {
+			return reply.send({ tournamentPin: null });
+		}
+	
+		reply.send({ tournamentPin });
+	});
+
+
+
 }
 
 function getTournamentIdByMatchId(matchId) {
