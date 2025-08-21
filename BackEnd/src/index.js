@@ -111,9 +111,9 @@ fastify.get(
 		// Set JWT in cookie (not httpOnly so frontend can read it)
 		res.setCookie("token", token, {
 			path: "/",
-			httpOnly: false,
-			secure: false, // set to true if using https
-			sameSite: "lax",
+			//httpOnly: false,
+			secure: true, // set to true if using https
+			sameSite: "strict",
 			maxAge: 7 * 24 * 60 * 60 // 7 days
 		});
 		console.log(req.hostname);
