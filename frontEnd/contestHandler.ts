@@ -169,7 +169,18 @@ function prepareContestLocal() {
 	];
 
 	if (nicks.some((nick) => !nick)) {
-		displayWarning("All player nicknames must be filled.");
+		displayWarning("All player nicks must be filled");
+		return;
+	}
+
+	if (nicks.some((nick) => nick.length >= 8)) {
+		displayWarning("Nick too long (8)");
+		return;
+	}
+
+	const uniqueNicks = new Set(nicks);
+	if (uniqueNicks.size !== nicks.length) {
+		displayWarning("Player nicks must be unique");
 		return;
 	}
 
