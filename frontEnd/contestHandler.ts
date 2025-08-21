@@ -114,8 +114,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 	// CREATE NEW CONTEST BUTTON
 	createNewContestButton.addEventListener("click", async () => {
-		
-		var isLoged = await !checkIfLogged()
+		var isLoged = await !checkIfLogged();
 		if (!isLoged) {
 			displayWarning("You need to log in.");
 		} else {
@@ -126,11 +125,10 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 	// CREATE NEW CONTEST LOCAL BUTTON
 	createNewContestLocalButton.addEventListener("click", async () => {
-
-			await betterWait(100);
-			// createNewContest();
-			openPopupContestLocal();
-			// changePopupTo()
+		await betterWait(100);
+		// createNewContest();
+		openPopupContestLocal();
+		// changePopupTo()
 	});
 
 	// START THE CONTEST
@@ -360,6 +358,7 @@ function resetContestPage() {
 
 	contestPageAll.forEach((el) => el.classList.remove("active"));
 	contestSelectorPage.classList.add("active");
+	changePageTo(pongContestPage, contestSelectorPage);
 }
 
 async function startTournament(tournamentId: string) {
@@ -429,10 +428,8 @@ async function getTournamentData(tournamentId: string) {
 }
 
 async function removePlayer() {
-	
 	pin = await getTournamentPin();
-	if (!pin)
-		return ;
+	if (!pin) return;
 
 	const token = getCookie("token");
 	await fetch(`${backendUrl}/delete-player-tournament`, {
