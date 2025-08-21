@@ -1,26 +1,153 @@
 const page = document.getElementById("home");
 
-function navigate(page) {
-	if (document.getElementById(page).classList.contains("active")) {
-		return;
-	}
-	document.querySelectorAll(".page").forEach((p) => p.classList.remove("active"));
-	document.getElementById(page).classList.add("active");
-	history.pushState(null, "", `#${page}`);
-	// getWins();
-	// updateLoses();
-	// updatePlays();
-	// updateWins();
-}
+let currentPage = "home";
 
-window.addEventListener("popstate", () => {
-	const page = location.hash.replace("#", "") || "home";
-	navigate(page);
+const buttonSound = new Audio("audios/click.wav");
+const headerSound = new Audio("audios/click2.wav");
+const button2ButtonSound = new Audio("audios/click4.wav");
+const defaultButtonSound = new Audio("audios/click3.wav");
+
+document.querySelectorAll(".gameSelectorButton").forEach((btn) => {
+	btn.addEventListener("click", async () => {
+		buttonSound.currentTime = 0;
+		buttonSound.play();
+	});
+	btn.addEventListener("mouseenter", () => {
+		button2ButtonSound.currentTime = 0;
+		button2ButtonSound.play();
+	});
 });
 
-window.addEventListener("load", () => {
+document.querySelectorAll(".headerSound").forEach((div) => {
+	div.addEventListener("click", () => {
+		headerSound.currentTime = 0;
+		headerSound.play();
+	});
+});
+
+document.querySelectorAll(".defaultButton").forEach((btn) => {
+	btn.addEventListener("click", () => {
+		defaultButtonSound.currentTime = 0;
+		defaultButtonSound.play();
+	});
+});
+
+function navigate(page: string) {
+	if (document.getElementById(page)?.classList.contains("active")) {
+		return;
+	}
+
+	document.querySelectorAll(".page").forEach((p) => p.classList.remove("active"));
+	stopSpech();
+
+	const targetPage = document.getElementById(page);
+	if (targetPage) {
+		targetPage.classList.add("active");
+		currentPage = page;
+
+		history.pushState({ page: page }, "", `#${page}`);
+
+		handlePageChange(page);
+	}
+}
+
+function navigateWithoutHistory(page: string) {
+	if (document.getElementById(page)?.classList.contains("active")) {
+		return;
+	}
+
+	document.querySelectorAll(".page").forEach((p) => p.classList.remove("active"));
+	const targetPage = document.getElementById(page);
+	if (targetPage) {
+		targetPage.classList.add("active");
+		currentPage = page;
+		handlePageChange(page);
+	}
+}
+
+async function handlePageChange(page: string) {
+	// Add any page-specific initialization here
+	startedContest = false;
+	console.log(page);
+	switch (page) {
+		case "profile":
+			if (await !checkIfLogged()) {
+				typeText(bubbleTextLogin, "Welcome back!", 60);
+			} else {
+				getUserStats(await getNickOnLocalStorage());
+				updateMatchHistory();
+			}
+			break;
+		case "contest":
+			changePageTo(contestMainPage, contestMainPage);
+			let contestIntervalId = setInterval(async () => {
+				const hash = window.location.hash;
+
+				if (!hash.startsWith("#contest")) {
+					await removePlayer();
+					stopContestPolling();
+					clearInterval(contestIntervalId!);
+				}
+			}, 100);
+
+			break;
+		case "pong":
+			changePageTo(gameSelectorPongPage, gameSelectorPongPage);
+			break;
+		case "pong/multiplayerMenu":
+			changePageTo(gameSelectorPongPage, gameSelectorPongPage);
+			break;
+	}
+}
+
+window.addEventListener("popstate", (event) => {
+	const page = event.state?.page || location.hash.replace("#", "") || "home";
+	console.log(`📍 Navigating to: ${page} (via browser navigation)`);
+
+	// ✅ Check if last 4 characters are all numbers
+	const last4Chars = page.slice(-4);
+	const isAllNumbers = /^\d{4}$/.test(last4Chars);
+
+	if (isAllNumbers) {
+		console.log(`🚫 Blocked page "${page}" (ends with numbers: ${last4Chars}), redirecting to home`);
+		history.replaceState({ page: "home" }, "", "#home");
+		navigateWithoutHistory("home");
+		return;
+	}
+
+	navigateWithoutHistory(page);
+});
+
+window.addEventListener("load", async () => {
+	var page = location.hash.replace("#", "") || "home";
+	console.log(`📍 Initial page load: ${page}`);
+	if (isGamePage(page))
+		return;
+	if (page === "contest") {
+		await removePlayer();
+		stopContestPolling();
+	}
+	if( page === "pong/multiplayerMenu")
+	{
+		page =  "game1";
+		console.log(page);
+	}
+
+
+	history.replaceState({ page: page }, "", `#${page}`);
+	navigateWithoutHistory(page);
+});
+
+document.addEventListener("DOMContentLoaded", async () => {
 	const page = location.hash.replace("#", "") || "home";
-	navigate(page);
+	console.log(`📍 DOM loaded, navigating to: ${page}`);
+
+	if (page === "contest") {
+		console.log("Page is refreshing or closing, removing player...");
+		await removePlayer();
+		stopContestPolling();
+	}
+	navigateWithoutHistory(page);
 });
 
 const buttons = document.querySelectorAll(".buttonHitBox");
@@ -69,105 +196,15 @@ musicMenu.addEventListener("mouseleave", () => {
 	}
 });
 
-// console.log(bgMusic.title);
+function isGamePage(page) {
+	const last4Chars = page.slice(-4);
+	const isAllNumbers = /^\d{4}$/.test(last4Chars);
 
-// botao.addEventListener('mouseenter', () => {
-// 	jaPassou = true;
-// });
-
-// botao.addEventListener('mouseleave', () => {
-// 	if (jaPassou) {
-// 		div.classList.add('animar');
-// 		console.log("entrou");
-
-// 		// Se quiser remover depois de um tempo:
-// 		// setTimeout(() => {
-// 		//   div.classList.remove('animar');
-// 		// }, 1000);
-// 	}
-// });
-
-
-// --- WebSocket Setup
-const socket = new WebSocket(`ws://${window.location.hostname}:3000`);
-
-socket.addEventListener("open", () => {
-	console.log("✅ Connected to WebSocket server");
-	socket.send(JSON.stringify({ type: "hello", payload: "Client Ready" }));
-});
-
-socket.addEventListener("close", () => {
-	console.log("❌ WebSocket connection closed");
-});
-
-socket.addEventListener("error", (event: Event) => {
-	console.error("WebSocket error:", event);
-});
-
-// --- Game Elements
-let playerId: 'p1' | 'p2' = 'p1';
-const paddle1 = document.querySelector(".paddle1") as HTMLElement;
-const paddle2 = document.querySelector(".paddle2") as HTMLElement;
-const ball = document.querySelector(".ball") as HTMLElement;
-
-
-// --- Input State
-const keysPressed = new Set<string>();
-
-document.addEventListener("keydown", (event: KeyboardEvent) => {
-	const key = event.key;
-	if (["ArrowUp", "ArrowDown", "w", "s"].includes(key)) {
-		keysPressed.add(key);
+	if (isAllNumbers) {
+		console.log(`🚫 Blocked page "${page}" (ends with numbers: ${last4Chars}), redirecting to home`);
+		history.replaceState({ page: "home" }, "", "#home");
+		navigateWithoutHistory("home");
+		return true;
 	}
-});
-
-document.addEventListener("keyup", (event: KeyboardEvent) => {
-	const key = event.key;
-	if (["ArrowUp", "ArrowDown", "w", "s"].includes(key)) {
-		keysPressed.delete(key);
-	}
-});
-
-
-// ---- Send Input to Server
-setInterval(() => {
-	if (keysPressed.size > 0) {
-		socket.send(
-			JSON.stringify({
-				type: "input",
-				playerId, // send the current player's ID
-				payload: Array.from(keysPressed),
-			})
-		);
-	}
-}, 15);
-
-
-// ---- Receive Server Messages
-socket.addEventListener("message", (event: MessageEvent) => {
-	try {
-		const data = JSON.parse(event.data);
-
-		switch (data.type) {
-			case "state": {
-				const state = data.payload;
-
-				if (paddle1) paddle1.style.top = `${state.paddles.p1}%`;
-				if (paddle2) paddle2.style.top = `${state.paddles.p2}%`;
-				if (ball) {
-					ball.style.left = `${state.ball.x}%`;
-					ball.style.top = `${state.ball.y}%`;
-				}
-				break;
-			}
-
-			case "assign": {
-				playerId = data.payload;
-				console.log(`👤 You are assigned as ${playerId}`);
-				break;
-			}
-		}
-	} catch (err) {
-		console.error("❗ Invalid JSON from server:", event.data);
-	}
-});
+	return false;
+}

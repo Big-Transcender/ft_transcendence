@@ -1,7 +1,6 @@
 .musicPlayerBg {
 	position: absolute;
-	/* z-index: -1; */
-	width: 40vh;
+	width: 400px;
 	height: 70px;
 	left: 50%;
 	top: 50%;
@@ -14,8 +13,6 @@
 	background-repeat: no-repeat;
 	overflow: hidden;
 	background-size: cover;
-	/* background-color: red; */
-	/* opacity: 20%; */
 }
 
 .musicPlayerHitBox {
@@ -27,26 +24,20 @@
 	translate: -50%;
 	bottom: -10px;
 	border-radius: 20px;
-	z-index: 1;
-	/* opacity: 20%;
-	background-color: rebeccapurple; */
+	/* z-index: 1; */
 }
 
 .musicPlayerBg:hover {
+	/* position: absolute; */
+
 	height: 285px;
 }
-
-/* .musicPlayerHitBox:hover {
-	height: 290px;
-} */
 
 .musicPlayerTextBox {
 	opacity: 0%;
 	position: relative;
-	/* display: flex; */
 	text-align: center;
 	top: 30px;
-	/* z-index: 1; */
 	transition: 150ms ease-in-out;
 	pointer-events: none;
 }
@@ -54,8 +45,6 @@
 .musicPlayerTextBox p {
 	position: relative;
 	pointer-events: none;
-	/* color: red; */
-	/* z-index: 2; */
 }
 
 .playButtons {
@@ -63,9 +52,7 @@
 	display: flex;
 	justify-content: center;
 	align-items: center;
-
 	left: 50%;
-	/* bottom: 100px; */
 	bottom: 0;
 	translate: -50%;
 	gap: 15px;
@@ -87,9 +74,7 @@
 }
 
 .musicButtons:hover .musicButtonBG {
-	/* background-color: red; */
 	animation: musicButtonHoverAnimation 0.3s forwards;
-	/* transform: scale(2, 2); */
 }
 
 .playIcon {
@@ -99,9 +84,7 @@
 	top: 50%;
 	translate: -50% -50%;
 	transition: 10ms ease-in-out;
-	filter: invert(26%) sepia(13%) saturate(808%) hue-rotate(337deg)
-		brightness(94%) contrast(96%);
-	/* #524036 */
+	filter: invert(26%) sepia(13%) saturate(808%) hue-rotate(337deg) brightness(94%) contrast(96%);
 }
 
 .musicButtons:hover .playIcon {
@@ -116,8 +99,7 @@
 	top: 50%;
 	translate: -50% -50%;
 	transition: 10ms ease-in-out;
-	filter: invert(26%) sepia(13%) saturate(808%) hue-rotate(337deg)
-		brightness(94%) contrast(96%);
+	filter: invert(26%) sepia(13%) saturate(808%) hue-rotate(337deg) brightness(94%) contrast(96%);
 }
 
 .musicButtons:hover .stopIcon {
@@ -133,8 +115,7 @@
 	translate: -50% -50%;
 	transition: 10ms ease-in-out;
 	transform: rotate(180deg);
-	filter: invert(26%) sepia(13%) saturate(808%) hue-rotate(337deg)
-		brightness(94%) contrast(96%);
+	filter: invert(26%) sepia(13%) saturate(808%) hue-rotate(337deg) brightness(94%) contrast(96%);
 }
 
 .musicButtons:hover .prevIcon {
@@ -149,15 +130,12 @@
 	top: 50%;
 	translate: -50% -50%;
 	transition: 10ms ease-in-out;
-	filter: invert(26%) sepia(13%) saturate(808%) hue-rotate(337deg)
-		brightness(94%) contrast(96%);
-	/* transform: rotate(180deg); */
+	filter: invert(26%) sepia(13%) saturate(808%) hue-rotate(337deg) brightness(94%) contrast(96%);
 }
 
 .musicButtons:hover .nextIcon {
 	animation: nextIconAnimation 0.5s infinite;
 	transform: scale(1.2, 1.2);
-	/* transform: rotate(180deg); */
 }
 
 @keyframes musicButtonClickAnimation {
@@ -232,25 +210,22 @@
 @keyframes nextIconAnimation {
 	0% {
 		left: 52%;
-		/* transform: rotate(180deg); */
 	}
 
 	25% {
 		left: 62%;
-		/* transform: rotate(180deg); */
 	}
 
 	100% {
 		left: 52%;
-		/* transform: rotate(180deg); */
 	}
 }
 
 .footer {
 	position: absolute;
 	height: 5px;
-	width: 15vh;
-	bottom: 1vw;
+	width: 150px;
+	bottom: 15px;
 	left: 50%;
 	translate: -50%;
 	background-color: #ffffff;
@@ -263,12 +238,10 @@
 	height: 150px;
 	left: 50%;
 	top: -30px;
-	/* z-index: -1; */
 	translate: -50%;
 	opacity: 0%;
 	transition: 150ms ease-in-out;
-	filter: drop-shadow(0px 10px 2px #00000063)
-		drop-shadow(0px 0px 2px rgba(0, 0, 0, 0.493));
+	filter: drop-shadow(0px 10px 2px #00000063) drop-shadow(0px 0px 2px rgba(0, 0, 0, 0.493));
 	pointer-events: none;
 }
 
@@ -281,8 +254,8 @@
 .kkSlider {
 	position: absolute;
 	width: 90px;
-	left: 1vh;
-	top: 5vw;
+	left: 2%;
+	top: 110%;
 	animation: kkDance 1s steps(2) infinite;
 	opacity: 0%;
 	filter: drop-shadow(0px 7px 1px #00000063);
@@ -292,8 +265,8 @@
 .kkGuitar {
 	position: absolute;
 	width: 100px;
-	right: 0vh;
-	top: 5vw;
+	right: -10px;
+	top: 100%;
 	animation: kkDance 1s steps(2) infinite;
 	opacity: 0%;
 	filter: drop-shadow(0px 7px 1px #00000063);
@@ -305,20 +278,10 @@
 		transform: rotate(0deg);
 	}
 
-	/* 50% {
-		transform: rotate(-50deg);
-	} */
-
 	to {
 		transform: rotate(20deg);
 	}
 }
-
-/*
-.musicPlayerHitBox:hover+.musicPlayerBg .musicPlayerTextBox {
-	top: 80px;
-	opacity: 100%;
-} */
 
 .musicPlayerBg:hover .musicPlayerTextBox {
 	top: 80px;
@@ -336,5 +299,3 @@
 .buttonPlay {
 	opacity: 100%;
 }
-
-/* #TODO Uma linha no meio do musicplayer para indicar que pode ser abaixado */

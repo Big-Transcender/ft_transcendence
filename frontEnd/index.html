@@ -10,240 +10,1185 @@
 		<link rel="stylesheet" href="styles/homePage.css" />
 		<link rel="stylesheet" href="styles/header.css" />
 		<link rel="stylesheet" href="styles/musicPlayer.css" />
+		<link rel="stylesheet" href="styles/profiles2Styles.css" />
+		<link rel="stylesheet" href="styles/pongStyles.css" />
+		<link rel="stylesheet" href="styles/contest.css" />
+
 		<link rel="icon" href="images/icons/favicon.ico" />
 		<script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 	</head>
 
 	<body>
 		<div class="mainBody">
-			<div class="header">
-				<div class="musicPlayer">
-					<!-- <div class="musicPlayerHitBox"> </div> -->
-					<div class="musicPlayerBg">
-						<div class="musicPlayerTextBox">
-							<img src="images/kkSliderQuote.png" alt="" class="kkSliderQuote" />
-							<img src="images/kkIcon.png" alt="" class="kkSlider" />
-							<img src="images/kkGuitarIcon.png" alt="" class="kkGuitar" />
-							<p>Now Playing:</p>
-							<p id="musicTitle">Music Title</p>
-							<p id="musicDate">Music Date</p>
-							<div class="playButtons">
-								<button class="buttonPlay musicButtons">
-									<div class="musicButtonBG">
-										<img src="images/icons/playIcon.png" alt="" class="playIcon" />
-									</div>
-									play
-								</button>
-								<button class="buttonPrev musicButtons">
-									<div class="musicButtonBG">
-										<img src="images/icons/nextIcon.png" alt="" class="prevIcon" />
-									</div>
-									prev
-								</button>
-								<button class="buttonNext musicButtons">
-									<div class="musicButtonBG">
-										<img src="images/icons/nextIcon.png" alt="" class="nextIcon" />
-									</div>
-									next
-								</button>
-								<button class="buttonStop musicButtons">
-									<div class="musicButtonBG">
-										<img src="images/icons/stopIcon.png" alt="" class="stopIcon" />
-									</div>
-									stop
-								</button>
-							</div>
-						</div>
-						<div class="footer"></div>
-					</div>
-				</div>
-				<div class="ribbonLeft">
-					<img src="../frontEnd/images/ribbon.svg" class="leftRibbon" />
-				</div>
-				<div class="mainBodyHeader">
-					<h1 class="headerTitle">Animal Ponging</h1>
-					<div class="headerButtons">
-						<div class="leftButtons">
-							<a onclick="navigate('home')" class="button">
-								<div class="buttonBG"></div>
-								Home
-								<div class="buttonHitBox"></div>
-							</a>
-							<a onclick="navigate('game1')" class="button">
-								<div class="buttonBG"></div>
-								Pong
-								<div class="buttonHitBox"></div>
-							</a>
-						</div>
-						<div class="rightButtons">
-							<a onclick="navigate('game2')" class="button">
-								<div class="buttonBG"></div>
-								Game
-								<div class="buttonHitBox"></div>
-							</a>
-							<a onclick="navigate('profile')" class="button">
-								<div class="buttonBG"></div>
-								Profile
-								<div class="buttonHitBox"></div>
-							</a>
-						</div>
-					</div>
-				</div>
-				<div class="ribbonRight">
-					<img src="../frontEnd/images/ribbon.svg" class="rightRibbon" />
-				</div>
-			</div>
 			<div class="mainBodyBackground">
+				<!-- WARNING POPUP -->
+				<div class="defaultWarning">
+					<div class="defaultWarningBG"></div>
+					<p class="defaultWarningText" id="warningContest">Generic Error</p>
+				</div>
+				<!-- POPUP FROM PROFILE -->
+				<div id="popupContainer" class="popup-overlay">
+					<div class="popup profilePopup">
+						<div class="popupBG popupProfileBG"></div>
+
+						<!-- FRONT POPUP PAGE -->
+						<div class="frontpagePopup popupPage displayPagePopup">
+							<div class="popupText profileTextPopup">What you want <br />to change?</div>
+							<!-- CHANGE PHOTO BUTTOM -->
+							<div class="gameSelectorButton popupPhotoButton" id="popupPhotoButtonID">
+								<div class="gameSelectorButtonBG"></div>
+								<p class="gameSelectorText">Photo</p>
+							</div>
+
+							<!-- CHANGE NICK BUTTOM -->
+							<div class="gameSelectorButton popupNickButton" id="popupNickButtonID">
+								<div class="gameSelectorButtonBG"></div>
+								<p class="gameSelectorText">Nick</p>
+							</div>
+
+							<!-- CHANGE EMAIL BUTTOM -->
+							<div class="gameSelectorButton popupEmailButton" id="popupEmailButtonID">
+								<div class="gameSelectorButtonBG"></div>
+								<p class="gameSelectorText">Email</p>
+							</div>
+
+							<!-- CHANGE PASSWORD BUTTOM -->
+							<div class="gameSelectorButton popupPasswordButton" id="popupPasswordButtonID">
+								<div class="gameSelectorButtonBG"></div>
+								<p class="gameSelectorText">Pass</p>
+							</div>
+
+							<button onclick="closePopup()" class="defaultButton pupupBackButton b">
+								<p class="defaultButtonText">Close</p>
+								<div class="defaultButtonBG">
+									<div class="defaultButtonBGWave"></div>
+									<div class="defaultButtonBGWave wave2"></div>
+								</div>
+							</button>
+						</div>
+
+						<!-- CHANGE NICK POPUP PAGE -->
+						<div class="nickpagePopup popupPage">
+							<div class="popupText profileTextPopup">Change your nick!</div>
+							<div class="inputBox popupNewNick">
+								<label for="popupNewNick">Enter new Nick</label>
+								<input type="text" id="popupNewNick" class="inputText smallInput" placeholder="NEW NICK" autocomplete="off" />
+							</div>
+
+							<button onclick="changeNickPopup()" class="defaultButton pupupSwitchButton">
+								<p class="defaultButtonText">Switch!</p>
+								<div class="defaultButtonBG">
+									<div class="defaultButtonBGWave"></div>
+									<div class="defaultButtonBGWave wave2"></div>
+								</div>
+							</button>
+
+							<button onclick="openPopup()" class="defaultButton pupupBBackButton">
+								<p class="defaultButtonText">Back</p>
+								<div class="defaultButtonBG">
+									<div class="defaultButtonBGWave"></div>
+									<div class="defaultButtonBGWave wave2"></div>
+								</div>
+							</button>
+						</div>
+
+						<!-- CHANGE EMAIL POPUP PAGE -->
+						<div class="emailpagePopup popupPage">
+							<div class="popupText profileTextPopup">Change your Email!</div>
+							<div class="inputBox popupNewNick">
+								<label for="popupNewNick">Enter new Email</label>
+								<input type="text" id="popupNewEmail" class="inputText smallInput popupEmail" placeholder="NEW EMAIL" autocomplete="off" />
+							</div>
+
+							<button onclick="changeEmailPopup()" class="defaultButton pupupSwitchButton">
+								<p class="defaultButtonText">Switch!</p>
+								<div class="defaultButtonBG">
+									<div class="defaultButtonBGWave"></div>
+									<div class="defaultButtonBGWave wave2"></div>
+								</div>
+							</button>
+
+							<button onclick="openPopup()" class="defaultButton pupupBBackButton">
+								<p class="defaultButtonText">Back</p>
+								<div class="defaultButtonBG">
+									<div class="defaultButtonBGWave"></div>
+									<div class="defaultButtonBGWave wave2"></div>
+								</div>
+							</button>
+						</div>
+
+						<!-- CHANGE PASS POPUP PAGE -->
+						<div class="passwordpagePopup popupPage">
+							<div class="popupText profileTextPopup">Change your Password!</div>
+
+							<!-- OLD PASSWORD -->
+							<div class="inputBox popupOldPassword">
+								<label for="popupNewNick">Enter old Password</label>
+								<input type="password" id="popupOldPassword" class="inputText smallInput" placeholder="OLD PASSWORD" autocomplete="off" />
+							</div>
+
+							<!-- NEW PASSWORD -->
+							<div class="inputBox popupNewPassword">
+								<label for="popupNewNick">Enter new Password</label>
+								<input type="password" id="popupNewPassword" class="inputText smallInput" placeholder="NEW PASSWORD" autocomplete="off" />
+							</div>
+
+							<button onclick="changePasswordPopup()" class="defaultButton pupupSwitchButton">
+								<p class="defaultButtonText">Switch!</p>
+								<div class="defaultButtonBG">
+									<div class="defaultButtonBGWave"></div>
+									<div class="defaultButtonBGWave wave2"></div>
+								</div>
+							</button>
+
+							<button onclick="openPopup()" class="defaultButton pupupBBackButton">
+								<p class="defaultButtonText">Back</p>
+								<div class="defaultButtonBG">
+									<div class="defaultButtonBGWave"></div>
+									<div class="defaultButtonBGWave wave2"></div>
+								</div>
+							</button>
+						</div>
+
+						<!-- CHANGE PHOTO POPUP PAGE -->
+						<div class="photopagePopup popupPage">
+							<div class="popupText profileTextPopup">Change your<br />Passport Photo!</div>
+
+							<!-- PROFILE PHOTO -->
+							<div class="profilePhoto popupPhoto">
+								<div class="profilePhotoBG"></div>
+								<div class="profilePhotoLocation"></div>
+							</div>
+
+							<div class="gameSelectorButton uploadButton" id="uploadButtonID">
+								<div class="gameSelectorButtonBG"></div>
+								<label for="fileInput" class="gameSelectorText uploadButtomText" style="cursor: pointer">Upload!</label>
+								<input type="file" id="fileInput" accept="image/*" style="display: none" />
+							</div>
+
+							<button onclick="changePhotoPopup()" class="defaultButton pupupSwitchButton">
+								<p class="defaultButtonText">Switch!</p>
+								<div class="defaultButtonBG">
+									<div class="defaultButtonBGWave"></div>
+									<div class="defaultButtonBGWave wave2"></div>
+								</div>
+							</button>
+
+							<button onclick="openPopup()" class="defaultButton pupupBBackButton">
+								<p class="defaultButtonText">Back</p>
+								<div class="defaultButtonBG">
+									<div class="defaultButtonBGWave"></div>
+									<div class="defaultButtonBGWave wave2"></div>
+								</div>
+							</button>
+						</div>
+
+						<!-- LOCAL CONTEST POPUP PAGE -->
+						<div class="localContestPopup popupPage">
+							<div class="popupText profileTextPopup">Enter contest nicks!</div>
+
+							<!-- NICK 1 -->
+							<div class="inputBox popupNewNick contestNick1">
+								<label for="popupNewNick">Enter Nick 1</label>
+								<input type="text" id="popupContestNick1" class="inputText smallInput" placeholder="NICK 1" autocomplete="off" />
+							</div>
+
+							<!-- NICK 2 -->
+							<div class="inputBox popupNewNick contestNick2">
+								<label for="popupNewNick">Enter Nick 2</label>
+								<input type="text" id="popupContestNick2" class="inputText smallInput" placeholder="NICK 2" autocomplete="off" />
+							</div>
+
+							<!-- NICK 3 -->
+							<div class="inputBox popupNewNick contestNick3">
+								<label for="popupNewNick">Enter Nick 3</label>
+								<input type="text" id="popupContestNick3" class="inputText smallInput" placeholder="NICK 3" autocomplete="off" />
+							</div>
+
+							<!-- NICK 4 -->
+							<div class="inputBox popupNewNick contestNick4">
+								<label for="popupNewNick">Enter Nick 4</label>
+								<input type="text" id="popupContestNick4" class="inputText smallInput" placeholder="NICK 4" autocomplete="off" />
+							</div>
+
+							<button onclick="prepareContestLocal()" class="defaultButton pupupStartLocalContestButton">
+								<p class="defaultButtonText">Start!</p>
+								<div class="defaultButtonBG">
+									<div class="defaultButtonBGWave"></div>
+									<div class="defaultButtonBGWave wave2"></div>
+								</div>
+							</button>
+
+							<button onclick="closePopup()" class="defaultButton pupupBBackButton">
+								<p class="defaultButtonText">Close</p>
+								<div class="defaultButtonBG">
+									<div class="defaultButtonBGWave"></div>
+									<div class="defaultButtonBGWave wave2"></div>
+								</div>
+							</button>
+						</div>
+					</div>
+				</div>
+				<!-- POPUP FROM MULTIPLAYER PONG-->
+				<div id="popupContainerPong" class="popup-overlay">
+					<div class="popup">
+						<div class="popupBG"></div>
+						<div class="popupText pongPopup">Create a new match or <br />join an existing one?</div>
+
+						<div class="inputBox popupNewNick">
+							<label for="popupNewNick">Enter match ID</label>
+							<input type="text" id="popupMatchID" class="inputText smallInput" placeholder="MATCH ID" autocomplete="off" />
+						</div>
+
+						<button class="defaultButton pongPopupBackButton">
+							<p class="defaultButtonText">Close</p>
+							<div class="defaultButtonBG">
+								<div class="defaultButtonBGWave"></div>
+								<div class="defaultButtonBGWave wave2"></div>
+							</div>
+						</button>
+
+						<button class="defaultButton joinPopupButton">
+							<p class="defaultButtonText">Join!</p>
+							<div class="defaultButtonBG">
+								<div class="defaultButtonBGWave"></div>
+								<div class="defaultButtonBGWave wave2"></div>
+							</div>
+						</button>
+
+						<button class="defaultButton createPopupButton">
+							<p class="defaultButtonText">Create!</p>
+							<div class="defaultButtonBG">
+								<div class="defaultButtonBGWave"></div>
+								<div class="defaultButtonBGWave wave2"></div>
+							</div>
+						</button>
+
+						<button class="defaultButton createV2PopupButton">
+							<p class="defaultButtonText v2Text">2v2!</p>
+							<div class="defaultButtonBG">
+								<div class="defaultButtonBGWave"></div>
+								<div class="defaultButtonBGWave wave2"></div>
+							</div>
+						</button>
+					</div>
+				</div>
+				<!-- POPUP FROM 2v2 PONG-->
+				<div id="popupContainer2v2" class="popup-overlay">
+					<div class="popup">
+						<div class="popupBG"></div>
+						<div class="popupText pongPopup">Create a new <span style="color: red">2v2</span> or <br />join an existing one?</div>
+
+						<div class="inputBox popupNewNick">
+							<label for="popupNewNick">Enter 2v2 match ID</label>
+							<input type="text" id="popup2v2MatchID" class="inputText smallInput" placeholder="2v2 MATCH ID" autocomplete="off" />
+						</div>
+
+						<button class="defaultButton pongPopupBackButton" id="close2v2ID">
+							<p class="defaultButtonText">Close</p>
+							<div class="defaultButtonBG">
+								<div class="defaultButtonBGWave"></div>
+								<div class="defaultButtonBGWave wave2"></div>
+							</div>
+						</button>
+
+						<button class="defaultButton joinPopupButton" id="join2v2ID">
+							<p class="defaultButtonText">Join!</p>
+							<div class="defaultButtonBG">
+								<div class="defaultButtonBGWave"></div>
+								<div class="defaultButtonBGWave wave2"></div>
+							</div>
+						</button>
+
+						<button class="defaultButton createPopupButton" id="create2v2ID">
+							<p class="defaultButtonText">Create!</p>
+							<div class="defaultButtonBG">
+								<div class="defaultButtonBGWave"></div>
+								<div class="defaultButtonBGWave wave2"></div>
+							</div>
+						</button>
+					</div>
+				</div>
+
+				<!-- POPUP 2AF -->
+				<div id="popupContainer2FA" class="popup-overlay">
+					<div class="popup popup2FA">
+						<div class="popupBG"></div>
+
+						<div class="inputBox popup2FANumber">
+							<label for="popupNewNick">Enter 2FA code!</label>
+							<input type="text" id="AFCode" class="inputText smallInput" placeholder="2FA CODE" autocomplete="off" />
+						</div>
+
+						<button onclick="close2FApopup()" class="defaultButton popup2FAClose" id="close2FA">
+							<p class="defaultButtonText">Close</p>
+							<div class="defaultButtonBG">
+								<div class="defaultButtonBGWave"></div>
+								<div class="defaultButtonBGWave wave2"></div>
+							</div>
+						</button>
+
+						<button onclick="verify2FACodePopup()" class="defaultButton popup2FAVerify" id="Verify2FA">
+							<p class="defaultButtonText">Verify!</p>
+							<div class="defaultButtonBG">
+								<div class="defaultButtonBGWave"></div>
+								<div class="defaultButtonBGWave wave2"></div>
+							</div>
+						</button>
+					</div>
+				</div>
+
+				<!-- POPUP VICTORY -->
+				<div id="popupContainerVictory" class="popup-overlay">
+					<div class="popup popup2FA">
+						<div class="popupBG"></div>
+
+						<div class="popupText pongVictory">WIN WIN WIN OR <br />LOSE LOSE LOSE</div>
+
+						<button onclick="closeVictory()" class="defaultButton popupVictory" id="closeLose">
+							<p class="defaultButtonText">Okay</p>
+							<div class="defaultButtonBG">
+								<div class="defaultButtonBGWave"></div>
+								<div class="defaultButtonBGWave wave2"></div>
+							</div>
+						</button>
+
+						<!-- <button onclick="closeVictory()" class="defaultButton popupVictory" id="closeVictory">
+							<p class="defaultButtonText popupVictory">Next!</p>
+							<div class="defaultButtonBG">
+								<div class="defaultButtonBGWave"></div>
+								<div class="defaultButtonBGWave wave2"></div>
+							</div>
+						</button> -->
+					</div>
+				</div>
+
 				<div class="backgroudCenterBg"></div>
 				<div class="backgroundCenter">
-					<div id="home" class="home page active">
-						<div class="homePageWelcome">
-							<p>Welcome to the Animal Ponging</p>
-						</div>
-						<div class="homePlayersRank">
-							<div class="homePlayersRankBG"></div>
-							<p class="playersRankTitle">Current Players Rank</p>
-							<div class="playersRankList">
-								<div class="playersRankListBG"></div>
-								<table id="playerRankListId" class="playerRankTable">
-									<tr>
-										<th>Position</th>
-										<th>Nick</th>
-										<th>Wins</th>
-									</tr>
-									<tr>
-										<td>1</td>
-										<td>BrunoB</td>
-										<td>10</td>
-									</tr>
-									<tr>
-										<td>2</td>
-										<td>BrunoB</td>
-										<td>10</td>
-									</tr>
-									<tr>
-										<td>3</td>
-										<td>BrunoB</td>
-										<td>10</td>
-									</tr>
-									<tr>
-										<td>4</td>
-										<td>BrunoB</td>
-										<td>10</td>
-									</tr>
-									<tr>
-										<td>5</td>
-										<td>BrunoB</td>
-										<td>10</td>
-									</tr>
-								</table>
+					<!-- HEADER -->
+					<div class="header">
+						<!-- MUSIC PLAYER -->
+						<div class="musicPlayer">
+							<div class="musicPlayerBg">
+								<div class="musicPlayerTextBox">
+									<img src="images/kkSliderQuote.png" alt="" class="kkSliderQuote" />
+									<img src="images/kkIcon.png" alt="" class="kkSlider" />
+									<img src="images/kkGuitarIcon.png" alt="" class="kkGuitar" />
+									<p>Now Playing:</p>
+									<p id="musicTitle">Music Title</p>
+									<p id="musicDate">Music Date</p>
+									<div class="playButtons">
+										<button class="buttonPlay musicButtons">
+											<div class="musicButtonBG">
+												<img src="images/icons/playIcon.png" alt="" class="playIcon" />
+											</div>
+											play
+										</button>
+										<button class="buttonPrev musicButtons">
+											<div class="musicButtonBG">
+												<img src="images/icons/nextIcon.png" alt="" class="prevIcon" />
+											</div>
+											prev
+										</button>
+										<button class="buttonNext musicButtons">
+											<div class="musicButtonBG">
+												<img src="images/icons/nextIcon.png" alt="" class="nextIcon" />
+											</div>
+											next
+										</button>
+										<button class="buttonStop musicButtons">
+											<div class="musicButtonBG">
+												<img src="images/icons/stopIcon.png" alt="" class="stopIcon" />
+											</div>
+											stop
+										</button>
+									</div>
+								</div>
+								<div class="footer"></div>
 							</div>
 						</div>
-						<img src="/frontEnd/images/loading.gif" alt="" class="loadingGif drop-shadow-xl/50" />
+						<div class="ribbonLeft">
+							<img src="/images/ribbon.svg" class="leftRibbon" />
+						</div>
+						<div class="mainBodyHeader">
+							<h1 class="headerTitle">Animal Ponging</h1>
+							<div class="headerButtons">
+								<div class="leftButtons">
+									<a onclick="navigate('home')" class="button headerSound">
+										<div class="buttonBG"></div>
+										Home
+										<div class="buttonHitBox"></div>
+									</a>
+									<a onclick="navigate('game1'); resetGamePage()" class="button headerSound">
+										<div class="buttonBG"></div>
+										Pong
+										<div class="buttonHitBox"></div>
+									</a>
+								</div>
+								<div class="rightButtons">
+									<a onclick="navigate('contest'); resetContestPage()" class="button headerSound">
+										<div class="buttonBG"></div>
+										Contest
+										<div class="buttonHitBox"></div>
+									</a>
+									<a onclick="navigate('profile')" class="button headerSound">
+										<div class="buttonBG"></div>
+										Profile
+										<div class="buttonHitBox"></div>
+									</a>
+								</div>
+							</div>
+						</div>
+						<div class="ribbonRight">
+							<img src="/images/ribbon.svg" class="rightRibbon" />
+						</div>
 					</div>
+					<!-- HOME PAGE -->
+					<div id="home" class="home page">
+						<!-- NOOK PHONE -->
+						<div class="nookPhone">
+							<!-- CREDITS -->
+							<div class="credits" id="creditsId">
+								<div class="creditsBG"></div>
+								<div class="creditsText" id="creditsTextId">test</div>
+							</div>
+							<!-- PLAYER LEADERBOARD -->
+							<div class="homePlayersRank">
+								<div class="homePlayersRankBG"></div>
+								<p class="playersRankTitle">Current Players Rank</p>
+								<div class="playersRankList">
+									<div class="playersRankListBG"></div>
+									<!-- RANK LIST -->
+									<table id="playerRankListId" class="playerRankTable">
+										<tr>
+											<th>Position</th>
+											<th>Nick</th>
+											<th>Wins</th>
+										</tr>
+										<tr>
+											<td>1</td>
+											<td>Loading</td>
+											<td>0</td>
+										</tr>
+										<tr>
+											<td>2</td>
+											<td>Loading</td>
+											<td>0</td>
+										</tr>
+										<tr>
+											<td>3</td>
+											<td>Loading</td>
+											<td>0</td>
+										</tr>
+										<tr>
+											<td>4</td>
+											<td>Loading</td>
+											<td>0</td>
+										</tr>
+										<tr>
+											<td>5</td>
+											<td>Loading</td>
+											<td>0</td>
+										</tr>
+									</table>
+								</div>
+							</div>
+							<div class="nookPhoneBG"></div>
+							<div class="phoneTitle">Welcome to the Animal Ponging!</div>
+							<div class="phoneHeader">
+								<div class="phoneIcon1"></div>
+								<div class="phoneIcon2"></div>
+								<div class="phoneTime" id="phoneTimeId"></div>
+							</div>
 
+							<!-- ICONS LOCATION -->
+							<div class="iconsLocation">
+								<!-- PONG ICON -->
+								<div class="genericIcon pongIcon" id="pongIconId">
+									<div class="genericIconBG pongIconBG">
+										<div
+											class="w-36 h-36 opacity-0 absolute bg-conic-180 from-purple-400 via-violet-500 to-purple-400 left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 hover:animate-[spin_3s_linear_infinite] hover:opacity-100"
+										></div>
+									</div>
+									<div class="genericImage pongImage"></div>
+								</div>
+								<!-- CONTEST ICON -->
+								<div class="genericIcon contestIcon" id="contestIconId">
+									<div class="genericIconBG contestIconBG">
+										<div class="genericImage contestImage2"></div>
+									</div>
+									<div class="genericImage contestImage"></div>
+								</div>
+								<!-- PROFILE ICON -->
+								<div class="genericIcon profileIcon" id="profileIconId">
+									<div class="genericIconBG profileIconBG"></div>
+									<div class="genericImage profileImage"></div>
+								</div>
+								<!-- RANK ICON -->
+								<div class="genericIcon rankIcon" id="rankIconId">
+									<div class="genericIconBG rankIconBG">
+										<div
+											class="rankBG1 w-28 h-28 rounded-full absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 opacity-0"
+											style="background-color: #f69c77"
+										></div>
+										<div
+											class="rankBG2 w-22 h-22 rounded-full absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 opacity-0"
+											style="background-color: #f7b075"
+										></div>
+										<div
+											class="rankBG3 w-16 h-16 rounded-full absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 opacity-0"
+											style="background-color: #fcbf71"
+										></div>
+										<div class="genericImage rankImage3"></div>
+										<div class="genericImage rankImage4"></div>
+									</div>
+									<div class="genericImage rankImage1"></div>
+									<div class="genericImage rankImage2"></div>
+								</div>
+								<!-- CREDITS ICON -->
+								<div class="genericIcon creditsIcon" id="creditsIconId">
+									<div class="genericIconBG creditsIconBG"></div>
+									<div class="genericImage creditsImage1"></div>
+									<div class="genericImage creditsImage2"></div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<img src="/images/loading.gif" alt="" class="loadingGif drop-shadow-xl/50" />
+
+					<!-- GAME PAGE -->
 					<div id="game1" class="game1 page">
-						<p>Pong-Strike 1.6</p>
-						<div class="game1Place outline-2 outline-white outline-offset-2 hover:outline-lime-600 hover:outline-5">
+						<!-- SELECT GAMEMODE -->
+						<div class="gameSelector gameId active" id="gameSelectorPongId">
+							<div class="gameSelectorBG"></div>
+							<p class="gameSelectorHeader">Choose the mode!</p>
+							<div class="gameSelectorButton" id="buttonSinglePong">
+								<div class="gameSelectorButtonBG"></div>
+								<p class="gameSelectorText">Single</p>
+							</div>
+							<div class="gameSelectorButton Button2" id="buttonMultiplayerPong">
+								<div class="gameSelectorButtonBG ButtonBG2"></div>
+								<p class="gameSelectorText">Multiplayer</p>
+							</div>
+						</div>
+						<!-- SELECT WHAT TYPE OF MULTIPLAYER -->
+						<div class="gameSelector gameId" id="gameSelectorPongMultiplayerId">
+							<div class="gameSelectorBG"></div>
+							<p class="gameSelectorHeader">What type of Multiplayer?</p>
+							<div class="gameSelectorButton" id="buttonLocalMP">
+								<div class="gameSelectorButtonBG"></div>
+								<p class="gameSelectorText">Local</p>
+							</div>
+							<div class="gameSelectorButton Button2" id="buttonVersusMPId">
+								<div class="gameSelectorButtonBG ButtonBG2"></div>
+								<p class="gameSelectorText">Versus</p>
+							</div>
+							<button class="defaultButton backGamePongMode" id="backButtonMPId">
+								<p class="defaultButtonText backGameSnakeText">Back</p>
+								<div class="defaultButtonBG">
+									<div class="defaultButtonBGWave"></div>
+									<div class="defaultButtonBGWave wave2"></div>
+								</div>
+							</button>
+						</div>
+						<!-- GAME PAGE -->
+						<div class="game1Place gameId" id="pongGameId">
+							<!-- GAME SCORE DIV -->
+							<div class="gameScore">
+								<div class="gameScoreBG"></div>
+								<div class="player1">
+									<img src="images/pongGame/playerEmotions/happy.png" alt="" class="player1Icon" id="player1IconId" />
+									<p class="player1Nick" id="player1NickId">Player 1</p>
+									<p class="player1Score" id="player1ScoreId">0</p>
+								</div>
+								<div class="player2">
+									<img src="images/pongGame/playerEmotions/happy.png" alt="" class="player2Icon" id="player2IconId" />
+									<p class="player2Nick" id="player2NickId">Player 2</p>
+									<p class="player2Score" id="player2ScoreId">0</p>
+								</div>
+							</div>
+							<!-- GAME BASE -->
 							<div class="board">
 								<div class="ball"></div>
 								<div class="paddle1 paddle">
 									<div class="paddleHitBox"></div>
 								</div>
-								<div class="paddle2 paddle"></div>
+								<div class="paddle2 paddle">
+									<div class="paddleHitBox"></div>
+								</div>
+								<div class="paddle3 paddle offPaddle">
+									<div class="paddleHitBox"></div>
+								</div>
+								<div class="paddle4 paddle offPaddle">
+									<div class="paddleHitBox"></div>
+								</div>
+								<div class="timer" id="timerBoxId">
+									<p id="timerId">Get<br />Ready!</p>
+								</div>
+							</div>
+							<!-- BOX OF MATCH ID -->
+							<div class="gameIdBox">
+								<div class="gameidBoxBG"></div>
+								<div class="gameIdBoxText">Match ID:</div>
+								<div class="gameIdBoxTextID">NONE</div>
+							</div>
+						</div>
+						<!-- BACK BUTTOM -->
+						<button class="defaultButton backGamePong" id="backGamePongId">
+							<p class="defaultButtonText backGameSnakeText">Back</p>
+							<div class="defaultButtonBG">
+								<div class="defaultButtonBGWave"></div>
+								<div class="defaultButtonBGWave wave2"></div>
+							</div>
+						</button>
+					</div>
+					<!-- CONTEST PAGE -->
+					<div id="contest" class="contest page">
+						<!-- CONTEST OPTION SELECTOR -->
+						<div class="gameSelector contestId" id="contestSelectorId">
+							<div class="gameSelectorBG contestBG"></div>
+							<p class="gameSelectorHeader headerContest">What do you wanna do?</p>
+							<div class="gameSelectorButton" id="joinContestId">
+								<div class="gameSelectorButtonBG"></div>
+								<p class="gameSelectorText">Join!</p>
+							</div>
+							<div class="gameSelectorButton Button2" id="createContestId">
+								<div class="gameSelectorButtonBG ButtonBG2"></div>
+								<p class="gameSelectorText">Create!</p>
+							</div>
+						</div>
+
+						<!-- ENTER THE PIN PAGE -->
+						<div class="gameSelector contestId" id="contestJoinSelectorId">
+							<div class="gameSelectorBG contestBG"></div>
+							<p class="gameSelectorHeader headerContest">Enter the pin!</p>
+							<div class="inputBox inputPinContest">
+								<label for="inputNick">What is the pin?</label>
+								<input type="text" id="inputPin" class="inputText smallInput" placeholder="PIN" autocomplete="off" />
+							</div>
+							<button class="defaultButton contestBackButton genericBackButton">
+								<p class="defaultButtonText">Back</p>
+								<div class="defaultButtonBG">
+									<div class="defaultButtonBGWave"></div>
+									<div class="defaultButtonBGWave wave2"></div>
+								</div>
+							</button>
+
+							<button class="defaultButton contestEnterButton" id="enterContestButtonId">
+								<p class="defaultButtonText">Enter</p>
+								<div class="defaultButtonBG">
+									<div class="defaultButtonBGWave"></div>
+									<div class="defaultButtonBGWave wave2"></div>
+								</div>
+							</button>
+						</div>
+
+						<!-- CONTEST PLAYERS PAGE -->
+						<div class="gameSelector contestId" id="contestJoinedSelectorId">
+							<div class="gameSelectorBG contestBG"></div>
+							<p class="gameSelectorHeader headerContest">Winner gets all!</p>
+
+							<div class="contestBox">
+								<div class="playerContestPlace place1 noplayer">
+									<div class="playerContestPlaceBG noGame"></div>
+									<p class="playerContestPlaceName" id="player1">waiting</p>
+								</div>
+								<div class="playerContestPlace place2 noplayer">
+									<div class="playerContestPlaceBG noGame"></div>
+									<p class="playerContestPlaceName" id="player2">waiting</p>
+								</div>
+
+								<div class="playerContestPlace place3 noplayer">
+									<div class="playerContestPlaceBG noGame"></div>
+									<p class="playerContestPlaceName" id="player3">waiting</p>
+								</div>
+
+								<div class="playerContestPlace place4 noplayer">
+									<div class="playerContestPlaceBG noGame"></div>
+									<p class="playerContestPlaceName" id="player4">waiting</p>
+								</div>
+
+								<div class="playerContestPlace place5">
+									<div class="playerContestPlaceBG noGame"></div>
+									<p class="playerContestPlaceName" id="player5">waiting</p>
+								</div>
+
+								<div class="playerContestPlace place6">
+									<div class="playerContestPlaceBG noGame"></div>
+									<p class="playerContestPlaceName" id="player6">waiting</p>
+								</div>
+
+								<div class="playerContestPlace place7">
+									<div class="playerContestPlaceBG noGame"></div>
+									<p class="playerContestPlaceName" id="player7">waiting</p>
+								</div>
+							</div>
+							<!-- BACK BUTTON -->
+							<button class="defaultButton contestInBackButton genericBackButton">
+								<p class="defaultButtonText">Back</p>
+								<div class="defaultButtonBG">
+									<div class="defaultButtonBGWave"></div>
+									<div class="defaultButtonBGWave wave2"></div>
+								</div>
+							</button>
+							<!-- START BUTTON -->
+							<button class="defaultButton startContestButton" id="startContestButtonId">
+								<p class="defaultButtonText">Start!</p>
+								<div class="defaultButtonBG">
+									<div class="defaultButtonBGWave"></div>
+									<div class="defaultButtonBGWave wave2"></div>
+								</div>
+							</button>
+							<div class="contestPinBox">
+								<div class="contestPinBoxBG"></div>
+								<p class="contestPinBoxText">Pin:</p>
+								<p class="contestPinBoxNumber" id="contestPinBoxNumberId">00000000000</p>
+							</div>
+							<div class="contestNameBox">
+								<div class="contestNameBG"></div>
+								<p class="contestName" id="contestNameId">teste</p>
+							</div>
+						</div>
+
+						<!-- CONTEST CREATING PAGE -->
+						<div class="gameSelector contestId" id="contestCreateId">
+							<div class="gameSelectorBG contestBG"></div>
+							<p class="gameSelectorHeader headerContest">Create your contest</p>
+							<div class="inputBox inputContestName">
+								<label for="inputContestNameId">Enter your contest name</label>
+								<input type="text" id="inputContestNameId" class="inputText smallInput" placeholder="CONTEST NAME" autocomplete="off" />
+							</div>
+							<button class="defaultButton contestNewCreateButton" id="createNewContestButtonId">
+								<p class="defaultButtonText">Create Online</p>
+								<div class="defaultButtonBG">
+									<div class="defaultButtonBGWave"></div>
+									<div class="defaultButtonBGWave wave2"></div>
+								</div>
+							</button>
+
+							<button class="defaultButton contestNewCreateButton contestLocalButton" id="createNewContestLocalButtonId">
+								<p class="defaultButtonText">Create Local</p>
+								<div class="defaultButtonBG">
+									<div class="defaultButtonBGWave"></div>
+									<div class="defaultButtonBGWave wave2"></div>
+								</div>
+							</button>
+
+							<button class="defaultButton genericBackButton contestNewCreateBackButton" id="contestNewCreateBackButtonId">
+								<p class="defaultButtonText">Back</p>
+								<div class="defaultButtonBG">
+									<div class="defaultButtonBGWave"></div>
+									<div class="defaultButtonBGWave wave2"></div>
+								</div>
+							</button>
+						</div>
+
+						<!-- GAME CONTEST -->
+						<div class="game1Place gameId pongContest" id="pongContestId">
+							<!-- GAME SCORE DIV CONTEST-->
+							<div class="gameScore">
+								<div class="gameScoreBG"></div>
+								<div class="player1">
+									<img src="images/pongGame/playerEmotions/happy.png" alt="" class="player1Icon" id="player1IconId" />
+									<p class="player1Nick player1NickContest" id="player1NickId">Player 1</p>
+									<p class="player1Score player1ScoreContest" id="player1ScoreId">0</p>
+								</div>
+								<div class="player2">
+									<img src="images/pongGame/playerEmotions/happy.png" alt="" class="player2Icon" id="player2IconId" />
+									<p class="player2Nick player2NickContest" id="player2NickId">Player 2</p>
+									<p class="player2Score player2ScoreContest" id="player2ScoreId">0</p>
+								</div>
+							</div>
+							<!-- GAME BASE CONTEST-->
+							<div class="board">
+								<div class="ball ballContest"></div>
+								<div class="paddle1 paddle paddle1Contest">
+									<div class="paddleHitBox"></div>
+								</div>
+								<div class="paddle2 paddle paddle2Contest">
+									<div class="paddleHitBox"></div>
+								</div>
+								<div class="paddle3 paddle offPaddle paddle3Contest">
+									<div class="paddleHitBox"></div>
+								</div>
+								<div class="paddle4 paddle offPaddle paddle4Contest">
+									<div class="paddleHitBox"></div>
+								</div>
+								<div class="timer timerContest" id="timerBoxId">
+									<p id="timerId">Get<br />Ready!</p>
+								</div>
+							</div>
+							<!-- BOX OF MATCH ID CONTEST -->
+							<div class="gameIdBox">
+								<div class="gameidBoxBG"></div>
+								<div class="gameIdBoxText">Match ID:</div>
+								<div class="gameIdBoxTextID">NONE</div>
 							</div>
 						</div>
 					</div>
-					<div id="game2" class="game2 page">
-						<h2>Game2</h2>
-						<p>Game2 HERE</p>
-					</div>
+					<!-- PROFILE PAGE -->
 					<div id="profile" class="profile page">
 						<div class="loginBox">
-							<div class="loginPage profileId active" id="loginId">
-								<div class="loginBoxBG"></div>
+							<!-- LOGIN PAGE -->
+							<div class="loginPage profileId" id="loginId">
+								<img src="images/avatar4.png" alt="" class="avatar4" />
+								<div class="loginBoxBG">
+									<div class="decoration1"></div>
+								</div>
+								<div class="topCover"></div>
 								<img src="images/avatar3.png" alt="" class="avatar3" />
-								<p class="loginText">Login!</p>
+								<div class="thinkingBubble">
+									<div class="thinkingBubbleBG">
+										<p class="thinkingBubbleName">Hazel</p>
+										<p class="thinkingBubbleText" id="thinkingBubbleTextLogin">Welcome back!</p>
+									</div>
+								</div>
 								<div class="inputBox">
-									<label for="inputNick">Enter your nickname</label>
-									<input type="text" id="inputNick" class="inputText smallInput" placeholder="nick" autocomplete="off" />
+									<label for="inputNick">Enter your nickname or email</label>
+									<input type="text" id="inputNick" class="inputText smallInput" placeholder="NICK OR EMAIL" autocomplete="off" />
 								</div>
 								<div class="inputBox password">
 									<label for="inputPass">Enter your Password</label>
-									<input type="password" id="inputPass" class="inputText smallInput" placeholder="password" autocomplete="off" />
+									<input type="password" id="inputPass" class="inputText smallInput" placeholder="PASSWORD" autocomplete="off" />
 								</div>
-								<button class="defaultButton loginUser">
-									Login
+								<button class="defaultButton loginUser" id="loginUserButton">
+									<p class="defaultButtonText">Login</p>
 									<div class="defaultButtonBG">
 										<div class="defaultButtonBGWave"></div>
+										<div class="defaultButtonBGWave wave2"></div>
 									</div>
 								</button>
 								<button class="defaultButton newUser">
-									New User
+									<p class="defaultButtonText">New User</p>
+									<div class="defaultButtonBG">
+										<div class="defaultButtonBGWave"></div>
+										<div class="defaultButtonBGWave wave2"></div>
+									</div>
+								</button>
+
+								<button class="defaultButton googleLogin" id="gLoginId">
+									<p class="defaultButtonText">G Login</p>
 									<div class="defaultButtonBG">
 										<div class="defaultButtonBGWave"></div>
 										<div class="defaultButtonBGWave wave2"></div>
 									</div>
 								</button>
 							</div>
+							<!-- NEW USER PAGE -->
 							<div class="newUserPage profileId" id="newUserId">
 								<img src="images/avatar1.png" alt="" class="avatar1" />
 								<img src="images/avatar2.png" alt="" class="avatar2" />
 								<div class="loginBoxBG">
-									<img src="images/decoration1.svg" alt="" class="decoration1" />
+									<div class="decoration1"></div>
+								</div>
+								<div class="topCover"></div>
+								<div class="thinkingBubble">
+									<div class="thinkingBubbleBG">
+										<p class="thinkingBubbleName">Rosie</p>
+										<p class="thinkingBubbleText" id="thinkingBubbleTextNewUser">Welcome, new resident!</p>
+									</div>
 								</div>
 
-								<p class="loginText">Welcome, new resident!</p>
 								<div class="inputBox">
 									<label for="inputNick">Your new Nick</label>
-									<input type="text" id="inputNick" class="inputText" placeholder="nick" />
+									<input type="text" id="inputNickNew" class="inputText smallInput" placeholder="NICK" autocomplete="off" />
 								</div>
 								<div class="inputBox email">
 									<label for="inputEmail">Your Email!</label>
-									<input type="text" id="inputEmail" class="inputText" placeholder="E-Mail" />
+									<input type="text" id="inputEmailNew" class="inputText smallInput" placeholder="E-MAIL" autocomplete="off" />
 								</div>
 								<div class="inputBox passwordNew">
 									<label for="inputPass">Your Password</label>
-									<input type="password" id="inputPass" class="inputText" placeholder="password" />
+									<input type="password" id="inputPassNew" class="inputText smallInput" placeholder="PASSWORD" autocomplete="off" />
 								</div>
-								<button class="defaultButton createNew" id="loginButtonNewUser">Create</button>
-								<button class="defaultButton backNew" id="backButtonNewUser">Back</button>
+								<button class="defaultButton createNew" id="loginButtonNewUser">
+									<p class="defaultButtonText">Create</p>
+									<div class="defaultButtonBG">
+										<div class="defaultButtonBGWave"></div>
+										<div class="defaultButtonBGWave wave2"></div>
+									</div>
+								</button>
+								<button class="defaultButton backNew" id="backButtonNewUser">
+									<p class="defaultButtonText">Back</p>
+									<div class="defaultButtonBG">
+										<div class="defaultButtonBGWave"></div>
+										<div class="defaultButtonBGWave wave2"></div>
+									</div>
+								</button>
+							</div>
+
+							<!-- USER PROFILE PAGE -->
+							<div class="profilePage profileId" id="profileId">
+								<!-- MATCHES  -->
+								<div class="matchesProfile">
+									<div class="homePlayersRankBG"></div>
+									<p class="playersRankTitle">Match History</p>
+									<div class="playersRankList">
+										<div class="playersRankListBG matchListBG"></div>
+										<!-- MATCH LIST -->
+										<table id="matchListId" class="playerRankTable matchList">
+											<tr>
+												<th>VS</th>
+												<th>Score</th>
+												<th>Date</th>
+											</tr>
+											<tr>
+												<td>-----</td>
+												<td>-----</td>
+												<td>-----</td>
+											</tr>
+											<tr>
+												<td>-----</td>
+												<td>-----</td>
+												<td>-----</td>
+											</tr>
+											<tr>
+												<td>-----</td>
+												<td>-----</td>
+												<td>-----</td>
+											</tr>
+											<tr>
+												<td>-----</td>
+												<td>-----</td>
+												<td>-----</td>
+											</tr>
+											<tr>
+												<td>-----</td>
+												<td>-----</td>
+												<td>-----</td>
+											</tr>
+										</table>
+										<!-- REFRESH MATCH BUTTOM -->
+										<div class="gameSelectorButton refreshMatchButton" id="refreshMatchId">
+											<div class="gameSelectorButtonBG"></div>
+											<p class="gameSelectorText refreshMatchButtomText">Refresh!</p>
+										</div>
+									</div>
+								</div>
+								<!-- FRIENDS  -->
+								<div class="friendsProfile">
+									<div class="friendsProfileBG"></div>
+									<p class="playersRankTitle">Friends List</p>
+									<div class="playersRankList">
+										<div class="playersRankListBG friendsListBG"></div>
+										<!-- FRIEND LIST -->
+										<table id="friendListId" class="playerRankTable friendList">
+											<tr>
+												<th class="friendTh">Name</th>
+												<th class="friendTh">Status</th>
+												<!-- <th>Result</th> -->
+											</tr>
+											<tr>
+												<td>-----</td>
+												<td>-----</td>
+												<!-- <td>-----</td> -->
+											</tr>
+											<tr>
+												<td>-----</td>
+												<td>-----</td>
+												<!-- <td>-----</td> -->
+											</tr>
+											<tr>
+												<td>-----</td>
+												<td>-----</td>
+												<!-- <td>-----</td> -->
+											</tr>
+											<tr>
+												<td>-----</td>
+												<td>-----</td>
+												<!-- <td>-----</td> -->
+											</tr>
+											<tr>
+												<td>-----</td>
+												<td>-----</td>
+												<!-- <td>-----</td> -->
+											</tr>
+										</table>
+									</div>
+									<!-- ADD FRIEND -->
+									<div>
+										<!-- ADD FRIEND BUTTOM -->
+										<div class="gameSelectorButton addFriendButton" id="addFriendId">
+											<div class="gameSelectorButtonBG"></div>
+											<p class="gameSelectorText addFriendButtomText">Add!</p>
+										</div>
+									</div>
+									<!-- <div class="inputBox"> -->
+									<!-- <label for="inputNick">Enter your nickname</label> -->
+									<input type="text" id="inputFriend" class="inputText smallInput friendInput" placeholder="FRIEND NICK" autocomplete="off" />
+									<!-- </div> -->
+
+									<button onclick="updateFriends()" class="refreshFriendListButton" id="refreshFriendListId">
+										<div class="refreshIcon"></div>
+									</button>
+								</div>
+
+								<div class="loginBoxBG">
+									<div class="decoration1"></div>
+								</div>
+
+								<div class="profileHeader">
+									<div class="profileHeaderBG"></div>
+									<div class="profileHeaderDecoration"></div>
+									<p class="profileHeaderText">Welcome, zeeeeeee</p>
+								</div>
+								<div class="profileMainBody">
+									<div class="profileMainBodyBG"></div>
+									<!-- PROFILE PHOTO -->
+									<div class="profilePhoto">
+										<div class="profilePhotoBG"></div>
+										<div class="profilePhotoLocation"></div>
+									</div>
+									<div class="winsBox">
+										<div class="boxNail1"></div>
+										<div class="boxNail2"></div>
+										<div class="winsBoxBG"></div>
+										<p class="boxText">Wins</p>
+										<p class="boxNumber" id="boxWinsNumber"></p>
+									</div>
+									<div class="winsBox loses">
+										<div class="boxNail1"></div>
+										<div class="boxNail2"></div>
+										<div class="winsBoxBG"></div>
+										<p class="boxText">Loses</p>
+										<p class="boxNumber" id="boxLosesNumber"></p>
+									</div>
+									<div class="winsBox games">
+										<div class="boxNail1"></div>
+										<div class="boxNail2"></div>
+										<div class="winsBoxBG"></div>
+										<p class="boxText">Games</p>
+										<p class="boxNumber" id="boxGamesNumber"></p>
+									</div>
+									<div class="winsBox position">
+										<div class="boxNail1"></div>
+										<div class="boxNail2"></div>
+										<div class="winsBoxBG"></div>
+										<p class="boxText">Position</p>
+										<p class="boxNumber" id="positionId"></p>
+									</div>
+									<div class="winRateBox">
+										<div class="winRateBoxBG"></div>
+										<p class="winRateText" id="winRateTextId">Current Winrate: ...</p>
+									</div>
+								</div>
+
+								<!-- MATCH BUTTOM -->
+								<button class="defaultButton matchesButton" id="matchesButtonID">
+									<svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+										<path d="M12 15l-5-5 5-5" stroke="#333" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+									</svg>
+									<div class="defaultButtonBG">
+										<div class="defaultButtonBGWave"></div>
+										<div class="defaultButtonBGWave wave2"></div>
+									</div>
+								</button>
+
+								<!-- FRIEND BUTTOM -->
+								<button class="defaultButton friendsButton" id="friendsButtonID">
+									<svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+										<path d="M8 5l5 5-5 5" stroke="#333" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+									</svg>
+									<div class="defaultButtonBG">
+										<div class="defaultButtonBGWave"></div>
+										<div class="defaultButtonBGWave wave2"></div>
+									</div>
+								</button>
+
+								<!-- LOGOUT BUTTOM -->
+								<button class="defaultButton logoutButton" id="logoutButton">
+									<p class="defaultButtonText">Logout</p>
+									<div class="defaultButtonBG">
+										<div class="defaultButtonBGWave"></div>
+										<div class="defaultButtonBGWave wave2"></div>
+									</div>
+								</button>
+
+								<!-- 2AF BUTTOM -->
+								<button class="defaultButton showTwoAF" id="twoFactorButtonID">
+									<p class="defaultButtonText">2AF</p>
+									<div class="defaultButtonBG">
+										<div class="defaultButtonBGWave"></div>
+										<div class="defaultButtonBGWave wave2"></div>
+									</div>
+								</button>
+								<!-- PROFILE OPTIONS BUTTOM -->
+								<button class="defaultButton changeNick" id="profileOptionsButtonID">
+									<p class="defaultButtonText">Options</p>
+									<div class="defaultButtonBG">
+										<div class="defaultButtonBGWave"></div>
+										<div class="defaultButtonBGWave wave2"></div>
+									</div>
+								</button>
+							</div>
+
+							<!-- twoFactorPage -->
+							<div class="twoFactorPage profileId" id="twoFactorId">
+								<div class="loginBoxBG">
+									<div class="decoration1"></div>
+								</div>
+								<div class="topCover"></div>
+								<!-- <img src="images/avatar3.png" alt="" class="avatar3" /> -->
+								<div class="inputBox twoFactorInput">
+									<label for="twoFactorInput">Enter your TwoFactor</label>
+									<input type="text" id="twoFactorPass" class="inputText smallInput" placeholder="2FA" autocomplete="off" />
+								</div>
+
+								<div class="QrCode" id="QrCodeId">
+									<div class="QrCodeBox" id="QrCodeBoxId"></div>
+								</div>
+
+								<button class="defaultButton showQr" id="showQrButtonID">
+									<p class="defaultButtonText">Show Qr</p>
+									<div class="defaultButtonBG">
+										<div class="defaultButtonBGWave"></div>
+										<div class="defaultButtonBGWave wave2"></div>
+									</div>
+								</button>
+
+								<!-- ENABLE TWO FACTOR CODE BUTTOM -->
+								<button class="defaultButton twoFactor" id="verifyTwoFactorButtonID">
+									<p class="defaultButtonText">Enable!</p>
+									<div class="defaultButtonBG">
+										<div class="defaultButtonBGWave"></div>
+										<div class="defaultButtonBGWave wave2"></div>
+									</div>
+								</button>
+
+								<!-- DISABLE TWO FACTOR CODE BUTTOM -->
+								<button class="defaultButton twoFactor" id="disableTwoFactorButtonID">
+									<p class="defaultButtonText">Disable!</p>
+									<div class="defaultButtonBG">
+										<div class="defaultButtonBGWave"></div>
+										<div class="defaultButtonBGWave wave2"></div>
+									</div>
+								</button>
+
+								<!-- BACK BUTTON 2F -->
+								<button class="defaultButton back2F" id="back2FId">
+									<p class="defaultButtonText">Back</p>
+									<div class="defaultButtonBG">
+										<div class="defaultButtonBGWave"></div>
+										<div class="defaultButtonBGWave wave2"></div>
+									</div>
+								</button>
 							</div>
 						</div>
-
-						<!-- <div class="profileBox">
-							<div class="profileBackground absolute opacity-50 -inset-0 bg-gradient-to-r from-pink-600 to-purple-600 rounded-2xl blur"></div>
-							<div class="profileName">
-								<p id="profileNickId">Cristiano Ronaldo</p>
-							</div>
-							<div class="profileIcon">
-								<img src="images/profileDefault.png" alt="" class="profileImg" />
-							</div>
-							<div class="profileStatusBox">
-								<div class="statusBox">
-									<div class="statusBoxBg"></div>
-									<p class="statusBoxText">Wins</p>
-									<p id="winNumberId" class="winNumber">NULL</p>
-								</div>
-								<div class="statusBox">
-									<div class="statusBoxBg"></div>
-									<p class="statusBoxText">Loses</p>
-									<p id="loseNumberId" class="loseNumber">NULL</p>
-								</div>
-								<div class="statusBox">
-									<div class="statusBoxBg"></div>
-									<p class="statusBoxText">Plays</p>
-									<p id="playNumberId" class="playNumber">NULL</p>
-								</div>
-							</div>
-						</div> -->
 					</div>
 				</div>
 			</div>
 		</div>
-		<script src="perfilHandler.js"></script>
-		<script src="musicHandler.js"></script>
-		<script src="loginHandler.js"></script>
-		<script src="script.js"></script>
+		<script src="dist/script.js"></script>
+		<script src="dist/contestHandler.js"></script>
+		<script src="dist/loginHandler.js"></script>
+		<script src="dist/perfilHandler.js"></script>
+		<script src="dist/musicHandler.js"></script>
+		<script src="dist/speechSystem.js"></script>
+		<script src="dist/gameSelector.js"></script>
+		<script src="dist/homeHandler.js"></script>
+		<script src="dist/gameScore.js"></script>
+		<script src="dist/gamePong.js"></script>
+		<script src="dist/tournamentManager.js"></script>
+		<script src="dist/friendsHandler.js"></script>
 	</body>
 </html>

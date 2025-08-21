@@ -1,0 +1,32 @@
+version: "3.8"
+services:
+  frontend:
+    container_name: "frontend"
+    build: ./frontEnd
+    ports:
+      - "5173:5173"
+      - "8080:8080"
+    volumes:
+      - ./frontEnd:/app
+      - /app/node_modules
+    depends_on:
+      - backend
+    networks:
+      - app-network
+
+  backend:
+    container_name: "backend"
+    build: ./BackEnd
+    ports:
+      - "3000:3000"
+    volumes:
+      - backend-db:/app/db
+      - ./uploads:/app/uploads
+    networks:
+      - app-network
+
+volumes:
+  backend-db:
+
+networks:
+  app-network:

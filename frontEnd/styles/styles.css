@@ -1,6 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Roboto&display=swap");
-@import "tailwindcss";
 
 @font-face {
 	font-family: animalCrossing;
@@ -18,7 +17,6 @@
 }
 
 body {
-	/* overflow: hidden; */
 	height: 100vh;
 }
 
@@ -32,7 +30,6 @@ body {
 
 .mainBodyBackground {
 	position: relative;
-
 	width: 100vw;
 	height: 100vh;
 }
@@ -58,16 +55,11 @@ body {
 	right: 50%;
 	left: 50%;
 	translate: -50%;
-	/* background-color: rgba(0, 0, 0, 0.507); */
-	/* backdrop-filter: blur(6.9px); */
-	/* -webkit-backdrop-filter: blur(6.9px); */
-	/* border: 20px solid rgba(255, 255, 255, 1); */
 }
 
 .backgroudCenterBg {
 	position: absolute;
-	/* z-index: 0; */
-	/* top: 0px; */
+
 	width: 80vw;
 	height: 100%;
 	right: 50%;
@@ -78,7 +70,6 @@ body {
 	box-shadow: 0 4px 30px rgba(0, 0, 0, 0.753);
 	backdrop-filter: blur(10.9px);
 	-webkit-backdrop-filter: blur(10.9px);
-	/* border: 3px solid rgba(255, 255, 255, 0.85); */
 	outline: 5px solid rgba(255, 255, 255, 0.85);
 	outline-offset: -5px;
 }
@@ -87,7 +78,6 @@ body {
 	position: absolute;
 	text-align: center;
 	width: 95%;
-	/* height: 1000px; */
 	right: 50%;
 	left: 50%;
 	background-color: red;
@@ -105,8 +95,6 @@ nav a {
 	cursor: pointer;
 	color: blue;
 	text-decoration: underline;
-	/* z-index: 0; */
-	/* padding-top: 500px; */
 }
 
 .page {

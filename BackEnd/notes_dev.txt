@@ -7,10 +7,9 @@ npm install @fastify/cors #conect to front
 curl -X POST http://localhost:3000/register \
   -H "Content-Type: application/json" \
   -d '{
-    "name": "diogo",
+    "nickname": "diogosan",
     "password": "1234",
-    "email": "diogo@example.com",
-    "nickname": "diogosan"
+    "email": "diogo@example.com"
   }'
 
 
@@ -20,8 +19,35 @@ curl -X POST http://localhost:3000/login \
 
 curl http://localhost:3000/users
 
+curl -X POST http://localhost:3000/tournament \
+  -H "Content-Type: application/json" \
+  -d '{"name": "Diogo'\''s Epic Clash", "players": ["Diogo", "Ana", "Rui", "Joana"]}'
 
+curl -X POST http://localhost:3000/test/reset-database
+
+to remove n last commit
+	git reset --hard HEAD~1
 
 node src/index.js
 
 page 175 index.html
+
+
+
+
+curl -X POST http://localhost:3000/join-tournament \
+  -H "Content-Type: application/json" \
+  -d '{"nick": "bousa", "code": "1055"}'
+
+curl -X POST http://localhost:3000/join-tournament \
+  -H "Content-Type: application/json" \
+  -d '{"nick": "diodos-s", "code": "5515"}'
+
+curl -X POST http://localhost:3000/join-tournament \
+  -H "Content-Type: application/json" \
+  -d '{"nick": "bde", "code": "1055"}'
+
+
+postman
+
+
