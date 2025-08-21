@@ -431,6 +431,9 @@ async function getNickOnLocalStorage()
 async function getTournamentPin(): Promise<string | null> { //TODO test this in multyPlayer
 	const token = getCookie("token");
 
+	if (!token)
+		return ;
+
 	try {
 		const response = await fetch(`${backendUrl}/get-tournament-pin`, {
 			method: "GET",
@@ -458,6 +461,9 @@ async function getTournamentPin(): Promise<string | null> { //TODO test this in 
 
 async function saveTournamentPin(pin: string): Promise<void> {
 	const token = getCookie("token");
+
+	if (!token)
+		return ;
 
 	try {
 		const response = await fetch(`${backendUrl}/save-tournament-pin`, {
