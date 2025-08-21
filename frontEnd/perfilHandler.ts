@@ -102,12 +102,16 @@ async function getUserStats(nickname: string) {
 				flipboardNumberAnimation(stats.defeats.toString(), losesNumber);
 				flipboardNumberAnimation(stats.games_played.toString(), gamesNumber);
 				flipboardNumberAnimation(positionStr, positionNumber);
-				flipSound.currentTime = 0;
-				flipSound.play();
-				setTimeout(() => {
-					flipSound.pause();
+
+				if (window.location.hash === "#profile") {
 					flipSound.currentTime = 0;
-				}, 2000);
+					flipSound.play();
+					setTimeout(() => {
+						flipSound.pause();
+						flipSound.currentTime = 0;
+					}, 2000);
+				}
+
 				await setProfileAvatar();
 				winRateText.textContent = "Current Winrate: " + stats.win_percentage;
 			})
