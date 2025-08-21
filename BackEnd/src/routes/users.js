@@ -5,7 +5,7 @@ const path = require('path');
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 // Frontend base URL used to build absolute URL for default assets
-const FRONTEND_URL = process.env.FRONTEND_URL || 'http://localhost:5173';
+const FRONTEND_URL = process.env.FRONTEND_URL || 'https://localhost:5173';
 
 module.exports = async function (fastify) {
 	fastify.get("/users", async (request, reply) => {
