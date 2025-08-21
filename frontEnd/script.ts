@@ -33,8 +33,6 @@ document.querySelectorAll(".defaultButton").forEach((btn) => {
 });
 
 function navigate(page: string) {
-
-
 	document.querySelectorAll(".page").forEach((p) => p.classList.remove("active"));
 	stopSpech();
 
@@ -50,8 +48,6 @@ function navigate(page: string) {
 }
 
 function navigateWithoutHistory(page: string) {
-
-
 	document.querySelectorAll(".page").forEach((p) => p.classList.remove("active"));
 	const targetPage = document.getElementById(page);
 	if (targetPage) {
@@ -76,15 +72,15 @@ async function handlePageChange(page: string) {
 			break;
 		case "contest":
 			changePageTo(contestMainPage, contestMainPage);
-			let contestIntervalId = setInterval(async () => {
-				const hash = window.location.hash;
+			// let contestIntervalId = setInterval(async () => {
+			// 	const hash = window.location.hash;
 
-				if (!hash.startsWith("#contest")) {
-					await removePlayer();
-					stopContestPolling();
-					clearInterval(contestIntervalId!);
-				}
-			}, 100);
+			// 	if (!hash.startsWith("#contest")) {
+			// 		await removePlayer();
+			// 		stopContestPolling();
+			// 		clearInterval(contestIntervalId!);
+			// 	}
+			// }, 100);
 
 			break;
 		case "pong":
@@ -117,18 +113,15 @@ window.addEventListener("popstate", (event) => {
 window.addEventListener("load", async () => {
 	var page = location.hash.replace("#", "") || "home";
 	console.log(`📍 Initial page load: ${page}`);
-	if (isGamePage(page))
-		return;
+	if (isGamePage(page)) return;
 	if (page === "contest") {
-		await removePlayer();
+		// await removePlayer();
 		stopContestPolling();
 	}
-	if( page === "pong/multiplayerMenu")
-	{
-		page =  "game1";
+	if (page === "pong/multiplayerMenu") {
+		page = "game1";
 		console.log(page);
 	}
-
 
 	history.replaceState({ page: page }, "", `#${page}`);
 	navigateWithoutHistory(page);
@@ -140,7 +133,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 	if (page === "contest") {
 		console.log("Page is refreshing or closing, removing player...");
-		await removePlayer();
+		// await removePlayer();
 		stopContestPolling();
 	}
 	navigateWithoutHistory(page);

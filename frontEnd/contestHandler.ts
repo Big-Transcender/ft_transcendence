@@ -139,7 +139,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 		console.log(numberOfPlayers, startedContest);
 		if (numberOfPlayers === 4 && !startedContest) {
 			startedContest = true;
-			stopContestPolling();
+			// stopContestPolling();
 			startTournament(id);
 		} else displayWarning("Wait for all players!");
 	});
@@ -279,7 +279,7 @@ async function getInfoFromContest(pin: string) {
 		console.log("info from matches:", data.players);
 		let players = new Array(4).fill(null);
 		data.players.forEach((player, index) => {
-			if (index < 3) {
+			if (index < 4) {
 				// Ensure we only populate up to 4 positions
 				players[index] = player;
 			}
