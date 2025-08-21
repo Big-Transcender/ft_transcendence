@@ -380,11 +380,6 @@ async function getNickOnLocalStorage() {
     }
     return null;
 }
-// function await getNickOnLocalStorage(): string | null { 
-// 	let nickname: string | null = null;
-// 	getNickOnLocalStorageSync().then((res) => (nickname = res));
-// 	return nickname;
-// }
 // function getTournamentPin() {
 // 	return localStorage.getItem("pin");
 // }
