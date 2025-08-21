@@ -33,9 +33,7 @@ document.querySelectorAll(".defaultButton").forEach((btn) => {
 });
 
 function navigate(page: string) {
-	if (document.getElementById(page)?.classList.contains("active")) {
-		return;
-	}
+
 
 	document.querySelectorAll(".page").forEach((p) => p.classList.remove("active"));
 	stopSpech();
@@ -52,9 +50,7 @@ function navigate(page: string) {
 }
 
 function navigateWithoutHistory(page: string) {
-	if (document.getElementById(page)?.classList.contains("active")) {
-		return;
-	}
+
 
 	document.querySelectorAll(".page").forEach((p) => p.classList.remove("active"));
 	const targetPage = document.getElementById(page);
