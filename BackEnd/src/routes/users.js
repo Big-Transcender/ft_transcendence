@@ -5,7 +5,7 @@ const path = require('path');
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 // Frontend base URL used to build absolute URL for default assets
-const FRONTEND_URL = process.env.FRONTEND_URL || 'http://localhost:5173';
+const FRONTEND_URL = process.env.FRONTEND_URL || 'https://localhost:5173';
 
 module.exports = async function (fastify) {
 	fastify.get("/users", async (request, reply) => {
@@ -30,6 +30,7 @@ module.exports = async function (fastify) {
 
 		try {
 			await db.prepare("UPDATE users SET nickname = ? WHERE id = ?").run(newNickname, userId);
+			//TODO fix the nickName change here
 			return reply.send({ success: true });
 		} catch (err) {
 			return reply.code(500).send({ error: "Database error" });

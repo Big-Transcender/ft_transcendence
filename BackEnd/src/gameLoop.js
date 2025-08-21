@@ -22,6 +22,25 @@ function startGameLoopForMatch(matchId, updateBall, isLocal = false, aiGame = fa
 	if (teamGame)
 		requiredPlayers = 4
 
+	let waitingForPlayers = true;
+	setTimeout(() => {
+		if (clients.size < requiredPlayers) {
+			console.log(`⏳ Not enough players connected for match ${matchId}. Declaring winner by default.`);
+			if (clients.size === 1) {
+				// Declare the remaining player as the winner
+				player = getNicknameByUserId(match.gameState.playerDbId.p1)
+				match.gameState.winnerName = player;
+				console.log(`🏆 Player (${player}) wins match ${matchId} by default!`);
+				cleanupMatch(matchId, "opponentDidNotConnect");
+			} else {
+				// No players connected, clean up the match
+				console.log(`🗑️ No players connected for match ${matchId}. Cleaning up.`);
+				cleanupMatch(matchId, "noPlayersConnected");
+			}
+		}
+		waitingForPlayers = false;
+	}, 15000); 
+
 	match.intervalId = setInterval(() => {
 		
 		if (clients.size === requiredPlayers) { //requiredPlayers

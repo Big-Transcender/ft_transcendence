@@ -91,7 +91,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
         else if (await checkIsValidPin(inputPin)) {
             await betterWait(100);
-            if (await joinTournament(getNickOnLocalStorage(), inputPin)) {
+            if (await joinTournament(await getNickOnLocalStorage(), inputPin)) {
                 changePageTo(joinContestPage, joinedContestPage);
                 getInfoFromContest(inputPin);
                 startContestPolling(inputPin);
@@ -189,7 +189,7 @@ function stopContestPolling() {
 async function createNewContest() {
     //Create Contest here
     const tournamentName = document.getElementById("inputContestNameId").value.trim();
-    const nick = getNickOnLocalStorage();
+    const nick = await getNickOnLocalStorage();
     const token = getCookie("token");
     console.log("tournamentName:", tournamentName);
     console.log("nick:", nick);
@@ -210,11 +210,11 @@ async function createNewContest() {
             return null;
         }
         else {
+            await saveTournamentPin(data.tournamentId);
+            pin = data.tournamentId;
             changePageTo(createContestPage, joinedContestPage);
             // getInfoFromContest(data.code);
             startContestPolling(data.code);
-            pin = data.tournamentId;
-            localStorage.setItem("pin", pin);
         }
         return data;
     }
@@ -286,9 +286,9 @@ async function joinTournament(nick, code) {
         });
         const data = await response.json();
         if (response.ok) {
-            console.log("Joined tournament:", data);
+            await saveTournamentPin(data.tournamentId);
             pin = data.tournamentId;
-            localStorage.setItem("pin", pin);
+            console.log("Joined tournament:", data);
             return true;
             // handle success (e.g., update UI)
         }
@@ -338,7 +338,7 @@ async function startTournament(tournamentId) {
     var data = await getTournamentData(tournamentId);
     if (!data)
         return;
-    const nick = getNickOnLocalStorage();
+    const nick = await getNickOnLocalStorage();
     console.log(nick);
     console.log(data.players[0]);
     if (nick === data.players[0] || nick === data.players[1]) {
@@ -392,10 +392,10 @@ async function getTournamentData(tournamentId) {
     return data.tournament;
 }
 async function removePlayer() {
-    pin = getTournamentPin();
+    pin = await getTournamentPin();
     if (!pin)
         return;
-    const token = localStorage.getItem("token");
+    const token = getCookie("token");
     await fetch(`${backendUrl}/delete-player-tournament`, {
         method: "POST",
         headers: {

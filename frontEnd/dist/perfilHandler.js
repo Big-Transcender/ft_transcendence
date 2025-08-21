@@ -15,7 +15,9 @@ let matchOpen = false;
 let friendsOpen = false;
 let isPlayingSoundMatch = false;
 let isPlayingSoundFriends = false;
-getUserStats(getNickOnLocalStorage());
+(async () => {
+    getUserStats(await getNickOnLocalStorage());
+})();
 preVisualizePhoto();
 async function flipboardNumberAnimation(target, targetBox) {
     targetBox.textContent = "";
@@ -488,7 +490,7 @@ async function updateFriends() {
     }
 }
 async function updateMatchHistory() {
-    const nickname = getNickOnLocalStorage();
+    const nickname = await getNickOnLocalStorage();
     if (!nickname)
         return;
     try {

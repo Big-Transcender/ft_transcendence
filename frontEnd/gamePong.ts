@@ -2,19 +2,19 @@ let socket: WebSocket | null = null;
 let socketInitialized = false;
 let currentMatchId: string | null = null;
 let currentIsLocal: boolean = true;
+let localNick;
 
 interface MatchCheckResponse {
 	exists: boolean;
 	playerCount: number;
 }
 
-function startPongWebSocket(
-	matchId: string,
-	isLocal: boolean = false,
-	aiGame: boolean = false,
-	teamGame: boolean = false,
-	localNicks: string[] = null
-) {
+(async () => {
+	localNick = await getNickOnLocalStorage();
+})();
+
+function startPongWebSocket( matchId: string, isLocal: boolean = false, aiGame: boolean = false, teamGame: boolean = false, localNicks: string[] = null) {
+	
 	if (socket) {
 		console.log("Closing existing WebSocket connection...");
 		socket.close();
@@ -35,14 +35,18 @@ function startPongWebSocket(
 	const keysPressed = new Set<string>();
 
 	// --- WebSocket Setup
-	socket = new WebSocket(`ws://${window.location.hostname}:3000/game`);
+	const wsProtocol = window.location.protocol === "https:" ? "wss" : "ws";
+	const wsHost = window.location.host;
+	socket = new WebSocket(`${wsProtocol}://${wsHost}/game`);
 
 	let nickname: string;
 	let opponentNickname: string | null = null;
 	if (localNicks && localNicks.length > 1) {
 		nickname = localNicks[0];
 		opponentNickname = localNicks[1];
-	} else nickname = getNickOnLocalStorage();
+	} else nickname = localNick;
+
+
 
 	socket.addEventListener("open", () => {
 		console.log("✅ Connected to WebSocket server");
@@ -157,7 +161,7 @@ function startPongWebSocket(
 				}
 				case "assign": {
 					playerId = data.payload;
-					if (playerId === "p1" && !isLocal) setGameScore(getNickOnLocalStorage(), "Player 2");
+					if (playerId === "p1" && !isLocal) setGameScore(localNick, "Player 2");
 					break;
 				}
 				case "PlayerBoard": {

@@ -10,7 +10,7 @@ function setupUnifiedWebSocket(server) {
     const wss = new WebSocket.Server({ server });
 
     wss.on('connection', (ws, request) => {
-        const url = new URL(request.url, `http://${request.headers.host}`);
+        const url = new URL(request.url, `https://${request.headers.host}`);
         const pathname = url.pathname;
 
         console.log(`🔌 WebSocket connection to: ${pathname}`);

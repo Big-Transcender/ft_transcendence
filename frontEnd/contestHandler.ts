@@ -15,6 +15,7 @@ const pongContestPage = document.getElementById("pongContestId");
 const pinBox = document.querySelector(".contestPinBox");
 var pin = null;
 var numberOfPlayers = 0;
+var startedContest = false;
 
 var LocalTournaments = new Map();
 
@@ -103,7 +104,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 			displayWarning("Invalid pin.");
 		} else if (await checkIsValidPin(inputPin)) {
 			await betterWait(100);
-			if (await joinTournament(getNickOnLocalStorage(), inputPin)) {
+			if (await joinTournament(await getNickOnLocalStorage(), inputPin)) {
 				changePageTo(joinContestPage, joinedContestPage);
 				getInfoFromContest(inputPin);
 				startContestPolling(inputPin);
@@ -113,7 +114,9 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 	// CREATE NEW CONTEST BUTTON
 	createNewContestButton.addEventListener("click", async () => {
-		if (await !checkIfLogged()) {
+		
+		var isLoged = await !checkIfLogged()
+		if (!isLoged) {
 			displayWarning("You need to log in.");
 		} else {
 			await betterWait(100);
@@ -123,22 +126,20 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 	// CREATE NEW CONTEST LOCAL BUTTON
 	createNewContestLocalButton.addEventListener("click", async () => {
-		if (await !checkIfLogged()) {
-			displayWarning("You need to log in.");
-		} else {
+
 			await betterWait(100);
 			// createNewContest();
 			openPopupContestLocal();
 			// changePopupTo()
-		}
 	});
 
 	// START THE CONTEST
 	startContestButton.addEventListener("click", async () => {
 		const id = pin;
-		const players = ["diogosan", "Bde", "cacarval", "bousa"];
 		//startLocalTournament(id, players);
-		if (numberOfPlayers === 4) {
+		console.log(numberOfPlayers, startedContest);
+		if (numberOfPlayers === 4 && !startedContest) {
+			startedContest = true;
 			stopContestPolling();
 			startTournament(id);
 		} else displayWarning("Wait for all players!");
@@ -211,7 +212,7 @@ function stopContestPolling() {
 async function createNewContest() {
 	//Create Contest here
 	const tournamentName = (document.getElementById("inputContestNameId") as HTMLInputElement).value.trim();
-	const nick = getNickOnLocalStorage();
+	const nick = await getNickOnLocalStorage();
 	const token = getCookie("token");
 
 	console.log("tournamentName:", tournamentName);
@@ -234,11 +235,11 @@ async function createNewContest() {
 			displayWarning(data.error);
 			return null;
 		} else {
+			await saveTournamentPin(data.tournamentId);
+			pin = data.tournamentId;
 			changePageTo(createContestPage, joinedContestPage);
 			// getInfoFromContest(data.code);
 			startContestPolling(data.code);
-			pin = data.tournamentId;
-			localStorage.setItem("pin", pin);
 		}
 
 		return data;
@@ -274,7 +275,7 @@ async function getInfoFromContest(pin: string) {
 			}
 		});
 
-		numberOfPlayers = players.length;
+		numberOfPlayers = players.filter((player) => player !== null).length;
 		for (let i = 0; i < players.length; i++) {
 			if (players[i]?.nickname) {
 				const playerName = playerPlaces[i].querySelector(".playerContestPlaceName");
@@ -312,9 +313,9 @@ async function joinTournament(nick: string, code: string) {
 		});
 		const data = await response.json();
 		if (response.ok) {
-			console.log("Joined tournament:", data);
+			await saveTournamentPin(data.tournamentId);
 			pin = data.tournamentId;
-			localStorage.setItem("pin", pin);
+			console.log("Joined tournament:", data);
 			return true;
 			// handle success (e.g., update UI)
 		} else {
@@ -366,7 +367,7 @@ async function startTournament(tournamentId: string) {
 
 	if (!data) return;
 
-	const nick = getNickOnLocalStorage();
+	const nick = await getNickOnLocalStorage();
 
 	console.log(nick);
 	console.log(data.players[0]);
@@ -428,10 +429,12 @@ async function getTournamentData(tournamentId: string) {
 }
 
 async function removePlayer() {
-	pin = getTournamentPin();
-	if (!pin) return;
+	
+	pin = await getTournamentPin();
+	if (!pin)
+		return ;
 
-	const token = localStorage.getItem("token");
+	const token = getCookie("token");
 	await fetch(`${backendUrl}/delete-player-tournament`, {
 		method: "POST",
 		headers: {

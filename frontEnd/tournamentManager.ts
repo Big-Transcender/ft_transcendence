@@ -1,8 +1,8 @@
 
-window.addEventListener("TournamentMatch", (event: CustomEvent) => {
+window.addEventListener("TournamentMatch", async (event: CustomEvent) => {
 	const { Tournament } = event.detail;
 
-	const nick = getNickOnLocalStorage();
+	const nick = await getNickOnLocalStorage();
 	console.log("lets see the last stage");
 	console.log(Tournament);
 	handleNextFase(nick, Tournament);
@@ -49,7 +49,7 @@ async function handleMatchEnd(currentMatchId: string, winner: string) {
 	try {
 		const token = getCookie("token");
 		console.log("Handling match end...");
-		const nick = getNickOnLocalStorage();
+		const nick = await getNickOnLocalStorage();
 
 		const response = await fetch(`${backendUrl}/isTournamentMatch/${currentMatchId}`, {
 			method: "GET",

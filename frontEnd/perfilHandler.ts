@@ -6,8 +6,8 @@ let winRateText = document.getElementById("winRateTextId");
 const gustSound = new Audio("/audios/gust.wav");
 const flipSound = new Audio("/audios/flip.wav");
 
-const backendUrl = `http://${window.location.hostname}:3000`;
-const frontendUrl = `http://${window.location.hostname}:5173`;
+const backendUrl = `/api`;
+const frontendUrl = `/api`;
 
 const matchesProfile = document.querySelector(".matchesProfile") as HTMLElement;
 const friendsProfile = document.querySelector(".friendsProfile") as HTMLElement;
@@ -19,7 +19,10 @@ let friendsOpen = false;
 let isPlayingSoundMatch = false;
 let isPlayingSoundFriends = false;
 
-getUserStats(getNickOnLocalStorage());
+
+(async () => {
+	getUserStats(await getNickOnLocalStorage());
+})();
 preVisualizePhoto();
 
 async function flipboardNumberAnimation(target: string, targetBox): Promise<boolean> {
@@ -540,7 +543,7 @@ async function updateFriends() {
 }
 
 async function updateMatchHistory() {
-	const nickname = getNickOnLocalStorage();
+	const nickname = await getNickOnLocalStorage();
 	if (!nickname) return;
 
 	try {

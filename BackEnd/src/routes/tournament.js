@@ -113,6 +113,8 @@ module.exports = async function (fastify) {
 	
 		console.log("passou protecoes")
 		deletePlayerFromTournament(code, userId);
+		request.session.set("tournamentPin", null);
+
 		return reply.code(200).send({ message: "Tournament deleted!" });
 	});
 };

@@ -39,6 +39,7 @@ async function animateTimer() {
 
 	if (!timer) return;
 	timer.style.opacity = "1";
+	timer.style.animation = "timerAnimation 3s";
 	timerContest.style.opacity = "1";
 	timerContest.style.animation = "timerAnimation 3s";
 
@@ -65,20 +66,17 @@ document.addEventListener("DOMContentLoaded", () => {
 
 	//Singleplayer Pong
 	buttonSinglePong.addEventListener("click", async () => {
-		if (await checkIfLogged()) {
-			changePageTo(gameSelectorPongPage, pongGamePage);
-			const matchId = generateMatchId();
-			updatePageHash(`#pong/${matchId}`);
-			startPongWebSocket(matchId, true, true);
-			animateTimer();
-			setRandomBackground();
-			resetEmotions();
-			setGameScore(getNickOnLocalStorage());
-			backGamePongButton.classList.add("active");
-			showMatchId("NONE");
-		} else {
-			displayWarning("You need to log in.");
-		}
+
+		changePageTo(gameSelectorPongPage, pongGamePage);
+		const matchId = generateMatchId();
+		updatePageHash(`#pong/${matchId}`);
+		startPongWebSocket(matchId, true, true);
+		animateTimer();
+		setRandomBackground();
+		resetEmotions();
+		setGameScore("Vilager");
+		backGamePongButton.classList.add("active");
+		showMatchId("NONE");
 	});
 
 	//Change to Multiplayer type selector
@@ -89,7 +87,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
 	//Change to Multiplayer Versus
 	buttonVersusMP.addEventListener("click", async () => {
-		openPopupPong();
+		if (await checkIfLogged())
+			openPopupPong();
+		else
+			displayWarning("Need to log in to play this");
 	});
 
 	//Change to Multiplayer Local
@@ -97,10 +98,10 @@ document.addEventListener("DOMContentLoaded", () => {
 		changePageTo(gameSelectorPongMultiplayerPage, pongGamePage);
 		const matchId = generateMatchId();
 		updatePageHash(`#pong/${matchId}`);
-		startPongWebSocket(matchId, true, false, false, [getNickOnLocalStorage() || "gigachad", "minichad"]); // true = local mode
+		startPongWebSocket(matchId, true, false, false, [await getNickOnLocalStorage() || "Tom Nook", "Isabele"]); // true = local mode
 		resetEmotions();
 		animateTimer();
-		setGameScore(getNickOnLocalStorage() || "gigachad", "minichad");
+		setGameScore(await getNickOnLocalStorage() || "Tom Nook", "Isabele");
 		backGamePongButton.classList.add("active");
 		showMatchId(matchId);
 	});
@@ -134,7 +135,7 @@ function joinExistingMatch(matchId: string): void {
 	backGamePongButton.classList.add("active");
 	//animateTimer();
 	resetEmotions();
-	//setGameScore("Player 1", getNickOnLocalStorage());
+	//setGameScore("Player 1", await getNickOnLocalStorage());
 }
 
 function createNewMatch(isLocal: boolean = false, aiGame: boolean = false, teamGame: boolean = false): void {
@@ -146,7 +147,7 @@ function createNewMatch(isLocal: boolean = false, aiGame: boolean = false, teamG
 	//animateTimer();
 	resetEmotions();
 	showMatchId(matchId);
-	//setGameScore(getNickOnLocalStorage(), "Player 1");
+	//setGameScore(await getNickOnLocalStorage(), "Player 1");
 }
 
 function showErrorAndReturn(message: string): void {

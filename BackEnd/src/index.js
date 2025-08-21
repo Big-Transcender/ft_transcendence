@@ -1,4 +1,4 @@
-const fastify = require("fastify")({ logger: false });
+const fastify = require("fastify")({ logger: false, trustProxy: true });
 const cors = require("@fastify/cors");
 const path = require("path");
 const fs = require("fs");
@@ -21,9 +21,9 @@ fastify.register(fastifySecureSession, {
 	key: fs.readFileSync(path.join(__dirname, "not-so-secret-key")),
 	cookie: {
 		path: "/", // Make sure path is set
-		httpOnly: true,
-		secure: false, // TODO change to true when we start using https
-		sameSite: "lax", // or 'strict' depending on your setup
+		// httpOnly: true,
+		secure: true, // TODO change to true when we start using https
+		sameSite: "strict", // or 'strict' depending on your setup
 	},
 });
 
@@ -41,7 +41,7 @@ fastifyPassport.use(
     {
       clientID: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-      callbackURL: "http://c1r3s1.42porto.com:3000/auth/google/callback",
+      callbackURL: "https://c1r3s1.42porto.com:3000/auth/google/callback",
     },
     (accessToken, refreshToken, profile, done) => {
       try {
@@ -111,13 +111,13 @@ fastify.get(
 		// Set JWT in cookie (not httpOnly so frontend can read it)
 		res.setCookie("token", token, {
 			path: "/",
-			httpOnly: false,
-			secure: false, // set to true if using https
-			sameSite: "lax",
+			//httpOnly: false,
+			secure: true, // set to true if using https
+			sameSite: "strict",
 			maxAge: 7 * 24 * 60 * 60 // 7 days
 		});
 		console.log(req.hostname);
-		res.redirect(`http://c1r3s1.42porto.com:5173/#profile`);
+		res.redirect(`https://c1r3s1.42porto.com:5173/#profile`);
 	}
 );
 
@@ -148,23 +148,28 @@ fastify.get("/logout", async (req, res) => {
 	req.logout();
 	req.session.delete();
 	res.clearCookie("session", { path: "/" });
+	res.clearCookie("token", { path: "/" });
 
 	return res.send({ success: true });
 });
 
 fastify.get("/me", async (request, reply) => {
-	const sessionUser = request.session.get("user");
-	console.log("Session User:", sessionUser);
 	const token = request.cookies?.token || (request.headers.authorization && request.headers.authorization.split(" ")[1]);
-	console.log("Token:", token);
-	if(!token) {
+
+	if(!token)
 		return reply.status(401).send({ error: "Not logged in" });
-	}
-	if (sessionUser) {
+
+    const decoded = jwt.verify(token, "your-secret-key"); //TODO: key in env
+    request.userId = decoded.userId;
+    const user = db.prepare("SELECT id, nickname FROM users WHERE id = ?").get(decoded.userId);
+    request.session.set('user', { id: user.id, nickname: user.nickname });
+    sessionUser = request.session.get('user');
+
+	if (sessionUser)
 		return { user: sessionUser.user, sessionUser: sessionUser };
-	} else {
+	else
 		return reply.status(401).send({ error: "Not logged in" });
-	}
+
 });
 
 async function registerRoutes() {
@@ -183,7 +188,7 @@ async function start() {
 			origin: (origin, cb) => {
 				//console.log("Incoming Origin:", origin);
 				if (!origin) return cb(null, true);
-				const allowedPattern = /^http:\/\/(10\.11\.\d+\.\d+|c\d+r\d+s\d+\.42porto\.com|localhost:5173|172\.30\.94\.112:5173)(:\d+)?$/;
+				const allowedPattern = /^https?:\/\/(10\.11\.\d+\.\d+|c\d+r\d+s\d+\.42porto\.com|localhost:5173|172\.30\.94\.112:5173)(:\d+)?$/;
 				if (allowedPattern.test(origin)) cb(null, origin);
 				else cb(null, false);
 			},

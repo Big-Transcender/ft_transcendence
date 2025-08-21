@@ -67,16 +67,19 @@ function navigateWithoutHistory(page: string) {
 
 async function handlePageChange(page: string) {
 	// Add any page-specific initialization here
+	startedContest = false;
+	console.log(page);
 	switch (page) {
 		case "profile":
 			if (await !checkIfLogged()) {
 				typeText(bubbleTextLogin, "Welcome back!", 60);
 			} else {
-				getUserStats(getNickOnLocalStorage());
+				getUserStats(await getNickOnLocalStorage());
 				updateMatchHistory();
 			}
 			break;
 		case "contest":
+			changePageTo(contestMainPage, contestMainPage);
 			let contestIntervalId = setInterval(async () => {
 				const hash = window.location.hash;
 
@@ -88,7 +91,11 @@ async function handlePageChange(page: string) {
 			}, 100);
 
 			break;
-		case "home":
+		case "pong":
+			changePageTo(gameSelectorPongPage, gameSelectorPongPage);
+			break;
+		case "pong/multiplayerMenu":
+			changePageTo(gameSelectorPongPage, gameSelectorPongPage);
 			break;
 	}
 }
@@ -112,13 +119,20 @@ window.addEventListener("popstate", (event) => {
 });
 
 window.addEventListener("load", async () => {
-	const page = location.hash.replace("#", "") || "home";
+	var page = location.hash.replace("#", "") || "home";
 	console.log(`📍 Initial page load: ${page}`);
-	if (isGamePage(page)) return;
+	if (isGamePage(page))
+		return;
 	if (page === "contest") {
 		await removePlayer();
 		stopContestPolling();
 	}
+	if( page === "pong/multiplayerMenu")
+	{
+		page =  "game1";
+		console.log(page);
+	}
+
 
 	history.replaceState({ page: page }, "", `#${page}`);
 	navigateWithoutHistory(page);

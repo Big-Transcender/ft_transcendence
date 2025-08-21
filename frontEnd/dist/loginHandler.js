@@ -135,7 +135,7 @@ async function loginUserVerified() {
             setToLogged();
             setNickOnLocalStorage(data.user.name);
             changePageTo(loginPage, profilePage);
-            getUserStats(getNickOnLocalStorage());
+            getUserStats(await getNickOnLocalStorage());
             return true;
         }
         else {
@@ -237,8 +237,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     await checkGoogleLogin();
     if (await checkIfLogged()) {
         changePageTo(loginPage, profilePage);
-        putNickOnProfileHeader(getNickOnLocalStorage());
-        getUserStats(getNickOnLocalStorage());
+        putNickOnProfileHeader(await getNickOnLocalStorage());
+        getUserStats(await getNickOnLocalStorage());
         // flipboardNumberAnimation("23");
     }
     //Login Button
@@ -246,7 +246,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         if ((await loginUser()) === true) {
             await updateFriends();
             changePageTo(loginPage, profilePage);
-            getUserStats(getNickOnLocalStorage());
+            getUserStats(await getNickOnLocalStorage());
             // flipboardNumberAnimation("23");
         }
     });
@@ -271,7 +271,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         changePageTo(profilePage, loginPage);
         stopSpech();
         typeText(bubbleTextLogin, "Welcome back!", 60);
-        getUserStats(getNickOnLocalStorage());
+        getUserStats(await getNickOnLocalStorage());
     });
     // GENERATE QR CODE
     showQrCodeButton.addEventListener("click", async () => {
@@ -364,15 +364,15 @@ document.addEventListener("DOMContentLoaded", async () => {
         changePageTo(twoFactorPage, profilePage);
     });
 });
-async function getNickOnLocalStorageSync() {
+async function getNickOnLocalStorage() {
     try {
         const res = await fetch(`${backendUrl}/me`, {
             credentials: "include",
         });
         if (res.ok) {
             const user = await res.json();
-            console.log("heres the nick ", user);
-            return user.nickname;
+            console.log("heres the nick ", user.sessionUser.nickname);
+            return user.sessionUser.nickname;
         }
     }
     catch (err) {
@@ -380,20 +380,60 @@ async function getNickOnLocalStorageSync() {
     }
     return null;
 }
-function getNickOnLocalStorage() {
-    let nickname = null;
-    getNickOnLocalStorageSync().then((res) => (nickname = res));
-    console.log("heres the nick ", nickname);
-    return localStorage.getItem("nickname");
-}
-// function getNickOnLocalStorage(): string | null {
-// 	let nickname: string | null = null;
-// 	getNickOnLocalStorageSync().then((res) => (nickname = res));
-// 	return nickname;
+// function getTournamentPin() {
+// 	return localStorage.getItem("pin");
 // }
-function getTournamentPin() {
-    return localStorage.getItem("pin");
+//-----------------------------------------------------------------------------------
+async function getTournamentPin() {
+    const token = getCookie("token");
+    try {
+        const response = await fetch(`${backendUrl}/get-tournament-pin`, {
+            method: "GET",
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+            credentials: "include",
+        });
+        if (!response.ok) {
+            const error = await response.json();
+            console.error("Error retrieving tournament pin:", error.error);
+            return null;
+        }
+        const data = await response.json();
+        if (!data.tournamentPin)
+            return null;
+        return data.tournamentPin;
+    }
+    catch (err) {
+        console.error("Error retrieving tournament pin:", err);
+        return null;
+    }
 }
+async function saveTournamentPin(pin) {
+    const token = getCookie("token");
+    try {
+        const response = await fetch(`${backendUrl}/save-tournament-pin`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+            },
+            credentials: "include",
+            body: JSON.stringify({ tournamentPin: pin }),
+        });
+        if (!response.ok) {
+            const error = await response.json();
+            console.error("Error saving tournament pin:", error.error);
+        }
+        else {
+            console.log("Tournament pin saved successfully");
+        }
+    }
+    catch (err) {
+        console.error("Error saving tournament pin:", err);
+    }
+}
+//-------------------------------------------------------------------------------
 function setNickOnLocalStorage(nickname) {
     localStorage.setItem("nickname", nickname);
 }
@@ -468,7 +508,7 @@ function setToLogged() {
 function setToUnLogged() {
     stopPresenceSocket();
     // localStorage.setItem("isLogged", "false");
-    // localStorage.removeItem(getNickOnLocalStorage());
+    // localStorage.removeItem(await getNickOnLocalStorage());
 }
 function putNickOnProfileHeader(nick) {
     document.querySelector(".profileHeaderText").textContent = "Welcome, " + nick;

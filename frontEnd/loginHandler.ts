@@ -151,7 +151,7 @@ async function loginUserVerified() {
 			setToLogged();
 			setNickOnLocalStorage(data.user.name);
 			changePageTo(loginPage, profilePage);
-			getUserStats(getNickOnLocalStorage());
+			getUserStats(await getNickOnLocalStorage());
 			return true;
 		} else {
 			errorCatcher(data, bubbleTextLogin);
@@ -260,8 +260,8 @@ document.addEventListener("DOMContentLoaded", async () => {
 	await checkGoogleLogin();
 	if (await checkIfLogged()) {
 		changePageTo(loginPage, profilePage);
-		putNickOnProfileHeader(getNickOnLocalStorage());
-		getUserStats(getNickOnLocalStorage());
+		putNickOnProfileHeader(await getNickOnLocalStorage());
+		getUserStats(await getNickOnLocalStorage());
 		// flipboardNumberAnimation("23");
 	}
 
@@ -270,7 +270,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 		if ((await loginUser()) === true) {
 			await updateFriends();
 			changePageTo(loginPage, profilePage);
-			getUserStats(getNickOnLocalStorage());
+			getUserStats(await getNickOnLocalStorage());
 			// flipboardNumberAnimation("23");
 		}
 	});
@@ -297,7 +297,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 		changePageTo(profilePage, loginPage);
 		stopSpech();
 		typeText(bubbleTextLogin, "Welcome back!", 60);
-		getUserStats(getNickOnLocalStorage());
+		getUserStats(await getNickOnLocalStorage());
 	});
 
 	// GENERATE QR CODE
@@ -403,15 +403,20 @@ document.addEventListener("DOMContentLoaded", async () => {
 	});
 });
 
-async function getNickOnLocalStorageSync(): Promise<string | null> {
+async function getNickOnLocalStorage()
+{
+	const token = getCookie("token");
+	if (!token)
+		return ;
+
 	try {
 		const res = await fetch(`${backendUrl}/me`, {
 			credentials: "include",
 		});
 		if (res.ok) {
 			const user = await res.json();
-			console.log("heres the nick ", user);
-			return user.nickname;
+			console.log("heres the nick ", user.sessionUser.nickname);
+			return user.sessionUser.nickname;
 		}
 	} catch (err) {
 		console.error("Error checking Google login:", err);
@@ -419,28 +424,79 @@ async function getNickOnLocalStorageSync(): Promise<string | null> {
 	return null;
 }
 
-function getNickOnLocalStorage() {
-	let nickname: string | null = null;
-	getNickOnLocalStorageSync().then((res) => (nickname = res));
-	console.log("heres the nick ", nickname);
-	return localStorage.getItem("nickname");
-}
-
-// function getNickOnLocalStorage(): string | null {
-// 	let nickname: string | null = null;
-// 	getNickOnLocalStorageSync().then((res) => (nickname = res));
-// 	return nickname;
+// function getTournamentPin() {
+// 	return localStorage.getItem("pin");
 // }
+//-----------------------------------------------------------------------------------
+async function getTournamentPin(): Promise<string | null> { //TODO test this in multyPlayer
+	const token = getCookie("token");
 
-function getTournamentPin() {
-	return localStorage.getItem("pin");
+	if (!token)
+		return ;
+
+	try {
+		const response = await fetch(`${backendUrl}/get-tournament-pin`, {
+			method: "GET",
+			headers: {
+				Authorization: `Bearer ${token}`,
+			},
+			credentials: "include",
+		});
+
+		if (!response.ok) {
+			const error = await response.json();
+			console.error("Error retrieving tournament pin:", error.error);
+			return null;
+		}
+
+		const data = await response.json();
+		if (!data.tournamentPin)
+			return null;
+		return data.tournamentPin;
+	} catch (err) {
+		console.error("Error retrieving tournament pin:", err);
+		return null;
+	}
 }
+
+async function saveTournamentPin(pin: string): Promise<void> {
+	const token = getCookie("token");
+
+	if (!token)
+		return ;
+
+	try {
+		const response = await fetch(`${backendUrl}/save-tournament-pin`, {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+				Authorization: `Bearer ${token}`,
+			},
+			credentials: "include",
+			body: JSON.stringify({ tournamentPin: pin }),
+		});
+
+		if (!response.ok) {
+			const error = await response.json();
+			console.error("Error saving tournament pin:", error.error);
+		} else {
+			console.log("Tournament pin saved successfully");
+		}
+	} catch (err) {
+		console.error("Error saving tournament pin:", err);
+	}
+}
+//-------------------------------------------------------------------------------
 
 function setNickOnLocalStorage(nickname: string) {
 	localStorage.setItem("nickname", nickname);
 }
 
 async function askMeApi() {
+	const token = getCookie("token");
+	if (!token)
+		return ;
+
 	try {
 		const res = await fetch(`${backendUrl}/me`, {
 			credentials: "include",
@@ -458,21 +514,6 @@ async function checkIfLogged() {
 	if (await askMeApi()) {
 		return true;
 	} else {
-		// const loginPage = document.getElementById("loginId");
-		// const profileDivs = document.querySelectorAll(".profileId");
-
-		// profileDivs.forEach((div) => {
-		// 	if (div.classList.contains("active")) {
-		// 		if (div.classList.contains("loginPage")) return;
-		// 		if (div.classList.contains("newUserPage")) {
-		// 			// Se for a div de novo usuário e estiver ativa, não faz nada
-		// 			return;
-		// 		}
-		// 		// div.classList.remove("active");
-		// 	}
-		// });
-		// loginPage.classList.add("active");
-		// changePageTo(loginPage, loginPage);
 		return false;
 	}
 }
@@ -510,7 +551,7 @@ function setToLogged() {
 function setToUnLogged() {
 	stopPresenceSocket();
 	// localStorage.setItem("isLogged", "false");
-	// localStorage.removeItem(getNickOnLocalStorage());
+	// localStorage.removeItem(await getNickOnLocalStorage());
 }
 
 function putNickOnProfileHeader(nick: string) {
@@ -649,6 +690,11 @@ function getCookie(name: string) {
 }
 
 async function checkGoogleLogin() {
+	
+	const token = getCookie("token");
+	if (!token)
+		return ;
+
 	try {
 		const res = await fetch(`${backendUrl}/me`, {
 			credentials: "include",
@@ -662,7 +708,6 @@ async function checkGoogleLogin() {
 				putNickOnProfileHeader(data.user.nickname);
 				changePageTo(document.getElementById("loginId"), document.getElementById("profileId"));
 				// Set JWT from cookie to localStorage
-				const token = getCookie("token");
 				if (token) localStorage.setItem("token", token);
 			} else {
 				console.warn("No user found in response");
