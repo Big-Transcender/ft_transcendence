@@ -114,7 +114,8 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 	// CREATE NEW CONTEST BUTTON
 	createNewContestButton.addEventListener("click", async () => {
-		var isLoged = await !checkIfLogged();
+		var isLoged = await checkIfLogged();
+		console.log("SICI: " + isLoged);
 		if (!isLoged) {
 			displayWarning("You need to log in.");
 		} else {
