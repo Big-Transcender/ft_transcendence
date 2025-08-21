@@ -114,7 +114,9 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 	// CREATE NEW CONTEST BUTTON
 	createNewContestButton.addEventListener("click", async () => {
-		if (await !checkIfLogged()) {
+		
+		var isLoged = await !checkIfLogged()
+		if (!isLoged) {
 			displayWarning("You need to log in.");
 		} else {
 			await betterWait(100);
@@ -124,14 +126,11 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 	// CREATE NEW CONTEST LOCAL BUTTON
 	createNewContestLocalButton.addEventListener("click", async () => {
-		if (await !checkIfLogged()) {
-			displayWarning("You need to log in.");
-		} else {
+
 			await betterWait(100);
 			// createNewContest();
 			openPopupContestLocal();
 			// changePopupTo()
-		}
 	});
 
 	// START THE CONTEST

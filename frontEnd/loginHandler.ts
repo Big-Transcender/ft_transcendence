@@ -496,6 +496,7 @@ async function askMeApi() {
 	const token = getCookie("token");
 	if (!token)
 		return ;
+
 	try {
 		const res = await fetch(`${backendUrl}/me`, {
 			credentials: "include",
@@ -513,21 +514,6 @@ async function checkIfLogged() {
 	if (await askMeApi()) {
 		return true;
 	} else {
-		// const loginPage = document.getElementById("loginId");
-		// const profileDivs = document.querySelectorAll(".profileId");
-
-		// profileDivs.forEach((div) => {
-		// 	if (div.classList.contains("active")) {
-		// 		if (div.classList.contains("loginPage")) return;
-		// 		if (div.classList.contains("newUserPage")) {
-		// 			// Se for a div de novo usuário e estiver ativa, não faz nada
-		// 			return;
-		// 		}
-		// 		// div.classList.remove("active");
-		// 	}
-		// });
-		// loginPage.classList.add("active");
-		// changePageTo(loginPage, loginPage);
 		return false;
 	}
 }
