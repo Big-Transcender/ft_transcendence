@@ -228,6 +228,7 @@ window.addEventListener("ShowWinner", async (event: CustomEvent) => {
 	const { matchId, winner, isLocal, reason } = event.detail;
 
 	openVictory(`Game Over! <br>The winner is ${winner}!`);
+	await removePlayer();
 
 	await waitForEvent("next");
 

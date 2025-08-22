@@ -495,7 +495,7 @@ function setNickOnLocalStorage(nickname: string) {
 async function askMeApi() {
 	const token = getCookie("token");
 	if (!token)
-		return ;
+		return false;
 
 	try {
 		const res = await fetch(`${backendUrl}/me`, {
