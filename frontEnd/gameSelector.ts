@@ -127,6 +127,16 @@ async function checkMatchExists(matchId: string): Promise<MatchCheckResponse> {
 
 function joinExistingMatch(matchId: string): void {
 	history.replaceState(undefined, "", `#pong/${matchId}`);
+	startPongWebSocket(matchId);
+	changePageTo(gameSelectorPongMultiplayerPage, pongGamePage);
+	backGamePongButton.classList.add("active");
+	animateTimer();
+	resetEmotions();
+	//setGameScore("Player 1", await getNickOnLocalStorage());
+}
+
+function joinExistingTeamMatch(matchId: string): void {
+	history.replaceState(undefined, "", `#pong/${matchId}`);
 	startPongWebSocket(matchId, false, false, true);
 	changePageTo(gameSelectorPongMultiplayerPage, pongGamePage);
 	backGamePongButton.classList.add("active");
@@ -182,7 +192,7 @@ function openPopupPong() {
 		try {
 			const matchData = await checkMatchExists(matchId);
 			if (matchData.exists) {
-				joinExistingMatch(matchId);
+				joinExistingTeamMatch(matchId);
 				showMatchId(matchId);
 				closePopupPong();
 			} else {
