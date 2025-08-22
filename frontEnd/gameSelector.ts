@@ -192,7 +192,7 @@ function openPopupPong() {
 		try {
 			const matchData = await checkMatchExists(matchId);
 			if (matchData.exists) {
-				joinExistingTeamMatch(matchId);
+				joinExistingMatch(matchId);
 				showMatchId(matchId);
 				closePopupPong();
 			} else {
@@ -235,7 +235,7 @@ function openPopup2v2() {
 			const matchData = await checkMatchExists(matchId);
 			if (matchData.exists) {
 				close2v2Popup();
-				joinExistingMatch(matchId);
+				joinExistingTeamMatch(matchId);
 				showMatchId(matchId);
 			} else {
 				displayWarning("2v2 match not found or is full");
