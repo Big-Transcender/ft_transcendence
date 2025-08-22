@@ -409,6 +409,7 @@ function startLocalTournament(tournamentId: string, players: string[]) {
 	LocalTournaments.set(tournament.tournamentId, tournament);
 	history.replaceState(undefined, "", `#pong/${tournament.matches[0]}`);
 	changePageTo(createContestPage, pongContestPage);
+	animateTimer();
 	setGameScore(tournament.players[0], tournament.players[1]);
 	startPongWebSocket(tournament.matches[0], true, false, false, [tournament.players[0], tournament.players[1]]);
 }

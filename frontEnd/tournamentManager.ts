@@ -146,6 +146,7 @@ function handleLocalMatchEnd(matchId: string, winner: string) {
 			history.replaceState(undefined, "", `#pong/${tournament.matches[1]}`);
 			changePageTo(joinedContestPage, pongContestPage);
 			startPongWebSocket(tournament.matches[1], true, false, false, [tournament.players[2], tournament.players[3]]);
+			animateTimer();
 			setGameScore(tournament.players[2], tournament.players[3]);
 			resetEmotions();
 		}, 125);
@@ -158,6 +159,7 @@ function handleLocalMatchEnd(matchId: string, winner: string) {
 			history.replaceState(undefined, "", `#pong/${tournament.matches[2]}`);
 			changePageTo(joinedContestPage, pongContestPage);
 			startPongWebSocket(tournament.matches[2], true, false, false, [tournament.semifinal1, tournament.semifinal2]);
+			animateTimer();
 			setGameScore(tournament.semifinal1, tournament.semifinal2);
 			resetEmotions();
 		}, 125);
