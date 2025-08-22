@@ -72,15 +72,15 @@ async function handlePageChange(page: string) {
 			break;
 		case "contest":
 			changePageTo(contestMainPage, contestMainPage);
-			// let contestIntervalId = setInterval(async () => {
-			// 	const hash = window.location.hash;
+			let contestIntervalId = setInterval(async () => {
+				const hash = window.location.hash;
 
-			// 	if (!hash.startsWith("#contest")) {
-			// 		await removePlayer();
-			// 		stopContestPolling();
-			// 		clearInterval(contestIntervalId!);
-			// 	}
-			// }, 100);
+				if (!hash.startsWith("#contest") && !hash.startsWith("#pong")) {
+					await removePlayer();
+					stopContestPolling();
+					clearInterval(contestIntervalId!);
+				}
+			}, 100);
 
 			break;
 		case "pong":
@@ -115,7 +115,7 @@ window.addEventListener("load", async () => {
 	console.log(`📍 Initial page load: ${page}`);
 	if (isGamePage(page)) return;
 	if (page === "contest") {
-		// await removePlayer();
+		await removePlayer();
 		stopContestPolling();
 	}
 	if (page === "pong/multiplayerMenu") {

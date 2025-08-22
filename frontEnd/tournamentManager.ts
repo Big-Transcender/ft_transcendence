@@ -11,6 +11,7 @@ window.addEventListener("TournamentMatch", async (event: CustomEvent) => {
 async function handleNextFase(nick: string, Tournament: any) {
 	try {
 		console.log(Tournament);
+		await removePlayer();
 
 		if (Tournament.currentMatchIndex === 3) {
 			alert(`You win the Tournament! The Great ${Tournament.Winner}!`);
