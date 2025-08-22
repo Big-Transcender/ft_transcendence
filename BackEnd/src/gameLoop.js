@@ -23,12 +23,12 @@ function startGameLoopForMatch(matchId, updateBall, isLocal = false, aiGame = fa
 		requiredPlayers = 4
 
 	let waitingForPlayers = true;
-	setTimeout(() => {
+	setTimeout(async () => {
 		if (clients.size < requiredPlayers) {
 			console.log(`⏳ Not enough players connected for match ${matchId}. Declaring winner by default.`);
 			if (clients.size === 1) {
 				// Declare the remaining player as the winner
-				player = getNicknameByUserId(match.gameState.playerDbId.p1)
+				player = await getNicknameByUserId(match.gameState.playerDbId.p1)
 				match.gameState.winnerName = player;
 				console.log(`🏆 Player (${player}) wins match ${matchId} by default!`);
 				cleanupMatch(matchId, "opponentDidNotConnect");

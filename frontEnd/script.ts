@@ -61,6 +61,12 @@ async function handlePageChange(page: string) {
 	// Add any page-specific initialization here
 	startedContest = false;
 	console.log(page);
+	localNick = await getNickOnLocalStorage();
+	const hash = window.location.hash
+
+	if (!hash.startsWith("#contest") && !hash.startsWith("#pong")) 
+        isOnTournamentPage = false;
+
 	switch (page) {
 		case "profile":
 			if (await !checkIfLogged()) {

@@ -1,16 +1,17 @@
+var isOnTournamentPage = true;
+
 
 window.addEventListener("TournamentMatch", async (event: CustomEvent) => {
 	const { Tournament } = event.detail;
 
-	const nick = await getNickOnLocalStorage();
 	console.log("lets see the last stage");
 	console.log(Tournament);
-	handleNextFase(nick, Tournament);
+	handleNextFase(Tournament);
 });
 
-async function handleNextFase(nick: string, Tournament: any) {
+async function handleNextFase(Tournament: any) {
 	try {
-		console.log(Tournament);
+		isOnTournamentPage = true;
 
 		if (Tournament.currentMatchIndex === 3) {
 			openVictory(`You win the Tournament! <br>The Great ${Tournament.Winner}!`) 
@@ -19,9 +20,15 @@ async function handleNextFase(nick: string, Tournament: any) {
 			location.reload();
 			return;
 		}
-
+		
+		history.replaceState(undefined, "", `#contest`);
 		changePageTo(pongContestPage, joinedContestPage);
 		await waitForSemifinalsToComplete(Tournament);
+
+		if (!isOnTournamentPage) {
+            console.log("Player navigated away. Stopping next phase.");
+            return;
+        }
 
 		setTimeout(() => {
 			history.replaceState(undefined, "", `#pong/${Tournament.matches[2]}`);
@@ -185,10 +192,7 @@ async function waitForSemifinalsToComplete(Tournament: any) {
 
 		const data = await getTournamentData(Tournament.tournamentID);
 
-		console.log(data.semifinal1Winner);
-		console.log(data.semifinal2Winner);
 
-		// Update the tournament state
 
 		updateBrackets(playerPlaces, [data.semifinal1Winner, data.semifinal2Winner]);
 

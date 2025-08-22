@@ -9,19 +9,8 @@ interface MatchCheckResponse {
 	playerCount: number;
 }
 
-(async () => {
-	localNick = await getNickOnLocalStorage();
-})();
-
 function startPongWebSocket( matchId: string, isLocal: boolean = false, aiGame: boolean = false, teamGame: boolean = false, localNicks: string[] = null) {
 	
-	if (socket) {
-		console.log("Closing existing WebSocket connection...");
-		socket.close();
-		socket = null;
-		socketInitialized = false;
-	}
-
 	if (socketInitialized) {
 		console.log("game already in Progress");
 		return;
