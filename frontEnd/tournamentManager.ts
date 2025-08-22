@@ -13,7 +13,7 @@ async function handleNextFase(nick: string, Tournament: any) {
 		console.log(Tournament);
 
 		if (Tournament.currentMatchIndex === 3) {
-			openVictory(`You win the Tournament! The Great ${Tournament.Winner}!`) 
+			openVictory(`You win the Tournament! <br>The Great ${Tournament.Winner}!`) 
 			await waitForEvent("next");
 			navigate("home");
 			location.reload();
