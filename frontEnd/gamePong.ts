@@ -205,7 +205,7 @@ function stopPongWebSocket() {
 	}
 	socketInitialized = false;
 	currentMatchId = null;
-	//location.reload();
+
 }
 
 setInterval(() => {
@@ -215,6 +215,7 @@ setInterval(() => {
 
 	if (!isOnPongGame && socketInitialized) {
 		stopPongWebSocket();
+		location.reload();
 		console.log("closed socket from FrontEnd (leaving page)");
 		console.log(currentMatchId);
 	}

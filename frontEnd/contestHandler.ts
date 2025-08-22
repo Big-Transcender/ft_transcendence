@@ -78,7 +78,8 @@ async function betterWait(time: number) {
 document.addEventListener("DOMContentLoaded", async () => {
 	//Enter Join Page
 	joinContestButton.addEventListener("click", async () => {
-		if (await !checkIfLogged()) {
+		const isLogged = await checkIfLogged()
+		if (!isLogged) {
 			displayWarning("You need to log in.");
 		} else {
 			await betterWait(100);
@@ -139,7 +140,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 		console.log(numberOfPlayers, startedContest);
 		if (numberOfPlayers === 4 && !startedContest) {
 			startedContest = true;
-			// stopContestPolling();
+			stopContestPolling();
 			startTournament(id);
 		} else displayWarning("Wait for all players!");
 	});

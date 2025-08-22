@@ -52,6 +52,12 @@ async function handleMatchEnd(currentMatchId: string, winner: string) {
 		console.log("Handling match end...");
 		const nick = await getNickOnLocalStorage();
 
+		if (nick != winner) {
+			navigate("home");
+			location.reload();
+			return;
+		}
+
 		const response = await fetch(`${backendUrl}/isTournamentMatch/${currentMatchId}`, {
 			method: "GET",
 			headers: {
@@ -64,11 +70,7 @@ async function handleMatchEnd(currentMatchId: string, winner: string) {
 			throw new Error(`Failed to check tournament match: ${response.statusText}`);
 		}
 
-		if (nick != winner) {
-			navigate("home");
-			location.reload();
-			return;
-		}
+
 
 		const tournament = await response.json();
 		if (!tournament.exists) {
@@ -175,7 +177,7 @@ function findTournamentByMatch(matchId: string): any | null {
 async function waitForSemifinalsToComplete(Tournament: any) {
 	
 	const playerPlaces = document.querySelectorAll(".playerContestPlace");
-	updateBrackets(playerPlaces, [Tournament.semifinal1Winner, Tournament.semifinal1Winner]);
+	updateBrackets(playerPlaces, [Tournament.semifinal1Winner, Tournament.semifinal2Winner]);
 	
 	while (true) {
 		console.log("Waiting for semifinals to complete...");
