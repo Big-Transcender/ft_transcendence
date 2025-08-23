@@ -2,17 +2,31 @@ version: "3.8"
 services:
   frontend:
     container_name: "frontend"
-    build: ./frontEnd
+    build:
+      context: ./frontEnd
+      args:
+        CRED_PATH: ${CRED_PATH}
+        CRED_CERT: ${CRED_CERT}
+        CRED_KEY: ${CRED_KEY}
+        COUNTRY: ${COUNTRY}
+        STATE: ${STATE}
+        CITY: ${CITY}
+        ORGANIZATION: ${ORGANIZATION}
+        ORG_UNIT: ${ORG_UNIT}
+        COMMON_NAME: ${COMMON_NAME}
     ports:
       - "5173:5173"
       - "8080:8080"
     volumes:
       - ./frontEnd:/app
       - /app/node_modules
+      - certs-data:/certs
     depends_on:
       - backend
     networks:
       - app-network
+    env_file:
+      - .env
 
   backend:
     container_name: "backend"
@@ -22,11 +36,15 @@ services:
     volumes:
       - backend-db:/app/db
       - ./uploads:/app/uploads
+      - certs-data:/certs
     networks:
       - app-network
+    env_file:
+      - .env
 
 volumes:
   backend-db:
+  certs-data:
 
 networks:
   app-network:
