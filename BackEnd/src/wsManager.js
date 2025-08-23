@@ -84,7 +84,7 @@ function handleGameConnection(ws, wss) {
                 console.log(`👋 Player ${assignedPlayer} left match ${matchId}`);
             }
 
-            if (!match.gameState.finished && match.clients.size === 1 &&  !match.gameState.playerDbId.p3 === 0 ) {
+            if (!match.gameState.finished && match.clients.size === 1 &&  match.gameState.playerDbId.p3 === 0 ) {
                 const remainingPlayer = Array.from(match.clients.keys())[0];
                 const winnerNickname = match.clients.get(remainingPlayer)?.nickname;
     

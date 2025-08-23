@@ -36,13 +36,13 @@ function startGameLoopForMatch(matchId, updateBall, isLocal = false, aiGame = fa
 				cleanupMatch(matchId, "noPlayersConnected");
 			}
 		}
-		waitingForPlayers = false;
-		clearTimeout(waiter);
+
 	}, 15000);
 
 	match.intervalId = setInterval(async () => {
 		if (clients.size === requiredPlayers) {
 			//requiredPlayers
+			clearTimeout(waiter);
 
 			if (!gameState.onGoing && !gameState.started) {
 				gameState.started = true;
