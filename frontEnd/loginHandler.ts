@@ -233,11 +233,17 @@ function openVictory(quote) {
 
 function closeVictory() {
 	document.getElementById("popupContainerVictory").style.display = "none";
-	window.dispatchEvent(
-		new CustomEvent("next", {
-			detail: true,
-		})
-	);
+	const hash = window.location.hash;
+
+	if (hash.startsWith("#pong")) {
+		window.dispatchEvent(
+			new CustomEvent("next", {
+				detail: true,
+			})
+		);
+	} else {
+		return;
+	}
 }
 
 clickButton(loginButton);
@@ -403,11 +409,9 @@ document.addEventListener("DOMContentLoaded", async () => {
 	});
 });
 
-async function getNickOnLocalStorage()
-{
+async function getNickOnLocalStorage() {
 	const token = getCookie("token");
-	if (!token)
-		return ;
+	if (!token) return;
 
 	try {
 		const res = await fetch(`${backendUrl}/me`, {
@@ -428,11 +432,11 @@ async function getNickOnLocalStorage()
 // 	return localStorage.getItem("pin");
 // }
 //-----------------------------------------------------------------------------------
-async function getTournamentPin(): Promise<string | null> { //TODO test this in multyPlayer
+async function getTournamentPin(): Promise<string | null> {
+	//TODO test this in multyPlayer
 	const token = getCookie("token");
 
-	if (!token)
-		return ;
+	if (!token) return;
 
 	try {
 		const response = await fetch(`${backendUrl}/get-tournament-pin`, {
@@ -450,8 +454,7 @@ async function getTournamentPin(): Promise<string | null> { //TODO test this in 
 		}
 
 		const data = await response.json();
-		if (!data.tournamentPin)
-			return null;
+		if (!data.tournamentPin) return null;
 		return data.tournamentPin;
 	} catch (err) {
 		console.error("Error retrieving tournament pin:", err);
@@ -462,8 +465,7 @@ async function getTournamentPin(): Promise<string | null> { //TODO test this in 
 async function saveTournamentPin(pin: string): Promise<void> {
 	const token = getCookie("token");
 
-	if (!token)
-		return ;
+	if (!token) return;
 
 	try {
 		const response = await fetch(`${backendUrl}/save-tournament-pin`, {
@@ -494,8 +496,7 @@ function setNickOnLocalStorage(nickname: string) {
 
 async function askMeApi() {
 	const token = getCookie("token");
-	if (!token)
-		return false;
+	if (!token) return false;
 
 	try {
 		const res = await fetch(`${backendUrl}/me`, {
@@ -690,10 +691,8 @@ function getCookie(name: string) {
 }
 
 async function checkGoogleLogin() {
-	
 	const token = getCookie("token");
-	if (!token)
-		return ;
+	if (!token) return;
 
 	try {
 		const res = await fetch(`${backendUrl}/me`, {

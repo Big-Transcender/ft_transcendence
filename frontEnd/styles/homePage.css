@@ -6,7 +6,7 @@
 	height: 82%;
 	width: 95%;
 	/* background-color: rgba(255, 0, 0, 0.363); */
-	overflow: hidden;
+	/* overflow: hidden; */
 }
 
 .homePageWelcome:hover .homePageWelcomeBG {
@@ -709,7 +709,7 @@ tr:hover {
 }
 
 td {
-	font-size: 20px;
+	font-size: 19px;
 }
 
 .loadingGif {
