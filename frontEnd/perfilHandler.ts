@@ -668,8 +668,7 @@ async function changePasswordAPI(newPassword: string, oldPassword: string): Prom
 			body: JSON.stringify({ oldPassword, newPassword }),
 		});
 
-		console.log(oldPassword);
-		console.log(newPassword);
+
 		const data = await response.json();
 		if (!response.ok) {
 			displayWarning(data.error || "Failed to change password");

@@ -35,59 +35,7 @@ fastify.register(require('@fastify/multipart'), {
 	}
 });
 
-fastifyPassport.use(
-  "google",
-  new GoogleStrategy(
-    {
-      clientID: process.env.GOOGLE_CLIENT_ID,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-      callbackURL: "https://c1r3s1.42porto.com:3000/auth/google/callback",
-    },
-    (accessToken, refreshToken, profile, done) => {
-      try {
-        const email = profile.emails?.[0]?.value;
-        let displayName = profile.displayName || profile.name?.givenName || "user";
 
-        // If there's a space, take only the first word
-        let nickname = displayName.split(" ")[0];
-
-        // Ensure max length 8
-        nickname = nickname.substring(0, 8);
-
-        // Check if user with this email exists
-        let user = db.prepare(`SELECT * FROM users WHERE email = ?`).get(email);
-
-        if (!user) {
-          // Make nickname unique if already taken
-          let baseNickname = nickname;
-          let counter = 1;
-
-          while (db.prepare(`SELECT 1 FROM users WHERE nickname = ?`).get(nickname)) {
-            // keep total length <= 8
-            const suffix = counter.toString();
-			const maxBaseLength = Math.max(0, 8 - suffix.length);
-			nickname = `${baseNickname.substring(0, maxBaseLength)}${suffix}`;
-            counter++;
-          }
-
-          // Insert new user
-          const stmt = db.prepare(`
-            INSERT INTO users (nickname, password, email) VALUES (?, ?, ?)
-          `);
-          const defaultPassword = "Password1!"; // Default password for new users
-		  const hashedPassword = bcrypt.hashSync(defaultPassword, 10);
-          const result = stmt.run(nickname, hashedPassword, email);
-          user = db.prepare(`SELECT * FROM users WHERE id = ?`).get(result.lastInsertRowid);
-        }
-
-        done(null, user);
-      } catch (err) {
-        console.error("Google login error:", err);
-        done(err);
-      }
-    }
-  )
-);
 
 fastifyPassport.registerUserDeserializer(async (user, req) => {
 	return user;
@@ -96,37 +44,9 @@ fastifyPassport.registerUserSerializer(async (user, req) => {
 	return user;
 });
 
-fastify.get(
-	"/auth/google/callback",
-	{
-		preValidation: fastifyPassport.authenticate("google", { scope: ["profile", "email"] }),
-	},
-	async (req, res) => {
-		// Set user in session for /me route
-		req.session.set("user", { user: req.user });
-		// Issue JWT for frontend use
-		const token = jwt.sign({ userId: req.user.id }, 'your-secret-key', {
-			expiresIn: '2h',
-		});
-		// Set JWT in cookie (not httpOnly so frontend can read it)
-		res.setCookie("token", token, {
-			path: "/",
-			//httpOnly: false,
-			secure: true, // set to true if using https
-			sameSite: "strict",
-			maxAge: 7 * 24 * 60 * 60 // 7 days
-		});
-		console.log(req.hostname);
-		res.redirect(`https://c1r3s1.42porto.com:5173/#profile`);
-	}
-);
 
-fastify.get(
-	"/logingoogle",
-	fastifyPassport.authenticate("google", {
-		scope: ["profile", "email"],
-	})
-);
+
+
 
 fastify.decorate("authenticate", async function (request, reply) {
 	try {
@@ -135,7 +55,7 @@ fastify.decorate("authenticate", async function (request, reply) {
 			return reply.code(401).send({ error: "Access denied" });
 		}
 		const token = authHeader.split(" ")[1]; // if using "Bearer <token>"
-		const decoded = jwt.verify(token, "your-secret-key"); //TODO: key in env
+		const decoded = jwt.verify(token, process.env.JWT_SECRET); 
 		request.userId = decoded.userId;
 		const user = db.prepare("SELECT nickname FROM users WHERE id = ?").get(decoded.userId);
 		request.userNickname = user.nickname;
@@ -159,7 +79,7 @@ fastify.get("/me", async (request, reply) => {
 	if(!token)
 		return reply.status(401).send({ error: "Not logged in" });
 
-    const decoded = jwt.verify(token, "your-secret-key"); //TODO: key in env
+    const decoded = jwt.verify(token, process.env.JWT_SECRET); 
     request.userId = decoded.userId;
     const user = db.prepare("SELECT id, nickname FROM users WHERE id = ?").get(decoded.userId);
     request.session.set('user', { id: user.id, nickname: user.nickname });

@@ -60,7 +60,7 @@ function navigateWithoutHistory(page: string) {
 async function handlePageChange(page: string) {
 	// Add any page-specific initialization here
 	startedContest = false;
-	console.log(page);
+
 	localNick = await getNickOnLocalStorage();
 	const hash = window.location.hash;
 	close2FApopup();
@@ -103,14 +103,14 @@ async function handlePageChange(page: string) {
 
 window.addEventListener("popstate", (event) => {
 	const page = event.state?.page || location.hash.replace("#", "") || "home";
-	console.log(`📍 Navigating to: ${page} (via browser navigation)`);
+
 
 	// ✅ Check if last 4 characters are all numbers
 	const last4Chars = page.slice(-4);
 	const isAllNumbers = /^\d{4}$/.test(last4Chars);
 
 	if (isAllNumbers) {
-		console.log(`🚫 Blocked page "${page}" (ends with numbers: ${last4Chars}), redirecting to home`);
+
 		history.replaceState({ page: "home" }, "", "#home");
 		navigateWithoutHistory("home");
 		return;
@@ -121,7 +121,7 @@ window.addEventListener("popstate", (event) => {
 
 window.addEventListener("load", async () => {
 	var page = location.hash.replace("#", "") || "home";
-	console.log(`📍 Initial page load: ${page}`);
+
 	if (isGamePage(page)) return;
 	if (page === "contest") {
 		await removePlayer();
@@ -129,7 +129,7 @@ window.addEventListener("load", async () => {
 	}
 	if (page === "pong/multiplayerMenu") {
 		page = "game1";
-		console.log(page);
+
 	}
 
 	history.replaceState({ page: page }, "", `#${page}`);
@@ -138,10 +138,10 @@ window.addEventListener("load", async () => {
 
 document.addEventListener("DOMContentLoaded", async () => {
 	const page = location.hash.replace("#", "") || "home";
-	console.log(`📍 DOM loaded, navigating to: ${page}`);
+
 
 	if (page === "contest") {
-		console.log("Page is refreshing or closing, removing player...");
+
 		// await removePlayer();
 		stopContestPolling();
 	}
@@ -199,7 +199,7 @@ function isGamePage(page) {
 	const isAllNumbers = /^\d{4}$/.test(last4Chars);
 
 	if (isAllNumbers) {
-		console.log(`🚫 Blocked page "${page}" (ends with numbers: ${last4Chars}), redirecting to home`);
+
 		history.replaceState({ page: "home" }, "", "#home");
 		navigateWithoutHistory("home");
 		return true;

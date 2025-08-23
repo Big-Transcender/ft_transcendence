@@ -116,7 +116,6 @@ document.addEventListener("DOMContentLoaded", async () => {
 	// CREATE NEW CONTEST BUTTON
 	createNewContestButton.addEventListener("click", async () => {
 		var isLoged = await checkIfLogged();
-		console.log("SICI: " + isLoged);
 		if (!isLoged) {
 			displayWarning("You need to log in.");
 		} else {
@@ -137,7 +136,6 @@ document.addEventListener("DOMContentLoaded", async () => {
 	startContestButton.addEventListener("click", async () => {
 		const id = pin;
 		//startLocalTournament(id, players);
-		console.log(numberOfPlayers, startedContest);
 		if (numberOfPlayers === 4 && !startedContest) {
 			startedContest = true;
 			stopContestPolling();
@@ -226,8 +224,6 @@ async function createNewContest() {
 	const nick = await getNickOnLocalStorage();
 	const token = getCookie("token");
 
-	console.log("tournamentName:", tournamentName);
-	console.log("nick:", nick);
 	try {
 		const response = await fetch(`${backendUrl}/create-tournament`, {
 			method: "POST",
@@ -277,7 +273,7 @@ async function getInfoFromContest(pin: string) {
 		let pinNumber = document.getElementById("contestPinBoxNumberId") as HTMLElement;
 		let name = document.getElementById("contestNameId") as HTMLElement;
 
-		console.log("info from matches:", data.players);
+
 		let players = new Array(4).fill(null);
 		data.players.forEach((player, index) => {
 			if (index < 4) {
@@ -294,7 +290,7 @@ async function getInfoFromContest(pin: string) {
 				playerName.textContent = players[i].nickname;
 				playerBG.classList.remove("noGame");
 			} else {
-				console.log("the position is free: ", i);
+
 				const playerName = playerPlaces[i].querySelector(".playerContestPlaceName");
 				const playerBG = playerPlaces[i].querySelector(".playerContestPlaceBG");
 				playerName.textContent = "waiting";
@@ -326,7 +322,7 @@ async function joinTournament(nick: string, code: string) {
 		if (response.ok) {
 			await saveTournamentPin(data.tournamentId);
 			pin = data.tournamentId;
-			console.log("Joined tournament:", data);
+
 			return true;
 			// handle success (e.g., update UI)
 		} else {
@@ -381,8 +377,7 @@ async function startTournament(tournamentId: string) {
 
 	const nick = await getNickOnLocalStorage();
 
-	console.log(nick);
-	console.log(data.players[0]);
+
 
 	if (nick === data.players[0] || nick === data.players[1]) {
 		history.replaceState(undefined, "", `#pong/${data.matches[0]}`);
@@ -456,5 +451,5 @@ async function removePlayer() {
 		body: JSON.stringify(pin),
 	});
 
-	console.log("removed the player");
+
 }

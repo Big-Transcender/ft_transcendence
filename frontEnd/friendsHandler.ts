@@ -11,7 +11,7 @@ async function startPresenceSocket() {
 	presenceSocket = new WebSocket(`${wsProtocol}://${wsHost}/presence`);
 
     presenceSocket.onopen = () => {
-        console.log('✅ Connected to presence socket');
+
         presenceSocket?.send(JSON.stringify({
             type: 'register',
             nickname: nickname
@@ -31,7 +31,7 @@ async function startPresenceSocket() {
     };
     
     presenceSocket.onclose = () => {
-        console.log('❌ Presence socket disconnected');
+
         setTimeout(() => {
             if (checkIfLogged()) startPresenceSocket();
         }, 3000);
@@ -40,7 +40,7 @@ async function startPresenceSocket() {
 
 function stopPresenceSocket() {
 	if (presenceSocket) {
-		console.log("🔌 Stopping presence socket...");
+
 		presenceSocket.close();
 		presenceSocket = null;
 	}
@@ -63,7 +63,7 @@ async function addFriend(nickname: string) {
 
 		const data = await response.json();
 		if (response.ok) {
-			console.log(`✅ Added ${nickname} as friend`);
+			;
 		} else {
 			alert(data.error);
 		}
@@ -83,7 +83,7 @@ async function removeFriend(nickname: string) {
 		});
 
 		if (response.ok) {
-			console.log(`❌ Removed ${nickname} from friends`);
+			;
 		}
 	} catch (error) {
 		console.error("Error removing friend:", error);

@@ -31,7 +31,7 @@ module.exports = async function (fastify) {
             return reply.send({message: 'Two-Factor Enable'});
         }
         request.session.set('user', { id: user.id, nickname: user.nickname });
-        const token = jwt.sign({ userId: user.id }, 'your-secret-key', {
+        const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET, {
             expiresIn: '2h',
         });
         // Set JWT in cookie (not httpOnly so frontend can read it) //TODO bruno!!!

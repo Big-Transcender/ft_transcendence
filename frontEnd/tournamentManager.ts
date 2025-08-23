@@ -4,8 +4,7 @@ var isOnTournamentPage = true;
 window.addEventListener("TournamentMatch", async (event: CustomEvent) => {
 	const { Tournament } = event.detail;
 
-	console.log("lets see the last stage");
-	console.log(Tournament);
+
 	handleNextFase(Tournament);
 });
 
@@ -26,7 +25,7 @@ async function handleNextFase(Tournament: any) {
 		await waitForSemifinalsToComplete(Tournament);
 
 		if (!isOnTournamentPage) {
-            console.log("Player navigated away. Stopping next phase.");
+
             return;
         }
 
@@ -45,8 +44,7 @@ async function handleNextFase(Tournament: any) {
 window.addEventListener("MatchEnd", (event: CustomEvent) => {
 	const { matchId, winner, isLocal } = event.detail;
 	if (isLocal) {
-		console.log("Handling LOCAL match end...");
-		console.log(`Match ID: ${matchId}, Winner: ${winner}`);
+
 		handleLocalMatchEnd(matchId, winner);
 		return;
 	}
@@ -56,7 +54,7 @@ window.addEventListener("MatchEnd", (event: CustomEvent) => {
 async function handleMatchEnd(currentMatchId: string, winner: string) {
 	try {
 		const token = getCookie("token");
-		console.log("Handling match end...");
+
 		const nick = await getNickOnLocalStorage();
 
 		if (nick != winner) {
@@ -86,11 +84,7 @@ async function handleMatchEnd(currentMatchId: string, winner: string) {
 			return;
 		}
 		
-		console.log("Sending updateTournamentWinner request:", {
-			id: tournament.tournamentObject.tournamentID,
-			winner,
-			currentMatchId,
-		});
+
 
 		const updateResponse = await fetch(`${backendUrl}/updateTournamentWinner`, {
 			method: "PATCH",
@@ -190,7 +184,7 @@ async function waitForSemifinalsToComplete(Tournament: any) {
 	updateBrackets(playerPlaces, [Tournament.semifinal1Winner, Tournament.semifinal2Winner]);
 	
 	while (true) {
-		console.log("Waiting for semifinals to complete...");
+
 		await new Promise((resolve) => setTimeout(resolve, 2000)); // Wait for 2 seconds
 
 		const data = await getTournamentData(Tournament.tournamentID);

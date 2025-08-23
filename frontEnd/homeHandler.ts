@@ -128,8 +128,7 @@ async function updateLeaderboard() {
 			while (table.rows.length > 1) {
 				table.deleteRow(1);
 			}
-			console.log("Hello");
-			console.log(data);
+
 			const topPlayers = data.sort((a, b) => b.wins - a.wins).slice(0, 5);
 			// Insert new rows
 			topPlayers.forEach((player, index) => {

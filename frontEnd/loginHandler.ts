@@ -413,7 +413,7 @@ async function getNickOnLocalStorage() {
 		});
 		if (res.ok) {
 			const user = await res.json();
-			console.log("heres the nick ", user.sessionUser.nickname);
+
 			return user.sessionUser.nickname;
 		}
 	} catch (err) {
@@ -472,12 +472,7 @@ async function saveTournamentPin(pin: string): Promise<void> {
 			body: JSON.stringify({ tournamentPin: pin }),
 		});
 
-		if (!response.ok) {
-			const error = await response.json();
-			console.error("Error saving tournament pin:", error.error);
-		} else {
-			console.log("Tournament pin saved successfully");
-		}
+
 	} catch (err) {
 		console.error("Error saving tournament pin:", err);
 	}
@@ -559,7 +554,7 @@ function changePageTo(remove, activate) {
 }
 
 async function verify2FACode(twoFactorInput: string) {
-	console.log("2F input: " + twoFactorInput);
+
 	const token = localStorage.getItem("token");
 	fetch(`${backendUrl}/2fa/verify`, {
 		method: "POST",
@@ -591,7 +586,7 @@ async function verify2FACode(twoFactorInput: string) {
 
 async function verify2FACodePopup() {
 	const twoFactorInput = (document.getElementById("AFCode") as HTMLInputElement).value.trim();
-	console.log("2F input popup: " + twoFactorInput);
+
 	const token = localStorage.getItem("token");
 	fetch(`${backendUrl}/2fa/verify`, {
 		method: "POST",
@@ -637,7 +632,7 @@ async function check2FAStatus() {
 		}
 
 		const data = await response.json();
-		console.log("Has 2FA: " + data.enabled);
+
 		return data.enabled; // Returns true if 2FA is enabled, false otherwise
 	} catch (error) {
 		displayWarning("Failed to check 2FA status: " + error);
