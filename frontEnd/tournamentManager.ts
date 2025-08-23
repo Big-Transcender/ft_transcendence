@@ -1,9 +1,7 @@
 var isOnTournamentPage = true;
 
-
 window.addEventListener("TournamentMatch", async (event: CustomEvent) => {
 	const { Tournament } = event.detail;
-
 
 	handleNextFase(Tournament);
 });
@@ -13,28 +11,26 @@ async function handleNextFase(Tournament: any) {
 		isOnTournamentPage = true;
 
 		if (Tournament.currentMatchIndex === 3) {
-			openVictory(`You win the Tournament! <br>The Great ${Tournament.Winner}!`) 
+			openVictory(`You win the Tournament! <br>The Great ${Tournament.Winner}!`);
 			await waitForEvent("next");
-			navigate("home");
+			await navigate("home");
 			location.reload();
 			return;
 		}
-		
+
 		history.replaceState(undefined, "", `#contest`);
 		changePageTo(pongContestPage, joinedContestPage);
 		await waitForSemifinalsToComplete(Tournament);
 
 		if (!isOnTournamentPage) {
-
-            return;
-        }
+			return;
+		}
 
 		setTimeout(() => {
 			history.replaceState(undefined, "", `#pong/${Tournament.matches[2]}`);
 			changePageTo(joinedContestPage, pongContestPage);
 			startPongWebSocket(Tournament.matches[2]);
 		}, 250);
-
 	} catch (error) {
 		console.error("Error handling next phase:", error);
 	}
@@ -44,7 +40,6 @@ async function handleNextFase(Tournament: any) {
 window.addEventListener("MatchEnd", (event: CustomEvent) => {
 	const { matchId, winner, isLocal } = event.detail;
 	if (isLocal) {
-
 		handleLocalMatchEnd(matchId, winner);
 		return;
 	}
@@ -58,7 +53,7 @@ async function handleMatchEnd(currentMatchId: string, winner: string) {
 		const nick = await getNickOnLocalStorage();
 
 		if (nick != winner) {
-			navigate("home");
+			await navigate("home");
 			location.reload();
 			return;
 		}
@@ -67,7 +62,7 @@ async function handleMatchEnd(currentMatchId: string, winner: string) {
 			method: "GET",
 			headers: {
 				"Content-Type": "application/json",
-				"Authorization": `Bearer ${token}`,
+				Authorization: `Bearer ${token}`,
 			},
 			credentials: "include",
 		});
@@ -75,22 +70,18 @@ async function handleMatchEnd(currentMatchId: string, winner: string) {
 			throw new Error(`Failed to check tournament match: ${response.statusText}`);
 		}
 
-
-
 		const tournament = await response.json();
 		if (!tournament.exists) {
-			navigate("home");
+			await navigate("home");
 			location.reload();
 			return;
 		}
-		
-
 
 		const updateResponse = await fetch(`${backendUrl}/updateTournamentWinner`, {
 			method: "PATCH",
 			headers: {
 				"Content-Type": "application/json",
-				"Authorization": `Bearer ${token}`,
+				Authorization: `Bearer ${token}`,
 			},
 			credentials: "include",
 			body: JSON.stringify({ id: tournament.tournamentObject.tournamentID, winner, currentMatchId }),
@@ -104,7 +95,7 @@ async function handleMatchEnd(currentMatchId: string, winner: string) {
 			method: "GET",
 			headers: {
 				"Content-Type": "application/json",
-				"Authorization": `Bearer ${token}`,
+				Authorization: `Bearer ${token}`,
 			},
 			credentials: "include",
 		});
@@ -118,8 +109,6 @@ async function handleMatchEnd(currentMatchId: string, winner: string) {
 				detail: { Tournament: updatedTournament.tournamentObject },
 			})
 		);
-
-
 	} catch (error) {
 		console.error("Error handling match end:", error);
 	}
@@ -128,7 +117,7 @@ async function handleMatchEnd(currentMatchId: string, winner: string) {
 async function handleLocalMatchEnd(matchId: string, winner: string) {
 	var tournament = findTournamentByMatch(matchId);
 	if (!tournament) {
-		navigate("home");
+		await navigate("home");
 		location.reload();
 		return;
 	}
@@ -144,12 +133,10 @@ async function handleLocalMatchEnd(matchId: string, winner: string) {
 			setGameScore(tournament.players[2], tournament.players[3]);
 			resetEmotions();
 		}, 125);
-	} 
-	else if (tournament.currentMatchIndex === 1) {
+	} else if (tournament.currentMatchIndex === 1) {
 		tournament.semifinal2 = winner;
 		tournament.currentMatchIndex++;
 		setTimeout(() => {
-
 			history.replaceState(undefined, "", `#pong/${tournament.matches[2]}`);
 			changePageTo(joinedContestPage, pongContestPage);
 			startPongWebSocket(tournament.matches[2], true, false, false, [tournament.semifinal1, tournament.semifinal2]);
@@ -157,12 +144,11 @@ async function handleLocalMatchEnd(matchId: string, winner: string) {
 			setGameScore(tournament.semifinal1, tournament.semifinal2);
 			resetEmotions();
 		}, 125);
-	}
-	else if (tournament.currentMatchIndex === 2) {
+	} else if (tournament.currentMatchIndex === 2) {
 		tournament.Winner = winner;
-		openVictory(`You win the Tournament! <br>The Great ${winner}!`) 
+		openVictory(`You win the Tournament! <br>The Great ${winner}!`);
 		await waitForEvent("next");
-		navigate("home");
+		await navigate("home");
 		location.reload();
 	} else {
 		console.error("Invalid match index in tournament.");
@@ -179,29 +165,24 @@ function findTournamentByMatch(matchId: string): any | null {
 }
 
 async function waitForSemifinalsToComplete(Tournament: any) {
-	
 	const playerPlaces = document.querySelectorAll(".playerContestPlace");
 	updateBrackets(playerPlaces, [Tournament.semifinal1Winner, Tournament.semifinal2Winner]);
-	
-	while (true) {
 
+	while (true) {
 		await new Promise((resolve) => setTimeout(resolve, 2000)); // Wait for 2 seconds
 
 		const data = await getTournamentData(Tournament.tournamentID);
-
-
 
 		updateBrackets(playerPlaces, [data.semifinal1Winner, data.semifinal2Winner]);
 
 		if (data.semifinal1Winner && data.semifinal2Winner) {
 			updateBrackets(playerPlaces, [data.semifinal1Winner, data.semifinal2Winner]);
-			return ;
+			return;
 		}
 	}
 }
 
 function updateBrackets(playerPlaces: NodeListOf<Element>, tournamentPlayers: string[]) {
-
 	if (tournamentPlayers[0]) {
 		const playerName = playerPlaces[4].querySelector(".playerContestPlaceName");
 		const playerBG = playerPlaces[4].querySelector(".playerContestPlaceBG");
@@ -216,5 +197,3 @@ function updateBrackets(playerPlaces: NodeListOf<Element>, tournamentPlayers: st
 		playerBG.classList.remove("noGame");
 	}
 }
-
-

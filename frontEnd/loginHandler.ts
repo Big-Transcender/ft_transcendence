@@ -254,7 +254,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 	const newUserButton = document.querySelector(".newUser");
 	const loginButton = document.getElementById("loginUserButton");
 	const backButton = document.getElementById("backButtonNewUser");
-	
+
 	const backButton2F = document.getElementById("back2FId");
 	const logoutButton = document.getElementById("logoutButton");
 	const twoAFButton = document.getElementById("twoFactorButtonID");
@@ -262,8 +262,6 @@ document.addEventListener("DOMContentLoaded", async () => {
 	const twoFactorButton = document.getElementById("verifyTwoFactorButtonID");
 	const twoFactorDisableButton = document.getElementById("disableTwoFactorButtonID");
 
-	// await checkGoogleLogin();
-	await checkGoogleLogin();
 	if (await checkIfLogged()) {
 		changePageTo(loginPage, profilePage);
 		putNickOnProfileHeader(await getNickOnLocalStorage());
@@ -407,17 +405,13 @@ async function getNickOnLocalStorage() {
 	const token = getCookie("token");
 	if (!token) return;
 
-	try {
-		const res = await fetch(`${backendUrl}/me`, {
-			credentials: "include",
-		});
-		if (res.ok) {
-			const user = await res.json();
+	const res = await fetch(`${backendUrl}/me`, {
+		credentials: "include",
+	});
+	if (res.ok) {
+		const user = await res.json();
 
-			return user.sessionUser.nickname;
-		}
-	} catch (err) {
-		console.error("Error checking Google login:", err);
+		return user.sessionUser.nickname;
 	}
 	return null;
 }
@@ -471,8 +465,6 @@ async function saveTournamentPin(pin: string): Promise<void> {
 			credentials: "include",
 			body: JSON.stringify({ tournamentPin: pin }),
 		});
-
-
 	} catch (err) {
 		console.error("Error saving tournament pin:", err);
 	}
@@ -487,16 +479,12 @@ async function askMeApi() {
 	const token = getCookie("token");
 	if (!token) return false;
 
-	try {
-		const res = await fetch(`${backendUrl}/me`, {
-			credentials: "include",
-		});
-		const text = await res.text();
-		if (res.ok) {
-			return true;
-		}
-	} catch (err) {
-		console.error("Error checking Google login:", err);
+	const res = await fetch(`${backendUrl}/me`, {
+		credentials: "include",
+	});
+	const text = await res.text();
+	if (res.ok) {
+		return true;
 	}
 	return false;
 }
@@ -554,7 +542,6 @@ function changePageTo(remove, activate) {
 }
 
 async function verify2FACode(twoFactorInput: string) {
-
 	const token = localStorage.getItem("token");
 	fetch(`${backendUrl}/2fa/verify`, {
 		method: "POST",
@@ -677,31 +664,4 @@ function getCookie(name: string) {
 	const parts = value.split(`; ${name}=`);
 	if (parts.length === 2) return parts.pop().split(";").shift();
 	return null;
-}
-
-async function checkGoogleLogin() {
-	const token = getCookie("token");
-	if (!token) return;
-
-	try {
-		const res = await fetch(`${backendUrl}/me`, {
-			credentials: "include",
-		});
-		const text = await res.text();
-		if (res.ok) {
-			const data = JSON.parse(text);
-			if (data.user) {
-				setToLogged();
-				setNickOnLocalStorage(data.user.nickname);
-				putNickOnProfileHeader(data.user.nickname);
-				changePageTo(document.getElementById("loginId"), document.getElementById("profileId"));
-				// Set JWT from cookie to localStorage
-				if (token) localStorage.setItem("token", token);
-			} else {
-				console.warn("No user found in response");
-			}
-		}
-	} catch (err) {
-		console.error("Error checking Google login:", err);
-	}
 }

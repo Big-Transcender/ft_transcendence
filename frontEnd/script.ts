@@ -32,7 +32,7 @@ document.querySelectorAll(".defaultButton").forEach((btn) => {
 	});
 });
 
-function navigate(page: string) {
+async function navigate(page: string) {
 	document.querySelectorAll(".page").forEach((p) => p.classList.remove("active"));
 	stopSpech();
 
@@ -104,13 +104,11 @@ async function handlePageChange(page: string) {
 window.addEventListener("popstate", (event) => {
 	const page = event.state?.page || location.hash.replace("#", "") || "home";
 
-
 	// ✅ Check if last 4 characters are all numbers
 	const last4Chars = page.slice(-4);
 	const isAllNumbers = /^\d{4}$/.test(last4Chars);
 
 	if (isAllNumbers) {
-
 		history.replaceState({ page: "home" }, "", "#home");
 		navigateWithoutHistory("home");
 		return;
@@ -129,7 +127,6 @@ window.addEventListener("load", async () => {
 	}
 	if (page === "pong/multiplayerMenu") {
 		page = "game1";
-
 	}
 
 	history.replaceState({ page: page }, "", `#${page}`);
@@ -139,9 +136,7 @@ window.addEventListener("load", async () => {
 document.addEventListener("DOMContentLoaded", async () => {
 	const page = location.hash.replace("#", "") || "home";
 
-
 	if (page === "contest") {
-
 		// await removePlayer();
 		stopContestPolling();
 	}
@@ -199,7 +194,6 @@ function isGamePage(page) {
 	const isAllNumbers = /^\d{4}$/.test(last4Chars);
 
 	if (isAllNumbers) {
-
 		history.replaceState({ page: "home" }, "", "#home");
 		navigateWithoutHistory("home");
 		return true;

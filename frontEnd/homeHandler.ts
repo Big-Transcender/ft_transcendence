@@ -47,17 +47,17 @@ genericIcon.forEach((button) => {
 	button.addEventListener("click", async () => {
 		if (button.classList.contains("pongIcon")) {
 			await playExpandingAnimation(button);
-			navigate("game1");
+			await navigate("game1");
 			resetGamePage();
 		} else if (button.classList.contains("contestIcon")) {
 			contestBgIcon.style.backgroundImage = "none";
 			await playExpandingAnimation(button);
 			contestBgIcon.style.backgroundImage = 'url("/images/icons/contestIcon2.png")';
-			navigate("contest");
+			await navigate("contest");
 			resetContestPage();
 		} else if (button.classList.contains("profileIcon")) {
 			await playExpandingAnimation(button);
-			navigate("profile");
+			await navigate("profile");
 		} else if (button.classList.contains("rankIcon")) {
 			rankAnimationHandler();
 		} else if (button.classList.contains("creditsIcon")) {
