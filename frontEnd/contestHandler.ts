@@ -78,7 +78,8 @@ async function betterWait(time: number) {
 document.addEventListener("DOMContentLoaded", async () => {
 	//Enter Join Page
 	joinContestButton.addEventListener("click", async () => {
-		if (await !checkIfLogged()) {
+		const isLogged = await checkIfLogged()
+		if (!isLogged) {
 			displayWarning("You need to log in.");
 		} else {
 			await betterWait(100);
@@ -114,7 +115,8 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 	// CREATE NEW CONTEST BUTTON
 	createNewContestButton.addEventListener("click", async () => {
-		if (await !checkIfLogged()) {
+		var isLoged = await checkIfLogged();
+		if (!isLoged) {
 			displayWarning("You need to log in.");
 		} else {
 			await betterWait(100);
@@ -124,21 +126,16 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 	// CREATE NEW CONTEST LOCAL BUTTON
 	createNewContestLocalButton.addEventListener("click", async () => {
-		if (await !checkIfLogged()) {
-			displayWarning("You need to log in.");
-		} else {
-			await betterWait(100);
-			// createNewContest();
-			openPopupContestLocal();
-			// changePopupTo()
-		}
+		await betterWait(100);
+		// createNewContest();
+		openPopupContestLocal();
+		// changePopupTo()
 	});
 
 	// START THE CONTEST
 	startContestButton.addEventListener("click", async () => {
 		const id = pin;
 		//startLocalTournament(id, players);
-		console.log(numberOfPlayers, startedContest);
 		if (numberOfPlayers === 4 && !startedContest) {
 			startedContest = true;
 			stopContestPolling();
@@ -171,7 +168,18 @@ function prepareContestLocal() {
 	];
 
 	if (nicks.some((nick) => !nick)) {
-		displayWarning("All player nicknames must be filled.");
+		displayWarning("All player nicks must be filled");
+		return;
+	}
+
+	if (nicks.some((nick) => nick.length >= 8)) {
+		displayWarning("Nick too long (8)");
+		return;
+	}
+
+	const uniqueNicks = new Set(nicks);
+	if (uniqueNicks.size !== nicks.length) {
+		displayWarning("Player nicks must be unique");
 		return;
 	}
 
@@ -216,8 +224,6 @@ async function createNewContest() {
 	const nick = await getNickOnLocalStorage();
 	const token = getCookie("token");
 
-	console.log("tournamentName:", tournamentName);
-	console.log("nick:", nick);
 	try {
 		const response = await fetch(`${backendUrl}/create-tournament`, {
 			method: "POST",
@@ -267,10 +273,10 @@ async function getInfoFromContest(pin: string) {
 		let pinNumber = document.getElementById("contestPinBoxNumberId") as HTMLElement;
 		let name = document.getElementById("contestNameId") as HTMLElement;
 
-		console.log("info from matches:", data.players);
+
 		let players = new Array(4).fill(null);
 		data.players.forEach((player, index) => {
-			if (index < 3) {
+			if (index < 4) {
 				// Ensure we only populate up to 4 positions
 				players[index] = player;
 			}
@@ -284,7 +290,7 @@ async function getInfoFromContest(pin: string) {
 				playerName.textContent = players[i].nickname;
 				playerBG.classList.remove("noGame");
 			} else {
-				console.log("the position is free: ", i);
+
 				const playerName = playerPlaces[i].querySelector(".playerContestPlaceName");
 				const playerBG = playerPlaces[i].querySelector(".playerContestPlaceBG");
 				playerName.textContent = "waiting";
@@ -316,7 +322,7 @@ async function joinTournament(nick: string, code: string) {
 		if (response.ok) {
 			await saveTournamentPin(data.tournamentId);
 			pin = data.tournamentId;
-			console.log("Joined tournament:", data);
+
 			return true;
 			// handle success (e.g., update UI)
 		} else {
@@ -361,6 +367,7 @@ function resetContestPage() {
 
 	contestPageAll.forEach((el) => el.classList.remove("active"));
 	contestSelectorPage.classList.add("active");
+	changePageTo(pongContestPage, contestSelectorPage);
 }
 
 async function startTournament(tournamentId: string) {
@@ -370,8 +377,7 @@ async function startTournament(tournamentId: string) {
 
 	const nick = await getNickOnLocalStorage();
 
-	console.log(nick);
-	console.log(data.players[0]);
+
 
 	if (nick === data.players[0] || nick === data.players[1]) {
 		history.replaceState(undefined, "", `#pong/${data.matches[0]}`);
@@ -398,6 +404,7 @@ function startLocalTournament(tournamentId: string, players: string[]) {
 	LocalTournaments.set(tournament.tournamentId, tournament);
 	history.replaceState(undefined, "", `#pong/${tournament.matches[0]}`);
 	changePageTo(createContestPage, pongContestPage);
+	animateTimer();
 	setGameScore(tournament.players[0], tournament.players[1]);
 	startPongWebSocket(tournament.matches[0], true, false, false, [tournament.players[0], tournament.players[1]]);
 }
@@ -430,10 +437,8 @@ async function getTournamentData(tournamentId: string) {
 }
 
 async function removePlayer() {
-	
 	pin = await getTournamentPin();
-	if (!pin)
-		return ;
+	if (!pin) return;
 
 	const token = getCookie("token");
 	await fetch(`${backendUrl}/delete-player-tournament`, {
@@ -446,5 +451,5 @@ async function removePlayer() {
 		body: JSON.stringify(pin),
 	});
 
-	console.log("removed the player");
+
 }

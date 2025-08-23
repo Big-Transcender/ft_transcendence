@@ -1,4 +1,4 @@
-const { getNicknameByUserId } = require('./dataQuerys');
+const { getNicknameByUserId } = require("./dataQuerys");
 
 const matches = new Map(); // matchId -> { gameState, clients, intervalId }
 
@@ -12,23 +12,21 @@ function createMatch(matchId, createInitialGameState) {
 
 function startGameLoopForMatch(matchId, updateBall, isLocal = false, aiGame = false, teamGame = false) {
 	const match = matches.get(matchId);
-	if (!match || match.intervalId)
-		return;
+	if (!match || match.intervalId) return;
 
 	const { gameState, clients } = match;
 	gameState.GamePlayLocal = isLocal;
 	gameState.aiGame = aiGame;
 	var requiredPlayers = isLocal ? 1 : 2;
-	if (teamGame)
-		requiredPlayers = 4
+	if (teamGame) requiredPlayers = 4;
 
 	let waitingForPlayers = true;
-	setTimeout(() => {
-		if (clients.size < requiredPlayers) {
+	const waiter = setTimeout(async () => {
+		if (clients.size < requiredPlayers && waitingForPlayers === true) {
 			console.log(`⏳ Not enough players connected for match ${matchId}. Declaring winner by default.`);
 			if (clients.size === 1) {
 				// Declare the remaining player as the winner
-				player = getNicknameByUserId(match.gameState.playerDbId.p1)
+				player = await getNicknameByUserId(match.gameState.playerDbId.p1);
 				match.gameState.winnerName = player;
 				console.log(`🏆 Player (${player}) wins match ${matchId} by default!`);
 				cleanupMatch(matchId, "opponentDidNotConnect");
@@ -38,31 +36,32 @@ function startGameLoopForMatch(matchId, updateBall, isLocal = false, aiGame = fa
 				cleanupMatch(matchId, "noPlayersConnected");
 			}
 		}
-		waitingForPlayers = false;
-	}, 15000); 
 
-	match.intervalId = setInterval(() => {
-		
-		if (clients.size === requiredPlayers) { //requiredPlayers
+	}, 15000);
+
+	match.intervalId = setInterval(async () => {
+		if (clients.size === requiredPlayers) {
+			//requiredPlayers
+			clearTimeout(waiter);
 
 			if (!gameState.onGoing && !gameState.started) {
 				gameState.started = true;
-				player1 = getNicknameByUserId(match.gameState.playerDbId.p1) || "Player 1"
-				player2 = getNicknameByUserId(match.gameState.playerDbId.p2) || "Player 2"
+				player1 = (await getNicknameByUserId(match.gameState.playerDbId.p1)) || "Player 1";
+				player2 = (await getNicknameByUserId(match.gameState.playerDbId.p2)) || "Player 2";
 
 				match.clients.forEach((client) => {
-					const message = JSON.stringify({ 
-						type: 'PlayerBoard', 
-						payload: [player1, player2]
+					const message = JSON.stringify({
+						type: "PlayerBoard",
+						payload: [player1, player2],
 					});
 					if (client.ws.readyState === 1) {
 						client.ws.send(message);
 					}
 				});
-				if (requiredPlayers > 1){
+				if (requiredPlayers > 1) {
 					match.clients.forEach((client) => {
-						const message = JSON.stringify({ 
-							type: 'startAnimation', 
+						const message = JSON.stringify({
+							type: "startAnimation",
 						});
 						if (client.ws.readyState === 1) {
 							client.ws.send(message);
@@ -83,23 +82,21 @@ function startGameLoopForMatch(matchId, updateBall, isLocal = false, aiGame = fa
 				}
 			}
 
-			const message = JSON.stringify({ type: 'state', payload: gameState });
+			const message = JSON.stringify({ type: "state", payload: gameState });
 
 			// Send game state to clients
-			clients.forEach(client => {
+			clients.forEach((client) => {
 				if (client.ws.readyState === 1) {
 					client.ws.send(message);
 				}
 			});
 		}
-
 	}, 10); // 60 FPS
 }
 
 function removeClientFromMatch(matchId, ws) {
 	const match = matches.get(matchId);
-	if (!match)
-		return;
+	if (!match) return;
 	match.clients.delete(ws);
 	if (match.clients.size === 0) {
 		cleanupMatch(matchId, "noPlayersLeft");
@@ -114,17 +111,20 @@ function startTimer(time, gameState) {
 	}, time);
 }
 
-function cleanupMatch(matchId, reason = "unknown", nick = null)
-{
+async function cleanupMatch(matchId, reason = "unknown", nick = null) {
 	const match = matches.get(matchId);
 	if (!match) return;
 
 	// Notify all clients about the match cleanup
-	match.clients.forEach((client) => {
+	match.clients.forEach(async (client) => {
 		const message = JSON.stringify({
-			type: 'gameOver',
-			payload: { winner: getNicknameByUserId(match.gameState.winnerId) || getNicknameByUserId(nick) || match.gameState.winnerName, reason },
+			type: "gameOver",
+			payload: {
+				winner: (await getNicknameByUserId(match.gameState.winnerId)) || (await getNicknameByUserId(nick)) || match.gameState.winnerName || nick,
+				reason,
+			},
 		});
+		console.log(message);
 		if (client.ws.readyState === 1) {
 			client.ws.send(message);
 			client.ws.close();
@@ -142,5 +142,5 @@ module.exports = {
 	createMatch,
 	startGameLoopForMatch,
 	removeClientFromMatch,
-	cleanupMatch
+	cleanupMatch,
 };

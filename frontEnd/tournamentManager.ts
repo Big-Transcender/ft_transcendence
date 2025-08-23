@@ -1,26 +1,33 @@
+var isOnTournamentPage = true;
+
 
 window.addEventListener("TournamentMatch", async (event: CustomEvent) => {
 	const { Tournament } = event.detail;
 
-	const nick = await getNickOnLocalStorage();
-	console.log("lets see the last stage");
-	console.log(Tournament);
-	handleNextFase(nick, Tournament);
+
+	handleNextFase(Tournament);
 });
 
-async function handleNextFase(nick: string, Tournament: any) {
+async function handleNextFase(Tournament: any) {
 	try {
-		console.log(Tournament);
+		isOnTournamentPage = true;
 
 		if (Tournament.currentMatchIndex === 3) {
-			alert(`You win the Tournament! The Great ${Tournament.Winner}!`);
+			openVictory(`You win the Tournament! <br>The Great ${Tournament.Winner}!`) 
+			await waitForEvent("next");
 			navigate("home");
 			location.reload();
 			return;
 		}
-
+		
+		history.replaceState(undefined, "", `#contest`);
 		changePageTo(pongContestPage, joinedContestPage);
 		await waitForSemifinalsToComplete(Tournament);
+
+		if (!isOnTournamentPage) {
+
+            return;
+        }
 
 		setTimeout(() => {
 			history.replaceState(undefined, "", `#pong/${Tournament.matches[2]}`);
@@ -37,8 +44,7 @@ async function handleNextFase(nick: string, Tournament: any) {
 window.addEventListener("MatchEnd", (event: CustomEvent) => {
 	const { matchId, winner, isLocal } = event.detail;
 	if (isLocal) {
-		console.log("Handling LOCAL match end...");
-		console.log(`Match ID: ${matchId}, Winner: ${winner}`);
+
 		handleLocalMatchEnd(matchId, winner);
 		return;
 	}
@@ -48,8 +54,14 @@ window.addEventListener("MatchEnd", (event: CustomEvent) => {
 async function handleMatchEnd(currentMatchId: string, winner: string) {
 	try {
 		const token = getCookie("token");
-		console.log("Handling match end...");
+
 		const nick = await getNickOnLocalStorage();
+
+		if (nick != winner) {
+			navigate("home");
+			location.reload();
+			return;
+		}
 
 		const response = await fetch(`${backendUrl}/isTournamentMatch/${currentMatchId}`, {
 			method: "GET",
@@ -63,11 +75,7 @@ async function handleMatchEnd(currentMatchId: string, winner: string) {
 			throw new Error(`Failed to check tournament match: ${response.statusText}`);
 		}
 
-		if (nick != winner) {
-			navigate("home");
-			location.reload();
-			return;
-		}
+
 
 		const tournament = await response.json();
 		if (!tournament.exists) {
@@ -76,11 +84,7 @@ async function handleMatchEnd(currentMatchId: string, winner: string) {
 			return;
 		}
 		
-		console.log("Sending updateTournamentWinner request:", {
-			id: tournament.tournamentObject.tournamentID,
-			winner,
-			currentMatchId,
-		});
+
 
 		const updateResponse = await fetch(`${backendUrl}/updateTournamentWinner`, {
 			method: "PATCH",
@@ -121,7 +125,7 @@ async function handleMatchEnd(currentMatchId: string, winner: string) {
 	}
 }
 
-function handleLocalMatchEnd(matchId: string, winner: string) {
+async function handleLocalMatchEnd(matchId: string, winner: string) {
 	var tournament = findTournamentByMatch(matchId);
 	if (!tournament) {
 		navigate("home");
@@ -136,6 +140,7 @@ function handleLocalMatchEnd(matchId: string, winner: string) {
 			history.replaceState(undefined, "", `#pong/${tournament.matches[1]}`);
 			changePageTo(joinedContestPage, pongContestPage);
 			startPongWebSocket(tournament.matches[1], true, false, false, [tournament.players[2], tournament.players[3]]);
+			animateTimer();
 			setGameScore(tournament.players[2], tournament.players[3]);
 			resetEmotions();
 		}, 125);
@@ -148,13 +153,15 @@ function handleLocalMatchEnd(matchId: string, winner: string) {
 			history.replaceState(undefined, "", `#pong/${tournament.matches[2]}`);
 			changePageTo(joinedContestPage, pongContestPage);
 			startPongWebSocket(tournament.matches[2], true, false, false, [tournament.semifinal1, tournament.semifinal2]);
+			animateTimer();
 			setGameScore(tournament.semifinal1, tournament.semifinal2);
 			resetEmotions();
 		}, 125);
 	}
 	else if (tournament.currentMatchIndex === 2) {
 		tournament.Winner = winner;
-		alert(`You win the Tournament! The winner is: The Great ${tournament.Winner}!`);
+		openVictory(`You win the Tournament! <br>The Great ${winner}!`) 
+		await waitForEvent("next");
 		navigate("home");
 		location.reload();
 	} else {
@@ -174,18 +181,15 @@ function findTournamentByMatch(matchId: string): any | null {
 async function waitForSemifinalsToComplete(Tournament: any) {
 	
 	const playerPlaces = document.querySelectorAll(".playerContestPlace");
-	updateBrackets(playerPlaces, [Tournament.semifinal1Winner, Tournament.semifinal1Winner]);
+	updateBrackets(playerPlaces, [Tournament.semifinal1Winner, Tournament.semifinal2Winner]);
 	
 	while (true) {
-		console.log("Waiting for semifinals to complete...");
+
 		await new Promise((resolve) => setTimeout(resolve, 2000)); // Wait for 2 seconds
 
 		const data = await getTournamentData(Tournament.tournamentID);
 
-		console.log(data.semifinal1Winner);
-		console.log(data.semifinal2Winner);
 
-		// Update the tournament state
 
 		updateBrackets(playerPlaces, [data.semifinal1Winner, data.semifinal2Winner]);
 

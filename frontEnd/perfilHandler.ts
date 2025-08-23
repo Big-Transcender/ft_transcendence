@@ -105,12 +105,16 @@ async function getUserStats(nickname: string) {
 				flipboardNumberAnimation(stats.defeats.toString(), losesNumber);
 				flipboardNumberAnimation(stats.games_played.toString(), gamesNumber);
 				flipboardNumberAnimation(positionStr, positionNumber);
-				flipSound.currentTime = 0;
-				flipSound.play();
-				setTimeout(() => {
-					flipSound.pause();
+
+				if (window.location.hash === "#profile") {
 					flipSound.currentTime = 0;
-				}, 2000);
+					flipSound.play();
+					setTimeout(() => {
+						flipSound.pause();
+						flipSound.currentTime = 0;
+					}, 2000);
+				}
+
 				await setProfileAvatar();
 				winRateText.textContent = "Current Winrate: " + stats.win_percentage;
 			})
@@ -292,12 +296,12 @@ async function changeNickPopup() {
 	}
 }
 
-function changeEmailPopup() {
+async function changeEmailPopup() {
 	const newEmail = (document.getElementById("popupNewEmail") as HTMLInputElement).value.trim();
 
 	if (!newEmail) displayWarning("No email has been given!");
 	else {
-		changeEmailAPI(newEmail);
+		await changeEmailAPI(newEmail);
 	}
 }
 
@@ -664,8 +668,7 @@ async function changePasswordAPI(newPassword: string, oldPassword: string): Prom
 			body: JSON.stringify({ oldPassword, newPassword }),
 		});
 
-		console.log(oldPassword);
-		console.log(newPassword);
+
 		const data = await response.json();
 		if (!response.ok) {
 			displayWarning(data.error || "Failed to change password");
@@ -694,6 +697,7 @@ async function changeEmailAPI(newEmail: string): Promise<void> {
 
 		if (!response.ok) {
 			displayWarning(data.error || "Failed to switch email");
+			return ;
 		}
 
 		displayWarning("Email changed successfully!");

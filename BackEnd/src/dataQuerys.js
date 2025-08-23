@@ -189,10 +189,10 @@ function startTournament(code) {
 		.run(code);
 }
 
-function getNicknameByUserId(userId) {
+async function getNicknameByUserId(userId) {
     try {
         const stmt = db.prepare('SELECT nickname FROM users WHERE id = ?'); // Use `?` for parameterized queries
-        const result = stmt.get(userId); // Execute the query and fetch a single row
+        const result = await stmt.get(userId); // Execute the query and fetch a single row
         if (result) {
             return result.nickname; // Return the nickname
         }

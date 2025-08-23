@@ -33,10 +33,6 @@ document.querySelectorAll(".defaultButton").forEach((btn) => {
 });
 
 function navigate(page: string) {
-	if (document.getElementById(page)?.classList.contains("active")) {
-		return;
-	}
-
 	document.querySelectorAll(".page").forEach((p) => p.classList.remove("active"));
 	stopSpech();
 
@@ -52,10 +48,6 @@ function navigate(page: string) {
 }
 
 function navigateWithoutHistory(page: string) {
-	if (document.getElementById(page)?.classList.contains("active")) {
-		return;
-	}
-
 	document.querySelectorAll(".page").forEach((p) => p.classList.remove("active"));
 	const targetPage = document.getElementById(page);
 	if (targetPage) {
@@ -68,7 +60,16 @@ function navigateWithoutHistory(page: string) {
 async function handlePageChange(page: string) {
 	// Add any page-specific initialization here
 	startedContest = false;
-	console.log(page);
+
+	localNick = await getNickOnLocalStorage();
+	const hash = window.location.hash;
+	close2FApopup();
+	close2v2Popup();
+	closePopup();
+	closePopupPong();
+
+	if (!hash.startsWith("#contest") && !hash.startsWith("#pong")) isOnTournamentPage = false;
+
 	switch (page) {
 		case "profile":
 			if (await !checkIfLogged()) {
@@ -79,11 +80,11 @@ async function handlePageChange(page: string) {
 			}
 			break;
 		case "contest":
-			changePageTo(contestMainPage, contestMainPage);
+			changePageTo(joinedContestPage, contestMainPage);
 			let contestIntervalId = setInterval(async () => {
 				const hash = window.location.hash;
 
-				if (!hash.startsWith("#contest")) {
+				if (!hash.startsWith("#contest") && !hash.startsWith("#pong")) {
 					await removePlayer();
 					stopContestPolling();
 					clearInterval(contestIntervalId!);
@@ -102,14 +103,14 @@ async function handlePageChange(page: string) {
 
 window.addEventListener("popstate", (event) => {
 	const page = event.state?.page || location.hash.replace("#", "") || "home";
-	console.log(`📍 Navigating to: ${page} (via browser navigation)`);
+
 
 	// ✅ Check if last 4 characters are all numbers
 	const last4Chars = page.slice(-4);
 	const isAllNumbers = /^\d{4}$/.test(last4Chars);
 
 	if (isAllNumbers) {
-		console.log(`🚫 Blocked page "${page}" (ends with numbers: ${last4Chars}), redirecting to home`);
+
 		history.replaceState({ page: "home" }, "", "#home");
 		navigateWithoutHistory("home");
 		return;
@@ -120,19 +121,16 @@ window.addEventListener("popstate", (event) => {
 
 window.addEventListener("load", async () => {
 	var page = location.hash.replace("#", "") || "home";
-	console.log(`📍 Initial page load: ${page}`);
-	if (isGamePage(page))
-		return;
+
+	if (isGamePage(page)) return;
 	if (page === "contest") {
 		await removePlayer();
 		stopContestPolling();
 	}
-	if( page === "pong/multiplayerMenu")
-	{
-		page =  "game1";
-		console.log(page);
-	}
+	if (page === "pong/multiplayerMenu") {
+		page = "game1";
 
+	}
 
 	history.replaceState({ page: page }, "", `#${page}`);
 	navigateWithoutHistory(page);
@@ -140,11 +138,11 @@ window.addEventListener("load", async () => {
 
 document.addEventListener("DOMContentLoaded", async () => {
 	const page = location.hash.replace("#", "") || "home";
-	console.log(`📍 DOM loaded, navigating to: ${page}`);
+
 
 	if (page === "contest") {
-		console.log("Page is refreshing or closing, removing player...");
-		await removePlayer();
+
+		// await removePlayer();
 		stopContestPolling();
 	}
 	navigateWithoutHistory(page);
@@ -201,7 +199,7 @@ function isGamePage(page) {
 	const isAllNumbers = /^\d{4}$/.test(last4Chars);
 
 	if (isAllNumbers) {
-		console.log(`🚫 Blocked page "${page}" (ends with numbers: ${last4Chars}), redirecting to home`);
+
 		history.replaceState({ page: "home" }, "", "#home");
 		navigateWithoutHistory("home");
 		return true;

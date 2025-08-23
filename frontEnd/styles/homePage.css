@@ -6,6 +6,7 @@
 	height: 82%;
 	width: 95%;
 	/* background-color: rgba(255, 0, 0, 0.363); */
+	/* overflow: hidden; */
 }
 
 .homePageWelcome:hover .homePageWelcomeBG {
@@ -15,10 +16,10 @@
 .nookPhone {
 	position: absolute;
 	left: 50%;
-	top: 50px;
+	top: 40px;
 	translate: -50%;
 	width: 500px;
-	height: 700px;
+	height: 670px;
 }
 
 .nookPhoneBG {
@@ -708,7 +709,7 @@ tr:hover {
 }
 
 td {
-	font-size: 20px;
+	font-size: 19px;
 }
 
 .loadingGif {

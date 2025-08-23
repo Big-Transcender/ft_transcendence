@@ -28,19 +28,19 @@ genericIcon.forEach((button) => {
 	button.addEventListener("mouseenter", () => {
 		if (button.classList.contains("pongIcon")) {
 			phonetitle.textContent = "Pong Game";
-			selectIconSound.play();
+			new Audio("audios/selectIcon.wav").play();
 		} else if (button.classList.contains("contestIcon")) {
 			phonetitle.textContent = "Contest Page";
-			selectIconSound.play();
+			new Audio("audios/selectIcon.wav").play();
 		} else if (button.classList.contains("profileIcon")) {
 			phonetitle.textContent = "Profile Page";
-			selectIconSound.play();
+			new Audio("audios/selectIcon.wav").play();
 		} else if (button.classList.contains("rankIcon")) {
 			phonetitle.textContent = "Players Rank";
-			selectIconSound.play();
+			new Audio("audios/selectIcon.wav").play();
 		} else if (button.classList.contains("creditsIcon")) {
 			phonetitle.textContent = "Credits!";
-			selectIconSound.play();
+			new Audio("audios/selectIcon.wav").play();
 		}
 	});
 
@@ -80,13 +80,13 @@ async function creditsPlay() {
 			&emsp;<span style="color: #FFFFFD;">Brendon Vianna</span>
 			<br>
 			<br>BackEnd Developer<br>
-			&emsp;<span style="color: #FFFFFD;">Diogo San</span>
+			&emsp;<span style="color: #FFFFFD;">Diogo Pinheiro</span>
 			<br>
 			<br>DataBase Developer<br>
 			&emsp;<span style="color: #FFFFFD;">Bruno Sousa</span>
 			<br>
 			<br>DevOps Developer<br>
-			&emsp;<span style="color: #FFFFFD;">Diogo Tintas</span>
+			&emsp;<span style="color: #FFFFFD;">Diogo Correia</span>
 			`;
 		await betterWait(1000);
 		creditsBox.classList.remove("openCredits-animation");
@@ -128,8 +128,7 @@ async function updateLeaderboard() {
 			while (table.rows.length > 1) {
 				table.deleteRow(1);
 			}
-			console.log("Hello");
-			console.log(data);
+
 			const topPlayers = data.sort((a, b) => b.wins - a.wins).slice(0, 5);
 			// Insert new rows
 			topPlayers.forEach((player, index) => {

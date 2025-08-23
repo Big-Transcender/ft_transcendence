@@ -2,28 +2,17 @@ let socket: WebSocket | null = null;
 let socketInitialized = false;
 let currentMatchId: string | null = null;
 let currentIsLocal: boolean = true;
-let localNick;
+let localNick: string = null;
 
 interface MatchCheckResponse {
 	exists: boolean;
 	playerCount: number;
 }
 
-(async () => {
-	localNick = await getNickOnLocalStorage();
-})();
-
 function startPongWebSocket( matchId: string, isLocal: boolean = false, aiGame: boolean = false, teamGame: boolean = false, localNicks: string[] = null) {
 	
-	if (socket) {
-		console.log("Closing existing WebSocket connection...");
-		socket.close();
-		socket = null;
-		socketInitialized = false;
-	}
-
 	if (socketInitialized) {
-		console.log("game already in Progress");
+		//console.log("game already in Progress");
 		return;
 	}
 	socketInitialized = true;
@@ -46,10 +35,8 @@ function startPongWebSocket( matchId: string, isLocal: boolean = false, aiGame: 
 		opponentNickname = localNicks[1];
 	} else nickname = localNick;
 
-
-
 	socket.addEventListener("open", () => {
-		console.log("✅ Connected to WebSocket server");
+	
 		socket.send(
 			JSON.stringify({
 				type: "join",
@@ -64,7 +51,7 @@ function startPongWebSocket( matchId: string, isLocal: boolean = false, aiGame: 
 	});
 
 	socket.addEventListener("close", () => {
-		console.log("❌ WebSocket connection closed");
+
 		cancelAnimationFrame(animationFrameId);
 	});
 
@@ -205,7 +192,6 @@ function stopPongWebSocket() {
 	}
 	socketInitialized = false;
 	currentMatchId = null;
-	//location.reload();
 }
 
 setInterval(() => {
@@ -215,8 +201,8 @@ setInterval(() => {
 
 	if (!isOnPongGame && socketInitialized) {
 		stopPongWebSocket();
-		console.log("closed socket from FrontEnd (leaving page)");
-		console.log(currentMatchId);
+		location.reload();
+
 	}
 }, 100);
 
@@ -228,6 +214,7 @@ window.addEventListener("ShowWinner", async (event: CustomEvent) => {
 	const { matchId, winner, isLocal, reason } = event.detail;
 
 	openVictory(`Game Over! <br>The winner is ${winner}!`);
+	await removePlayer();
 
 	await waitForEvent("next");
 

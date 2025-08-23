@@ -233,11 +233,17 @@ function openVictory(quote) {
 
 function closeVictory() {
 	document.getElementById("popupContainerVictory").style.display = "none";
-	window.dispatchEvent(
-		new CustomEvent("next", {
-			detail: true,
-		})
-	);
+	const hash = window.location.hash;
+
+	if (hash.startsWith("#pong")) {
+		window.dispatchEvent(
+			new CustomEvent("next", {
+				detail: true,
+			})
+		);
+	} else {
+		return;
+	}
 }
 
 clickButton(loginButton);
@@ -248,7 +254,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 	const newUserButton = document.querySelector(".newUser");
 	const loginButton = document.getElementById("loginUserButton");
 	const backButton = document.getElementById("backButtonNewUser");
-	const gLoginButton = document.getElementById("gLoginId");
+	
 	const backButton2F = document.getElementById("back2FId");
 	const logoutButton = document.getElementById("logoutButton");
 	const twoAFButton = document.getElementById("twoFactorButtonID");
@@ -273,12 +279,6 @@ document.addEventListener("DOMContentLoaded", async () => {
 			getUserStats(await getNickOnLocalStorage());
 			// flipboardNumberAnimation("23");
 		}
-	});
-
-	// LOGIN GOOGLE
-	gLoginButton.addEventListener("click", async () => {
-		// changePageTo(loginPage, twoFactorPage);
-		window.location.href = `${backendUrl}/logingoogle`;
 	});
 
 	//Logout Button
@@ -403,11 +403,9 @@ document.addEventListener("DOMContentLoaded", async () => {
 	});
 });
 
-async function getNickOnLocalStorage()
-{
+async function getNickOnLocalStorage() {
 	const token = getCookie("token");
-	if (!token)
-		return ;
+	if (!token) return;
 
 	try {
 		const res = await fetch(`${backendUrl}/me`, {
@@ -415,7 +413,7 @@ async function getNickOnLocalStorage()
 		});
 		if (res.ok) {
 			const user = await res.json();
-			console.log("heres the nick ", user.sessionUser.nickname);
+
 			return user.sessionUser.nickname;
 		}
 	} catch (err) {
@@ -428,11 +426,11 @@ async function getNickOnLocalStorage()
 // 	return localStorage.getItem("pin");
 // }
 //-----------------------------------------------------------------------------------
-async function getTournamentPin(): Promise<string | null> { //TODO test this in multyPlayer
+async function getTournamentPin(): Promise<string | null> {
+	//TODO test this in multyPlayer
 	const token = getCookie("token");
 
-	if (!token)
-		return ;
+	if (!token) return;
 
 	try {
 		const response = await fetch(`${backendUrl}/get-tournament-pin`, {
@@ -450,8 +448,7 @@ async function getTournamentPin(): Promise<string | null> { //TODO test this in 
 		}
 
 		const data = await response.json();
-		if (!data.tournamentPin)
-			return null;
+		if (!data.tournamentPin) return null;
 		return data.tournamentPin;
 	} catch (err) {
 		console.error("Error retrieving tournament pin:", err);
@@ -462,8 +459,7 @@ async function getTournamentPin(): Promise<string | null> { //TODO test this in 
 async function saveTournamentPin(pin: string): Promise<void> {
 	const token = getCookie("token");
 
-	if (!token)
-		return ;
+	if (!token) return;
 
 	try {
 		const response = await fetch(`${backendUrl}/save-tournament-pin`, {
@@ -476,12 +472,7 @@ async function saveTournamentPin(pin: string): Promise<void> {
 			body: JSON.stringify({ tournamentPin: pin }),
 		});
 
-		if (!response.ok) {
-			const error = await response.json();
-			console.error("Error saving tournament pin:", error.error);
-		} else {
-			console.log("Tournament pin saved successfully");
-		}
+
 	} catch (err) {
 		console.error("Error saving tournament pin:", err);
 	}
@@ -494,8 +485,8 @@ function setNickOnLocalStorage(nickname: string) {
 
 async function askMeApi() {
 	const token = getCookie("token");
-	if (!token)
-		return ;
+	if (!token) return false;
+
 	try {
 		const res = await fetch(`${backendUrl}/me`, {
 			credentials: "include",
@@ -513,21 +504,6 @@ async function checkIfLogged() {
 	if (await askMeApi()) {
 		return true;
 	} else {
-		// const loginPage = document.getElementById("loginId");
-		// const profileDivs = document.querySelectorAll(".profileId");
-
-		// profileDivs.forEach((div) => {
-		// 	if (div.classList.contains("active")) {
-		// 		if (div.classList.contains("loginPage")) return;
-		// 		if (div.classList.contains("newUserPage")) {
-		// 			// Se for a div de novo usuário e estiver ativa, não faz nada
-		// 			return;
-		// 		}
-		// 		// div.classList.remove("active");
-		// 	}
-		// });
-		// loginPage.classList.add("active");
-		// changePageTo(loginPage, loginPage);
 		return false;
 	}
 }
@@ -578,7 +554,7 @@ function changePageTo(remove, activate) {
 }
 
 async function verify2FACode(twoFactorInput: string) {
-	console.log("2F input: " + twoFactorInput);
+
 	const token = localStorage.getItem("token");
 	fetch(`${backendUrl}/2fa/verify`, {
 		method: "POST",
@@ -610,7 +586,7 @@ async function verify2FACode(twoFactorInput: string) {
 
 async function verify2FACodePopup() {
 	const twoFactorInput = (document.getElementById("AFCode") as HTMLInputElement).value.trim();
-	console.log("2F input popup: " + twoFactorInput);
+
 	const token = localStorage.getItem("token");
 	fetch(`${backendUrl}/2fa/verify`, {
 		method: "POST",
@@ -656,7 +632,7 @@ async function check2FAStatus() {
 		}
 
 		const data = await response.json();
-		console.log("Has 2FA: " + data.enabled);
+
 		return data.enabled; // Returns true if 2FA is enabled, false otherwise
 	} catch (error) {
 		displayWarning("Failed to check 2FA status: " + error);
@@ -704,10 +680,8 @@ function getCookie(name: string) {
 }
 
 async function checkGoogleLogin() {
-	
 	const token = getCookie("token");
-	if (!token)
-		return ;
+	if (!token) return;
 
 	try {
 		const res = await fetch(`${backendUrl}/me`, {

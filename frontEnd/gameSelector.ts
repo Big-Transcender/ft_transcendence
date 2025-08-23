@@ -66,7 +66,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
 	//Singleplayer Pong
 	buttonSinglePong.addEventListener("click", async () => {
-
 		changePageTo(gameSelectorPongPage, pongGamePage);
 		const matchId = generateMatchId();
 		updatePageHash(`#pong/${matchId}`);
@@ -74,7 +73,7 @@ document.addEventListener("DOMContentLoaded", () => {
 		animateTimer();
 		setRandomBackground();
 		resetEmotions();
-		setGameScore("Vilager");
+		setGameScore(localNick || "Vilager");
 		backGamePongButton.classList.add("active");
 		showMatchId("NONE");
 	});
@@ -87,10 +86,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
 	//Change to Multiplayer Versus
 	buttonVersusMP.addEventListener("click", async () => {
-		if (await checkIfLogged())
-			openPopupPong();
-		else
-			displayWarning("Need to log in to play this");
+		if (await checkIfLogged()) openPopupPong();
+		else displayWarning("Need to log in to play this");
 	});
 
 	//Change to Multiplayer Local
@@ -98,10 +95,10 @@ document.addEventListener("DOMContentLoaded", () => {
 		changePageTo(gameSelectorPongMultiplayerPage, pongGamePage);
 		const matchId = generateMatchId();
 		updatePageHash(`#pong/${matchId}`);
-		startPongWebSocket(matchId, true, false, false, [await getNickOnLocalStorage() || "Tom Nook", "Isabele"]); // true = local mode
+		startPongWebSocket(matchId, true, false, false, [(await getNickOnLocalStorage()) || "Villager", "Isabele"]); // true = local mode
 		resetEmotions();
 		animateTimer();
-		setGameScore(await getNickOnLocalStorage() || "Tom Nook", "Isabele");
+		setGameScore((await getNickOnLocalStorage()) || "Villager", "Isabele");
 		backGamePongButton.classList.add("active");
 		showMatchId(matchId);
 	});
@@ -133,7 +130,17 @@ function joinExistingMatch(matchId: string): void {
 	startPongWebSocket(matchId);
 	changePageTo(gameSelectorPongMultiplayerPage, pongGamePage);
 	backGamePongButton.classList.add("active");
-	//animateTimer();
+	animateTimer();
+	resetEmotions();
+	//setGameScore("Player 1", await getNickOnLocalStorage());
+}
+
+function joinExistingTeamMatch(matchId: string): void {
+	history.replaceState(undefined, "", `#pong/${matchId}`);
+	startPongWebSocket(matchId, false, false, true);
+	changePageTo(gameSelectorPongMultiplayerPage, pongGamePage);
+	backGamePongButton.classList.add("active");
+	animateTimer();
 	resetEmotions();
 	//setGameScore("Player 1", await getNickOnLocalStorage());
 }
@@ -227,9 +234,9 @@ function openPopup2v2() {
 		try {
 			const matchData = await checkMatchExists(matchId);
 			if (matchData.exists) {
-				joinExistingMatch(matchId);
+				close2v2Popup();
+				joinExistingTeamMatch(matchId);
 				showMatchId(matchId);
-				closePopupPong();
 			} else {
 				displayWarning("2v2 match not found or is full");
 				return;
