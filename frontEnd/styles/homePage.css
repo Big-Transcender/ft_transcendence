@@ -6,7 +6,7 @@
 	height: 82%;
 	width: 95%;
 	/* background-color: rgba(255, 0, 0, 0.363); */
-	overflow: hidden;
+	/* overflow: hidden; */
 }
 
 .homePageWelcome:hover .homePageWelcomeBG {
