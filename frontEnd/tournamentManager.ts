@@ -131,7 +131,7 @@ async function handleMatchEnd(currentMatchId: string, winner: string) {
 	}
 }
 
-function handleLocalMatchEnd(matchId: string, winner: string) {
+async function handleLocalMatchEnd(matchId: string, winner: string) {
 	var tournament = findTournamentByMatch(matchId);
 	if (!tournament) {
 		navigate("home");
@@ -166,7 +166,8 @@ function handleLocalMatchEnd(matchId: string, winner: string) {
 	}
 	else if (tournament.currentMatchIndex === 2) {
 		tournament.Winner = winner;
-		alert(`You win the Tournament! The winner is: The Great ${tournament.Winner}!`);
+		openVictory(`You win the Tournament! <br>The Great ${winner}!`) 
+		await waitForEvent("next");
 		navigate("home");
 		location.reload();
 	} else {
