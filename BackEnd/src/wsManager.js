@@ -84,7 +84,7 @@ function handleGameConnection(ws, wss) {
                 console.log(`👋 Player ${assignedPlayer} left match ${matchId}`);
             }
 
-            if (!match.gameState.finished && match.clients.size === 1) {
+            if (!match.gameState.finished && match.clients.size === 1 &&  !match.gameState.playerDbId.p3 === 0 ) {
                 const remainingPlayer = Array.from(match.clients.keys())[0];
                 const winnerNickname = match.clients.get(remainingPlayer)?.nickname;
     
@@ -98,7 +98,7 @@ function handleGameConnection(ws, wss) {
             }
             else if (match.clients.size === 0)
                 cleanupMatch(matchId, "noPlayersLeft");
-            else if (!match.gameState.finished && match.clients.size === 3)
+            else if (!match.gameState.finished && match.clients.size < 4)
                 seeTeamMatchDisconection(match);
         }
     });
@@ -196,16 +196,13 @@ function seeTeamMatchDisconection(match) {
     const team1Remaining = team1Players.filter(player => match.clients.has(player));
     const team2Remaining = team2Players.filter(player => match.clients.has(player));
 
-    if (team1Remaining.length === 0) {
+    if (team1Remaining.length < 2) {
         console.log("🏆 Team 2 wins by default due to Team 1 disconnection!");
 
         const gameState = match.gameState;
         const winnerId = gameState.playerDbId.p2;
 
-        insertMatch( gameState.playerDbId.p1, gameState.playerDbId.p2, winnerId, gameState.score.p1, gameState.score.p2);
-        insertMatch(gameState.playerDbId.p3, gameState.playerDbId.p4, gameState.playerDbId.p4, gameState.score.p1, gameState.score.p2);
-
-        const message = JSON.stringify({
+         const message = JSON.stringify({
             type: 'gameOver',
             payload: { winner: "Team 2", reason: "Team 1 disconnected" },
         });
@@ -215,22 +212,31 @@ function seeTeamMatchDisconection(match) {
                 client.ws.send(message);
             }
         });
+		team1Remaining.forEach(playerKey => {
+            const client = match.clients.get(playerKey);
+            if (client?.ws.readyState === 1) {
+                client.ws.send(message);
+            }
+        });
 
         cleanupMatch(match.matchId, "team1Disconnected", winnerId);
-    } else if (team2Remaining.length === 0) {
+    } else if (team2Remaining.length < 2) {
         console.log("🏆 Team 1 wins by default due to Team 2 disconnection!");
 
         const gameState = match.gameState;
         const winnerId = gameState.playerDbId.p1;
-
-        insertMatch( gameState.playerDbId.p1, gameState.playerDbId.p2, winnerId, gameState.score.p1, gameState.score.p2);
-        insertMatch( gameState.playerDbId.p3, gameState.playerDbId.p4, gameState.playerDbId.p3, gameState.score.p1, gameState.score.p2);
 
         const message = JSON.stringify({
             type: 'gameOver',
             payload: { winner: "Team 1", reason: "Team 2 disconnected" },
         });
         team1Remaining.forEach(playerKey => {
+            const client = match.clients.get(playerKey);
+            if (client?.ws.readyState === 1) {
+                client.ws.send(message);
+            }
+        });
+		team2Remaining.forEach(playerKey => {
             const client = match.clients.get(playerKey);
             if (client?.ws.readyState === 1) {
                 client.ws.send(message);

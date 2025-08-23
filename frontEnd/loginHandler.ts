@@ -254,7 +254,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 	const newUserButton = document.querySelector(".newUser");
 	const loginButton = document.getElementById("loginUserButton");
 	const backButton = document.getElementById("backButtonNewUser");
-	const gLoginButton = document.getElementById("gLoginId");
+	
 	const backButton2F = document.getElementById("back2FId");
 	const logoutButton = document.getElementById("logoutButton");
 	const twoAFButton = document.getElementById("twoFactorButtonID");
@@ -279,12 +279,6 @@ document.addEventListener("DOMContentLoaded", async () => {
 			getUserStats(await getNickOnLocalStorage());
 			// flipboardNumberAnimation("23");
 		}
-	});
-
-	// LOGIN GOOGLE
-	gLoginButton.addEventListener("click", async () => {
-		// changePageTo(loginPage, twoFactorPage);
-		window.location.href = `${backendUrl}/logingoogle`;
 	});
 
 	//Logout Button

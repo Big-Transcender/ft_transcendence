@@ -296,12 +296,12 @@ async function changeNickPopup() {
 	}
 }
 
-function changeEmailPopup() {
+async function changeEmailPopup() {
 	const newEmail = (document.getElementById("popupNewEmail") as HTMLInputElement).value.trim();
 
 	if (!newEmail) displayWarning("No email has been given!");
 	else {
-		changeEmailAPI(newEmail);
+		await changeEmailAPI(newEmail);
 	}
 }
 
@@ -698,6 +698,7 @@ async function changeEmailAPI(newEmail: string): Promise<void> {
 
 		if (!response.ok) {
 			displayWarning(data.error || "Failed to switch email");
+			return ;
 		}
 
 		displayWarning("Email changed successfully!");

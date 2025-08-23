@@ -21,8 +21,8 @@ function startGameLoopForMatch(matchId, updateBall, isLocal = false, aiGame = fa
 	if (teamGame) requiredPlayers = 4;
 
 	let waitingForPlayers = true;
-	setTimeout(async () => {
-		if (clients.size < requiredPlayers) {
+	const waiter = setTimeout(async () => {
+		if (clients.size < requiredPlayers && waitingForPlayers === true) {
 			console.log(`⏳ Not enough players connected for match ${matchId}. Declaring winner by default.`);
 			if (clients.size === 1) {
 				// Declare the remaining player as the winner
@@ -37,6 +37,7 @@ function startGameLoopForMatch(matchId, updateBall, isLocal = false, aiGame = fa
 			}
 		}
 		waitingForPlayers = false;
+		clearTimeout(waiter);
 	}, 15000);
 
 	match.intervalId = setInterval(async () => {
@@ -119,7 +120,7 @@ async function cleanupMatch(matchId, reason = "unknown", nick = null) {
 		const message = JSON.stringify({
 			type: "gameOver",
 			payload: {
-				winner: (await getNicknameByUserId(match.gameState.winnerId)) || (await getNicknameByUserId(nick)) || match.gameState.winnerName,
+				winner: (await getNicknameByUserId(match.gameState.winnerId)) || (await getNicknameByUserId(nick)) || match.gameState.winnerName || nick,
 				reason,
 			},
 		});
