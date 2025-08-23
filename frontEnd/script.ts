@@ -62,10 +62,9 @@ async function handlePageChange(page: string) {
 	startedContest = false;
 	console.log(page);
 	localNick = await getNickOnLocalStorage();
-	const hash = window.location.hash
+	const hash = window.location.hash;
 
-	if (!hash.startsWith("#contest") && !hash.startsWith("#pong")) 
-        isOnTournamentPage = false;
+	if (!hash.startsWith("#contest") && !hash.startsWith("#pong")) isOnTournamentPage = false;
 
 	switch (page) {
 		case "profile":
@@ -77,7 +76,7 @@ async function handlePageChange(page: string) {
 			}
 			break;
 		case "contest":
-			changePageTo(contestMainPage, contestMainPage);
+			changePageTo(joinedContestPage, contestMainPage);
 			let contestIntervalId = setInterval(async () => {
 				const hash = window.location.hash;
 
