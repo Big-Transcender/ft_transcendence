@@ -63,6 +63,10 @@ async function handlePageChange(page: string) {
 	console.log(page);
 	localNick = await getNickOnLocalStorage();
 	const hash = window.location.hash;
+	close2FApopup();
+	close2v2Popup();
+	closePopup();
+	closePopupPong();
 
 	if (!hash.startsWith("#contest") && !hash.startsWith("#pong")) isOnTournamentPage = false;
 
