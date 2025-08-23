@@ -727,7 +727,7 @@
 }
 
 .pongVictory {
-	font-size: 23px;
+	font-size: 21px !important;
 	top: 35%;
 	translate: 0% -50%;
 }
