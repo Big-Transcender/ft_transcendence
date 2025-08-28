@@ -86,26 +86,6 @@ module.exports = async function (fastify) {
 		}
 	});
 
-	fastify.get('/tornamentSemiFinals', {preHandler: fastify.authenticate}, async (req, res) => {
-		const { id: tournamentId} = req.params;
-	
-		if (!tournamentId ) {
-			return res.status(400).send({ error: 'TournamentID is required' });
-		}
-	
-		const tournamentObject = getTournament(tournamentId);
-
-		if (!tournamentObject) {
-			return res.status(404).send({ error: 'Tournament not found' });
-		}
-	
-		return res.send({
-			semifinal1Winner: tournamentObject?.semifinal1Winner,
-			semifinal2Winner: tournamentObject?.semifinal2Winner,
-		});
-	});
-
-
 	fastify.post("/save-tournament-pin", { preHandler: fastify.authenticate }, async (request, reply) => {
 		const { tournamentPin } = request.body;
 	
@@ -113,9 +93,7 @@ module.exports = async function (fastify) {
 			return reply.status(400).send({ error: "Tournament pin is required" });
 		}
 	
-		// Save the tournamentPin in the session
 		request.session.set("tournamentPin", tournamentPin);
-	
 		reply.send({ success: true, message: "Tournament pin saved in session" });
 	});
 
